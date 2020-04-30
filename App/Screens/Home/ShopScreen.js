@@ -7,6 +7,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { SearchBar } from 'react-native-elements';
+import { Drawer } from 'react-native-paper';
 
 
 function ShopScreen() {
@@ -26,12 +27,34 @@ function ShopScreen() {
 
 }
 
-export default function ShopStackScreen() {
+function CategoriesScreen() {
+    return (
+        <View>
+            <Text> Categories Screen</Text>
+        </View>
+    )
+}
+
+function ShopStack() {
     const ShopStack = createStackNavigator();
     return (
+    
         <ShopStack.Navigator>
-            <ShopStack.Screen name="ShopScreen" component={ShopScreen} options = {{headerShown: false}} />
+            <ShopStack.Screen name="ShopScreen" component={ShopScreen} options = {{headerShown: false}}/>
         </ShopStack.Navigator>
+
+    )
+}
+
+export default function ShopStackScreen() {
+    const ShopDrawer = createDrawerNavigator();
+    
+    return (
+        <ShopDrawer.Navigator>
+            <ShopDrawer.Screen  name="ShopStack" component={ShopStack}/>
+            <ShopDrawer.Screen name="Categories" component={CategoriesScreen} />
+            
+        </ShopDrawer.Navigator>
         
     )
 }
