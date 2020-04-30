@@ -35,14 +35,67 @@ function CategoriesScreen() {
     )
 }
 
-function ShopStack() {
+function ShopStack({ navigation }) {
     const ShopStack = createStackNavigator();
     return (
     
         <ShopStack.Navigator>
-            <ShopStack.Screen name="ShopScreen" component={ShopScreen} options = {{headerShown: false}}/>
+            <ShopStack.Screen 
+                name="ShopScreen" 
+                component={ShopScreen} 
+                options = {{
+                    headerRight: () => (
+                    <Button onPress={ () => navigation.navigate('Cart')} title="My Cart" color="#000"/>
+                    ),
+                    headerLeft: () => (
+                        <Button onPress={ () => navigation.openDrawer()} title="Drawer"  />
+                    )
+            
+                }}
+
+          />
         </ShopStack.Navigator>
 
+    )
+}
+
+function CategoriesStack({ navigation }) {
+    const CategoriesStack = createStackNavigator();
+
+    return(
+        <CategoriesStack.Navigator>
+            <CategoriesStack.Screen name="CategoriesScreen" component={CategoriesScreen}
+                options={{
+                    headerLeft: () => (
+                    <Button onPress={ () => navigation.openDrawer()} title="Drawer" />
+                )}}
+             />
+        </CategoriesStack.Navigator>
+        
+    )
+
+}
+
+function DealsStack( {navigation} ) {
+    const DealsStack = createStackNavigator();
+
+    return (
+        <DealsStack.Navigator>
+            <DealsStack.Screen name="DealsScreen" component = {DealsScreen} 
+                options={{
+                    headerLeft: () => (
+                    <Button onPress={ () => navigation.openDrawer()} title="Drawer" />
+                )}}
+            />
+        </DealsStack.Navigator>
+    )
+}
+
+function DealsScreen() {
+    return (
+        <View>
+            <Text> Deals!!</Text>
+        </View>
     )
 }
 
@@ -51,8 +104,9 @@ export default function ShopStackScreen() {
     
     return (
         <ShopDrawer.Navigator>
-            <ShopDrawer.Screen  name="ShopStack" component={ShopStack}/>
-            <ShopDrawer.Screen name="Categories" component={CategoriesScreen} />
+            <ShopDrawer.Screen  name="Shop" component={ShopStack} title="Shop"/>
+            <ShopDrawer.Screen name="Categories" component={CategoriesStack} />
+            <ShopDrawer.Screen name="Deals" component={DealsStack} />
             
         </ShopDrawer.Navigator>
         

@@ -20,7 +20,7 @@ export default function ChatStackScreen() {
     const ChatStack = createStackNavigator();
     return (
         <ChatStack.Navigator>
-            <ChatStack.Screen name="ChatScreen" component={ChatScreen} options = {{headerShown: false}}/>
+            <ChatStack.Screen name="ChatScreen" component={ChatScreen} options = {{}}/>
         </ChatStack.Navigator>
         
     )

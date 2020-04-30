@@ -20,7 +20,7 @@ export default function StudioStackScreen() {
     const StudioStack = createStackNavigator();
     return (
         <StudioStack.Navigator>
-            <StudioStack.Screen name="StudioScreen" component={StudioScreen} options = {{headerShown: false}}/>
+            <StudioStack.Screen name="StudioScreen" component={StudioScreen} options = {{}}/>
         </StudioStack.Navigator>
         
     )

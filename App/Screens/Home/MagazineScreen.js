@@ -20,7 +20,7 @@ export default function MagazineStackScreen() {
     const MagazineStack = createStackNavigator();
     return (
         <MagazineStack.Navigator>
-            <MagazineStack.Screen name="MagazineScreen" component={MagazineScreen} options = {{headerShown: false}}/>
+            <MagazineStack.Screen name="MagazineScreen" component={MagazineScreen} options = {{}}/>
         </MagazineStack.Navigator>
         
     )

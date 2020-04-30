@@ -19,7 +19,7 @@ export default function ProfileStackScreen() {
     const ProfileStack = createStackNavigator();
     return (
         <ProfileStack.Navigator>
-            <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} options = {{headerShown: false}}/>
+            <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} options = {{}}/>
         </ProfileStack.Navigator>
         
     )
