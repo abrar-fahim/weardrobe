@@ -5,11 +5,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-export default function CartScreen(props) {
+export default function LoginScreen() {
     return (
         <View>
-            <Text> My Cart</Text>
-            <Button title="Checkout" onPress={ () => props.navigation.navigate('Checkout')}/>
+            <Text> Login Screen</Text>
         </View>
     )
 }
