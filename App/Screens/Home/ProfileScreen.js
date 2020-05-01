@@ -6,7 +6,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-function ProfileScreen() {
+import { useSelector, useDispatch } from 'react-redux';
+
+
+export function ProfileScreen() {
     return (
         <View>
             <Text> Profile Screen</Text>
@@ -15,11 +18,18 @@ function ProfileScreen() {
 
 }
 
+
 export default function ProfileStackScreen() {
     const ProfileStack = createStackNavigator();
     return (
         <ProfileStack.Navigator>
-            <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} options = {{}}/>
+            <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} options = {{
+                headerRight: () => {    
+                    return (
+                        <Button title="Login/Signup"/>
+                    );    
+                }
+            }}/>
         </ProfileStack.Navigator>
         
     )

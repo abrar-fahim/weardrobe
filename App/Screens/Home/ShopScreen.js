@@ -6,8 +6,14 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
+
+import {HeaderButtons, Item } from 'react-navigation-header-buttons';
+import HeaderButton from '../../components/HeaderButton';
+
 import { SearchBar } from 'react-native-elements';
 import { Drawer } from 'react-native-paper';
+
+import Header from '../../components/Header.js'
 
 
 function ShopScreen() {
@@ -27,15 +33,16 @@ function ShopScreen() {
 
 }
 
-function CategoriesScreen() {
+function CategoriesScreen(props) {
     return (
         <View>
+            <Header title="Categories"/>
             <Text> Categories Screen</Text>
         </View>
     )
 }
 
-function ShopStack({ navigation }) {
+function ShopStack(props) {
     const ShopStack = createStackNavigator();
     return (
     
@@ -45,10 +52,18 @@ function ShopStack({ navigation }) {
                 component={ShopScreen} 
                 options = {{
                     headerRight: () => (
-                    <Button onPress={ () => navigation.navigate('Cart')} title="My Cart" color="#000"/>
+                    <Button onPress={ () => props.navigation.navigate('Cart')} title="My Cart" color="#000"/>
                     ),
                     headerLeft: () => (
-                        <Button onPress={ () => navigation.openDrawer()} title="Drawer"  />
+
+                        <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                            <Item 
+                                title='DrawerButton'
+                                iconName='ios-menu'
+                                onPress={ () => props.navigation.openDrawer()} 
+                            />
+                        </HeaderButtons>
+                        // <Button onPress={ () => props.navigation.openDrawer()} title="Drawer"  />
                     )
             
                 }}
@@ -67,8 +82,8 @@ function CategoriesStack({ navigation }) {
             <CategoriesStack.Screen name="CategoriesScreen" component={CategoriesScreen}
                 options={{
                     headerLeft: () => (
-                    <Button onPress={ () => navigation.openDrawer()} title="Drawer" />
-                )}}
+                    <Button onPress={ () => navigation.openDrawer()} title="Drawer"  />
+                ), headerShown: false}}
              />
         </CategoriesStack.Navigator>
         
@@ -84,7 +99,10 @@ function DealsStack( {navigation} ) {
             <DealsStack.Screen name="DealsScreen" component = {DealsScreen} 
                 options={{
                     headerLeft: () => (
-                    <Button onPress={ () => navigation.openDrawer()} title="Drawer" />
+                    <Button 
+                        onPress={ () => navigation.openDrawer()} 
+                        title="Drawer" 
+                        />
                 )}}
             />
         </DealsStack.Navigator>
@@ -93,7 +111,7 @@ function DealsStack( {navigation} ) {
 
 function DealsScreen() {
     return (
-        <View>
+        <View style={styles.screen}>
             <Text> Deals!!</Text>
         </View>
     )
@@ -112,3 +130,9 @@ export default function ShopStackScreen() {
         
     )
 }
+
+const styles = StyleSheet.create({
+    screen: {
+        flex: 1  //ensures that this view takes all space it can get
+    }
+})

@@ -1,9 +1,12 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import {createStore, combineReducers} from 'redux';
+import { Provider } from 'react-redux'
+
 
 import HomeScreen from './Screens/HomeScreen';
 import CartScreen from './Screens/CartScreen'
@@ -11,21 +14,37 @@ import CartScreen from './Screens/CartScreen'
 import { navigationRef, isMountedRef } from './RootNavigation'
 import * as RootNavigation from './RootNavigation'
 
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo'
+
+
+
+const fetchFonts = () =>  {
+  return Font.loadAsync({
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')
+
+  })
+}
 
 const Stack = createStackNavigator();
 
 export default function App({ navigation }) {
 
-  //this useEffect is to check whether root navigator has mounted, so that app doesnt crash in case it isnt mounted
-  useEffect(() => {
-    isMountedRef.current = true;
+  const [fontLoaded, setFontLoaded] = useState(false);
 
-    return () => (isMountedRef.current = false);
-  }, [])
+  if(!fontLoaded) {
+    return (
+      <AppLoading 
+        startAsync={fetchFonts}
+        onFinish={() => setFontLoaded(true) }
+      />
+    )
+  }
 
-
+  //return <HomeNavigator />;
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name = "Home" component = {HomeScreen} 
         options={{
@@ -37,15 +56,5 @@ export default function App({ navigation }) {
         <Stack.Screen name="Cart" component={CartScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
-    
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

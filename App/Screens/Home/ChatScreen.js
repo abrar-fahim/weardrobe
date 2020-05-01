@@ -7,7 +7,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
-function ChatScreen() {
+export function ChatScreen(props) {
     return (
         <View>
             <Text> Chat Screen</Text>
@@ -25,3 +25,9 @@ export default function ChatStackScreen() {
         
     )
 }
+
+// const styles = StyleSheet.create({
+//     flex: 1,
+//     justifyContent: 'center', 
+//     alignItems: 'center',
+// })

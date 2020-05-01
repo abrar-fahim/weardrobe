@@ -7,10 +7,12 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
-function MagazineScreen() {
+export function MagazineScreen(props) {
+    console.log(props);
     return (
         <View>
             <Text> Magazine Screen</Text>
+            <Button onPress={ () => {} } title="Button"/>
         </View>
     );
 

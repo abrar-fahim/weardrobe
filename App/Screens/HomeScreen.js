@@ -13,6 +13,7 @@ import ShopStackScreen from './Home/ShopScreen'
 import MagazineStackScreen from './Home/MagazineScreen'
 import ChatStackScreen from './Home/ChatScreen'
 import StudioStackScreen from './Home/StudioScreen'
+import NotificationsStackScreen from './Home/NotificationsScreen'
 
 export default function HomeScreen() {
     const Tab = createBottomTabNavigator();
@@ -23,6 +24,7 @@ export default function HomeScreen() {
                 <Tab.Screen name="Shop" component={ShopStackScreen}/>
                 <Tab.Screen name="Chat" component={ChatStackScreen}/>
                 <Tab.Screen name="Weardrobe" component={ProfileStackScreen}/>
+                <Tab.Screen name="Notifications" component={NotificationsStackScreen}/>
             </Tab.Navigator>
     );
 }
