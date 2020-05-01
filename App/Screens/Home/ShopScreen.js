@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Platform } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
@@ -24,8 +24,8 @@ function ShopScreen() {
                 placeholder = "Search..."
                 onChangeText = {updateSearchText}
                 value={searchText}
-                platform="default"
-                lightTheme = {true}
+                platform={Platform.OS}
+                containerStyle={{width: 350, alignItems:'center', justifyContent: 'center'}}
             />
             <Text> Shop Screen</Text>
         </View>
@@ -35,7 +35,7 @@ function ShopScreen() {
 
 function CategoriesScreen(props) {
     return (
-        <View>
+        <View style={styles.screen}>
             <Header title="Categories"/>
             <Text> Categories Screen</Text>
         </View>
@@ -51,8 +51,16 @@ function ShopStack(props) {
                 name="ShopScreen" 
                 component={ShopScreen} 
                 options = {{
+
                     headerRight: () => (
-                    <Button onPress={ () => props.navigation.navigate('Cart')} title="My Cart" color="#000"/>
+                    //<Button onPress={ () => props.navigation.navigate('Cart')} title="My Cart" color="#000"/>
+                    <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                        <Item 
+                            title='CartButton'
+                            iconName='md-cart'
+                            onPress={ () => props.navigation.navigate('Cart') }
+                        />
+                    </HeaderButtons>
                     ),
                     headerLeft: () => (
                         <HeaderButtons HeaderButtonComponent={HeaderButton}>
@@ -79,6 +87,16 @@ function CategoriesStack({ navigation }) {
         <CategoriesStack.Navigator>
             <CategoriesStack.Screen name="CategoriesScreen" component={CategoriesScreen}
                 options={{
+                    headerRight: () => (
+                        //<Button onPress={ () => props.navigation.navigate('Cart')} title="My Cart" color="#000"/>
+                        <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                            <Item 
+                                title='CartButton'
+                                iconName='md-cart'
+                                onPress={ () => navigation.navigate('Cart') }
+                            />
+                        </HeaderButtons>
+                        ),
                     headerLeft: () => (<HeaderButtons HeaderButtonComponent={HeaderButton}>
                     <Item 
                         title='DrawerButton'
@@ -100,7 +118,18 @@ function DealsStack( {navigation} ) {
     return (
         <DealsStack.Navigator>
             <DealsStack.Screen name="DealsScreen" component = {DealsScreen} 
-                options={{ headerLeft: () => (
+                options={{
+                    headerRight: () => (
+                        //<Button onPress={ () => props.navigation.navigate('Cart')} title="My Cart" color="#000"/>
+                        <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                            <Item 
+                                title='CartButton'
+                                iconName='md-cart'
+                                onPress={ () => navigation.navigate('Cart') }
+                            />
+                        </HeaderButtons>
+                        ),
+                     headerLeft: () => (
                     <HeaderButtons HeaderButtonComponent={HeaderButton} >
                     <Item 
                         title='DrawerButton'
@@ -128,10 +157,14 @@ export default function ShopStackScreen() {
     
     return (
         <ShopDrawer.Navigator 
-
-            screenOptions={
-                {}
-            }>
+            drawerStyle={{
+                width: 250
+            }}
+            drawerContentOptions={{
+                itemStyle: {marginRight: 20},
+                labelStyle: {width: 100}
+            }}
+         >
             <ShopDrawer.Screen  name="Shop" component={ShopStack} title="Shop"/>
             <ShopDrawer.Screen name="Categories" component={CategoriesStack} />
             <ShopDrawer.Screen name="Deals" component={DealsStack} />
