@@ -129,9 +129,9 @@ export default function ShopStackScreen() {
     return (
         <ShopDrawer.Navigator 
 
-            screenOptions={{
-                
-            }}>
+            screenOptions={
+                {}
+            }>
             <ShopDrawer.Screen  name="Shop" component={ShopStack} title="Shop"/>
             <ShopDrawer.Screen name="Categories" component={CategoriesStack} />
             <ShopDrawer.Screen name="Deals" component={DealsStack} />

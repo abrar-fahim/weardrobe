@@ -50,7 +50,7 @@ export default function HomeScreen() {
                                 iconName = 'ios-star';
                             }
 
-                            return <MaterialIcons name={iconName} size={size} color={color} />;
+                            return <MaterialIcons name={iconName} size={25} color={color} />;
                         }
 
                     })
@@ -58,10 +58,6 @@ export default function HomeScreen() {
                 }
             >
                 <Tab.Screen name="Magazine" component={MagazineStackScreen} options={{
-                    tabBarIcon: ({focused, color, size}) => {
-                        //iconName = 'ios-star';
-                        return <Ionicons name='ios-star' size={size} color={color}/>;
-                    }
                 }}/>
                 <Tab.Screen name="Studio" component={StudioStackScreen}/>
                 <Tab.Screen name="Shop" component={ShopStackScreen}/>
