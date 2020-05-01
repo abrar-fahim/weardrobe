@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Platform } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
@@ -14,6 +14,8 @@ import { SearchBar, Overlay } from 'react-native-elements';
 import { Drawer } from 'react-native-paper';
 
 import Header from '../../components/Header.js'
+
+import { SHOPS } from '../../dummy-data/shops'
 
 
 
@@ -48,6 +50,16 @@ function ShopScreen({navigation}) {
                     ),
         })
     })
+
+    const renderGridItem = (itemData) => {
+        return (
+            <View style={styles.gridItem}>
+                <Text> {itemData.item.name}</Text>
+            </View>
+
+        )
+
+    }
     
     return (
         <View>
@@ -55,13 +67,18 @@ function ShopScreen({navigation}) {
         <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
             <View>
                 <Text>Search overlay pops up with filters and stuff</Text>
+                <Button title="Search" onPress={toggleOverlay} />
             </View>
         </Overlay>
+        
+        <Text> Shop Screen</Text>
+
+        <FlatList data={SHOPS} renderItem={renderGridItem} numColumns={2} />
 
 
 
                     
-            <Text> Shop Screen</Text>
+            
         </View>
     );
 
@@ -70,7 +87,7 @@ function SearchScreen(props) {
     
     return (
         <Overlay isVisible={visible}>
-            <Text>Woooah youre so pro omg! </Text>       
+            <Text>Search Screen! </Text>       
         </Overlay>
             
             
@@ -220,5 +237,11 @@ export default function ShopStackScreen() {
 const styles = StyleSheet.create({
     screen: {
         flex: 1  //ensures that this view takes all space it can get
+    },
+
+    gridItem: {
+        flex: 1,
+        margin: 15,
+        height: 150
     }
 })
