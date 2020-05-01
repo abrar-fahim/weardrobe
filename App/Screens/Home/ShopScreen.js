@@ -55,15 +55,13 @@ function ShopStack(props) {
                     <Button onPress={ () => props.navigation.navigate('Cart')} title="My Cart" color="#000"/>
                     ),
                     headerLeft: () => (
-
                         <HeaderButtons HeaderButtonComponent={HeaderButton}>
                             <Item 
                                 title='DrawerButton'
-                                iconName='ios-menu'
+                                iconName='md-menu'
                                 onPress={ () => props.navigation.openDrawer()} 
                             />
                         </HeaderButtons>
-                        // <Button onPress={ () => props.navigation.openDrawer()} title="Drawer"  />
                     )
             
                 }}
@@ -81,9 +79,14 @@ function CategoriesStack({ navigation }) {
         <CategoriesStack.Navigator>
             <CategoriesStack.Screen name="CategoriesScreen" component={CategoriesScreen}
                 options={{
-                    headerLeft: () => (
-                    <Button onPress={ () => navigation.openDrawer()} title="Drawer"  />
-                ), headerShown: false}}
+                    headerLeft: () => (<HeaderButtons HeaderButtonComponent={HeaderButton}>
+                    <Item 
+                        title='DrawerButton'
+                        iconName='md-menu'
+                        onPress={ () => navigation.openDrawer()} 
+                    />
+                </HeaderButtons>)
+            }}
              />
         </CategoriesStack.Navigator>
         
@@ -98,12 +101,14 @@ function DealsStack( {navigation} ) {
         <DealsStack.Navigator>
             <DealsStack.Screen name="DealsScreen" component = {DealsScreen} 
                 options={{
-                    headerLeft: () => (
-                    <Button 
-                        onPress={ () => navigation.openDrawer()} 
-                        title="Drawer" 
+                    headerLeft: () => (<HeaderButtons HeaderButtonComponent={HeaderButton}>
+                        <Item 
+                            title='DrawerButton'
+                            iconName='md-menu'
+                            onPress={ () => navigation.openDrawer()} 
                         />
-                )}}
+                    </HeaderButtons>)
+            }}
             />
         </DealsStack.Navigator>
     )
