@@ -100,14 +100,15 @@ function DealsStack( {navigation} ) {
     return (
         <DealsStack.Navigator>
             <DealsStack.Screen name="DealsScreen" component = {DealsScreen} 
-                options={{
-                    headerLeft: () => (<HeaderButtons HeaderButtonComponent={HeaderButton}>
-                        <Item 
-                            title='DrawerButton'
-                            iconName='md-menu'
-                            onPress={ () => navigation.openDrawer()} 
-                        />
+                options={{ headerLeft: () => (
+                    <HeaderButtons HeaderButtonComponent={HeaderButton} >
+                    <Item 
+                        title='DrawerButton'
+                        iconName='md-menu'
+                        onPress={ () => navigation.openDrawer()} 
+                    />
                     </HeaderButtons>)
+                    
             }}
             />
         </DealsStack.Navigator>
@@ -126,7 +127,11 @@ export default function ShopStackScreen() {
     const ShopDrawer = createDrawerNavigator();
     
     return (
-        <ShopDrawer.Navigator>
+        <ShopDrawer.Navigator 
+
+            screenOptions={{
+                
+            }}>
             <ShopDrawer.Screen  name="Shop" component={ShopStack} title="Shop"/>
             <ShopDrawer.Screen name="Categories" component={CategoriesStack} />
             <ShopDrawer.Screen name="Deals" component={DealsStack} />
