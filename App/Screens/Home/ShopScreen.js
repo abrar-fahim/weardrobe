@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
@@ -60,14 +60,34 @@ function ShopScreen({navigation}) {
         )
 
     }
+
+
     
     return (
         <View>
 
-        <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+        <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={{height: 500, }}>
             <View>
-                <Text>Search overlay pops up with filters and stuff</Text>
-                <Button title="Search" onPress={toggleOverlay} />
+                
+                <View style={ {flex: 1,  height: 40, justifyContent: 'space-between', top: 20} }>
+                    <Text>Search overlay pops up with filters and stuff</Text>
+                    
+                    <TextInput style={{borderBottomWidth: 2, borderBottomColor: 'black'}}
+                        multiline={false}
+                        placeholder="Search for something..."
+                    />
+
+                    <Text> Filters</Text>
+
+                    
+                </View>
+                
+
+                <View style={styles.bottom}>
+                 <Button title="Search" onPress={toggleOverlay} />
+                </View>
+                
+               
             </View>
         </Overlay>
         
@@ -243,5 +263,10 @@ const styles = StyleSheet.create({
         flex: 1,
         margin: 15,
         height: 150
+    },
+    bottom: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        marginBottom: 36
     }
 })
