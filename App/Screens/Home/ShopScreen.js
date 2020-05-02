@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
@@ -61,23 +61,102 @@ function ShopScreen({navigation}) {
 
     }
 
+    const [filterCategory, setFilterCategory] = useState('any');
+
 
     
     return (
         <View>
 
-        <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={{height: 500, }}>
-            <View>
-                
-                <View style={ {flex: 1,  height: 40, justifyContent: 'space-between', top: 20} }>
-                    <Text>Search overlay pops up with filters and stuff</Text>
-                    
-                    <TextInput style={{borderBottomWidth: 2, borderBottomColor: 'black'}}
-                        multiline={false}
-                        placeholder="Search for something..."
-                    />
+        <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={{height: 500 }}>
 
+            <View>                
+                <View style={ {flex: 1,  height: 40, justifyContent: 'space-between', top: 40} }>
+                    <View>
+                        
+                        
+                        <TextInput style={{borderBottomWidth: 2, borderBottomColor: 'black'}}
+                            multiline={false}
+                            placeholder="Search for something..."
+                        />
+                    </View>
+                    
+
+                    
+
+                    <View style={ {flex: 1,  height: 40, justifyContent: 'space-between', top: 40, flexDirection: 'column'}} >
                     <Text> Filters</Text>
+                        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                            <View> 
+                                <Text> Category </Text>
+                                <Picker
+                                    selectedValue={filterCategory}
+                                    style={{height: 50, width: 150}}
+                                    onValueChange={(itemValue, itemIndex) => setFilterCategory(itemValue)}
+                                    mode="dropdown"
+                                    prompt="Select Category"
+                                >
+                                    <Picker.Item label="Shirts" value="shirts"/>
+                                    <Picker.Item label="Trousers" value="trousers"/>
+                                    <Picker.Item label="Any" value="any"/>
+
+                                </Picker>
+                            </View>
+                            <View> 
+                                <Text> Price Range </Text>
+                                <Picker
+                                    selectedValue={filterCategory}
+                                    style={{height: 50, width: 150}}
+                                    onValueChange={(itemValue, itemIndex) => setFilterCategory(itemValue)}
+                                    mode="dropdown"
+                                    prompt="Select Category"
+                                >
+                                    <Picker.Item label="0-500" value="shirts"/>
+                                    <Picker.Item label="500-1000" value="trousers"/>
+                                    <Picker.Item label="1000-2000" value="3"/>
+                                    <Picker.Item label="Any" value="any"/>
+
+                                </Picker>
+                            </View>
+                            
+                        </View>
+                        
+
+                        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                            <View> 
+                                <Text> Delivery Time </Text>
+                                <Picker
+                                    selectedValue={filterCategory}
+                                    style={{height: 50, width: 150}}
+                                    onValueChange={(itemValue, itemIndex) => setFilterCategory(itemValue)}
+                                    mode="dropdown"
+                                    prompt="Select Category"
+                                >
+                                    <Picker.Item label="Same day" value="shirts"/>
+                                    <Picker.Item label="Same week" value="trousers"/>
+                                    <Picker.Item label="Any" value="any"/>
+
+                                </Picker>
+                            </View>
+                            <View> 
+                                <Text> Ratings </Text>
+                                <Picker
+                                    selectedValue={filterCategory}
+                                    style={{height: 50, width: 150}}
+                                    onValueChange={(itemValue, itemIndex) => setFilterCategory(itemValue)}
+                                    mode="dropdown"
+                                    prompt="Select Category"
+                                >
+                                    <Picker.Item label="Excellent" value="shirts"/>
+                                    <Picker.Item label="Medium" value="trousers"/>
+                                    <Picker.Item label="Any" value="any"/>
+
+                                </Picker>
+                            </View>
+                            
+                        </View>
+                    </View>
+                    
 
                     
                 </View>
@@ -86,9 +165,8 @@ function ShopScreen({navigation}) {
                 <View style={styles.bottom}>
                  <Button title="Search" onPress={toggleOverlay} />
                 </View>
-                
-               
             </View>
+
         </Overlay>
         
         <Text> Shop Screen</Text>
