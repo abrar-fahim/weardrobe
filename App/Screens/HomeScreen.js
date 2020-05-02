@@ -6,6 +6,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+
 import { SearchBar } from 'react-native-elements';
 
 import ProfileStackScreen from './Home/ProfileScreen';
@@ -15,10 +17,13 @@ import ChatStackScreen from './Home/ChatScreen'
 import StudioStackScreen from './Home/StudioScreen'
 import NotificationsStackScreen from './Home/NotificationsScreen'
 
+import {ProfileTabsScreen} from './Home/ProfileScreen'
+
 import { Ionicons, Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 export default function HomeScreen() {
     const Tab = Platform.OS === 'android' ? createMaterialBottomTabNavigator(): createBottomTabNavigator();
+    //const Tab = createMaterialTopTabNavigator();
     return (
             <Tab.Navigator 
                 tabBarOptions={{ activeTintColor: 'purple'}}

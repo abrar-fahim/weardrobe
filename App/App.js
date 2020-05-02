@@ -12,6 +12,8 @@ import HomeScreen from './Screens/HomeScreen';
 import CartScreen from './Screens/CartScreen'
 import CheckoutScreen from './Screens/CheckoutScreen'
 import LoginScreen from './Screens/LoginScreen'
+import SignupScreen from './Screens/SignupScreen'
+
 
 import { navigationRef, isMountedRef } from './RootNavigation'
 import * as RootNavigation from './RootNavigation'
@@ -58,6 +60,7 @@ export default function App({ navigation }) {
         <Stack.Screen name="Cart" component={CartScreen}/>
         <Stack.Screen name="Checkout" component={CheckoutScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

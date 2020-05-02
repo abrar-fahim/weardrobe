@@ -8,7 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
 export function MagazineScreen(props) {
-    console.log(props);
+    //console.log(props);
     return (
         <View>
             <Text> Magazine Screen</Text>

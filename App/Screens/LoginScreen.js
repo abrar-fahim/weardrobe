@@ -6,12 +6,16 @@ import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
-export default function LoginScreen() {
+import SignupScreen from './SignupScreen'
+
+
+export default function LoginScreen({navigation}) {
     const [value, setValue] = useState(0);
   return (
     <View style={styles.container}>
-      <Text style={styles.formLabel}> Login Form </Text>
+      
       <View>
+      <Text style={styles.formLabel}> Login Form </Text>
         <TextInput placeholder="Enter Email" style={styles.inputStyle} />
         <TextInput
           secureTextEntry={true}
@@ -19,6 +23,12 @@ export default function LoginScreen() {
           style={styles.inputStyle}
         />
       </View>
+
+      <View style={styles.buttons}>
+        <Button title="Login" option={{width: 200}}/>
+        <Button title="Sign up" onPress={() => navigation.navigate('Signup')}/>
+      </View>
+
     </View>
   );
 }
@@ -54,4 +64,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
   },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginTop: 100,
+    width: 200
+    }
 });
