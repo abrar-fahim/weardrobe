@@ -6,7 +6,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
+import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+
 import {FEEDITEMS} from '../../dummy-data/Feed'
+import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const renderFeedItem = (itemData) => {
@@ -24,9 +27,12 @@ const renderFeedItem = (itemData) => {
                 <Image  source={itemData.item.picture} style={{height: 120, width: 300}}/>
                 <Text> {itemData.item.caption}</Text>
             </View>
-            <View style={{flexDirection: 'row'}}>
-                <Button title="Like"/>
+            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+                <TouchableOpacity onPress={ () => {}}>
+                <MaterialCommunityIcons name="hand-okay" size={35} />
+                    </TouchableOpacity>
 
+                <TextInput placeholder="Comment" style={{borderColor: 'purple', height: 40, width: 200, backgroundColor: 'grey'}}/>
             </View>
             
            
