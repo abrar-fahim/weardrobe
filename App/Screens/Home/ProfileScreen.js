@@ -28,10 +28,27 @@ export function ProfileTabsScreen() {
     const TopTab = createMaterialTopTabNavigator();
 
     return(
-        <TopTab.Navigator>
-            <TopTab.Screen name="profileStack" component={ProfileScreen} />
-            <TopTab.Screen name="blogScreen" component={BlogScreen} />
-        </TopTab.Navigator>
+        <View style={{flex: 1}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 150}}>
+                <View style={{flexDirection: 'column', marginLeft: 40, alignItems: 'center'}}>
+                    <Image style={{height: 100, width: 100}}source={require('../../assets/Images/face.png') }/>
+
+                    <Text> Stick Man</Text>
+                    <Text> Hi! </Text>
+
+                </View>
+                <View style={{flexDirection: 'column', height: 80, marginRight: 40, justifyContent: 'center'}}>
+                    <Text>Followers: 1,000,000</Text>
+                    <Text>Following: 0</Text>
+                </View>
+            </View>
+            <TopTab.Navigator>
+                <TopTab.Screen name="profileStack" component={ProfileScreen} />
+                <TopTab.Screen name="blogScreen" component={BlogScreen} />
+            </TopTab.Navigator>
+        </View>
+            
+        
         // <View>
         //     <Text> jello</Text>
         // </View>
