@@ -40,6 +40,7 @@ export function ProfileTabsScreen() {
                 <View style={{flexDirection: 'column', height: 80, marginRight: 40, justifyContent: 'center'}}>
                     <Text>Followers: 1,000,000</Text>
                     <Text>Following: 0</Text>
+                    <Button title="Profile Settings"/>
                 </View>
             </View>
             <TopTab.Navigator>
