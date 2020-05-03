@@ -25,7 +25,7 @@ export default function LoginScreen({navigation}) {
       </View>
 
       <View style={styles.buttons}>
-        <Button title="Login" option={{width: 200}}/>
+        <Button title="Login" />
         <Button title="Sign up" onPress={() => navigation.navigate('Signup')}/>
       </View>
 
