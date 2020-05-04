@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 27386,
-  "expoServerNgrokUrl": "https://5m-fpb.anonymous.app.exp.direct",
-  "packagerNgrokUrl": "https://packager.5m-fpb.anonymous.app.exp.direct",
-  "ngrokPid": 27399,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }

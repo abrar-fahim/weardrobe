@@ -111,10 +111,10 @@ function ShopScreen({navigation}) {
                                     mode="dropdown"
                                     prompt="Select Category"
                                 >
-                                    <Picker.Item label="0-500" value="shirts"/>
-                                    <Picker.Item label="500-1000" value="trousers"/>
+                                    <Picker.Item label="0-500" value="0"/>
+                                    <Picker.Item label="500-1000" value="2"/>
                                     <Picker.Item label="1000-2000" value="3"/>
-                                    <Picker.Item label="Any" value="any"/>
+                                    <Picker.Item label="Any" value="anyprice"/>
 
                                 </Picker>
                             </View>
@@ -132,9 +132,9 @@ function ShopScreen({navigation}) {
                                     mode="dropdown"
                                     prompt="Select Category"
                                 >
-                                    <Picker.Item label="Same day" value="shirts"/>
-                                    <Picker.Item label="Same week" value="trousers"/>
-                                    <Picker.Item label="Any" value="any"/>
+                                    <Picker.Item label="Same day" value="5"/>
+                                    <Picker.Item label="Same week" value="6"/>
+                                    <Picker.Item label="Any" value="anyday"/>
 
                                 </Picker>
                             </View>
@@ -147,9 +147,9 @@ function ShopScreen({navigation}) {
                                     mode="dropdown"
                                     prompt="Select Category"
                                 >
-                                    <Picker.Item label="Excellent" value="shirts"/>
-                                    <Picker.Item label="Medium" value="trousers"/>
-                                    <Picker.Item label="Any" value="any"/>
+                                    <Picker.Item label="Excellent" value="e"/>
+                                    <Picker.Item label="Medium" value="m"/>
+                                    <Picker.Item label="Any" value="a"/>
 
                                 </Picker>
                             </View>
