@@ -16,29 +16,16 @@ import { Drawer } from 'react-native-paper';
 import Header from './Header.js'
 
 
-export default function ShopRightButtons(props) {
+export default function BackButton(props) {
     //console.log(props);
     return (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item 
-            title='FavoritesButton'
-            iconName='md-star'
-            //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
-            onPress={() => props.navigation.navigate('Favorites')}
+            title='DrawerButton'
+            iconName='md-arrow-back'
+            onPress={ () => props.navigation.goBack()} 
         />
-        <Item 
-            title='CartButton'
-            iconName='md-cart'
-            onPress={ () => props.navigation.navigate('Cart') }
-        />
-        <Item 
-            title='SearchButton'
-            iconName='md-search'
-            //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
-            onPress={() => props.navigation.navigate('Search')}
-        />
-        
-    </HeaderButtons>
+         </HeaderButtons>
     )
 }
 

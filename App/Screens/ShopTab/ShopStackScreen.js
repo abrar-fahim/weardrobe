@@ -26,6 +26,7 @@ import ShopStack from './ShopScreens'
 import SearchScreen from './SearchScreen'
 
 import DrawerButton from '../../components/DrawerButton'
+import FavoritesScreen from './FavoritesScreen';
 
 export default function ShopStackScreen({navigation}) {
     const ShopStack = createStackNavigator();
@@ -45,7 +46,13 @@ export default function ShopStackScreen({navigation}) {
             }}/>
             <ShopStack.Screen name="Checkout" component={CheckoutScreen}/>
             <ShopStack.Screen name="Cart" component={CartScreen}/>
-            <ShopStack.Screen name="Search" component={SearchScreen}/>
+            <ShopStack.Screen name="Search" component={SearchScreen} 
+                options={{
+                    headerShown: false
+                    
+                }}
+            />
+            <ShopStack.Screen name="Favorites" component={FavoritesScreen}/>
         </ShopStack.Navigator>
     )
 }
