@@ -15,7 +15,8 @@ import { Drawer } from 'react-native-paper';
 
 import Header from '../../components/Header.js'
 
-import { SHOPS } from '../../dummy-data/shops'
+import { SHOPS } from '../../dummy-data/Sellers'
+import {PRODUCTS} from '../../dummy-data/Products'
 
 import CheckoutScreen from  './CheckoutScreen'
 import CartScreen from './CartScreen';
@@ -27,20 +28,29 @@ import SearchOverlay from '../../components/SearchOverlay'
 
 import DrawerButton from '../../components/DrawerButton'
 import ShopRightButtons from '../../components/ShopRightButtons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-const renderGridItem = (itemData) => {
-    return (
-        <View style={styles.gridItem}>
-            <Text> {itemData.item.name}</Text>
-        </View>
-
-    )
-
-}
 
 
 function ShopScreen({navigation}) {
+
+
+    const renderGridItem = (itemData) => {
+        return (
+            <View style={styles.gridItem}>
+                <TouchableOpacity onPress={ () => (navigation.navigate("Product", {
+                     productId: itemData.item.id,
+
+                }))}>
+                    <Text> {itemData.item.name}</Text>
+                    <Image source={itemData.item.picture} style={{height: 100, width: 100}}/>
+                    <Text> {itemData.item.price + "/-"}</Text>
+                </TouchableOpacity>
+            </View>
+        )
+
+    }
 
     const [visible, setVisible] = useState(false);
 
@@ -58,32 +68,6 @@ function ShopScreen({navigation}) {
     //     })
     // })
     
-
-    // useLayoutEffect(() => {
-    //     navigation.setOptions({
-    //         headerRight: () => (
-    //                 //<Button onPress={ () => props.navigation.navigate('Cart')} title="My Cart" color="#000"/>
-    //                 <HeaderButtons HeaderButtonComponent={HeaderButton}>
-    //                     <Item 
-    //                         title='CartButton'
-    //                         iconName='md-cart'
-    //                         onPress={ () => navigation.navigate('Cart') }
-    //                     />
-    //                     <Item 
-    //                         title='SearchButton'
-    //                         iconName='md-search'
-    //                         //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
-    //                         onPress={toggleOverlay}
-    //                     />
-    //                 </HeaderButtons>
-            
-    //                 ),
-    //     })
-    // })
-
-    
-
-
     return (
         <View>
 
@@ -91,7 +75,7 @@ function ShopScreen({navigation}) {
         
         <Text> Shop Screen</Text>
 
-        <FlatList data={SHOPS} renderItem={renderGridItem} numColumns={2} />
+        <FlatList data={PRODUCTS} renderItem={renderGridItem} numColumns={2}  />
 
 
 

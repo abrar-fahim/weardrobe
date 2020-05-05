@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS, TouchableOpacity } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
@@ -15,9 +15,11 @@ import { Drawer } from 'react-native-paper';
 
 import Header from '../../components/Header.js'
 
-import { SHOPS } from '../../dummy-data/shops'
+import { SELLERS } from '../../dummy-data/Sellers'
 import DrawerButton from '../../components/DrawerButton';
 import ShopRightButtons from '../../components/ShopRightButtons';
+
+import SellerScreen from './SellerScreen'
 
 
 export default function MyShopsStack( {navigation} ) {
@@ -40,16 +42,39 @@ export default function MyShopsStack( {navigation} ) {
                     
             }}
             />
+            <MyShopsStack.Screen name="Seller" component={SellerScreen}/>
         </MyShopsStack.Navigator>
     )
 }
 
-function MyShopsScreen() {
+function MyShopsScreen({navigation}) {
+
+
+    const renderGridItem = (itemData) => {
+        return (
+            <View style={styles.gridItem}>
+                <TouchableOpacity onPress={ () => (navigation.navigate("Seller", {
+                     sellerId: itemData.item.id
+
+                }))}>
+                    <Text> {itemData.item.name}</Text>
+                    <Image source={itemData.item.picture} style={{height: 100, width: 100}}/>
+                </TouchableOpacity>
+            </View>
+        )
+
+    }
+    
     return (
-        <View style={styles.screen}>
-            <Text> MyShops!!</Text>
+        <View>
+        
+        <Text> Shop Screen</Text>
+
+        <FlatList data={SELLERS} renderItem={renderGridItem} numColumns={2}  />
+
         </View>
-    )
+    );
+
 }
 
 

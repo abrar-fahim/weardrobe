@@ -15,7 +15,7 @@ import { Drawer } from 'react-native-paper';
 
 import Header from '../../components/Header.js'
 
-import { SHOPS } from '../../dummy-data/shops'
+import { SHOPS } from '../../dummy-data/Sellers'
 
 import CheckoutScreen from  './CheckoutScreen'
 import CartScreen from './CartScreen';
@@ -27,6 +27,7 @@ import SearchScreen from './SearchScreen'
 
 import DrawerButton from '../../components/DrawerButton'
 import FavoritesScreen from './FavoritesScreen';
+import ProductScreen from './ProductScreen';
 
 export default function ShopStackScreen({navigation}) {
     const ShopStack = createStackNavigator();
@@ -53,6 +54,7 @@ export default function ShopStackScreen({navigation}) {
                 }}
             />
             <ShopStack.Screen name="Favorites" component={FavoritesScreen}/>
+            <ShopStack.Screen name="Product" component={ProductScreen}/>
         </ShopStack.Navigator>
     )
 }

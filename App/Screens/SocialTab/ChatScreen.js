@@ -11,11 +11,14 @@ import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommun
 
 import {HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/HeaderButton';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 
 import {CHATS} from '../../dummy-data/Chats'
 import NewPostButton from '../../components/NewPostButton';
 import NewChatScreen from './NewChatScreen';
+import GroupScreen from './GroupScreen';
+
 
 
 function renderChatItem(itemData) {
@@ -38,6 +41,7 @@ function renderChatItem(itemData) {
 
 
 export function ChatScreen(props) {
+    
     return (
         <View>
             <FlatList 
@@ -49,11 +53,24 @@ export function ChatScreen(props) {
 
 }
 
+function ChatTabs() {
+    const TopTab = createMaterialTopTabNavigator();
+
+    return (
+        <TopTab.Navigator>
+            <TopTab.Screen name="Chats" component={ChatScreen}/>
+            <TopTab.Screen name="Groups" component={GroupScreen}/>
+
+        </TopTab.Navigator>
+    )
+    
+}
+
 export default function ChatStackScreen({navigation}) {
     const ChatStack = createStackNavigator();
     return (
         <ChatStack.Navigator>
-            <ChatStack.Screen name="ChatScreen" component={ChatScreen} options = {{
+            <ChatStack.Screen name="ChatScreen" component={ChatTabs} options = {{
                 headerRight: () => (<NewPostButton navigation={navigation} route="NewChat"/>)
                 
             }}/>
