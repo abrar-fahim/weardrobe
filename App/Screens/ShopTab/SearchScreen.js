@@ -11,7 +11,9 @@ export default function SearchScreen(props) {
     return (
         <View>
             <TextInput placeholder="Search..."/>
-            
+            <View style={{flexDirection: 'row'}}>
+                {/*place filters here*/}
+            </View>
         </View>
     )
 }
