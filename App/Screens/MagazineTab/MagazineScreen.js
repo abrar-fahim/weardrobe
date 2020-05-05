@@ -10,6 +10,8 @@ import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommun
 
 import {FEEDITEMS} from '../../dummy-data/Feed'
 import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import NewPostScreen from './NewPostScreen';
+import NewPostButton from '../../components/NewPostButton';
 
 
 const renderFeedItem = (itemData) => {
@@ -50,18 +52,20 @@ export function MagazineScreen(props) {
                 data={FEEDITEMS}
                 renderItem={renderFeedItem}
             />
-            <Text> Magazine Screen</Text>
-            <Button onPress={ () => {} } title="Button"/>
         </View>
     );
 
 }
 
-export default function MagazineStackScreen() {
+export default function MagazineStackScreen({navigation}) {
     const MagazineStack = createStackNavigator();
     return (
         <MagazineStack.Navigator>
-            <MagazineStack.Screen name="MagazineScreen" component={MagazineScreen} options = {{}}/>
+            <MagazineStack.Screen name="Magazine" component={MagazineScreen} options = {{
+                headerRight: () => (< NewPostButton navigation={navigation} route="NewPost"/>)
+            }}/>
+            <MagazineStack.Screen name="NewPost" component={NewPostScreen} options = {{}}/>
+
         </MagazineStack.Navigator>
         
     )

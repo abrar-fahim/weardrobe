@@ -14,6 +14,8 @@ import HeaderButton from '../../components/HeaderButton';
 
 
 import {CHATS} from '../../dummy-data/Chats'
+import NewPostButton from '../../components/NewPostButton';
+import NewChatScreen from './NewChatScreen';
 
 
 function renderChatItem(itemData) {
@@ -47,29 +49,16 @@ export function ChatScreen(props) {
 
 }
 
-function NewMessageScreen(props) {
-    return(
-        <View>
-            <Text>New message screen</Text> 
-        </View>
-    )
-}
-
 export default function ChatStackScreen({navigation}) {
     const ChatStack = createStackNavigator();
     return (
         <ChatStack.Navigator>
             <ChatStack.Screen name="ChatScreen" component={ChatScreen} options = {{
-                headerRight: () => (
-                
-                    <TouchableOpacity onPress={() => navigation.navigate('NewMessage')}>
-                        <Entypo name="new-message" size={25} style={{marginRight: 20}}/>
-                    </TouchableOpacity>
-                )
+                headerRight: () => (<NewPostButton navigation={navigation} route="NewChat"/>)
                 
             }}/>
 
-            <ChatStack.Screen name="NewMessage" component={NewMessageScreen}/>
+            <ChatStack.Screen name="NewChat" component={NewChatScreen}/>
         </ChatStack.Navigator>
         
     )
