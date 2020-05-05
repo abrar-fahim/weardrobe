@@ -9,10 +9,10 @@ import { Provider } from 'react-redux'
 
 
 import HomeScreen from './Screens/HomeScreen';
-import CartScreen from './Screens/CartScreen'
-import CheckoutScreen from './Screens/CheckoutScreen'
-import LoginScreen from './Screens/LoginScreen'
-import SignupScreen from './Screens/SignupScreen'
+import CartScreen from './Screens/ShopTab/CartScreen'
+import CheckoutScreen from './Screens/ShopTab/CheckoutScreen'
+import LoginScreen from './Screens/ProfileTab/LoginScreen'
+import SignupScreen from './Screens/ProfileTab/SignupScreen'
 
 
 import { navigationRef, isMountedRef } from './RootNavigation'
@@ -57,10 +57,6 @@ export default function App({ navigation }) {
           
         }}
         />
-        <Stack.Screen name="Cart" component={CartScreen}/>
-        <Stack.Screen name="Checkout" component={CheckoutScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Signup" component={SignupScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

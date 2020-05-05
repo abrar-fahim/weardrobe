@@ -10,14 +10,14 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import { SearchBar } from 'react-native-elements';
 
-import ProfileStackScreen from './Home/ProfileScreen';
-import ShopStackScreen from './Home/ShopScreen'
-import MagazineStackScreen from './Home/MagazineScreen'
-import ChatStackScreen from './Home/ChatScreen'
-import StudioStackScreen from './Home/StudioScreen'
-import NotificationsStackScreen from './Home/NotificationsScreen'
+import ProfileStackScreen from './ProfileTab/ProfileScreen';
+import ShopStackScreen from './ShopTab/ShopStackScreen'
+import MagazineStackScreen from './MagazineTab/MagazineScreen'
+import ChatStackScreen from './SocialTab/ChatScreen'
+import StudioStackScreen from './StudioTab/StudioScreen'
+import NotificationsStackScreen from './NotificationTab/NotificationsScreen'
 
-import {ProfileTabsScreen} from './Home/ProfileScreen'
+import {ProfileTabsScreen} from './ProfileTab/ProfileScreen'
 
 import { Ionicons, Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 

@@ -8,7 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
 export function NotificationsScreen(props) {
-    console.log(props);
+    //console.log(props);
     return (
         <View>
             <Text> Notifications Screen</Text>

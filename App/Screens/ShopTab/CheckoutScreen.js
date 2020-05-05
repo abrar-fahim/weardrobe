@@ -5,7 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-export default function CartScreen() {
+export default function CheckoutScreen() {
     return (
         <View>
             <Text> Check Out</Text>

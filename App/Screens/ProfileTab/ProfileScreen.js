@@ -12,6 +12,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { useSelector, useDispatch } from 'react-redux';
 
 import BlogScreen from './BlogScreen'
+import LoginScreen from './LoginScreen'
+import SignupScreen from './SignupScreen'
 
 
 export function ProfileScreen(props) {
@@ -68,6 +70,9 @@ export default function ProfileStackScreen(props) {
                     );    
                 }
             }}/>
+
+            <ProfileStack.Screen name="Login" component={LoginScreen}/>
+            <ProfileStack.Screen name="Signup" component={SignupScreen}/>
         </ProfileStack.Navigator>
         
     )
