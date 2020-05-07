@@ -11,13 +11,17 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import BlogScreen from './BlogScreen'
+import BlogListScreen from './BlogListScreen'
 import LoginScreen from './LoginScreen'
 import SignupScreen from './SignupScreen'
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import ProfileSettingsScreen from './ProfileSettingsScreen';
 import FollowersListTabScreen from './FollowersListScreen'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import CreateBlogScreen1 from './CreateBlogScreen1';
+import CreateBlogScreen2 from './CreateBlogScreen2';
+import CreateBlogScreen3 from './CreateBlogScreen3';
+import BlogScreen from './BlogScreen';
 
 
 
@@ -56,7 +60,7 @@ export function ProfileTabsScreen({navigation}) {
             </View>
             <TopTab.Navigator>
                 <TopTab.Screen name="ProfileStack" component={ProfileScreen} />
-                <TopTab.Screen name="BlogScreen" component={BlogScreen} />
+                <TopTab.Screen name="BlogListScreen" component={BlogListScreen} />
             </TopTab.Navigator>
         </View>
             
@@ -82,6 +86,22 @@ export default function ProfileStackScreen(props) {
             <ProfileStack.Screen name="Signup" component={SignupScreen}/>
             <ProfileStack.Screen name="ProfileSettings" component={ProfileSettingsScreen}/>
             <ProfileStack.Screen name="FollowersListTab" component={FollowersListTabScreen}/>
+            <ProfileStack.Screen name="CreateBlog1" component={CreateBlogScreen1} options={{
+                headerRight: () => (
+                    <GenericHeaderButton name="CreateBlogButton1" iconName="md-arrow-forward" onPress={() => props.navigation.navigate('CreateBlog2')} />
+                )
+            }}/>
+            <ProfileStack.Screen name="CreateBlog2" component={CreateBlogScreen2} options={{
+                headerRight: () => (
+                    <GenericHeaderButton name="CreateBlogButton2" iconName="md-arrow-forward" onPress={() => props.navigation.navigate('CreateBlog3')} />
+                )
+            }}/>
+            <ProfileStack.Screen name="CreateBlog3" component={CreateBlogScreen3} options={{
+                headerRight: () => (
+                    <GenericHeaderButton name="CreateBlogButton3" iconName="md-arrow-forward" onPress={() => props.navigation.popToTop()} />
+                )
+            }}/>
+            <ProfileStack.Screen name="BlogScreen" component={BlogScreen}/>
         </ProfileStack.Navigator>
         
     )
