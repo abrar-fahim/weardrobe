@@ -8,27 +8,31 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SearchBar, Overlay, CheckBox } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 
-const PEOPLE = [
+const SEARCHRESULTS = [
     {
         id: 1,
-        name: "Abrar F"
+        name: "Abrar A"
     },
     {
         id: 2,
-        name: "Nefez"
+        name: "Abrar B"
     },
     {
         id: 3,
-        name: "SSSomik"
+        name: "Abrar C"
     },
     {
         id: 4,
-        name: "Soyyod"
+        name: "Abrar D"
     },
     {
         id: 5,
-        name: "Tosin"
-    }
+        name: "Abrar E"
+    },
+    {
+        id: 6,
+        name: "Abrar F"
+    },
 ]
 
 function renderItems(itemData) {
@@ -43,19 +47,12 @@ function renderItems(itemData) {
 
 }
 
-export default function NewChatScreen(props) {
+export default function PeopleSearchScreen(props) {
     return (
         <View>
             <SearchBar placeholder="Search for people..." lightTheme={true} containerStyle={{height: 55}} platform={Platform.OS}/>
             <Text> Create Chat</Text>
-            <View style={{flexDirection: 'row'}}>
-                <TextInput placeholder="Enter Chat Name" style={{height: 60}}/>
-                <Button title="Create Chat" onPress={ () => props.navigation.popToTop() }/>
-            </View>
-            
-            <FlatList data={PEOPLE} renderItem={renderItems}/>
-
-    
+            <FlatList data={SEARCHRESULTS} renderItem={renderItems}/>
         </View>
     )
 }

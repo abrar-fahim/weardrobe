@@ -16,7 +16,7 @@ import { Drawer } from 'react-native-paper';
 import Header from './Header.js'
 
 
-export default function NewPostButton(props) {
+export default function NewPostNextButton(props) {
     //console.log(props);
     return (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>

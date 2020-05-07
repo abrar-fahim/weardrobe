@@ -10,41 +10,53 @@ import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommun
 
 import {FEEDITEMS} from '../../dummy-data/Feed'
 import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
-import NewPostScreen from './NewPostScreen';
+import NewPostChooseLayout from './NewPostChooseLayoutScreen';
 import NewPostButton from '../../components/NewPostButton';
+import NewPostScreen2 from './NewPostScreen2';
+import NewPostScreen3 from './NewPostScreen3';
+import NewPostTagScreen from './NewPostTagScreen';
+import NewPostNextButton from '../../components/NewPostNextButton';
+import { ProfileTabsScreen } from '../ProfileTab/ProfileScreen';
 
 
-const renderFeedItem = (itemData) => {
-    return (
-        <View style={styles.gridItem} >
-            <View>
-                <View style={{flexDirection: 'row'}}>
-                    <Image style={{width: 20, height: 20}} source={require('../../assets/Images/face.png')}/>
-                    <Text style={{fontWeight: 'bold', fontSize: 17}}> Stickman </Text>
-                </View>
-                
-                
-            </View>
-            <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-                <Image  source={itemData.item.picture} style={{height: 120, width: 300}}/>
-                <Text> {itemData.item.caption}</Text>
-            </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-                <TouchableOpacity onPress={ () => {}}>
-                <MaterialCommunityIcons name="hand-okay" size={35} />
-                    </TouchableOpacity>
 
-                <TextInput placeholder="Comment" style={{borderColor: 'purple', height: 40, width: 200, backgroundColor: 'grey'}}/>
-            </View>
-            
-           
-        </View>
-
-    )
-
-}
 
 export function MagazineScreen(props) {
+
+    const renderFeedItem = (itemData) => {
+        return (
+            <View style={styles.gridItem} >
+                <View>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('OthersProfile')}>
+                        <View style={{flexDirection: 'row'}}>
+                            <Image style={{width: 20, height: 20}} source={require('../../assets/Images/face.png')}/>
+                            <Text style={{fontWeight: 'bold', fontSize: 17}}> Stickman </Text>
+                        </View>
+                    </TouchableOpacity>
+                    
+                    
+                    
+                </View>
+                <TouchableOpacity>
+                    <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+                        <Image  source={itemData.item.picture} style={{height: 120, width: 300}}/>
+                        <Text> {itemData.item.caption}</Text>
+                    </View>
+                </TouchableOpacity>
+               
+                <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+                    <TouchableOpacity onPress={ () => {}}>
+                    <MaterialCommunityIcons name="hand-okay" size={35} />
+                        </TouchableOpacity>
+    
+                    <TextInput placeholder="Comment" style={{borderColor: 'purple', height: 40, width: 200, backgroundColor: 'grey'}}/>
+                </View>
+                
+               
+            </View>
+    
+        )
+    }
     //console.log(props);
     return (
         <View>
@@ -62,9 +74,19 @@ export default function MagazineStackScreen({navigation}) {
     return (
         <MagazineStack.Navigator>
             <MagazineStack.Screen name="Magazine" component={MagazineScreen} options = {{
-                headerRight: () => (< NewPostButton navigation={navigation} route="NewPost"/>)
+                headerRight: () => (< NewPostButton onPress={() => navigation.navigate('NewPostChooseLayout')} />)
             }}/>
-            <MagazineStack.Screen name="NewPost" component={NewPostScreen} options = {{}}/>
+            <MagazineStack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options = {{
+                headerRight: () => (<NewPostNextButton onPress={() => navigation.navigate('NewPost2')} />)
+            }}/>
+            <MagazineStack.Screen name="NewPost2" component={NewPostScreen2} options = {{
+                 headerRight: () => (<NewPostNextButton onPress={() => navigation.navigate('NewPost3')} />)
+            }}/>
+            <MagazineStack.Screen name="NewPost3" component={NewPostScreen3} options = {{
+                 headerRight: () => (<NewPostNextButton navigation={navigation} onPress={() => navigation.popToTop()} />)
+            }}/>
+            <MagazineStack.Screen name="NewPostTag" component={NewPostTagScreen}/>
+            <MagazineStack.Screen name="OthersProfile" component={ProfileTabsScreen}/>
 
         </MagazineStack.Navigator>
         

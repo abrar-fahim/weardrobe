@@ -16,13 +16,13 @@ import { Drawer } from 'react-native-paper';
 import Header from './Header.js'
 
 
-export default function NewPostButton(props) {
+export default function GenericHeaderButton(props) {
     //console.log(props);
     return (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item 
-            title='NewPostButton'
-            iconName='md-create'
+            title={props.title}
+            iconName={props.iconName}
             onPress={props.onPress} 
         />
          </HeaderButtons>

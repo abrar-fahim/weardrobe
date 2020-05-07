@@ -29,6 +29,7 @@ import SearchOverlay from '../../components/SearchOverlay'
 import DrawerButton from '../../components/DrawerButton'
 import ShopRightButtons from '../../components/ShopRightButtons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import GroupShopRightButtons from '../../components/GroupShopRightButtons';
 
 
 
@@ -43,9 +44,11 @@ function ShopScreen({navigation}) {
                      productId: itemData.item.id,
 
                 }))}>
+                    
+                    <Image source={itemData.item.picture} style={{height: 120, width: 120, justifyContent: 'center', alignItems: 'center'}}/>
                     <Text> {itemData.item.name}</Text>
-                    <Image source={itemData.item.picture} style={{height: 100, width: 100}}/>
                     <Text> {itemData.item.price + "/-"}</Text>
+                    <Text> {"From " + itemData.item.shopname} </Text>
                 </TouchableOpacity>
             </View>
         )
@@ -109,6 +112,8 @@ export default function ShopStack(props) {
                     headerRight: () => (
                         <ShopRightButtons navigation={navigation}/>
                     )
+                        
+                
             
                 })
             }
@@ -128,7 +133,8 @@ const styles = StyleSheet.create({
     gridItem: {
         flex: 1,
         margin: 15,
-        height: 150
+        height: 150,
+        width: 150
     },
     bottom: {
         flex: 1,

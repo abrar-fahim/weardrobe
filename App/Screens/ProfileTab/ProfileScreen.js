@@ -14,6 +14,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import BlogScreen from './BlogScreen'
 import LoginScreen from './LoginScreen'
 import SignupScreen from './SignupScreen'
+import GenericHeaderButton from '../../components/GenericHeaderButton'
+import ProfileSettingsScreen from './ProfileSettingsScreen';
+import FollowersListTabScreen from './FollowersListScreen'
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+
 
 
 export function ProfileScreen(props) {
@@ -26,7 +32,7 @@ export function ProfileScreen(props) {
 
 }
 
-export function ProfileTabsScreen() {
+export function ProfileTabsScreen({navigation}) {
     const TopTab = createMaterialTopTabNavigator();
 
     return(
@@ -39,15 +45,18 @@ export function ProfileTabsScreen() {
                     <Text> Hi! </Text>
 
                 </View>
-                <View style={{flexDirection: 'column', height: 80, marginRight: 40, justifyContent: 'center'}}>
-                    <Text>Followers: 1,000,000</Text>
-                    <Text>Following: 0</Text>
-                    <Button title="Profile Settings"/>
-                </View>
+                <TouchableOpacity onPress={ () => navigation.navigate('FollowersListTab')}>
+                    <View style={{flexDirection: 'column', height: 80, marginRight: 40, justifyContent: 'center'}}>
+                        <Text>Followers: 1,000,000</Text>
+                        <Text>Following: 0</Text>
+                        
+                    </View>
+                </TouchableOpacity>
+                
             </View>
             <TopTab.Navigator>
-                <TopTab.Screen name="profileStack" component={ProfileScreen} />
-                <TopTab.Screen name="blogScreen" component={BlogScreen} />
+                <TopTab.Screen name="ProfileStack" component={ProfileScreen} />
+                <TopTab.Screen name="BlogScreen" component={BlogScreen} />
             </TopTab.Navigator>
         </View>
             
@@ -64,15 +73,15 @@ export default function ProfileStackScreen(props) {
     return (
         <ProfileStack.Navigator>
             <ProfileStack.Screen name="ProfileScreen" component={ProfileTabsScreen} options = {{
-                headerRight: () => {    
-                    return (
-                        <Button title="Login/Signup" onPress = { () => props.navigation.navigate('Login') }/>
-                    );    
-                }
+                headerRight: () => (
+                    <GenericHeaderButton title="SettingButton" iconName="md-settings" onPress={() => props.navigation.navigate('ProfileSettings')} />
+                )
             }}/>
 
             <ProfileStack.Screen name="Login" component={LoginScreen}/>
             <ProfileStack.Screen name="Signup" component={SignupScreen}/>
+            <ProfileStack.Screen name="ProfileSettings" component={ProfileSettingsScreen}/>
+            <ProfileStack.Screen name="FollowersListTab" component={FollowersListTabScreen}/>
         </ProfileStack.Navigator>
         
     )

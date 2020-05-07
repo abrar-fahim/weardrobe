@@ -17,28 +17,40 @@ import Header from './Header.js'
 
 
 export default function ShopRightButtons(props) {
-    //console.log(props);
+    //console.log(props.route?.isGroupShopping);
+
+    
     return (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item 
+            <Item 
+            title='groupButton'
+            iconName='md-people'
+            //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
+            onPress={() => props.navigation.navigate('GroupShopping')}
+            />
+
+                
+            <Item 
             title='FavoritesButton'
             iconName='md-star'
             //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
             onPress={() => props.navigation.navigate('Favorites')}
-        />
-        <Item 
-            title='CartButton'
-            iconName='md-cart'
-            onPress={ () => props.navigation.navigate('Cart') }
-        />
-        <Item 
-            title='SearchButton'
-            iconName='md-search'
-            //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
-            onPress={() => props.navigation.navigate('Search')}
-        />
+            />
+            <Item 
+                title='CartButton'
+                iconName='md-cart'
+                onPress={ () => props.navigation.navigate('Cart') }
+            />
+            <Item 
+                title='SearchButton'
+                iconName='md-search'
+                //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
+                onPress={() => props.navigation.navigate('Search')}
+            />
         
-    </HeaderButtons>
+        </HeaderButtons>
     )
+    
+    
 }
 

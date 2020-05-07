@@ -16,16 +16,29 @@ import { Drawer } from 'react-native-paper';
 import Header from './Header.js'
 
 
-export default function NewPostButton(props) {
+export default function GroupShopRightButtons(props) {
     //console.log(props);
     return (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item 
-            title='NewPostButton'
-            iconName='md-create'
-            onPress={props.onPress} 
+            title='pplButton'
+            iconName='md-people'
+            //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
+            onPress={() => props.navigation.navigate('Favorites')}
         />
-         </HeaderButtons>
+        <Item 
+            title='CartButton'
+            iconName='md-cart'
+            onPress={ () => props.navigation.navigate('Cart') }
+        />
+        <Item 
+            title='SearchButton'
+            iconName='md-search'
+            //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
+            onPress={() => props.navigation.navigate('Search')}
+        />
+        
+    </HeaderButtons>
     )
 }
 

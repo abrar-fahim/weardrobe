@@ -28,6 +28,8 @@ import SearchScreen from './SearchScreen'
 import DrawerButton from '../../components/DrawerButton'
 import FavoritesScreen from './FavoritesScreen';
 import ProductScreen from './ProductScreen';
+import GroupShoppingScreen from './GroupShoppingScreen'
+import ShopRightButtons from '../../components/ShopRightButtons';
 
 export default function ShopStackScreen({navigation}) {
     const ShopStack = createStackNavigator();
@@ -38,13 +40,10 @@ export default function ShopStackScreen({navigation}) {
             
         >
             <ShopStack.Screen name="ShopDrawer" component={ShopDrawer}
-            options={{
-                headerLeft: () => (
-                    <DrawerButton navigation={navigation}/>
-                ),
-                headerShown: false
-
-            }}/>
+                options={{
+                    headerShown: false
+                }}
+           />
             <ShopStack.Screen name="Checkout" component={CheckoutScreen}/>
             <ShopStack.Screen name="Cart" component={CartScreen}/>
             <ShopStack.Screen name="Search" component={SearchScreen} 
@@ -55,6 +54,8 @@ export default function ShopStackScreen({navigation}) {
             />
             <ShopStack.Screen name="Favorites" component={FavoritesScreen}/>
             <ShopStack.Screen name="Product" component={ProductScreen}/>
+            <ShopStack.Screen name="GroupShopping" component={GroupShoppingScreen}/>
+
         </ShopStack.Navigator>
     )
 }

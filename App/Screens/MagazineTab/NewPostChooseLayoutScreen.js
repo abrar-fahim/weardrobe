@@ -5,10 +5,11 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-export default function GroupScreen(props) {
+export default function NewPostChooseLayout(props) {
     return (
         <View>
-            <Text> Group Screen</Text>
+            <Text> Create Post</Text>
+            <Text> Choose Layout</Text>
         </View>
     )
 }
