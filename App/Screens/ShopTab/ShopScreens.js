@@ -80,10 +80,6 @@ function ShopScreen({navigation}) {
 
         <FlatList data={PRODUCTS} renderItem={renderGridItem} numColumns={2}  />
 
-
-
-                    
-            
         </View>
     );
 

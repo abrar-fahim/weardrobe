@@ -62,8 +62,7 @@ export default function HomeScreen() {
 
                 }
             >
-                <Tab.Screen name="Magazine" component={MagazineStackScreen} options={{
-                }}/>
+                <Tab.Screen name="Magazine" component={MagazineStackScreen} />
                 <Tab.Screen name="Studio" component={StudioStackScreen}/>
                 <Tab.Screen name="Shop" component={ShopStackScreen}/>
                 <Tab.Screen name="Chat" component={ChatStackScreen}/>

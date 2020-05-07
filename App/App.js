@@ -8,7 +8,7 @@ import {createStore, combineReducers} from 'redux';
 import { Provider } from 'react-redux'
 
 
-import HomeScreen from './Screens/HomeScreen';
+import HomeScreen from './Screens/MainTabScreen';
 import CartScreen from './Screens/ShopTab/CartScreen'
 import CheckoutScreen from './Screens/ShopTab/CheckoutScreen'
 import LoginScreen from './Screens/ProfileTab/LoginScreen'
@@ -20,6 +20,7 @@ import * as RootNavigation from './RootNavigation'
 
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo'
+
 
 
 
@@ -54,9 +55,9 @@ export default function App({ navigation }) {
         options={{
           title: "Fash-App",
           headerShown: false
-          
         }}
         />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

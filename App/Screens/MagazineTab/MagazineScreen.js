@@ -17,6 +17,7 @@ import NewPostScreen3 from './NewPostScreen3';
 import NewPostTagScreen from './NewPostTagScreen';
 import NewPostNextButton from '../../components/NewPostNextButton';
 import { ProfileTabsScreen } from '../ProfileTab/ProfileScreen';
+import GenericHeaderButton from '../../components/GenericHeaderButton';
 
 
 
@@ -60,10 +61,12 @@ export function MagazineScreen(props) {
     //console.log(props);
     return (
         <View>
+            
             <FlatList 
                 data={FEEDITEMS}
                 renderItem={renderFeedItem}
             />
+            
         </View>
     );
 
@@ -77,7 +80,7 @@ export default function MagazineStackScreen({navigation}) {
                 headerRight: () => (< NewPostButton onPress={() => navigation.navigate('NewPostChooseLayout')} />)
             }}/>
             <MagazineStack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options = {{
-                headerRight: () => (<NewPostNextButton onPress={() => navigation.navigate('NewPost2')} />)
+                headerRight: () => (<GenericHeaderButton title="newPost" iconName="md-create" onPress={() => navigation.navigate('NewPost2')} />)
             }}/>
             <MagazineStack.Screen name="NewPost2" component={NewPostScreen2} options = {{
                  headerRight: () => (<NewPostNextButton onPress={() => navigation.navigate('NewPost3')} />)

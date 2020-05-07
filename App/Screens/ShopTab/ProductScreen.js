@@ -39,7 +39,10 @@ export default function ProductScreen(props) {
                 <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: 200, backgroundColor: "#b19cd9", marginLeft: 100}}>
                     
                     <Text style={{fontSize: 25}}>Add to cart</Text>
-                    <MaterialIcons name="add-shopping-cart" size={25}/>
+                    <MaterialIcons name="add-shopping-cart" size={25} onPress={() => 
+                        
+                        props.navigation.popToTop()
+                }/>
                     
 
                 </View>

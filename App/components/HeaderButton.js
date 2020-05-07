@@ -10,5 +10,17 @@ export default function MyHeaderButton(props) {
         {...props} 
         IconComponent={Ionicons} 
         iconSize={23} 
-        color={ Platform.OS === 'android' ? 'purple' : Colors.primaryColor}/>;
+        color={ Platform.OS === 'android' ? 'purple' : Colors.primaryColor} />;
 }
+
+const hello = {
+    name: 'Somik',
+    roll: '1605076'
+}
+
+const hi = {
+    ...hello,
+    uni: 'BUET'
+
+}
+console.log(hi);

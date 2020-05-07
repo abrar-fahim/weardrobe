@@ -37,7 +37,7 @@ export default function ShopDrawer() {
                 labelStyle: {width: 100}
             }}
          >
-            <ShopDrawer.Screen  name="Shop" component={ShopStack} title="Shop" />
+            <ShopDrawer.Screen  name="Shop" component={ShopStack} />
             <ShopDrawer.Screen name="Categories" component={CategoriesStack} />
             <ShopDrawer.Screen name="Deals" component={DealsStack} />
             <ShopDrawer.Screen name="MyShops" component={MyShopsStack} />
