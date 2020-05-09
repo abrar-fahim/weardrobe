@@ -8,6 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SearchBar, Overlay } from 'react-native-elements';
 
 import BackButton from '../../components/BackButton'
+import ScreenStyle from '../../Styles/ScreenStyle';
 
 
 export default function SearchScreen(props) {
@@ -22,7 +23,7 @@ export default function SearchScreen(props) {
     //         })
     //     })
     return (
-        <View style={{flexDirection: 'column', marginTop: 30}}>
+        <View style={{flexDirection: 'column', marginTop: 30, ...ScreenStyle}}>
             <View style={{flexDirection: 'row'}}>
                 <BackButton navigation={props.navigation}/>
                 <SearchBar placeholder="Search..." lightTheme={true} containerStyle={{flex: 1}} platform={Platform.OS}/>

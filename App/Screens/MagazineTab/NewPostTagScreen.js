@@ -7,7 +7,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 export default function NewPostTagScreen(props) {
     return (
-        <View>
+        <View style={ScreenStyle}>
             <Text> Create Post</Text>
             <Text> Tag something</Text>
         </View>

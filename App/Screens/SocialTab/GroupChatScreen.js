@@ -7,6 +7,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ShoppingSessionsListScreen from './ShoppingSessionsListScreen';
+import ScreenStyle from '../../Styles/ScreenStyle';
 
 export default function GroupTabScreen(props) {
     const TopTab = createMaterialTopTabNavigator();
@@ -21,7 +22,7 @@ export default function GroupTabScreen(props) {
 
  export function GroupChatScreen(props) {
     return (
-        <View>
+        <View style={ScreenStyle}>
             <Text> Group Chat Screen</Text>
         </View>
     )

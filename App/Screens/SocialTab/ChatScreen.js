@@ -29,6 +29,7 @@ import ShoppingSessionScreen from './ShoppingSessionScreen';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import NewShoppingSessionScreen from './NewShoppingSessionScreen';
 import HeaderOptions from '../../Styles/HeaderOptions';
+import ScreenStyle from '../../Styles/ScreenStyle';
 
 
 
@@ -54,7 +55,7 @@ function renderChatItem(itemData) {
 export function ChatScreen(props) {
     
     return (
-        <View>
+        <View style={ScreenStyle}>
             <SearchBar placeholder="Search..." lightTheme={true} containerStyle={{height: 55}} platform={Platform.OS}/>
 
             <FlatList 

@@ -20,6 +20,7 @@ import { ProfileTabsScreen } from '../ProfileTab/ProfileScreen';
 import GenericHeaderButton from '../../components/GenericHeaderButton';
 import Colors from '../../Styles/Colors'
 import HeaderOptions from '../../Styles/HeaderOptions'
+import ScreenStyle from '../../Styles/ScreenStyle';
 
 
 
@@ -62,7 +63,7 @@ export function MagazineScreen(props) {
     }
     //console.log(props);
     return (
-        <View>
+        <View style={ScreenStyle}>
             
             <FlatList 
                 data={FEEDITEMS}

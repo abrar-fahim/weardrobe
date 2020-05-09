@@ -10,6 +10,7 @@ import ProductList from '../../components/ProductList';
 import { PRODUCTS } from '../../dummy-data/Products';
 
 import renderProductGridItem from '../../components/RenderProductGridItem'
+import ScreenStyle from '../../Styles/ScreenStyle';
 
 
 
@@ -28,7 +29,7 @@ export default function SellerScreen(props) {
         })
     })
     return (
-        <View>
+        <View style={ScreenStyle}>
 
             <ScrollView>
 

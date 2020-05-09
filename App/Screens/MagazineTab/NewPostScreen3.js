@@ -7,7 +7,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 export default function NewPostScreen3(props) {
     return (
-        <View>
+        <View style={ScreenStyle}>
             <Text> Create Post</Text>
             <Text> Screen 3</Text>
             <Button title="tag something" onPress={() => {props.navigation.navigate('NewPostTag')}}/>

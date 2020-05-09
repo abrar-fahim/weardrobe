@@ -21,6 +21,7 @@ import ShopRightButtons from '../../components/ShopRightButtons';
 
 import SellerScreen from './SellerScreen'
 import DrawerStack from './DrawerStack';
+import ScreenStyle from '../../Styles/ScreenStyle';
 
 
 export default function MyShopsStack( {navigation} ) {
@@ -48,7 +49,7 @@ function MyShopsScreen({navigation}) {
     }
     
     return (
-        <View>
+        <View style={ScreenStyle}>
         
         <Text> Shop Screen</Text>
 

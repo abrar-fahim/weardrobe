@@ -6,6 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import ScreenStyle from '../../Styles/ScreenStyle'
 
 const ITEMSBOUGHT = [
     {
@@ -40,7 +41,7 @@ export default function ShoppingSessionScreen(props) {
         )
     }
     return (
-        <View>
+        <View style={ScreenStyle}>
             <Text> Shopping Sessions Screen</Text>
             <FlatList data={ITEMSBOUGHT} renderItem={renderItems}/>
         </View>

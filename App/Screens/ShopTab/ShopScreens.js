@@ -32,7 +32,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import GroupShopRightButtons from '../../components/GroupShopRightButtons';
 import DrawerStack from './DrawerStack';
 import ProductList from '../../components/ProductList';
-
+import ScreenStyle from '../../Styles/ScreenStyle'
 
 
 
@@ -55,9 +55,7 @@ function ShopScreen({navigation}) {
     // })
     
     return (
-        <View style={{
-            backgroundColor: '#dcedc1'
-        }}>
+        <View style={ScreenStyle}>
         <ProductList data={PRODUCTS} navigation={navigation}/>
 
         </View>

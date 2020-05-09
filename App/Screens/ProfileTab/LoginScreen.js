@@ -7,12 +7,16 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
 import SignupScreen from './SignupScreen'
+import ScreenStyle from '../../Styles/ScreenStyle'
 
 
 export default function LoginScreen({navigation}) {
     const [value, setValue] = useState(0);
   return (
-    <View style={styles.container}>
+    <View style={{
+        ...styles.container,
+        ...ScreenStyle
+      }}>
       
       <View>
       <Text style={styles.formLabel}> Login Form </Text>

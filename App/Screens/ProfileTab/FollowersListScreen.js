@@ -5,6 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import ScreenStyle from '../../Styles/ScreenStyle';
 
 function FollowersListScreen({navigation}) {
     return (
@@ -17,7 +18,7 @@ function FollowersListScreen({navigation}) {
 
 function FollowingListScreen({navigation}) {
     return (
-        <View>
+        <View style={ScreenStyle}>
             <Text> Following</Text>
         </View>
     )

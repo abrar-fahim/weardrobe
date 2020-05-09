@@ -11,7 +11,7 @@ import HeaderOptions from '../../Styles/HeaderOptions';
 export function NotificationsScreen(props) {
     //console.log(props);
     return (
-        <View>
+        <View style={ScreenStyle}>
             <Text> Notifications Screen</Text>
             <Button onPress={ () => {} } title="Button"/>
         </View>

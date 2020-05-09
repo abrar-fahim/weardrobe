@@ -7,11 +7,12 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { SearchBar, Overlay, CheckBox } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
+import ScreenStyle from '../../Styles/ScreenStyle';
 
 
 export default function NewShoppingSessionScreen(props) {
     return (
-        <View>
+        <View style={ScreenStyle}>
             <TextInput placeholder="Enter shopping session name"/>
             <Text> New Shopping Session</Text>
 

@@ -9,7 +9,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 export default function BlogScreen(props) {
     return (
-        <View>
+        <View style={ScreenStyle}>
             <Text> Blog Screen</Text>
 
         </View>

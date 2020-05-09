@@ -20,6 +20,7 @@ import { SHOPS } from '../../dummy-data/Sellers'
 import DrawerButton from '../../components/DrawerButton'
 import ShopRightButtons from '../../components/ShopRightButtons';
 import DrawerStack from './DrawerStack';
+import ScreenStyle from '../../Styles/ScreenStyle';
 
 export default function CategoriesStack({ navigation }) {
     return (
@@ -30,7 +31,7 @@ export default function CategoriesStack({ navigation }) {
 
 function CategoriesScreen(props) {
     return (
-        <View style={styles.screen}>
+        <View style={ScreenStyle}>
             <Header title="Categories"/>
             <Text> Categories Screen</Text>
         </View>

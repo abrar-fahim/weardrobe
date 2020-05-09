@@ -7,7 +7,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 export default function NewPostScreen2(props) {
     return (
-        <View>
+        <View style={ScreenStyle}>
             <Text> Create Post</Text>
             <Text> Screen 2</Text>
         </View>

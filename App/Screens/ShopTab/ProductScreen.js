@@ -9,6 +9,7 @@ import { PRODUCTS  } from '../../dummy-data/Products'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import ScreenStyle from '../../Styles/ScreenStyle';
 
 export default function ProductScreen(props) {
     const productId = props.route.params?.productId ?? 'default'
@@ -26,7 +27,7 @@ export default function ProductScreen(props) {
     //     })
     // })
     return (
-        <View>
+        <View style={ScreenStyle}>
             <Text style={{fontWeight: 'bold', fontSize: 35}} >{product.name}</Text>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
                 <Image source={product.picture} style={{height: 200, width: 200}}/>

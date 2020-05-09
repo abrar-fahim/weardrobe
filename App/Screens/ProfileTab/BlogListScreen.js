@@ -40,7 +40,7 @@ export default function BlogListScreen(props) {
         )
     }
     return (
-        <View>
+        <View style={ScreenStyle}>
             <Text> Blog Screen</Text>
             <Button onPress={ () => (props.navigation.navigate('CreateBlog1')) } title="Create New Blog Post"/>
             <FlatList data={BLOGS} renderItem={renderItems}/>

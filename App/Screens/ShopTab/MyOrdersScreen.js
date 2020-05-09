@@ -20,6 +20,8 @@ import DrawerButton from '../../components/DrawerButton';
 import ShopRightButtons from '../../components/ShopRightButtons';
 import DrawerStack from './DrawerStack';
 
+import ScreenStyle from '../../Styles/ScreenStyle'
+
 
 export default function MyOrdersStack( {navigation} ) {
    return (
@@ -29,7 +31,7 @@ export default function MyOrdersStack( {navigation} ) {
 
 function MyOrdersScreen() {
     return (
-        <View style={styles.screen}>
+        <View style={ScreenStyle}>
             <Text> MyOrders!!</Text>
         </View>
     )

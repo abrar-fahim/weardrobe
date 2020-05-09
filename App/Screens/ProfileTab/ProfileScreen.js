@@ -29,7 +29,7 @@ import HeaderOptions from '../../Styles/HeaderOptions';
 
 export function ProfileScreen(props) {
     return (
-        <View>
+        <View style={ScreenStyle}>
             <Text> Profile Screen</Text>
             
         </View>
@@ -41,7 +41,7 @@ export function ProfileTabsScreen({navigation}) {
     const TopTab = createMaterialTopTabNavigator();
 
     return(
-        <View style={{flex: 1}}>
+        <View style={{ ...ScreenStyle, flex: 1}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 150}}>
                 <View style={{flexDirection: 'column', marginLeft: 40, alignItems: 'center'}}>
                     <Image style={{height: 100, width: 100}}source={require('../../assets/Images/face.png') }/>

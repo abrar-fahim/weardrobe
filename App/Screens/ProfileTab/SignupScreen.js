@@ -4,12 +4,17 @@ import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView } from 're
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import ScreenStyle from '../../Styles/ScreenStyle';
 
 
 export default function SignupScreen() {
     const [value, setValue] = useState(0);
   return (
-    <View style={styles.container}>
+    <View style={{
+        ...styles.container,
+        ...ScreenStyle
+
+      }}>
       
       <View>
         <Text style={styles.formLabel}> Sign up Form </Text>

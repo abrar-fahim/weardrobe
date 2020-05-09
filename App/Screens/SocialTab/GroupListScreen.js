@@ -5,6 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import ScreenStyle from '../../Styles/ScreenStyle';
 
 const GROUPS = [
     {
@@ -46,7 +47,7 @@ export default function GroupListScreen(props) {
         )
     }
     return (
-        <View>
+        <View style={ScreenStyle}>
             <Text> Group Screen</Text>
             <FlatList data={GROUPS} renderItem={renderItems}/>
         </View>
