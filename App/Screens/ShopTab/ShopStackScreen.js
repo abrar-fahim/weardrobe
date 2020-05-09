@@ -30,6 +30,7 @@ import FavoritesScreen from './FavoritesScreen';
 import ProductScreen from './ProductScreen';
 import GroupShoppingScreen from './GroupShoppingScreen'
 import ShopRightButtons from '../../components/ShopRightButtons';
+import SellerScreen from './SellerScreen';
 
 export default function ShopStackScreen({navigation}) {
     const ShopStack = createStackNavigator();
@@ -55,6 +56,7 @@ export default function ShopStackScreen({navigation}) {
             <ShopStack.Screen name="Favorites" component={FavoritesScreen}/>
             <ShopStack.Screen name="Product" component={ProductScreen}/>
             <ShopStack.Screen name="GroupShopping" component={GroupShoppingScreen}/>
+            <ShopStack.Screen name="Seller" component={SellerScreen}/>
 
         </ShopStack.Navigator>
     )

@@ -16,41 +16,32 @@ import { Drawer } from 'react-native-paper';
 import Header from '../../components/Header.js'
 
 import { SHOPS } from '../../dummy-data/Sellers'
-
-import DrawerButton from '../../components/DrawerButton'
+import DrawerButton from '../../components/DrawerButton';
 import ShopRightButtons from '../../components/ShopRightButtons';
-import DrawerStack from './DrawerStack';
 
-export default function CategoriesStack({ navigation }) {
+
+export default function DrawerStack(props) {
+    const DrawerStack = createStackNavigator();
+
     return (
-        <DrawerStack name="Categories" navigation={navigation} component={CategoriesScreen}/>
+        <DrawerStack.Navigator
+            screenOptions={{
+                headerShown: true
+            }}
+        >
+            <DrawerStack.Screen name={props.name} component = {props.component} 
+                options={{
+                    headerRight: () => (
+                        <ShopRightButtons navigation={props.navigation}/>
+                        ),
+                     headerLeft: () => (
+                         <DrawerButton navigation={props.navigation} />
+                    )
+                    
+            }}
+            />
+        </DrawerStack.Navigator>
     )
-
 }
 
-function CategoriesScreen(props) {
-    return (
-        <View style={styles.screen}>
-            <Header title="Categories"/>
-            <Text> Categories Screen</Text>
-        </View>
-    )
-}
 
-
-const styles = StyleSheet.create({
-    screen: {
-        flex: 1  //ensures that this view takes all space it can get
-    },
-
-    gridItem: {
-        flex: 1,
-        margin: 15,
-        height: 150
-    },
-    bottom: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        marginBottom: 36
-    }
-})

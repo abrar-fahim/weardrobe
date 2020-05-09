@@ -18,29 +18,12 @@ import Header from '../../components/Header.js'
 import { SHOPS } from '../../dummy-data/Sellers'
 import DrawerButton from '../../components/DrawerButton';
 import ShopRightButtons from '../../components/ShopRightButtons';
+import DrawerStack from './DrawerStack';
 
 
 export default function DealsStack( {navigation} ) {
-    const DealsStack = createStackNavigator();
-
     return (
-        <DealsStack.Navigator
-            screenOptions={{
-                headerShown: true
-            }}
-        >
-            <DealsStack.Screen name="DealsScreen" component = {DealsScreen} 
-                options={{
-                    headerRight: () => (
-                        <ShopRightButtons navigation={navigation}/>
-                        ),
-                     headerLeft: () => (
-                         <DrawerButton navigation={navigation} />
-                    )
-                    
-            }}
-            />
-        </DealsStack.Navigator>
+        <DrawerStack name="Deals" navigation={navigation} component={DealsScreen}/>
     )
 }
 

@@ -23,6 +23,7 @@ import DealsStack from './DealsScreens'
 import CategoriesStack from './CategoriesScreens'
 import ShopStack from './ShopScreens'
 import MyShopsStack from './MyShopsScreen';
+import MyOrdersStack from './MyOrdersScreen';
 
 
 export default function ShopDrawer() {
@@ -41,6 +42,7 @@ export default function ShopDrawer() {
             <ShopDrawer.Screen name="Categories" component={CategoriesStack} />
             <ShopDrawer.Screen name="Deals" component={DealsStack} />
             <ShopDrawer.Screen name="MyShops" component={MyShopsStack} />
+            <ShopDrawer.Screen name="MyOrders" component={MyOrdersStack} />
             
         </ShopDrawer.Navigator>
         

@@ -30,6 +30,7 @@ import DrawerButton from '../../components/DrawerButton'
 import ShopRightButtons from '../../components/ShopRightButtons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import GroupShopRightButtons from '../../components/GroupShopRightButtons';
+import DrawerStack from './DrawerStack';
 
 
 
@@ -88,36 +89,8 @@ function ShopScreen({navigation}) {
 
 
 export default function ShopStack(props) {
-    const ShopStack = createStackNavigator();
-    
     return (
-    
-        <ShopStack.Navigator
-            screenOptions={{
-                headerShown: true
-            }}
-        >
-            <ShopStack.Screen 
-                name="ShopScreen" 
-                component={ShopScreen} 
-                options = {
-                ({navigation, route}) => ({
-                    headerLeft: () => (
-                        <DrawerButton navigation={navigation}/>
-                    ),
-                    headerRight: () => (
-                        <ShopRightButtons navigation={navigation}/>
-                    )
-                        
-                
-            
-                })
-            }
-
-          />
-
-        </ShopStack.Navigator>
-
+        <DrawerStack name="Shop" navigation={props.navigation} component={ShopScreen}/>
     )
 }
 
