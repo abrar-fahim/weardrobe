@@ -86,8 +86,9 @@ export default function ChatStackScreen({navigation}) {
         <ChatStack.Navigator
             screenOptions={HeaderOptions}
         >
-            <ChatStack.Screen name="ChatScreen" component={ChatTabs} options = {{
-                headerRight: () => (<NewPostButton onPress={ () => navigation.navigate('NewChat') }/>)
+            <ChatStack.Screen name="Groups" component={GroupListScreen} options = {{
+                headerRight: () => (<NewPostButton onPress={ () => navigation.navigate('NewChat') }/>),
+                title: "Chats"
                 
             }}/>
 

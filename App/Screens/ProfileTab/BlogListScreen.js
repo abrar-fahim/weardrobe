@@ -6,6 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
+import ScreenStyle from '../../Styles/ScreenStyle'
 
 const BLOGS=[
     {

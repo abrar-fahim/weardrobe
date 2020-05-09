@@ -53,7 +53,8 @@ export default function ShopStackScreen({navigation}) {
             <ShopStack.Screen name="Search" component={SearchScreen} 
                 options={{
                     headerShown: false,
-                    headerTitle: 'asdasd'
+                    headerTitle: 'asdasd',
+                    animationEnabled: false
                     
                 }}
             />

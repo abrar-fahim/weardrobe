@@ -59,7 +59,13 @@ export function ProfileTabsScreen({navigation}) {
                 </TouchableOpacity>
                 
             </View>
-            <TopTab.Navigator>
+            <TopTab.Navigator
+                tabBarOptions={{
+                    indicatorStyle: {
+                        backgroundColor: 'green'
+                    }
+                }}
+            >
                 <TopTab.Screen name="ProfileStack" component={ProfileScreen} />
                 <TopTab.Screen name="BlogListScreen" component={BlogListScreen} />
             </TopTab.Navigator>
