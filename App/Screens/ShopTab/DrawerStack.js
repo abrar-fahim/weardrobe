@@ -26,8 +26,15 @@ export default function DrawerStack(props) {
     return (
         <DrawerStack.Navigator
             screenOptions={{
-                headerShown: true
+                headerShown: true,
+                headerTintColor: 'purple',
+                headerStyle:{
+                    backgroundColor: 'white',
+                    
+                }
             }}
+            
+
         >
             <DrawerStack.Screen name={props.name} component = {props.component} 
                 options={{
@@ -36,7 +43,8 @@ export default function DrawerStack(props) {
                         ),
                      headerLeft: () => (
                          <DrawerButton navigation={props.navigation} />
-                    )
+                    ),
+                    title: props.title??props.name
                     
             }}
             />

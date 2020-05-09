@@ -76,8 +76,11 @@ function ShopScreen({navigation}) {
         <View>
 
         <SearchOverlay isVisible={visible} toggleOverlay={toggleOverlay}/>
-        
+        <View>
         <Text> Shop Screen</Text>
+        </View>
+        
+        
 
         <FlatList data={PRODUCTS} renderItem={renderGridItem} numColumns={2}  />
 
@@ -90,7 +93,7 @@ function ShopScreen({navigation}) {
 
 export default function ShopStack(props) {
     return (
-        <DrawerStack name="Shop" navigation={props.navigation} component={ShopScreen}/>
+        <DrawerStack name="Shop" navigation={props.navigation} component={ShopScreen} title="Shop"/>
     )
 }
 

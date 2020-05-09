@@ -37,12 +37,20 @@ export default function ShopDrawer() {
                 itemStyle: {marginRight: 20},
                 labelStyle: {width: 100}
             }}
+            
          >
-            <ShopDrawer.Screen  name="Shop" component={ShopStack} />
+            <ShopDrawer.Screen  name="Shop" component={ShopStack} options={{
+                title: 'Shop'
+                
+            }} />
             <ShopDrawer.Screen name="Categories" component={CategoriesStack} />
             <ShopDrawer.Screen name="Deals" component={DealsStack} />
-            <ShopDrawer.Screen name="MyShops" component={MyShopsStack} />
-            <ShopDrawer.Screen name="MyOrders" component={MyOrdersStack} />
+            <ShopDrawer.Screen name="MyShops" component={MyShopsStack} options={{
+                title: 'My Shops'
+            }} />
+            <ShopDrawer.Screen name="MyOrders" component={MyOrdersStack} options={{
+                title: 'My Orders'
+            }} />
             
         </ShopDrawer.Navigator>
         

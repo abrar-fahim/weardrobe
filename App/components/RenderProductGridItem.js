@@ -5,34 +5,30 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 import {HeaderButtons, Item } from 'react-navigation-header-buttons';
-import HeaderButton from '../../components/HeaderButton';
 
 import { SearchBar, Overlay } from 'react-native-elements';
 import { Drawer } from 'react-native-paper';
 
-import Header from '../../components/Header.js'
 
-import { SHOPS } from '../../dummy-data/Sellers'
-import DrawerButton from '../../components/DrawerButton';
-import ShopRightButtons from '../../components/ShopRightButtons';
-import DrawerStack from './DrawerStack';
-
-
-export default function MyOrdersStack( {navigation} ) {
-   return (
-       <DrawerStack name="MyOrders" navigation={navigation} component={MyOrdersScreen} title="My Orders"/>
-   )
-}
-
-function MyOrdersScreen() {
+const renderProductGridItem = (itemData) => {
     return (
-        <View style={styles.screen}>
-            <Text> MyOrders!!</Text>
+        <View style={styles.gridItem}>
+            <TouchableOpacity onPress={ () => (props.navigation.navigate("Product", {
+                 productId: itemData.item.id,
+            }))}>
+                
+                <Image source={itemData.item.picture} style={{height: 120, width: 120, justifyContent: 'center', alignItems: 'center'}}/>
+                <Text> {itemData.item.name}</Text>
+                <Text> {itemData.item.price + "/-"}</Text>
+                <Text> {"From " + itemData.item.shopname} </Text>
+            </TouchableOpacity>
         </View>
     )
+
 }
 
 
@@ -45,7 +41,8 @@ const styles = StyleSheet.create({
     gridItem: {
         flex: 1,
         margin: 15,
-        height: 150
+        height: 150,
+        width: 150
     },
     bottom: {
         flex: 1,
@@ -54,3 +51,4 @@ const styles = StyleSheet.create({
     }
 })
 
+export default renderProductGridItem;

@@ -35,14 +35,21 @@ export default function ProductScreen(props) {
             <Text>{"Price: "  + product.price}</Text>
             <Text> {product.description} </Text>
 
-            <TouchableOpacity>
-                <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: 200, backgroundColor: "#b19cd9", marginLeft: 100}}>
+            <TouchableOpacity onPress={() => props.navigation.goBack()}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: 250, backgroundColor: "#b19cd9", marginLeft: 75}}>
                     
                     <Text style={{fontSize: 25}}>Add to cart</Text>
-                    <MaterialIcons name="add-shopping-cart" size={25} onPress={() => 
-                        
-                        props.navigation.popToTop()
-                }/>
+                    <MaterialIcons name="add-shopping-cart" size={25} />
+                    
+
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => props.navigation.goBack()}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: 250, backgroundColor: "#b19cd9", marginLeft: 75, marginTop: 20}}>
+                    
+                    <Text style={{fontSize: 25}}>Add to WishList</Text>
+                    <MaterialIcons name="star" size={25}/>
                     
 
                 </View>

@@ -38,6 +38,15 @@ export default function ShopStackScreen({navigation}) {
 
     return (
         <ShopStack.Navigator
+        
+            screenOptions={{
+                headerTintColor: 'purple',
+                headerStyle:{
+                    backgroundColor: 'white',
+                    
+                }
+                
+            }}
             
         >
             <ShopStack.Screen name="ShopDrawer" component={ShopDrawer}
@@ -49,7 +58,8 @@ export default function ShopStackScreen({navigation}) {
             <ShopStack.Screen name="Cart" component={CartScreen}/>
             <ShopStack.Screen name="Search" component={SearchScreen} 
                 options={{
-                    headerShown: false
+                    headerShown: false,
+                    headerTitle: 'asdasd'
                     
                 }}
             />

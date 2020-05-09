@@ -1,30 +1,52 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
+import React, { useEffect, useLayoutEffect } from 'react';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, ScrollView } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { SELLERS  } from '../../dummy-data/Sellers'
+import ProductList from '../../components/ProductList';
+import { PRODUCTS } from '../../dummy-data/Products';
+
+import renderProductGridItem from '../../components/RenderProductGridItem'
+
+
 
 export default function SellerScreen(props) {
     const sellerId = props.route.params?.sellerId ?? 'default'
 
     const selectedSeller = SELLERS.find(seller => seller.id === sellerId)
+    const image = selectedSeller.picture
+    const description = selectedSeller.description
 
-    // useLayoutEffect(() => {
-    //     navigation.setOptions({
-    //         headerLeft: () => {
-    //             return(
-    //                 <DrawerButton navigation={navigation}/>
-    //             )
-    //         }
-    //     })
-    // })
+    
+
+    useLayoutEffect(() => {
+        props.navigation.setOptions({
+           headerTitle: selectedSeller.name
+        })
+    })
     return (
         <View>
-            <Text> Seller Screen</Text>
-            <Text>{selectedSeller.name}</Text>
+
+            <ScrollView>
+
+            <View style={{
+                alignItems: 'center'
+            }}>
+                <Image source={image} style={{height: 200, width: 200}}/>
+                <Text>{description}</Text>
+            </View>
+
+            <ProductList data={PRODUCTS} navigation={props.navigation}/>
+
+            </ScrollView>
+            
+
+            
+                
         </View>
+        
     )
 }
