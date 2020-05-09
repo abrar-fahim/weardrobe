@@ -28,6 +28,7 @@ import ShoppingSessionScreen from './ShoppingSessionScreen';
 
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import NewShoppingSessionScreen from './NewShoppingSessionScreen';
+import HeaderOptions from '../../Styles/HeaderOptions';
 
 
 
@@ -81,7 +82,9 @@ function ChatTabs() {
 export default function ChatStackScreen({navigation}) {
     const ChatStack = createStackNavigator();
     return (
-        <ChatStack.Navigator>
+        <ChatStack.Navigator
+            screenOptions={HeaderOptions}
+        >
             <ChatStack.Screen name="ChatScreen" component={ChatTabs} options = {{
                 headerRight: () => (<NewPostButton onPress={ () => navigation.navigate('NewChat') }/>)
                 

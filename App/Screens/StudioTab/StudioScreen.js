@@ -5,6 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import HeaderOptions from '../../Styles/HeaderOptions';
 
 
 function StudioScreen() {
@@ -19,7 +20,9 @@ function StudioScreen() {
 export default function StudioStackScreen() {
     const StudioStack = createStackNavigator();
     return (
-        <StudioStack.Navigator>
+        <StudioStack.Navigator
+            screenOptions={HeaderOptions}
+        >
             <StudioStack.Screen name="StudioScreen" component={StudioScreen} options = {{}}/>
         </StudioStack.Navigator>
         

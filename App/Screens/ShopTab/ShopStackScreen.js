@@ -31,6 +31,7 @@ import ProductScreen from './ProductScreen';
 import GroupShoppingScreen from './GroupShoppingScreen'
 import ShopRightButtons from '../../components/ShopRightButtons';
 import SellerScreen from './SellerScreen';
+import HeaderOptions from '../../Styles/HeaderOptions';
 
 export default function ShopStackScreen({navigation}) {
     const ShopStack = createStackNavigator();
@@ -39,14 +40,7 @@ export default function ShopStackScreen({navigation}) {
     return (
         <ShopStack.Navigator
         
-            screenOptions={{
-                headerTintColor: 'purple',
-                headerStyle:{
-                    backgroundColor: 'white',
-                    
-                }
-                
-            }}
+            screenOptions={HeaderOptions}
             
         >
             <ShopStack.Screen name="ShopDrawer" component={ShopDrawer}

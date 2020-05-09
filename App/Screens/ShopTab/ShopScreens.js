@@ -55,7 +55,9 @@ function ShopScreen({navigation}) {
     // })
     
     return (
-        <View>
+        <View style={{
+            backgroundColor: '#dcedc1'
+        }}>
         <ProductList data={PRODUCTS} navigation={navigation}/>
 
         </View>

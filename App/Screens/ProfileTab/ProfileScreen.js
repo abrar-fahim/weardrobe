@@ -22,6 +22,7 @@ import CreateBlogScreen1 from './CreateBlogScreen1';
 import CreateBlogScreen2 from './CreateBlogScreen2';
 import CreateBlogScreen3 from './CreateBlogScreen3';
 import BlogScreen from './BlogScreen';
+import HeaderOptions from '../../Styles/HeaderOptions';
 
 
 
@@ -75,7 +76,9 @@ export function ProfileTabsScreen({navigation}) {
 export default function ProfileStackScreen(props) {
     const ProfileStack = createStackNavigator();
     return (
-        <ProfileStack.Navigator>
+        <ProfileStack.Navigator
+            screenOptions={HeaderOptions}
+        >
             <ProfileStack.Screen name="ProfileScreen" component={ProfileTabsScreen} options = {{
                 headerRight: () => (
                     <GenericHeaderButton title="SettingButton" iconName="md-settings" onPress={() => props.navigation.navigate('ProfileSettings')} />

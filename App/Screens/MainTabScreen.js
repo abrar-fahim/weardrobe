@@ -21,12 +21,14 @@ import {ProfileTabsScreen} from './ProfileTab/ProfileScreen'
 
 import { Ionicons, Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
+import Colors from '../Styles/Colors'
+
 export default function HomeScreen() {
     const Tab = Platform.OS === 'android' ? createMaterialBottomTabNavigator(): createBottomTabNavigator();
     //const Tab = createMaterialTopTabNavigator();
     return (
             <Tab.Navigator 
-                tabBarOptions={{ activeTintColor: 'purple'}}
+                tabBarOptions={{ activeTintColor: Colors.tabBarActiveTintColor}}
                 screenOptions={
                     ({route}) => ({
                         tabBarIcon: ({focused, color, size}) => {
@@ -56,7 +58,9 @@ export default function HomeScreen() {
                             }
 
                             return <MaterialIcons name={iconName} size={25} color={color} />;
-                        }
+                        },
+                        tabBarColor: Colors.tabBarColor
+
 
                     })
 

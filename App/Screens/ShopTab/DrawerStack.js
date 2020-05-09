@@ -18,6 +18,7 @@ import Header from '../../components/Header.js'
 import { SHOPS } from '../../dummy-data/Sellers'
 import DrawerButton from '../../components/DrawerButton';
 import ShopRightButtons from '../../components/ShopRightButtons';
+import HeaderOptions from '../../Styles/HeaderOptions';
 
 
 export default function DrawerStack(props) {
@@ -27,11 +28,7 @@ export default function DrawerStack(props) {
         <DrawerStack.Navigator
             screenOptions={{
                 headerShown: true,
-                headerTintColor: 'purple',
-                headerStyle:{
-                    backgroundColor: 'white',
-                    
-                }
+                ...HeaderOptions
             }}
             
 

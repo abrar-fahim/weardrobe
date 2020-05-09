@@ -18,6 +18,8 @@ import NewPostTagScreen from './NewPostTagScreen';
 import NewPostNextButton from '../../components/NewPostNextButton';
 import { ProfileTabsScreen } from '../ProfileTab/ProfileScreen';
 import GenericHeaderButton from '../../components/GenericHeaderButton';
+import Colors from '../../Styles/Colors'
+import HeaderOptions from '../../Styles/HeaderOptions'
 
 
 
@@ -75,15 +77,21 @@ export function MagazineScreen(props) {
 export default function MagazineStackScreen({navigation}) {
     const MagazineStack = createStackNavigator();
     return (
-        <MagazineStack.Navigator>
+        <MagazineStack.Navigator
+            screenOptions={{
+                ...HeaderOptions
+            }}
+        >
             <MagazineStack.Screen name="Magazine" component={MagazineScreen} options = {{
+                
                 headerRight: () => (< NewPostButton onPress={() => navigation.navigate('NewPostChooseLayout')} />)
             }}/>
             <MagazineStack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options = {{
-                headerRight: () => (<GenericHeaderButton title="newPost" iconName="md-create" onPress={() => navigation.navigate('NewPost2')} />)
+                headerRight: () => (<GenericHeaderButton title="newPost" iconName="md-create" onPress={() => navigation.navigate('NewPost2')} />),    
             }}/>
             <MagazineStack.Screen name="NewPost2" component={NewPostScreen2} options = {{
-                 headerRight: () => (<NewPostNextButton onPress={() => navigation.navigate('NewPost3')} />)
+                 headerRight: () => (<NewPostNextButton onPress={() => navigation.navigate('NewPost3')} />),
+                 
             }}/>
             <MagazineStack.Screen name="NewPost3" component={NewPostScreen3} options = {{
                  headerRight: () => (<NewPostNextButton navigation={navigation} onPress={() => navigation.popToTop()} />)
