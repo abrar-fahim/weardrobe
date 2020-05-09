@@ -27,13 +27,17 @@ export default function ProductScreen(props) {
     // })
     return (
         <View>
-            <Text> Product Screen</Text>
-            <Text style={{fontWeight: 'bold', fontSize: 25}} >{product.name}</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 35}} >{product.name}</Text>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
                 <Image source={product.picture} style={{height: 200, width: 200}}/>
             </View>
-            <Text>{"Price: "  + product.price}</Text>
-            <Text> {product.description} </Text>
+            <Text style={{
+                textAlign: 'right',
+                fontSize: 30,
+                fontWeight: 'bold'
+
+            }}>{"Price: "  + product.price}</Text>
+            
 
             <TouchableOpacity onPress={() => props.navigation.goBack()}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: 250, backgroundColor: "#b19cd9", marginLeft: 75}}>
@@ -54,6 +58,10 @@ export default function ProductScreen(props) {
 
                 </View>
             </TouchableOpacity>
+
+            <Text style ={{
+                fontSize: 20,
+            }}> {product.description} </Text>
             
         </View>
     )

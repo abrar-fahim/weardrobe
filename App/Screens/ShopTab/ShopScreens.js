@@ -31,36 +31,18 @@ import ShopRightButtons from '../../components/ShopRightButtons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import GroupShopRightButtons from '../../components/GroupShopRightButtons';
 import DrawerStack from './DrawerStack';
+import ProductList from '../../components/ProductList';
 
 
 
 
 function ShopScreen({navigation}) {
 
+    // const [visible, setVisible] = useState(false);
 
-    const renderGridItem = (itemData) => {
-        return (
-            <View style={styles.gridItem}>
-                <TouchableOpacity onPress={ () => (navigation.navigate("Product", {
-                     productId: itemData.item.id,
-
-                }))}>
-                    
-                    <Image source={itemData.item.picture} style={{height: 120, width: 120, justifyContent: 'center', alignItems: 'center'}}/>
-                    <Text> {itemData.item.name}</Text>
-                    <Text> {itemData.item.price + "/-"}</Text>
-                    <Text> {"From " + itemData.item.shopname} </Text>
-                </TouchableOpacity>
-            </View>
-        )
-
-    }
-
-    const [visible, setVisible] = useState(false);
-
-    const  toggleOverlay = () => {
-        setVisible(!visible);
-    }
+    // const  toggleOverlay = () => {
+    //     setVisible(!visible);
+    // }
 
     // useLayoutEffect(() => {
     //     navigation.setOptions({
@@ -74,15 +56,7 @@ function ShopScreen({navigation}) {
     
     return (
         <View>
-
-        <SearchOverlay isVisible={visible} toggleOverlay={toggleOverlay}/>
-        <View>
-        <Text> Shop Screen</Text>
-        </View>
-        
-        
-
-        <FlatList data={PRODUCTS} renderItem={renderGridItem} numColumns={2}  />
+        <ProductList data={PRODUCTS} navigation={navigation}/>
 
         </View>
     );

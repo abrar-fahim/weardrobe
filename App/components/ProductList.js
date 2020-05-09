@@ -26,9 +26,10 @@ export default function ProductList(props) {
                 }))}>
                     
                     <Image source={itemData.item.picture} style={{height: 120, width: 120, justifyContent: 'center', alignItems: 'center'}}/>
-                    <Text> {itemData.item.name}</Text>
-                    <Text> {itemData.item.price + "/-"}</Text>
-                    <Text> {"From " + itemData.item.shopname} </Text>
+                    <Text style={styles.itemName}> {itemData.item.name}</Text>
+                    <Text style={styles.sellerName}> {"From " + itemData.item.shopname} </Text>
+                    <Text style={styles.price}> {"BDT " + itemData.item.price}</Text>
+                    
                 </TouchableOpacity>
             </View>
         )
@@ -60,5 +61,17 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         marginBottom: 36
+    },
+    itemName: {
+        fontSize: 15,
+        fontWeight: 'bold'
+    },
+    sellerName: {
+        fontSize: 12,
+        fontWeight: '100',
+    },
+    price: {
+        fontSize: 15,
+        
     }
 })

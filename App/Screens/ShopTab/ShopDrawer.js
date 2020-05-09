@@ -24,6 +24,7 @@ import CategoriesStack from './CategoriesScreens'
 import ShopStack from './ShopScreens'
 import MyShopsStack from './MyShopsScreen';
 import MyOrdersStack from './MyOrdersScreen';
+import ShopsListStack from './ShopsListScreen';
 
 
 export default function ShopDrawer() {
@@ -50,6 +51,9 @@ export default function ShopDrawer() {
             }} />
             <ShopDrawer.Screen name="MyOrders" component={MyOrdersStack} options={{
                 title: 'My Orders'
+            }} />
+            <ShopDrawer.Screen name="ShopsList" component={ShopsListStack} options={{
+                title: 'Browse Stores'
             }} />
             
         </ShopDrawer.Navigator>
