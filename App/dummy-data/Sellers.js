@@ -16,31 +16,31 @@ const SHOPS = [
 ]
 export const SELLERS = [
     {
-        id: 1,
+        id: '1',
         name: "YELLOW",
         picture: require('../assets/Images/seller.png'), 
         description: 'This is a simple shop'
     },
     {
-        id: 2,
+        id: '2',
         name: "Cats Eye",
         picture: require('../assets/Images/seller.png'), 
         description: 'This is a simple shop'
     },
     {
-        id: 3,
+        id: '3',
         name: "YELLOW",
         picture: require('../assets/Images/seller.png'), 
         description: 'This is a simple shop'
     },
     {
-        id: 4,
+        id: '4',
         name: "YELLOW",
         picture: require('../assets/Images/seller.png'), 
         description: 'This is a simple shop'
     },
     {
-        id: 5,
+        id: '5',
         name: "YELLOW",
         picture: require('../assets/Images/seller.png'), 
         description: 'This is a simple shop'

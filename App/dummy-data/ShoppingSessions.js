@@ -1,18 +1,18 @@
 const SHOPPINGSESSIONS = [
     {
-        id: 1, 
+        id: '1', 
         name: "Eid"
     },
     {
-        id: 2, 
+        id: '2', 
         name: "Eid"
     },
     {
-        id: 3, 
+        id: '3', 
         name: "Eid"
     },
     {
-        id: 4, 
+        id: '4', 
         name: "Eid"
     }
 ]
