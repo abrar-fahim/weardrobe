@@ -1,10 +1,10 @@
 {
-  "devToolsPort": 19003,
+  "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 61871,
-  "expoServerNgrokUrl": "https://8s-uci.anonymous.app.exp.direct",
-  "packagerNgrokUrl": "https://packager.8s-uci.anonymous.app.exp.direct",
-  "ngrokPid": 61881,
+  "packagerPid": 6927,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }
