@@ -48,13 +48,17 @@ export default function App({ navigation }) {
   // }
 
   //return <HomeNavigator />;
+
+ let a = 5;
+ let b = 3;
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name = "Home" component = {HomeScreen} 
         options={{
           title: "Fash-App",
-          headerShown: false
+          headerShown: true
         }}
         />
 
