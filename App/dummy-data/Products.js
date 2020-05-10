@@ -41,7 +41,8 @@ export const PRODUCTS = [
         shopname: 'YELLOW',
         picture: require('../assets/Images/shirt.png'),
         price: 500,
-        rating: 5
+        rating: 5,
+        description: "This is a nice shirt, ples buy"
 
     },
     {
@@ -50,7 +51,8 @@ export const PRODUCTS = [
         shopname: 'YELLOW',
         picture: require('../assets/Images/shirt.png'),
         price: 500,
-        rating: 4
+        rating: 4,
+        description: "This is a nice shirt, ples buy"
 
     },
     {
@@ -59,7 +61,8 @@ export const PRODUCTS = [
         shopname: 'YELLOW',
         picture: require('../assets/Images/shirt.png'),
         price: 500,
-        rating: 2
+        rating: 2,
+        description: "This is a nice shirt, ples buy"
 
     },
     {
@@ -68,7 +71,8 @@ export const PRODUCTS = [
         shopname: 'YELLOW',
         picture: require('../assets/Images/shirt.png'),
         price: 500,
-        rating: 4.5
+        rating: 4.5,
+        description: "This is a nice shirt, ples buy"
 
     },
     {
@@ -77,7 +81,8 @@ export const PRODUCTS = [
         shopname: 'YELLOW',
         picture: require('../assets/Images/shirt.png'),
         price: 500,
-        rating: 4.5
+        rating: 4.5,
+        description: "This is a nice shirt, ples buy"
 
     },
     {
@@ -86,7 +91,8 @@ export const PRODUCTS = [
         shopname: 'YELLOW',
         picture: require('../assets/Images/shirt.png'),
         price: 500,
-        rating: 4.5
+        rating: 4.5,
+        description: "This is a nice shirt, ples buy"
 
     },
     {
@@ -95,7 +101,8 @@ export const PRODUCTS = [
         shopname: 'YELLOW',
         picture: require('../assets/Images/shirt.png'),
         price: 500,
-        rating: 4.5
+        rating: 4.5,
+        description: "This is a nice shirt, ples buy"
 
     },
     {
@@ -104,7 +111,8 @@ export const PRODUCTS = [
         shopname: 'YELLOW',
         picture: require('../assets/Images/shirt.png'),
         price: 500,
-        rating: 4.5
+        rating: 4.5,
+        description: "This is a nice shirt, ples buy"
 
     },
     {
@@ -113,7 +121,8 @@ export const PRODUCTS = [
         shopname: 'YELLOW',
         picture: require('../assets/Images/shirt.png'),
         price: 500,
-        rating: 4.5
+        rating: 4.5,
+        description: "This is a nice shirt, ples buy"
 
     },
     {
@@ -122,7 +131,8 @@ export const PRODUCTS = [
         shopname: 'YELLOW',
         picture: require('../assets/Images/shirt.png'),
         price: 500,
-        rating: 4.5
+        rating: 4.5,
+        description: "This is a nice shirt, ples buy"
 
     },
     {
@@ -131,7 +141,8 @@ export const PRODUCTS = [
         shopname: 'YELLOW',
         picture: require('../assets/Images/shirt.png'),
         price: 500,
-        rating: 4.5
+        rating: 4.5,
+        description: "This is a nice shirt, ples buy"
 
     }
 ]
