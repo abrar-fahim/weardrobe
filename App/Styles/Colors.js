@@ -2,10 +2,10 @@ const Colors = {
   primaryColor: '#4a148c',
   accentColor: '#ffaaa5',
   textColor: 'black',
-  screenBackgroundColor: 'white',
+  screenBackgroundColor: 'pink',
   tabBarActiveTintColor: 'purple',
-  tabBarColor: 'pink',
-  headerColor: 'violet',
+  tabBarColor: 'green',
+  headerColor: 'blue',
   headerFontColor: 'black'
 };
 export default Colors
