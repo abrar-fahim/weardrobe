@@ -12,6 +12,8 @@ import {HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { SearchBar, Overlay } from 'react-native-elements';
 import { Drawer } from 'react-native-paper';
+import RatingStars from './RatingStars';
+import { Ionicons } from '@expo/vector-icons';
 
 
 export default function ProductList(props) {
@@ -29,6 +31,8 @@ export default function ProductList(props) {
                     <Text style={styles.itemName}> {itemData.item.name}</Text>
                     <Text style={styles.sellerName}> {"From " + itemData.item.shopname} </Text>
                     <Text style={styles.price}> {"BDT " + itemData.item.price}</Text>
+
+                    <RatingStars rating={itemData.item.rating}/>
                     
                 </TouchableOpacity>
             </View>
@@ -53,8 +57,8 @@ const styles = StyleSheet.create({
 
     gridItem: {
         flex: 1,
-        margin: 15,
-        height: 150,
+        margin: 20,
+        height: 200,
         width: 150
     },
     bottom: {

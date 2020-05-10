@@ -20,7 +20,7 @@ class Product {
 }
 
 
-export const PRODUCTS = [
+export const PRODUCTS2 = [
     new Product('1', "Shirt", 'YELLOW', 500, require('../assets/Images/shirt.png'), "This is a nice shirt, ples buy", 4.5, "purple", "XL", "5-5-2020", 0, "Shirts", 200, "AX50S" ),
     new Product('2', "Shirt", 'YELLOW', 500, require('../assets/Images/shirt.png'), "This is a nice shirt, ples buy", 4.5, "purple", "XL", "5-5-2020", 0, "Shirts", 200, "AX50S" ),
     new Product('3', "Shirt", 'YELLOW', 500, require('../assets/Images/shirt.png'), "This is a nice shirt, ples buy", 4.5, "purple", "XL", "5-5-2020", 0, "Shirts", 200, "AX50S" ),
@@ -31,7 +31,107 @@ export const PRODUCTS = [
     new Product('8', "Shirt", 'YELLOW', 500, require('../assets/Images/shirt.png'), "This is a nice shirt, ples buy", 4.5, "purple", "XL", "5-5-2020", 0, "Shirts", 200, "AX50S" ),
     new Product('9', "Shirt", 'YELLOW', 500, require('../assets/Images/shirt.png'), "This is a nice shirt, ples buy", 4.5, "purple", "XL", "5-5-2020", 0, "Shirts", 200, "AX50S" ),
     new Product('10' , "Shirt", 'YELLOW', 500, require('../assets/Images/shirt.png'), "This is a nice shirt, ples buy", 4.5, "purple", "XL", "5-5-2020", 0, "Shirts", 200, "AX50S" ),
- 
+]
 
-   
+
+export const PRODUCTS = [
+    {
+        id: '1',
+        name: 'Shirt',
+        shopname: 'YELLOW',
+        picture: require('../assets/Images/shirt.png'),
+        price: 500,
+        rating: 5
+
+    },
+    {
+        id: '2',
+        name: 'Shirt',
+        shopname: 'YELLOW',
+        picture: require('../assets/Images/shirt.png'),
+        price: 500,
+        rating: 4
+
+    },
+    {
+        id: '3',
+        name: 'Shirt',
+        shopname: 'YELLOW',
+        picture: require('../assets/Images/shirt.png'),
+        price: 500,
+        rating: 2
+
+    },
+    {
+        id: '4',
+        name: 'Shirt',
+        shopname: 'YELLOW',
+        picture: require('../assets/Images/shirt.png'),
+        price: 500,
+        rating: 4.5
+
+    },
+    {
+        id: '5',
+        name: 'Shirt',
+        shopname: 'YELLOW',
+        picture: require('../assets/Images/shirt.png'),
+        price: 500,
+        rating: 4.5
+
+    },
+    {
+        id: '6',
+        name: 'Shirt',
+        shopname: 'YELLOW',
+        picture: require('../assets/Images/shirt.png'),
+        price: 500,
+        rating: 4.5
+
+    },
+    {
+        id: '7',
+        name: 'Shirt',
+        shopname: 'YELLOW',
+        picture: require('../assets/Images/shirt.png'),
+        price: 500,
+        rating: 4.5
+
+    },
+    {
+        id: '8',
+        name: 'Shirt',
+        shopname: 'YELLOW',
+        picture: require('../assets/Images/shirt.png'),
+        price: 500,
+        rating: 4.5
+
+    },
+    {
+        id: '9',
+        name: 'Shirt',
+        shopname: 'YELLOW',
+        picture: require('../assets/Images/shirt.png'),
+        price: 500,
+        rating: 4.5
+
+    },
+    {
+        id: '10',
+        name: 'Shirt',
+        shopname: 'YELLOW',
+        picture: require('../assets/Images/shirt.png'),
+        price: 500,
+        rating: 4.5
+
+    },
+    {
+        id: '11',
+        name: 'Shirt',
+        shopname: 'YELLOW',
+        picture: require('../assets/Images/shirt.png'),
+        price: 500,
+        rating: 4.5
+
+    }
 ]
