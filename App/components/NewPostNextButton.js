@@ -17,7 +17,6 @@ import Header from './Header.js'
 
 
 export default function NewPostNextButton(props) {
-    //console.log(props);
     return (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item 

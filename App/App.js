@@ -24,28 +24,28 @@ import { AppLoading } from 'expo'
 
 
 
-const fetchFonts = () =>  {
-  return Font.loadAsync({
-    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
-    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')
+// const fetchFonts = () =>  {
+//   return Font.loadAsync({
+//     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+//     'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')
 
-  })
-}
+//   })
+// }
 
 const Stack = createStackNavigator();
 
 export default function App({ navigation }) {
 
-  const [fontLoaded, setFontLoaded] = useState(false);
+  // const [fontLoaded, setFontLoaded] = useState(false);
 
-  if(!fontLoaded) {
-    return (
-      <AppLoading 
-        startAsync={fetchFonts}
-        onFinish={() => setFontLoaded(true) }
-      />
-    )
-  }
+  // if(!fontLoaded) {
+  //   return (
+  //     <AppLoading 
+  //       startAsync={fetchFonts}
+  //       onFinish={() => setFontLoaded(true) }
+  //     />
+  //   )
+  // }
 
   //return <HomeNavigator />;
   return (

@@ -17,7 +17,6 @@ import Header from './Header.js'
 
 
 export default function BackButton(props) {
-    //console.log(props);
     return (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item 

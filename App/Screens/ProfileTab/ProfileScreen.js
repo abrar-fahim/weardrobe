@@ -23,6 +23,7 @@ import CreateBlogScreen2 from './CreateBlogScreen2';
 import CreateBlogScreen3 from './CreateBlogScreen3';
 import BlogScreen from './BlogScreen';
 import HeaderOptions from '../../Styles/HeaderOptions';
+import ScreenStyle from '../../Styles/ScreenStyle'
 
 
 

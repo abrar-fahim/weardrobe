@@ -22,7 +22,6 @@ import CheckoutScreen from  './CheckoutScreen'
 import CartScreen from './CartScreen';
 import DealsStack from './DealsScreens'
 import CategoriesStack from './CategoriesScreens'
-import ShopDrawer from './ShopDrawer'
 
 import SearchOverlay from '../../components/SearchOverlay'
 

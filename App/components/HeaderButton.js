@@ -12,15 +12,3 @@ export default function MyHeaderButton(props) {
         iconSize={23} 
         color={ Platform.OS === 'android' ? 'black' : Colors.primaryColor} />;
 }
-
-const hello = {
-    name: 'Somik',
-    roll: '1605076'
-}
-
-const hi = {
-    ...hello,
-    uni: 'BUET'
-
-}
-console.log(hi);

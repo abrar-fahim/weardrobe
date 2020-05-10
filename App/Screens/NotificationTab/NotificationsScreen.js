@@ -6,10 +6,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import HeaderOptions from '../../Styles/HeaderOptions';
+import ScreenStyle from '../../Styles/ScreenStyle'
 
 
 export function NotificationsScreen(props) {
-    //console.log(props);
     return (
         <View style={ScreenStyle}>
             <Text> Notifications Screen</Text>

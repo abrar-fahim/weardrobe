@@ -9,28 +9,7 @@ import { SearchBar, Overlay, CheckBox } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 import ScreenStyle from '../../Styles/ScreenStyle';
 
-const PEOPLE = [
-    {
-        id: 1,
-        name: "Abrar F"
-    },
-    {
-        id: 2,
-        name: "Nefez"
-    },
-    {
-        id: 3,
-        name: "SSSomik"
-    },
-    {
-        id: 4,
-        name: "Soyyod"
-    },
-    {
-        id: 5,
-        name: "Tosin"
-    }
-]
+import {USERS}from '../../dummy-data/users'
 
 function renderItems(itemData) {
 
@@ -54,7 +33,7 @@ export default function NewChatScreen(props) {
                 <Button title="Create Chat" onPress={ () => props.navigation.popToTop() }/>
             </View>
             
-            <FlatList data={PEOPLE} renderItem={renderItems}/>
+            <FlatList data={USERS} renderItem={renderItems}/>
 
     
         </View>

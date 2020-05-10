@@ -6,33 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import ScreenStyle from '../../Styles/ScreenStyle';
-
-const GROUPS = [
-    {
-        id: 1,
-        name: "Second Benchers"
-    },
-    {
-        id: 2,
-        name: "Second Benchers"
-    },
-    {
-        id: 3,
-        name: "Second Benchers"
-    },
-    {
-        id: 4,
-        name: "Second Benchers"
-    },
-    {
-        id: 5,
-        name: "Second Benchers"
-    },
-    {
-        id: 6,
-        name: "Second Benchers"
-    }
-]
+import GROUPS from '../../dummy-data/Groups'
 
 export default function GroupListScreen(props) {
 

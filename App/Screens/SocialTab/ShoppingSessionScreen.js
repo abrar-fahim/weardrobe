@@ -7,25 +7,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ScreenStyle from '../../Styles/ScreenStyle'
+import ITEMSBOUGHT from '../../dummy-data/ItemsBought'
 
-const ITEMSBOUGHT = [
-    {
-        id: 1, 
-        name: "Shirt"
-    },
-    {
-        id: 2, 
-        name: "Panjabi"
-    },
-    {
-        id: 3, 
-        name: "Pants"
-    },
-    {
-        id: 4, 
-        name: "Hat"
-    }
-]
 
 
 export default function ShoppingSessionScreen(props) {

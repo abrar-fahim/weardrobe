@@ -9,10 +9,10 @@ class User {
 
 
 export const USERS = [
-    new Shop(1, "Abrar"),
-    new Shop(2, "Nafiz"),
-    new Shop(3, "Somik"),
-    new Shop(4, "Tasin"),
-    new Shop(4, "Syed")
+    new User('1', "Abrar"),
+    new User('2', "Nafiz"),
+    new User('3', "Somik"),
+    new User('4', "Tasin"),
+    new User('5', "Syed")
     
 ]

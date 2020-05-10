@@ -8,24 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import ScreenStyle from '../../Styles/ScreenStyle'
 
-const BLOGS=[
-    {
-        id: 1,
-        title: "First Blog",
-    },
-    {
-        id: 2,
-        title: "First Blog",
-    },
-    {
-        id: 3,
-        title: "First Blog",
-    },
-    {
-        id: 4,
-        title: "First Blog",
-    }
-]
+import BLOGS from '../../dummy-data/Blogs'
 
 
 export default function BlogListScreen(props) {

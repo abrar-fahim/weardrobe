@@ -8,25 +8,8 @@ import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import ScreenStyle from '../../Styles/ScreenStyle'
+import SHOPPINGSESSIONS from '../../dummy-data/ShoppingSessions'
 
-const SHOPPINGSESSIONS = [
-    {
-        id: 1, 
-        name: "Eid"
-    },
-    {
-        id: 2, 
-        name: "Eid"
-    },
-    {
-        id: 3, 
-        name: "Eid"
-    },
-    {
-        id: 4, 
-        name: "Eid"
-    }
-]
 
 
 export default function ShoppingSessionsListScreen(props) {

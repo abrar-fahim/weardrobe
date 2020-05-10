@@ -9,10 +9,10 @@ class Seller {
 
 
 const SHOPS = [
-    new Seller(1, "YELLOW"),
-    new Seller(2, "Cats Eye"),
-    new Seller(3, "Ecstasy"),
-    new Seller(4, "Splash")
+    new Seller('1', "YELLOW"),
+    new Seller('2', "Cats Eye"),
+    new Seller('3', "Ecstasy"),
+    new Seller('4', "Splash")
 ]
 export const SELLERS = [
     {

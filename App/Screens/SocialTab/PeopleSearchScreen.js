@@ -8,33 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SearchBar, Overlay, CheckBox } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 import ScreenStyle from '../../Styles/ScreenStyle';
-
-const SEARCHRESULTS = [
-    {
-        id: 1,
-        name: "Abrar A"
-    },
-    {
-        id: 2,
-        name: "Abrar B"
-    },
-    {
-        id: 3,
-        name: "Abrar C"
-    },
-    {
-        id: 4,
-        name: "Abrar D"
-    },
-    {
-        id: 5,
-        name: "Abrar E"
-    },
-    {
-        id: 6,
-        name: "Abrar F"
-    },
-]
+import SEARCHRESULTS from '../../dummy-data/SearchResults'
 
 function renderItems(itemData) {
 

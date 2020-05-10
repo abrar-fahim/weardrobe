@@ -5,12 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import ScreenStyle from '../../Styles/ScreenStyle'
-
-const cartItems = [
-    {
-        
-    }
-]
+import CartItems from '../../dummy-data/CartItems'
 
 export default function CartScreen(props) {
     return (

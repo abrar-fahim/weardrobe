@@ -17,7 +17,6 @@ import Header from './Header.js'
 
 
 export default function ShopRightButtons(props) {
-    //console.log(props.route?.isGroupShopping);
 
     
     return (

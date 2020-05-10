@@ -61,7 +61,6 @@ export function MagazineScreen(props) {
     
         )
     }
-    //console.log(props);
     return (
         <View style={ScreenStyle}>
             
