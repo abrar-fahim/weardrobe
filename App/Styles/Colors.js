@@ -4,8 +4,8 @@ const Colors = {
   textColor: 'black',
   screenBackgroundColor: 'white',
   tabBarActiveTintColor: 'purple',
-  tabBarColor: 'blue',
-  headerColor: 'yellow',
+  tabBarColor: 'pink',
+  headerColor: 'violet',
   headerFontColor: 'black'
 };
 export default Colors
