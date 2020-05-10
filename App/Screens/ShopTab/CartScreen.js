@@ -15,6 +15,7 @@ export default function CartScreen(props) {
 
     const renderItems = (itemData) => {
         return (
+
             <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', padding: 20, height: 200}}>
                 <View style={{flexDirection: 'row', backgroundColor: '#ECECEC'}}>
                     <View>
