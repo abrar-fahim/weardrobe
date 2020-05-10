@@ -22,6 +22,19 @@ export default function CartScreen(props) {
                 <View style={{marginRight: 50}}>
                     <Text> {"BDT " + itemData.item.price} </Text>
                     <Text>Quantity: 5000</Text>
+                    <Text> {"BDT " + itemData.item.price} </Text>
+                    <Text>Quantity: 5000</Text>
+                    <Text> {"BDT " + itemData.item.price} </Text>
+                    <Text>Quantity: 5000</Text>
+
+                </View>
+                <View style={{marginRight: 50}}>
+                    <Text> {"BDT " + itemData.item.price} </Text>
+                    <Text>Quantity: 5000</Text>
+                    <Text> {"BDT " + itemData.item.price} </Text>
+                    <Text>Quantity: 5000</Text>
+                    <Text> {"BDT " + itemData.item.price} </Text>
+                    <Text>Quantity: 5000</Text>
 
                 </View>
 
