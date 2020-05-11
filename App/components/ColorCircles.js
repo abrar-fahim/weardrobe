@@ -14,7 +14,7 @@ import { SearchBar, Overlay } from 'react-native-elements';
 import { Drawer } from 'react-native-paper';
 
 import Header from './Header.js'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 
 export default function RatingStars(props) {
@@ -22,35 +22,19 @@ export default function RatingStars(props) {
     //md-star, md-star-outline, md-star-half
 
     
-    let stars = []
+    let colors = []
 
-    const ratingFloor = Math.floor(props.rating);
-
-    for(let i = 0; i < ratingFloor ; i++) {
-        stars.push(
-            <Ionicons name="md-star" size={props.size}/>
-        )
-    }
-
-    if(props.rating > ratingFloor) {
-        stars.push(
-            <Ionicons name="md-star-half" size={props.size}/>
-        )
-    }
-
-    const starOutlines = Math.floor(5 - props.rating)
-
-    for(let i = 0; i < starOutlines; i++) {
-        stars.push(
-            <Ionicons name="md-star-outline" size={props.size}/>
+    for(let i = 0; i < props.colors.length; i++) {
+        colors.push(
+            <FontAwesome name="circle" color={props.colors[i]} size={30}/>
         )
     }
 
 
     
     return (
-        <View style={{flexDirection: 'row'}}>
-            {stars}
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', width: 100}}>
+            {colors}
 
         </View>
         

@@ -8,11 +8,18 @@ import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ShoppingSessionsListScreen from './ShoppingSessionsListScreen';
 import ScreenStyle from '../../Styles/ScreenStyle';
+import Colors from '../../Styles/Colors';
 
 export default function GroupTabScreen(props) {
     const TopTab = createMaterialTopTabNavigator();
     return (
-        <TopTab.Navigator>
+        <TopTab.Navigator
+            tabBarOptions= {{
+                indicatorStyle: {
+                    backgroundColor: Colors.tabBarActiveTintColor
+                }
+            }}
+        >
             <TopTab.Screen name="GroupChat" component={GroupChatScreen} />
             <TopTab.Screen name="ShoppingSessionList" component={ShoppingSessionsListScreen} />
         </TopTab.Navigator>

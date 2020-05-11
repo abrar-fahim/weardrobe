@@ -24,6 +24,7 @@ import CreateBlogScreen3 from './CreateBlogScreen3';
 import BlogScreen from './BlogScreen';
 import HeaderOptions from '../../Styles/HeaderOptions';
 import ScreenStyle from '../../Styles/ScreenStyle'
+import Colors from '../../Styles/Colors';
 
 
 
@@ -63,7 +64,7 @@ export function ProfileTabsScreen({navigation}) {
             <TopTab.Navigator
                 tabBarOptions={{
                     indicatorStyle: {
-                        backgroundColor: 'green'
+                        backgroundColor: Colors.tabBarActiveTintColor
                     }
                 }}
             >

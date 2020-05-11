@@ -14,6 +14,7 @@ import { SearchBar, Overlay } from 'react-native-elements';
 import { Drawer } from 'react-native-paper';
 import RatingStars from './RatingStars';
 import { Ionicons } from '@expo/vector-icons';
+import Colors from '../Styles/Colors';
 
 
 export default function ProductList(props) {
@@ -27,12 +28,15 @@ export default function ProductList(props) {
                      productId: itemData.item.id,
                 }))}>
                     
-                    <Image source={itemData.item.picture} style={{height: 120, width: 120, justifyContent: 'center', alignItems: 'center'}}/>
+                    <Image source={itemData.item.picture} style={{height: 150, width: 150, justifyContent: 'center', alignItems: 'center'}}/>
                     <Text style={styles.itemName}> {itemData.item.name}</Text>
                     <Text style={styles.sellerName}> {"From " + itemData.item.shopname} </Text>
-                    <Text style={styles.price}> {"BDT " + itemData.item.price}</Text>
+                    
 
                     <RatingStars rating={itemData.item.rating}/>
+                    <View style={{justifyContent: 'flex-end', alignItems: 'flex-end', padding: 5}}>
+                        <Text style={styles.price}> {"BDT " + itemData.item.price}</Text>
+                    </View>
                     
                 </TouchableOpacity>
             </View>
@@ -56,15 +60,10 @@ const styles = StyleSheet.create({
     },
 
     gridItem: {
-        flex: 1,
         margin: 20,
-        height: 200,
-        width: 150
-    },
-    bottom: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        marginBottom: 36
+        height: 250,
+        width: 150,
+        backgroundColor: '#eae9e9'
     },
     itemName: {
         fontSize: 15,
@@ -72,10 +71,12 @@ const styles = StyleSheet.create({
     },
     sellerName: {
         fontSize: 12,
-        fontWeight: '100',
+        fontWeight: '200',
     },
     price: {
-        fontSize: 15,
+        fontSize: 18,
+        color: 'black',
+        fontWeight: '600'
         
     }
 })

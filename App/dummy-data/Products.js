@@ -39,20 +39,24 @@ export const PRODUCTS = [
         id: '1',
         name: 'Shirt',
         shopname: 'YELLOW',
-        picture: require('../assets/Images/shirt.png'),
+        picture: require('../assets/Images/shirt2.jpg'),
         price: 500,
         rating: 5,
-        description: "This is a nice shirt, ples buy"
+        description: "This is a nice shirt, ples buy",
+        sizes: ['S, M, L, XL, XXL'],
+        colors: ['black', 'blue', 'yellow', 'purple', 'orange']
 
     },
     {
         id: '2',
         name: 'Shirt',
         shopname: 'YELLOW',
-        picture: require('../assets/Images/shirt.png'),
+        picture: require('../assets/Images/shirt2.jpg'),
         price: 500,
         rating: 4,
-        description: "This is a nice shirt, ples buy"
+        description: "This is a nice shirt, ples buy",
+        colors: ['black', 'blue', 'yellow'],
+        sizes: ['S, M, L, XL, XXL']
 
     },
     {
@@ -62,7 +66,9 @@ export const PRODUCTS = [
         picture: require('../assets/Images/shirt.png'),
         price: 500,
         rating: 2,
-        description: "This is a nice shirt, ples buy"
+        description: "This is a nice shirt, ples buy",
+        colors: ['black', 'blue', 'yellow'],
+        sizes: ['S, M, L, XL, XXL']
 
     },
     {
@@ -72,7 +78,8 @@ export const PRODUCTS = [
         picture: require('../assets/Images/shirt.png'),
         price: 500,
         rating: 4.5,
-        description: "This is a nice shirt, ples buy"
+        description: "This is a nice shirt, ples buy",
+        sizes: ['S, M, L, XL, XXL']
 
     },
     {
@@ -82,7 +89,9 @@ export const PRODUCTS = [
         picture: require('../assets/Images/shirt.png'),
         price: 500,
         rating: 4.5,
-        description: "This is a nice shirt, ples buy"
+        description: "This is a nice shirt, ples buy",
+        colors: ['black', 'blue', 'yellow'],
+        sizes: ['S, M, L, XL, XXL']
 
     },
     {
@@ -92,7 +101,9 @@ export const PRODUCTS = [
         picture: require('../assets/Images/shirt.png'),
         price: 500,
         rating: 4.5,
-        description: "This is a nice shirt, ples buy"
+        description: "This is a nice shirt, ples buy",
+        colors: ['black', 'blue', 'yellow'],
+        sizes: ['S, M, L, XL, XXL']
 
     },
     {
@@ -102,7 +113,9 @@ export const PRODUCTS = [
         picture: require('../assets/Images/shirt.png'),
         price: 500,
         rating: 4.5,
-        description: "This is a nice shirt, ples buy"
+        description: "This is a nice shirt, ples buy",
+        colors: ['black', 'blue', 'yellow'],
+        sizes: ['S, M, L, XL, XXL']
 
     },
     {
@@ -112,7 +125,9 @@ export const PRODUCTS = [
         picture: require('../assets/Images/shirt.png'),
         price: 500,
         rating: 4.5,
-        description: "This is a nice shirt, ples buy"
+        description: "This is a nice shirt, ples buy",
+        colors: ['black', 'blue', 'yellow'],
+        sizes: ['S, M, L, XL, XXL']
 
     },
     {
@@ -122,7 +137,8 @@ export const PRODUCTS = [
         picture: require('../assets/Images/shirt.png'),
         price: 500,
         rating: 4.5,
-        description: "This is a nice shirt, ples buy"
+        description: "This is a nice shirt, ples buy",
+        sizes: ['S, M, L, XL, XXL']
 
     },
     {
@@ -132,7 +148,9 @@ export const PRODUCTS = [
         picture: require('../assets/Images/shirt.png'),
         price: 500,
         rating: 4.5,
-        description: "This is a nice shirt, ples buy"
+        description: "This is a nice shirt, ples buy",
+        colors: ['black', 'blue', 'yellow'],
+        sizes: ['S, M, L, XL, XXL']
 
     },
     {
@@ -142,7 +160,9 @@ export const PRODUCTS = [
         picture: require('../assets/Images/shirt.png'),
         price: 500,
         rating: 4.5,
-        description: "This is a nice shirt, ples buy"
+        description: "This is a nice shirt, ples buy",
+        colors: ['black', 'blue', 'yellow'],
+        sizes: ['S, M, L, XL, XXL']
 
     }
 ]

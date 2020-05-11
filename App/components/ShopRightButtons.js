@@ -27,14 +27,6 @@ export default function ShopRightButtons(props) {
             //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
             onPress={() => props.navigation.navigate('GroupShopping')}
             />
-
-                
-            <Item 
-            title='FavoritesButton'
-            iconName='md-star'
-            //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
-            onPress={() => props.navigation.navigate('Favorites')}
-            />
             <Item 
                 title='CartButton'
                 iconName='md-cart'
