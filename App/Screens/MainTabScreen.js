@@ -28,6 +28,7 @@ export default function HomeScreen() {
     //const Tab = createMaterialTopTabNavigator();
     return (
             <Tab.Navigator 
+            iconName = 'camera'
                 tabBarOptions={{ activeTintColor: Colors.tabBarActiveTintColor}}
                 screenOptions={
                     ({route}) => ({

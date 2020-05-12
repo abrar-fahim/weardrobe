@@ -30,30 +30,32 @@ export function MagazineScreen(props) {
     const renderFeedItem = (itemData) => {
         return (
             <View style={styles.gridItem} >
-                <View>
+                <View style={{paddingLeft: 5}}>
                     <TouchableOpacity onPress={() => props.navigation.navigate('OthersProfile')}>
-                        <View style={{flexDirection: 'row'}}>
-                            <Image style={{width: 20, height: 20}} source={require('../../assets/Images/face.png')}/>
-                            <Text style={{fontWeight: 'bold', fontSize: 17}}> Stickman </Text>
+                        <View style={{flexDirection: 'row' , alignItems : 'center'}}>
+                            <View style={{borderRadius: 25, overflow: 'hidden', borderWidth: 2, borderColor: 'black'}}>
+                              <Image style={{width: 40, height: 40 }} source={require('../../assets/Images/tahsan.png')}/>
+                            </View>
+                            <Text style={{fontWeight: 'bold', fontSize: 20}}> Tahsan </Text>
                         </View>
-                    </TouchableOpacity>
-                    
-                    
-                    
+                    </TouchableOpacity>     
                 </View>
-                <TouchableOpacity>
-                    <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-                        <Image  source={itemData.item.picture} style={{height: 120, width: 300}}/>
-                        <Text> {itemData.item.caption}</Text>
-                    </View>
+
+                <TouchableOpacity style={{paddingTop: 10}}>
+                    <View style={{flexDirection: 'row', width: '100%', height: 300, borderRadius: 30, borderColor: 'black', overflow:'hidden' , borderWidth: 2}}>
+                        <Image  source={require('../../assets/Images/suit.png')} style={{height: '100%', width: '100%', flex:3}}/> 
+                        <Text  style={{padding: 5, flex:1, borderLeftColor: 'black', borderLeftWidth:2, fontWeight: 'bold', backgroundColor: 'grey'}} >   {itemData.item.caption}</Text>    
+                    </View>    
                 </TouchableOpacity>
+   
+                
                
-                <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-                    <TouchableOpacity onPress={ () => {}}>
-                    <MaterialCommunityIcons name="hand-okay" size={35} />
-                        </TouchableOpacity>
+                <View style={{paddingTop:15,flexDirection: 'row'}}>
+                    <TouchableOpacity style={{paddingRight: 15, paddingLeft: 10, flex:1}} onPress={ () => {}}>
+                    <MaterialCommunityIcons name="thumb-up" size={40} color='black'/>
+                    </TouchableOpacity>
     
-                    <TextInput placeholder="Comment" style={{borderColor: 'purple', height: 40, width: 200, backgroundColor: 'grey'}}/>
+                    <TextInput placeholder="Comment" style={{flex: 3 ,paddingLeft: 5,height: 40, borderColor: 'black', borderWidth: 2, backgroundColor: 'grey'}}/>
                 </View>
                 
                
@@ -108,8 +110,10 @@ export default function MagazineStackScreen({navigation}) {
 const styles = {
     gridItem: {
         flex: 1,
-        margin: 15,
-        height: 300,
+        padding : 10,
+        margin: 0,
+        height: 500,
+        width: '100%',
         flexDirection: 'column'
     },
 }
