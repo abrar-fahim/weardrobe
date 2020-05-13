@@ -1,0 +1,225 @@
+@CHARSET "ISO-8859-1";
+
+/*
+RESET SCRIPT
+*/
+.visually_embed {
+	color: #000;
+	background: transparent;
+}
+
+.visually_embed, 
+.visually_embed div,
+.visually_embed ul,
+.visually_embed li,
+.visually_embed h1,
+.visually_embed h2,
+.visually_embed h3,
+.visually_embed h4,
+.visually_embed h5,
+.visually_embed h6,
+.visually_embed form,
+.visually_embed input,
+.visually_embed button,
+.visually_embed textarea,
+.visually_embed select,
+.visually_embed img,
+.visually_embed span,
+.visually_embed p,
+{
+	margin: 0;
+	padding: 0;
+	float: none;
+}
+
+.visually_embed, 
+.visually_embed img {
+	border: 0;
+}
+
+.visually_embed,
+.visually_embed button,
+.visually_embed input,
+.visually_embed option,
+.visually_embed select,
+.visually_embed textarea,
+{
+    font:inherit;
+}
+
+.visually_embed, 
+.visually_embed a {
+	text-decoration: none;
+}
+
+.visually_embed li {
+	list-style: none;
+}
+
+.visually_embed, 
+.visually_embed h1,
+.visually_embed h2,
+.visually_embed h3,
+.visually_embed h4,
+.visually_embed h5,
+.visually_embed h6 {
+	font-size: 100%;
+	font-weight: normal;
+	text-align:left;
+}
+
+.visually_embed
+{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font-family: Arial;
+	color:#303030;
+	position:relative;
+	top:0px;
+	left:0px;
+}
+
+.visually_embed .visually_embed_infographic
+{
+	position:relative;
+	top:0px;
+	left:0px;
+}
+.visually_embed .visually_embed_bar
+{
+	position:relative;
+	top:0px;
+	left:0px;
+	background-color:#ffffff;
+}
+/*.visually_embed .visually_embed_bar span, .visually_embed .visually_embed_bar a
+{
+	float:left;
+	margin-left:5px;
+}*/
+
+.visually_embed .visually_embed_bar .logo img
+{
+	position:relative;
+	top:5px;
+}
+
+.visually_embed #visually_embed_view_more
+{
+	display:block;
+	width:50px;
+	height:50px;
+	position:absolute;
+	top:10px;
+	left:10px;
+	background:url("http://visual.ly/sites/all/themes/infographics/images/gc_view_more_icon.png");
+	z-index: 16777269; /*max-1 on all browsers*/
+	display:none;
+}
+
+.visually_embed #visually_embed_enlarge
+{
+	display:block;
+	width:50px;
+	height:50px;
+	position:absolute;
+	top:70px;
+	left:10px;
+	background:url("http://visual.ly/sites/all/themes/infographics/images/gc_enlarge_icon.png");
+	z-index: 16777269; /*max-2 on all browsers*/
+	display:none;
+}
+
+.visually_embed #visually_embed_grab
+{
+	display:block;
+	width:50px;
+	height:50px;
+	position:absolute;
+	top:130px;
+	left:10px;
+	background:url("http://visual.ly/sites/all/themes/infographics/images/gc_embed_icon.png");
+	z-index: 16777269; /*max-2 on all browsers*/
+	display:none;
+}
+
+
+
+
+.visually_embed .visually_embed_overlay
+{
+    background: none repeat scroll 0 0 #222222;
+    cursor: pointer;
+    display: none;
+    height: 100%;
+    left: 0;
+    opacity: 0.75;
+    filter:alpha(opacity=75);
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 16777268; /*max-3 on all browsers*/
+}
+
+.visually_embed .visually_embed_grab_code
+{
+     position:absolute;
+     top:200px;
+     left:10px;
+     color:#ffffff;
+     z-index: 16777269; /*max-2 on all browsers*/
+     display:none;	
+}
+
+.visually_embed .visually_embed_grab_code input
+{
+	width:300px;
+	height:20px;
+}
+
+.visually_embed:hover #visually_embed_view_more, .visually_embed:hover .visually_embed_overlay,.visually_embed:hover #visually_embed_enlarge, .visually_embed:hover #visually_embed_grab
+{
+	display:block;
+}
+
+
+.visually_lightbox_overlay
+{
+	position:fixed;
+	width:100%;
+	height:100%;
+	display:none;
+ 	background: none repeat scroll 0 0 #222222;
+	opacity: 0.75;
+       filter:alpha(opacity=75);
+	z-index: 16777269; /* max-2*/
+	top:0px;
+	left:0px;
+}
+
+.visually_lightbox {
+	display:none;
+	position: absolute;
+	top:30px;
+	left:30px;
+	z-index: 16777270; /* max-1*/
+}
+
+.visually_embed_lightbox_close
+{
+	border:0px;
+	right:0px;
+	top:0px;
+	position:absolute;
+	cursor:pointer;
+}
+/* fix for all the already embeded infographics */
+.visually_embed .logo
+{
+	width:79px !important;
+	height:20px !important;
+}
+
+

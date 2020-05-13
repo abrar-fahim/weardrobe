@@ -1,27 +1,33 @@
 const GROUPS = [
     {
         id: '1',
-        name: "Second Benchers"
+        name: "Emily Parker",
+        picture: require('../assets/Images/pic1.jpeg')
     },
     {
         id: '2',
-        name: "Second Benchers"
+        name: "Norman",
+        picture: require('../assets/Images/pic2.jpg')
     },
     {
         id: '3',
-        name: "Second Benchers"
+        name: "asd",
+        picture: require('../assets/Images/pic2.jpg')
     },
     {
         id: '4',
-        name: "Second Benchers"
+        name: "asdjalksdj",
+        picture: require('../assets/Images/pic2.jpg')
     },
     {
         id: '5',
-        name: "Second Benchers"
+        name: "Rasdljasdl",
+        picture: require('../assets/Images/pic2.jpg')
     },
     {
         id: '6',
-        name: "Second Benchers"
+        name: "name",
+        picture: require('../assets/Images/pic2.jpg')
     }
 ]
 

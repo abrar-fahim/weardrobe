@@ -7,6 +7,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import ScreenStyle from '../../Styles/ScreenStyle'
 import DrawerStack from './DrawerStack';
+import ProductList from '../../components/ProductList';
+import { PRODUCTS } from '../../dummy-data/Products';
 
 export default function FavoritesStack( {navigation} ) {
     return (
@@ -18,7 +20,7 @@ export default function FavoritesStack( {navigation} ) {
  function FavoritesScreen(props) {
     return (
         <View style={ScreenStyle}>
-            <Text> Your Favorites here!!</Text>
+            <ProductList data={PRODUCTS} navigation={props.navigation}/>
         </View>
     )
 }

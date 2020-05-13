@@ -66,7 +66,13 @@ export default function ShopStackScreen({navigation}) {
                 }}
             />
             <ShopStack.Screen name="GroupShopping" component={GroupShoppingScreen}/>
-            <ShopStack.Screen name="Seller" component={SellerScreen}/>
+            <ShopStack.Screen name="Seller" component={SellerScreen}
+                options={{
+                    headerRight: () => (
+                        <GenericHeaderButton iconName="md-heart"/>
+                    )
+                }}
+            />
 
         </ShopStack.Navigator>
     )

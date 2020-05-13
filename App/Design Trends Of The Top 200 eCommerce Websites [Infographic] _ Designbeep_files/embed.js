@@ -1,0 +1,484 @@
+VisuallyConstants = {
+	env: "http://visual.ly/embeder/",
+	root: "http://visual.ly/"
+};
+
+if(typeof(Visually) == "undefined")
+{
+	Visually = {};
+	var headID = document.getElementsByTagName("head")[0];         
+	var newScript = document.createElement('script');
+	newScript.type = 'text/javascript';
+	newScript.src = VisuallyConstants.env+"jquery.js";
+	headID.appendChild(newScript);
+}
+
+
+VisuallyEmbeder = function(_obj){
+	//load the external scripts
+	this.script(_obj);
+
+	//set all the additional html needed
+	this.html(_obj);
+	
+	var _this = this;
+	//set all the css rules needed
+	_obj.load(function(){
+		_this.css(_obj);
+	}).each(function(){
+		if(this.complete) Visually.jQuery(this).trigger("load");
+	});
+
+	//set the events for it
+	_obj.load(function(){
+		_this.events(_obj);
+	}).each(function(){
+		if(this.complete) Visually.jQuery(this).trigger("load");
+	});
+};
+
+VisuallyEmbeder.prototype.script = function(_obj){
+	var fileref=document.createElement('script')
+  	fileref.setAttribute("type","text/javascript")
+	
+ 	fileref.setAttribute("src", VisuallyConstants.env + "zclip.js");
+	try{
+		document.getElementsByTagName("head")[0].appendChild(fileref);
+	}
+	catch(ex)
+	{}
+	
+	//quantserve code
+	var _qevents = _qevents || [];
+	(function() {
+	var elem = document.createElement('script');
+	elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+	elem.async = true;
+	elem.type = "text/javascript";
+	var scpt = document.getElementsByTagName('script')[0];
+	scpt.parentNode.insertBefore(elem, scpt);
+	})();
+	
+	_qevents.push({
+	qacct:"p-Whgs1X9C4d_WW"
+	});
+}
+
+VisuallyEmbeder.prototype.center = function(_obj){
+	var $e = this.elements(_obj);
+	var left = (Visually.jQuery(document).width() - $e.lightbox.width())/2;
+	if(left <50) 
+	{
+		//resize the image to be smaller 
+		var images = $e.lightbox.find("img");
+		if(images.length > 0)
+		{
+			var image_src = Visually.jQuery(images[0]).attr("src");
+			var image_array = image_src.split(".");
+			//we presume that the last one is the extension of the file 
+			if(image_array.length >= 2)
+			{
+				var width = (Visually.jQuery(document).width() - 100);
+				image_array[image_array.length-2] += ("_w" + width);
+				Visually.jQuery(images[0]).attr("width", width);
+				Visually.jQuery(images[0]).attr("src", image_array.join("."));
+				Visually.jQuery(images[0]).load(function(){
+					Visually.jQuery(this).show();
+					
+					left = (Visually.jQuery(document).width() - $e.lightbox.width()) / 2;
+					$e.lightbox.css("left", left+"px");
+
+				});
+				
+				
+			}
+		}
+	}else
+	{
+		left = Math.ceil(left);
+	
+		Visually.jQuery(".visually_lightbox").css("left", left);
+	}
+}
+
+VisuallyEmbeder.prototype.events = function(_obj){
+	var $e = this.elements(_obj);
+	var $this = this;
+	
+	$e.enlarge.unbind().click(function(){
+		if($this._type == undefined || $this._type == "infographic"){
+			var scroll = Visually.jQuery(window).scrollTop() + 20;
+			$this.center(_obj);
+			Visually.jQuery(".visually_lightbox_overlay").show();
+			Visually.jQuery(".visually_lightbox[data-id='"+$e.infographic.attr('data-id')+"']").show();
+			$e.lightbox.css('position','absolute').css('top',scroll+'px');
+		}
+		else if($this._type == "interactive"){
+			window.location.href = $e.more.attr('href') + "?view=true";
+		}
+	});
+
+	$e.overlay.unbind().click(function(){
+		if($this._type == undefined || $this._type == "infographic"){
+			var scroll = Visually.jQuery(window).scrollTop() + 20;
+			$this.center(_obj);
+			Visually.jQuery(".visually_lightbox_overlay").show();
+			Visually.jQuery(".visually_lightbox[data-id='"+$e.infographic.attr('data-id')+"']").show();
+			$e.lightbox.css('position','absolute').css('top',scroll+'px');
+		}
+		else if($this._type == "interactive"){
+			window.location.href = $e.more.attr('href') + "?view=true";
+		}
+	});
+
+	$e.grab.unbind().click(function(){
+		Visually.jQuery(".visually_embed").find(".visually_embed_grab_code").toggle();
+		try{
+			var $e = Visually.jQuery(".visually_embed_input");
+			if($e.zclip != undefined)
+			{
+				$e.zclip({
+                    path: VisuallyConstants.env + 'ZeroClipboard.swf',
+                    copy: function () {
+						var $e = Visually.jQuery(".visually_embed_input");
+                        return $e.val();
+                    }
+                });		
+			}
+		}catch(ex){}
+	});
+	
+	$e.grabber.find("input").unbind().click(function(){
+		Visually.jQuery(this).select();
+	});
+	
+	$e.grabber.find("input").keydown(function(){
+		Visually.jQuery(this).select();
+	});
+	
+	$e.grabber.find("input").focus(function(){
+		Visually.jQuery(this).select();
+	});
+	$e.embeder.mouseleave(function(){
+		Visually.jQuery(".visually_embed").find(".visually_embed_grab_code").hide();
+	});
+
+	Visually.jQuery(".visually_lightbox_overlay").unbind().click(function(){
+		Visually.jQuery(".visually_lightbox_overlay").hide();
+		Visually.jQuery(".visually_lightbox").hide();
+	});
+	
+	Visually.jQuery(".visually_embed_lightbox_close").unbind().click(function(){
+		Visually.jQuery(".visually_lightbox_overlay").hide();
+		Visually.jQuery(".visually_lightbox").hide();
+	});
+
+};
+
+VisuallyEmbeder.prototype.css = function(_obj){
+	var $e = this.elements(_obj);
+	
+	//if($e.infographic.height() == 0)
+		//return;
+	
+	//clearInterval(_visuallyLoaded);
+
+	//show the infographic
+	$e.infographic.show();
+
+	//set the sizes of the embeder
+	$e.embeder.css('width', $e.infographic.width());
+	$e.embeder.css('height', $e.infographic.height() + 40);
+	
+	//set the sizes of the embeder
+	$e.overlay.css('width', $e.infographic.width());
+	$e.overlay.css('height', $e.infographic.height());
+
+
+	$e.bar.css('position', "absolute");
+	$e.bar.css('top', $e.infographic.height());
+	$e.bar.css('width', $e.infographic.width());
+
+	$e.embeder.css('width', $e.infographic.width());
+	$e.embeder.css('height', $e.infographic.height() + 40);
+
+};
+
+VisuallyEmbeder.prototype.elements = function(_obj){
+	var parent = Visually.jQuery(_obj).parents('.visually_embed');
+	return {
+		embeder : parent,
+		infographic: parent.find("img.visually_embed_infographic"),
+		more : parent.find("a#visually_embed_view_more"),
+		bar : parent.find(".visually_embed_bar"),
+		enlarge : parent.find("a#visually_embed_enlarge"),
+		grab : parent.find("a#visually_embed_grab"),
+		overlay : parent.find(".visually_embed_overlay[data-id='"+_obj.attr('data-id')+"']"),
+		grabber : parent.find(".visually_embed_grab_code"),
+		input : parent.find(".visually_embed_input"),
+		lightbox : Visually.jQuery("body").find(".visually_lightbox[data-id='"+_obj.attr('data-id')+"']")
+	};
+};
+
+VisuallyEmbeder.prototype.html = function(_obj){
+	var $e = this.elements(_obj);
+	
+	$e.infographic.attr('data-id',_visuallyCounter);
+
+	$e.embeder.append(Visually.jQuery("<div class='visually_embed_overlay' data-id='"+(_visuallyCounter)+"'></div>"));
+	$e.embeder.append(Visually.jQuery("<a id='visually_embed_enlarge' href='javascript:void(0)'></a>"));
+	$e.embeder.append(Visually.jQuery("<a id='visually_embed_grab' href='javascript:void(0)'></a>")); 
+	
+	$e.embeder.append(Visually.jQuery("<div class='visually_embed_grab_code'><span>Embed the above image on your site</span><br/><input type='text' value='" + VisuallyEncoder.htmlEncode("<div class=\"visually_embed\" >"+$e.embeder.html()+"</div>") + "' class='visually_embed_input' id='visually_embed_input'></input></div>"));
+
+	var body = Visually.jQuery("body");
+	if(body.length != 1)
+		alert('You have no body defined. Please define one in order to properly embed Visually\'s Infographics');
+	
+	var image = $e.infographic.attr("rel");
+	
+	body.append("<div class='visually_lightbox_overlay'></div>");
+	body.append("<div class='visually_lightbox' data-id='"+(_visuallyCounter++)+"'><img src='"+image+"' border='0'></img><img src='http://visual.ly/misc/colorbox/images/close.png' class='visually_embed_lightbox_close'></img></div>");
+	if($e.more.length > 0)
+		body.append("<iframe width='1' height='1' style='width: 1px !important; height: 1px !important; position: absolute; left: -1000px !important;' src='" + VisuallyConstants.root + "track.php?q=" + encodeURIComponent(window.top.location) + "&slug=" + $e.more.attr('href').replace(VisuallyConstants.root, '') + "'></iframe>");
+	else
+		body.append("<iframe width='1' height='1' style='width: 1px !important; height: 1px !important; position: absolute; left: -1000px !important;' src='" + VisuallyConstants.root + "track.php?q=" + encodeURIComponent(window.top.location) + "'></iframe>");
+};
+
+VisuallyEncoder = {
+
+	// When encoding do we convert characters into html or numerical entities
+	EncodeType : "entity",  // entity OR numerical
+
+	isEmpty : function(val){
+		if(val){
+			return ((val===null) || val.length==0 || /^\s+$/.test(val));
+		}else{
+			return true;
+		}
+	},
+	arr1: new Array('&nbsp;','&iexcl;','&cent;','&pound;','&curren;','&yen;','&brvbar;','&sect;','&uml;','&copy;','&ordf;','&laquo;','&not;','&shy;','&reg;','&macr;','&deg;','&plusmn;','&sup2;','&sup3;','&acute;','&micro;','&para;','&middot;','&cedil;','&sup1;','&ordm;','&raquo;','&frac14;','&frac12;','&frac34;','&iquest;','&Agrave;','&Aacute;','&Acirc;','&Atilde;','&Auml;','&Aring;','&Aelig;','&Ccedil;','&Egrave;','&Eacute;','&Ecirc;','&Euml;','&Igrave;','&Iacute;','&Icirc;','&Iuml;','&ETH;','&Ntilde;','&Ograve;','&Oacute;','&Ocirc;','&Otilde;','&Ouml;','&times;','&Oslash;','&Ugrave;','&Uacute;','&Ucirc;','&Uuml;','&Yacute;','&THORN;','&szlig;','&agrave;','&aacute;','&acirc;','&atilde;','&auml;','&aring;','&aelig;','&ccedil;','&egrave;','&eacute;','&ecirc;','&euml;','&igrave;','&iacute;','&icirc;','&iuml;','&eth;','&ntilde;','&ograve;','&oacute;','&ocirc;','&otilde;','&ouml;','&divide;','&Oslash;','&ugrave;','&uacute;','&ucirc;','&uuml;','&yacute;','&thorn;','&yuml;','&quot;','&amp;','&lt;','&gt;','&oelig;','&oelig;','&scaron;','&scaron;','&yuml;','&circ;','&tilde;','&ensp;','&emsp;','&thinsp;','&zwnj;','&zwj;','&lrm;','&rlm;','&ndash;','&mdash;','&lsquo;','&rsquo;','&sbquo;','&ldquo;','&rdquo;','&bdquo;','&dagger;','&dagger;','&permil;','&lsaquo;','&rsaquo;','&euro;','&fnof;','&alpha;','&beta;','&gamma;','&delta;','&epsilon;','&zeta;','&eta;','&theta;','&iota;','&kappa;','&lambda;','&mu;','&nu;','&xi;','&omicron;','&pi;','&rho;','&sigma;','&tau;','&upsilon;','&phi;','&chi;','&psi;','&omega;','&alpha;','&beta;','&gamma;','&delta;','&epsilon;','&zeta;','&eta;','&theta;','&iota;','&kappa;','&lambda;','&mu;','&nu;','&xi;','&omicron;','&pi;','&rho;','&sigmaf;','&sigma;','&tau;','&upsilon;','&phi;','&chi;','&psi;','&omega;','&thetasym;','&upsih;','&piv;','&bull;','&hellip;','&prime;','&prime;','&oline;','&frasl;','&weierp;','&image;','&real;','&trade;','&alefsym;','&larr;','&uarr;','&rarr;','&darr;','&harr;','&crarr;','&larr;','&uarr;','&rarr;','&darr;','&harr;','&forall;','&part;','&exist;','&empty;','&nabla;','&isin;','&notin;','&ni;','&prod;','&sum;','&minus;','&lowast;','&radic;','&prop;','&infin;','&ang;','&and;','&or;','&cap;','&cup;','&int;','&there4;','&sim;','&cong;','&asymp;','&ne;','&equiv;','&le;','&ge;','&sub;','&sup;','&nsub;','&sube;','&supe;','&oplus;','&otimes;','&perp;','&sdot;','&lceil;','&rceil;','&lfloor;','&rfloor;','&lang;','&rang;','&loz;','&spades;','&clubs;','&hearts;','&diams;'),
+	arr2: new Array('&#160;','&#161;','&#162;','&#163;','&#164;','&#165;','&#166;','&#167;','&#168;','&#169;','&#170;','&#171;','&#172;','&#173;','&#174;','&#175;','&#176;','&#177;','&#178;','&#179;','&#180;','&#181;','&#182;','&#183;','&#184;','&#185;','&#186;','&#187;','&#188;','&#189;','&#190;','&#191;','&#192;','&#193;','&#194;','&#195;','&#196;','&#197;','&#198;','&#199;','&#200;','&#201;','&#202;','&#203;','&#204;','&#205;','&#206;','&#207;','&#208;','&#209;','&#210;','&#211;','&#212;','&#213;','&#214;','&#215;','&#216;','&#217;','&#218;','&#219;','&#220;','&#221;','&#222;','&#223;','&#224;','&#225;','&#226;','&#227;','&#228;','&#229;','&#230;','&#231;','&#232;','&#233;','&#234;','&#235;','&#236;','&#237;','&#238;','&#239;','&#240;','&#241;','&#242;','&#243;','&#244;','&#245;','&#246;','&#247;','&#248;','&#249;','&#250;','&#251;','&#252;','&#253;','&#254;','&#255;','&#34;','&#38;','&#60;','&#62;','&#338;','&#339;','&#352;','&#353;','&#376;','&#710;','&#732;','&#8194;','&#8195;','&#8201;','&#8204;','&#8205;','&#8206;','&#8207;','&#8211;','&#8212;','&#8216;','&#8217;','&#8218;','&#8220;','&#8221;','&#8222;','&#8224;','&#8225;','&#8240;','&#8249;','&#8250;','&#8364;','&#402;','&#913;','&#914;','&#915;','&#916;','&#917;','&#918;','&#919;','&#920;','&#921;','&#922;','&#923;','&#924;','&#925;','&#926;','&#927;','&#928;','&#929;','&#931;','&#932;','&#933;','&#934;','&#935;','&#936;','&#937;','&#945;','&#946;','&#947;','&#948;','&#949;','&#950;','&#951;','&#952;','&#953;','&#954;','&#955;','&#956;','&#957;','&#958;','&#959;','&#960;','&#961;','&#962;','&#963;','&#964;','&#965;','&#966;','&#967;','&#968;','&#969;','&#977;','&#978;','&#982;','&#8226;','&#8230;','&#8242;','&#8243;','&#8254;','&#8260;','&#8472;','&#8465;','&#8476;','&#8482;','&#8501;','&#8592;','&#8593;','&#8594;','&#8595;','&#8596;','&#8629;','&#8656;','&#8657;','&#8658;','&#8659;','&#8660;','&#8704;','&#8706;','&#8707;','&#8709;','&#8711;','&#8712;','&#8713;','&#8715;','&#8719;','&#8721;','&#8722;','&#8727;','&#8730;','&#8733;','&#8734;','&#8736;','&#8743;','&#8744;','&#8745;','&#8746;','&#8747;','&#8756;','&#8764;','&#8773;','&#8776;','&#8800;','&#8801;','&#8804;','&#8805;','&#8834;','&#8835;','&#8836;','&#8838;','&#8839;','&#8853;','&#8855;','&#8869;','&#8901;','&#8968;','&#8969;','&#8970;','&#8971;','&#9001;','&#9002;','&#9674;','&#9824;','&#9827;','&#9829;','&#9830;'),
+		
+	// Convert HTML entities into numerical entities
+	HTML2Numerical : function(s){
+		return this.swapArrayVals(s,this.arr1,this.arr2);
+	},	
+
+	// Convert Numerical entities into HTML entities
+	NumericalToHTML : function(s){
+		return this.swapArrayVals(s,this.arr2,this.arr1);
+	},
+
+
+	// Numerically encodes all unicode characters
+	numEncode : function(s){
+		
+		if(this.isEmpty(s)) return "";
+
+		var e = "";
+		for (var i = 0; i < s.length; i++)
+		{
+			var c = s.charAt(i);
+			if (c < " " || c > "~")
+			{
+				c = "&#" + c.charCodeAt() + ";";
+			}
+			e += c;
+		}
+		return e;
+	},
+	
+	// HTML Decode numerical and HTML entities back to original values
+	htmlDecode : function(s){
+
+		var c,m,d = s;
+		
+		if(this.isEmpty(d)) return "";
+
+		// convert HTML entites back to numerical entites first
+		d = this.HTML2Numerical(d);
+		
+		// look for numerical entities &#34;
+		arr=d.match(/&#[0-9]{1,5};/g);
+		
+		// if no matches found in string then skip
+		if(arr!=null){
+			for(var x=0;x<arr.length;x++){
+				m = arr[x];
+				c = m.substring(2,m.length-1); //get numeric part which is refernce to unicode character
+				// if its a valid number we can decode
+				if(c >= -32768 && c <= 65535){
+					// decode every single match within string
+					d = d.replace(m, String.fromCharCode(c));
+				}else{
+					d = d.replace(m, ""); //invalid so replace with nada
+				}
+			}			
+		}
+
+		return d;
+	},		
+
+	// encode an input string into either numerical or HTML entities
+	htmlEncode : function(s,dbl){
+			
+		if(this.isEmpty(s)) return "";
+
+		// do we allow double encoding? E.g will &amp; be turned into &amp;amp;
+		dbl = dbl || false; //default to prevent double encoding
+		
+		// if allowing double encoding we do ampersands first
+		if(dbl){
+			if(this.EncodeType=="numerical"){
+				s = s.replace(/&/g, "&#38;");
+			}else{
+				s = s.replace(/&/g, "&amp;");
+			}
+		}
+
+		// convert the xss chars to numerical entities ' " < >
+		s = this.XSSEncode(s,false);
+		
+		if(this.EncodeType=="numerical" || !dbl){
+			// Now call function that will convert any HTML entities to numerical codes
+			s = this.HTML2Numerical(s);
+		}
+
+		// Now encode all chars above 127 e.g unicode
+		s = this.numEncode(s);
+
+		// now we know anything that needs to be encoded has been converted to numerical entities we
+		// can encode any ampersands & that are not part of encoded entities
+		// to handle the fact that I need to do a negative check and handle multiple ampersands &&&
+		// I am going to use a placeholder
+
+		// if we don't want double encoded entities we ignore the & in existing entities
+		if(!dbl){
+			s = s.replace(/&#/g,"##AMPHASH##");
+		
+			if(this.EncodeType=="numerical"){
+				s = s.replace(/&/g, "&#38;");
+			}else{
+				s = s.replace(/&/g, "&amp;");
+			}
+
+			s = s.replace(/##AMPHASH##/g,"&#");
+		}
+		
+		// replace any malformed entities
+		s = s.replace(/&#\d*([^\d;]|$)/g, "$1");
+
+		if(!dbl){
+			// safety check to correct any double encoded &amp;
+			s = this.correctEncoding(s);
+		}
+
+		// now do we need to convert our numerical encoded string into entities
+		if(this.EncodeType=="entity"){
+			s = this.NumericalToHTML(s);
+		}
+
+		return s;					
+	},
+
+	// Encodes the basic 4 characters used to malform HTML in XSS hacks
+	XSSEncode : function(s,en){
+		if(!this.isEmpty(s)){
+			en = en || true;
+			// do we convert to numerical or html entity?
+			if(en){
+				s = s.replace(/\'/g,"&#39;"); //no HTML equivalent as &apos is not cross browser supported
+				s = s.replace(/\"/g,"&quot;");
+				s = s.replace(/</g,"&lt;");
+				s = s.replace(/>/g,"&gt;");
+			}else{
+				s = s.replace(/\'/g,"&#39;"); //no HTML equivalent as &apos is not cross browser supported
+				s = s.replace(/\"/g,"&#34;");
+				s = s.replace(/</g,"&#60;");
+				s = s.replace(/>/g,"&#62;");
+			}
+			return s;
+		}else{
+			return "";
+		}
+	},
+
+	// returns true if a string contains html or numerical encoded entities
+	hasEncoded : function(s){
+		if(/&#[0-9]{1,5};/g.test(s)){
+			return true;
+		}else if(/&[A-Z]{2,6};/gi.test(s)){
+			return true;
+		}else{
+			return false;
+		}
+	},
+
+	// will remove any unicode characters
+	stripUnicode : function(s){
+		return s.replace(/[^\x20-\x7E]/g,"");
+		
+	},
+
+	// corrects any double encoded &amp; entities e.g &amp;amp;
+	correctEncoding : function(s){
+		return s.replace(/(&amp;)(amp;)+/,"$1");
+	},
+
+
+	// Function to loop through an array swaping each item with the value from another array e.g swap HTML entities with Numericals
+	swapArrayVals : function(s,arr1,arr2){
+		if(this.isEmpty(s)) return "";
+		var re;
+		if(arr1 && arr2){
+			//ShowDebug("in swapArrayVals arr1.length = " + arr1.length + " arr2.length = " + arr2.length)
+			// array lengths must match
+			if(arr1.length == arr2.length){
+				for(var x=0,i=arr1.length;x<i;x++){
+					re = new RegExp(arr1[x], 'g');
+					s = s.replace(re,arr2[x]); //swap arr1 item with matching item from arr2	
+				}
+			}
+		}
+		return s;
+	},
+
+	inArray : function( item, arr ) {
+		for ( var i = 0, x = arr.length; i < x; i++ ){
+			if ( arr[i] === item ){
+				return i;
+			}
+		}
+		return -1;
+	}
+
+}
+
+if(typeof(_visuallyEmbeds) == "undefined")
+	_visuallyEmbeds = [];
+if(typeof(_visuallyCounter) == "undefined")
+	_visuallyCounter = 0;
+if(typeof(_visuallyTimer) == "undefined")
+{
+	_visuallyTimer = setInterval(function(){
+		try{
+			if(Visually.jQuery == null || Visually.jQuery == undefined)
+				return;
+			clearInterval(_visuallyTimer);
+			Visually.jQuery(document).ready(function(){
+				Visually.jQuery(".visually_embed").find("img.visually_embed_infographic").each(function(){
+					_visuallyEmbeds.push(new VisuallyEmbeder(Visually.jQuery(this)));
+				});
+			});	
+		}catch(ex){
+		}
+	}, 50);
+}
+
+try {
+	var _visuallyEmbeds = [];
+	
+}catch(ex)
+{
+}

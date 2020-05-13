@@ -21,6 +21,8 @@ import DrawerButton from '../../components/DrawerButton'
 import ShopRightButtons from '../../components/ShopRightButtons';
 import DrawerStack from './DrawerStack';
 import ScreenStyle from '../../Styles/ScreenStyle';
+import { CATEGORIES } from '../../dummy-data/Categories';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function CategoriesStack({ navigation }) {
     return (
@@ -30,10 +32,27 @@ export default function CategoriesStack({ navigation }) {
 }
 
 function CategoriesScreen(props) {
+
+    function renderItems(itemData) {
+        return (
+            
+                <View style={styles.gridItem}>
+                    <TouchableOpacity onPress={() => (props.navigation.navigate('Shop'))}>
+                        <Image style={styles.imageStyle} source={itemData.item.picture}/>
+                        <Text style={styles.textStyle}>{itemData.item.name}</Text>
+
+                    </TouchableOpacity>
+                </View>
+            
+            
+        )
+
+    }
     return (
         <View style={ScreenStyle}>
-            <Header title="Categories"/>
-            <Text> Categories Screen</Text>
+            
+            <FlatList data={CATEGORIES} renderItem={renderItems} numColumns={2}/>
+            
         </View>
     )
 }
@@ -46,12 +65,20 @@ const styles = StyleSheet.create({
 
     gridItem: {
         flex: 1,
-        margin: 15,
-        height: 150
+        width: '40%',
+        margin: 10,
+        height: 150,
+
     },
-    bottom: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        marginBottom: 36
+    imageStyle : {
+        height: '80%',
+        width: '80%',
+        alignSelf: 'center'
+    },
+    textStyle: {
+        fontSize: 20,
+        fontWeight: '500',
+        alignSelf: 'center',
+        marginTop: 5
     }
 })

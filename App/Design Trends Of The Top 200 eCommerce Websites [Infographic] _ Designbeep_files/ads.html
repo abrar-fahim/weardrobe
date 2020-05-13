@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<!-- saved from url=(1104)https://googleads.g.doubleclick.net/pagead/ads?client=ca-pub-8814751227674131&output=html&h=250&slotname=9685052057&adk=3677939648&adf=3279755396&w=300&psa=0&guci=2.2.0.0.2.2.0.0&format=300x250&url=http%3A%2F%2Fdesignbeep.com%2F2013%2F10%2F02%2Fdesign-trends-top-200-ecommerce-websites-infographic%2F&ea=0&flash=0&wgl=1&adsid=ChAI8JLp9QUQpr_49_bF59pqEkUAYSmyJU5Kmch7llkpjCUe5zK8BUGI5KFfplClED0DMwW3MCnRO6fhgsvBn6kfot6nYf9_2Crl252zLqrYHEK-09L9bqU&dt=1589299505626&bpp=30&bdt=296&idt=1451&shv=r20200506&cbv=r20190131&ptt=9&saldr=aa&correlator=7883018248363&frm=24&ife=1&pv=2&ga_vid=670391804.1589299507&ga_sid=1589299507&ga_hid=636089462&ga_fc=0&iag=3&icsg=170&nhd=1&dssz=19&mdo=0&mso=0&u_tz=360&u_his=1&u_java=0&u_h=900&u_w=1440&u_ah=820&u_aw=1440&u_cd=24&u_nplug=3&u_nmime=4&adx=0&ady=0&biw=-12245933&bih=-12245933&isw=300&ish=250&ifk=3808326988&scr_x=-12245933&scr_y=-12245933&eid=21066085&oid=3&pvsid=4119607539106146&pem=110&rx=0&eae=2&brdim=0%2C23%2C0%2C23%2C1440%2C23%2C1375%2C794%2C300%2C250&vis=1&rsz=%7C%7CoE%7C&abl=CS&pfx=0&fu=8208&bc=23&jar=2020-05-12-15&ifi=1&uci=1.ft8frkjzrauh&fsb=1&dtd=1496 -->
+<html><div id="twoseven-scripts" data-info="Scripts added by TwoSeven extension"><script type="text/javascript" id="__tmpScript-682912479" data-added-by-two-seven="1">(function() {
+    
+  window.twoseven = {
+    reportError: function reportError (tag, e, data) {
+  if (typeof data === 'string') {
+    data = {
+      message: data
+    }
+  }
+
+  Object.assign(data, {
+    error: {
+      message: e.message,
+      stack: e.stack
+    }
+  })
+  postToParent({
+    name,
+    tag,
+    action: 'report-error',
+    json: data
+  })
+}
+  }
+;
+  })();</script><script type="text/javascript" id="__tmpScript-852112811" data-added-by-two-seven="1">(function() {
+    
+  window.twosevenHmsToSecondsOnly = function(str) {
+      var p = str.split(':'),
+          s = 0, m = 1;
+
+      while (p.length > 0) {
+          s += m * parseInt(p.pop(), 10);
+          m *= 60;
+      }
+
+      return s;
+  }
+;
+  })();</script><script type="text/javascript" id="__tmpScript-378535518" data-added-by-two-seven="1">(function() {
+    window.twosevenExtLog = function twosevenExtLog (tag, msg, type) {
+  if (!msg) {
+    msg = tag
+    tag = undefined
+  }
+  let color = type || 'black'
+  if (type) {
+    switch (type) {
+      case 'success':
+        color = 'Green'
+        break
+      case 'info':
+        color = 'DodgerBlue'
+        break
+      case 'error':
+        color = 'Red'
+        break
+      case 'warning':
+        color = 'Orange'
+        break
+      default:
+        color = type
+    }
+  }
+  // AMO review process requires logging to be disabled
+  if (tag) {
+    console.log('%c' + tag + ': ' + msg, `color:${color}`)
+  } else {
+    console.log('%c' + msg, `color:${color}`)
+  }
+};
+  })();</script><script type="text/javascript" id="__tmpScript-21294325" data-added-by-two-seven="1">(function() {
+    
+  document.twosevenGET = function(url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+        if (xmlhttp.status == 200) {
+          callback(null, xmlhttp.responseText);
+        } else {
+          callback('something else other than 200 was returned', '');
+        }
+      }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+  };
+;
+  })();</script><script type="text/javascript" id="__tmpScript-677241180" data-added-by-two-seven="1">(function() {
+    
+  window.triggerEvent = function (el, name, data, asString = false) {
+  if (window.twosevenScriptsDiv && data && typeof data === 'object') {
+    // We're in CS context
+    // We cannot send objects as part of event.detail
+    // Warn the user about this
+    console.warn(`WARNING: Attempting to send an object via event.detail from CS->Page does not work on Firefox: ${JSON.stringify(data)}`)
+    console.error(new Error().stack)
+  }
+  let detail
+  if (asString) {
+    detail = data
+  } else {
+    detail = { data }
+  }
+  var evt = new CustomEvent(name, { bubbles: true, detail })
+  el.dispatchEvent(evt)
+}
+;
+  })();</script><script type="text/javascript" id="__tmpScript-134382312" data-added-by-two-seven="1">(function() {
+    window.postTo = async function postTo (targetWindow, data, expectResponse = false) {
+  // twosevenExtLog(tag, `Attempting to post to parent: ${JSON.stringify(data)}`)
+  data.name = data.name || name
+  let promise
+  if (expectResponse) {
+    promise = new Promise(resolve => {
+      const ackID = `ack-${data.action}-${((Math.random() * 1e9) | 0)}`
+      data.ack = {
+        event: ackID
+      }
+      const actions = ['play', 'pause', 'currentTime']
+      if (window.debug && actions.some(x => data.action.includes(x))) {
+        debugger
+      }
+      window.addEventListener('message', function once ({ data = {} }) {
+        if (data.action !== ackID) {
+          return
+        }
+        window.removeEventListener('message', once)
+        resolve(data.json)
+      })
+    })
+  } else {
+    promise = new Promise(resolve => resolve())
+  }
+  targetWindow.postMessage(data, '*')
+  return promise
+};
+  })();</script><script type="text/javascript" id="__tmpScript-814294859" data-added-by-two-seven="1">(function() {
+    window.postResponse = async function postResponse (e, json) {
+  const { source, data: { ack: { event } } } = e
+  postTo(source, {
+    action: event,
+    json
+  })
+};
+  })();</script><script type="text/javascript" id="__tmpScript-468075814" data-added-by-two-seven="1">(function() {
+    window.postToParent = async function postToParent (data, expectResponse = false) {
+  return postTo(window.parent, data, expectResponse)
+};
+  })();</script><script type="text/javascript" id="__tmpScript-924022947" data-added-by-two-seven="1">(function() {
+    window.postToTop = async function postToTop (data, expectResponse = false) {
+  return postTo(window.top, data, expectResponse)
+};
+  })();</script><script type="text/javascript" id="__tmpScript-270031794" data-added-by-two-seven="1">(function() {
+    
+  window.twoseven.getFromStorage = (key) => {
+  return new Promise((resolve, reject) => {
+    const evt = 'get-from-storage-' + (Math.random() * 1e9 | 0)
+    window.addEventListener(evt, (e) => {
+      window.removeEventListener(evt, this)
+      const { detail: { data: { value } } } = e
+      resolve(value)
+    })
+    triggerEvent(window, 'get-from-storage', {
+      key,
+      evt
+    })
+  })
+}
+  window.twoseven.saveToStorage = (dict) => {
+  triggerEvent(window, 'save-to-storage', dict)
+}
+;
+  })();</script><script type="text/javascript" id="__tmpScript-566521432" data-added-by-two-seven="1">(function() {
+    
+  function attachHistoryListeners () { // eslint-disable-line no-unused-vars
+  var pushState = history.pushState
+  history.pushState = function (state, unknown, uri) {
+    if (typeof history.onpushstate === 'function') {
+      history.onpushstate({ state })
+    }
+    triggerEvent(window, 'pushstate', { uri })
+    return pushState.apply(history, arguments)
+  }
+  var replaceState = history.replaceState
+  history.replaceState = function (state) {
+    if (typeof history.onreplacestate === 'function') {
+      history.onreplacestate({ state })
+    }
+    // triggerEvent(window, 'replacestate', state)
+    return replaceState.apply(history, arguments)
+  }
+}
+  attachHistoryListeners()
+;
+  })();</script><script type="text/javascript" id="__tmpScript-707048461" data-added-by-two-seven="1">(function() {
+    
+  window.twoseven.isOnTwoSevenTab = async () => {
+    const result = await postTo(window, { action: 'is-on-twoseven-tab' }, true)
+    return result
+  }
+;
+  })();</script><script type="text/javascript" id="__tmpScript-579649411" data-added-by-two-seven="1">(function() {
+    
+    const roomInfo = {
+      roomOwner: undefined,
+      roomType: undefined,
+      roomController: undefined,
+      roomProperties: undefined
+    }
+    window.twoseven.roomInfo = roomInfo
+
+    window.addEventListener('message', ({ data = {} }) => {
+      const { action } = data
+      if (action !== 'room-updated') {
+        return
+      }
+      const { data: { key, value } } = data
+      roomInfo[key] = value
+    })
+  ;
+  })();</script></div><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script>window.top.postMessage('{"msg_type":"resize-me","key_value":[{"key":"r_nh","value":"0"},{"key":"qid","value":"CNWRyITarukCFSnScwEd09wNVw"}],"googMsgType":"sth"}', '*');</script><script>window.top.postMessage('{"msg_type":"adsense-labs","key_value":[{"key":"settings","value":"[\\\"ca-pub-8814751227674131\\\"]"}],"googMsgType":"sth"}', '*');</script></head><body marginwidth="0" marginheight="0"></body></html>

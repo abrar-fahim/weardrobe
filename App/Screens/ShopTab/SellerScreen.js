@@ -11,6 +11,7 @@ import { PRODUCTS } from '../../dummy-data/Products';
 
 import renderProductGridItem from '../../components/RenderProductGridItem'
 import ScreenStyle from '../../Styles/ScreenStyle';
+import RatingStars from '../../components/RatingStars';
 
 
 
@@ -36,9 +37,19 @@ export default function SellerScreen(props) {
             <View style={{
                 alignItems: 'center'
             }}>
-                <Image source={image} style={{height: 200, width: 200}}/>
-                <Text>{description}</Text>
+                <Image source={image} style={{height: 200, width: '99%'}}/>
             </View>
+
+            <View style={styles.ratingsContainer}>
+                <RatingStars rating={4} size={25}/>
+
+            </View>
+
+            <View style={styles.descriptionContainer}>
+                 <Text style={styles.description}>{description}</Text>
+            </View>
+
+            
 
             <ProductList data={PRODUCTS} navigation={props.navigation}/>
 
@@ -51,3 +62,23 @@ export default function SellerScreen(props) {
         
     )
 }
+
+const styles = StyleSheet.create({
+    description : {
+        fontWeight: '400',
+        color: 'grey'
+    },
+
+    descriptionContainer : {
+        padding: 10,
+        //marginVertical: 20,
+        
+    
+
+    },
+
+    ratingsContainer : {
+        padding: 20,
+        alignItems: 'center'
+    }
+})

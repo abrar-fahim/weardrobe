@@ -22,6 +22,7 @@ import ShopRightButtons from '../../components/ShopRightButtons';
 import SellerScreen from './SellerScreen'
 import DrawerStack from './DrawerStack';
 import ScreenStyle from '../../Styles/ScreenStyle';
+import { ShopsListScreen } from './ShopsListScreen';
 
 
 export default function MyShopsStack( {navigation} ) {
@@ -33,49 +34,9 @@ export default function MyShopsStack( {navigation} ) {
 function MyShopsScreen({navigation}) {
 
 
-    const renderGridItem = (itemData) => {
-        return (
-            <View style={styles.gridItem}>
-                <TouchableOpacity onPress={ () => (navigation.navigate("Seller", {
-                     sellerId: itemData.item.id
-
-                }))}>
-                    <Text> {itemData.item.name}</Text>
-                    <Image source={itemData.item.picture} style={{height: 100, width: 100}}/>
-                </TouchableOpacity>
-            </View>
-        )
-
-    }
-    
     return (
-        <View style={ScreenStyle}>
-        
-        <Text> Shop Screen</Text>
-
-        <FlatList data={SELLERS} renderItem={renderGridItem} numColumns={2}  />
-
-        </View>
+        <ShopsListScreen navigation={navigation} sellers={SELLERS}/>
     );
 
 }
-
-
-
-const styles = StyleSheet.create({
-    screen: {
-        flex: 1  //ensures that this view takes all space it can get
-    },
-
-    gridItem: {
-        flex: 1,
-        margin: 15,
-        height: 150
-    },
-    bottom: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        marginBottom: 36
-    }
-})
 
