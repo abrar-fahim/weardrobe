@@ -70,7 +70,7 @@ export default function CartScreen(props) {
         <View style={ScreenStyle}>
             <FlatList data={CARTITEMS} renderItem={renderItems}/>
             
-            <UIButton text="CHECKOUT" onPress={ () => props.navigation.navigate('Checkout')} width={400} height={50}/>
+            <UIButton text="CHECKOUT" onPress={ () => props.navigation.navigate('Login')} width={400} height={50}/>
         </View>
     )
 }

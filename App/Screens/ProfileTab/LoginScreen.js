@@ -19,7 +19,7 @@ export default function LoginScreen({navigation}) {
       }}>
       
       <View>
-      <Text style={styles.formLabel}> Login Form </Text>
+      <Text style={styles.formLabel}> Login </Text>
         <TextInput placeholder="Enter Email" style={styles.inputStyle} />
         <TextInput
           secureTextEntry={true}
@@ -48,14 +48,13 @@ const styles = StyleSheet.create({
 
   formLabel: {
     fontSize: 20,
-    color: '#fff',
+    color: 'black',
   },
   inputStyle: {
     marginTop: 20,
     width: 300,
     height: 40,
     paddingHorizontal: 10,
-    borderRadius: 50,
     backgroundColor: '#DCDCDC',
   },
   formText: {

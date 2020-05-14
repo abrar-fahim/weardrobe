@@ -93,8 +93,7 @@ export default function ProfileStackScreen(props) {
                 )
             }}/>
 
-            <ProfileStack.Screen name="Login" component={LoginScreen}/>
-            <ProfileStack.Screen name="Signup" component={SignupScreen}/>
+
             <ProfileStack.Screen name="ProfileSettings" component={ProfileSettingsScreen}/>
             <ProfileStack.Screen name="FollowersListTab" component={FollowersListTabScreen}/>
             <ProfileStack.Screen name="CreateBlog1" component={CreateBlogScreen1} options={{

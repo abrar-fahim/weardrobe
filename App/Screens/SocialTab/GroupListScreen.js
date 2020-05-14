@@ -55,16 +55,16 @@ const styles = StyleSheet.create({
         //backgroundColor: '#eae9e9'
     },
     image : {
-        height: 40,
-        width: 40,
-        borderRadius: 50,
+        height: 35,
+        width: 35,
+        borderRadius: 35,
         marginTop: 5
 
     },
     groupName: {
         fontSize: 16,
         fontWeight: '500',
-        marginLeft: 5
+        marginLeft: 10
     },
     picName : {
         flexDirection: 'row',
@@ -86,9 +86,8 @@ const styles = StyleSheet.create({
     lastText: {
         color: 'grey',
         fontWeight: '300',
-        marginLeft: 5,
+        marginLeft: 41,
         marginTop: 5,
-        marginLeft: 40
 
     }
 
