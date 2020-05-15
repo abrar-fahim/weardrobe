@@ -4,40 +4,86 @@ import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView } from 're
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import ScreenStyle from '../../Styles/ScreenStyle';
+
+import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+
+import ScreenStyle from '../../Styles/ScreenStyle'
+import UIButton from '../../components/UIButton';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-export default function SignupScreen() {
+export default function SignupScreen({navigation}) {
     const [value, setValue] = useState(0);
   return (
     <View style={{
         ...styles.container,
         ...ScreenStyle
-
       }}>
       
-      <View>
-        <Text style={styles.formLabel}> Sign up Form </Text>
-        <TextInput placeholder="Name" style={styles.inputStyle} />
-        <TextInput placeholder="Phone" style={styles.inputStyle} />
-        <TextInput placeholder="Birthday" style={styles.inputStyle} />
+     
+       
+      <View style={styles.inputContainer}>
+        <View style={styles.iconContainer}>
+          <Ionicons name="md-mail" size={20} color="grey"/>
+        </View>
+        
         <TextInput placeholder="Enter Email" style={styles.inputStyle} />
+      </View>
+        
+      <View style={styles.inputContainer}>
+        <View style={styles.iconContainer}>
+          <Ionicons name="md-lock" size={20} color="grey"/>
+        </View>
         <TextInput
           secureTextEntry={true}
           placeholder="Enter Password"
           style={styles.inputStyle}
         />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <View style={styles.iconContainer}>
+          <Ionicons name="md-lock" size={20} color="grey"/>
+        </View>
         <TextInput
           secureTextEntry={true}
-          placeholder="Confirm Password"
+          placeholder="Enter Password"
           style={styles.inputStyle}
         />
       </View>
 
-      <View style={styles.buttons}>
-        <Button title="Login"/>
-        <Button title="Sign up"/>
+      <View style={styles.inputContainer}>
+        <View style={styles.iconContainer}>
+          <Ionicons name="md-lock" size={20} color="grey"/>
+        </View>
+        <TextInput
+          secureTextEntry={true}
+          placeholder="Enter Password"
+          style={styles.inputStyle}
+        />
       </View>
+
+      <View style={styles.inputContainer}>
+        <View style={styles.iconContainer}>
+          <Ionicons name="md-lock" size={20} color="grey"/>
+        </View>
+        <TextInput
+          secureTextEntry={true}
+          placeholder="Enter Password"
+          style={styles.inputStyle}
+        />
+      </View>
+     
+
+      
+
+      <View style={styles.buttons}>
+        <UIButton text="Sign up" height={40} width={300} />
+       
+  
+      </View>
+
+
 
     </View>
   );
@@ -46,39 +92,45 @@ export default function SignupScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 50,
+    paddingTop: 200
+  },
+  inputContainer : {
+    flexDirection: 'row', 
+    alignItems: 'center',
+    borderBottomColor: 'grey',
+    borderBottomWidth: 0.5,
   },
 
-  formLabel: {
-    fontSize: 20,
-    color: '#fff',
-  },
   inputStyle: {
-    marginTop: 20,
     width: 300,
     height: 40,
     paddingHorizontal: 10,
-    borderRadius: 50,
-    backgroundColor: '#DCDCDC',
-  },
-  formText: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#fff',
-    fontSize: 20,
-  },
-  text: {
-    color: '#fff',
-    fontSize: 20,
+
   },
   buttons: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    marginTop: 100,
-    width: 200
-    }
+    alignItems: 'center',
+    marginTop: 50,
+    width: "100%",
+    height: 65,
+   },
+  iconContainer : {
+    width: 25,
+    alignItems: 'center'
+  },
+ forgotPassword: {
+   color: 'grey',
+   fontWeight: '300'
+ },
+ signUpContainer : {
+   marginTop: 150,
+   flexDirection: 'row'
+ },
+ signUpText : {
+    color: 'black',
+    fontWeight: '300'
+ }
 });
