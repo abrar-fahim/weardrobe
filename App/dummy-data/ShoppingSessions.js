@@ -1,19 +1,31 @@
 const SHOPPINGSESSIONS = [
     {
         id: '1', 
-        name: "Eid"
+        name: "Eid 2015",
+        numItems: 500,
+        totalSpent: 10000,
+        date: "10-5-2000"
     },
     {
         id: '2', 
-        name: "Eid"
+        name: "Eid 2016",
+        numItems: 500,
+        totalSpent: 10000,
+        date: "10-5-2000"
     },
     {
         id: '3', 
-        name: "Eid"
+        name: "Pohela Boishakh",
+        numItems: 500,
+        totalSpent: 10000,
+        date: "10-5-2000"
     },
     {
         id: '4', 
-        name: "Eid"
+        name: "Random",
+        numItems: 500,
+        totalSpent: 10000,
+        date: "10-5-2000"
     }
 ]
 
