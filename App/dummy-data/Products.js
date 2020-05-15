@@ -79,6 +79,7 @@ export const PRODUCTS = [
         price: 500,
         rating: 4.5,
         description: "This is a nice shirt, ples buy",
+        colors: ['black', 'blue', 'yellow'],
         sizes: ['S, M, L, XL, XXL']
 
     },
@@ -138,6 +139,7 @@ export const PRODUCTS = [
         price: 500,
         rating: 4.5,
         description: "This is a nice shirt, ples buy",
+        colors: ['black', 'blue', 'yellow'],
         sizes: ['S, M, L, XL, XXL']
 
     },
