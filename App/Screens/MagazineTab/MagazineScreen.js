@@ -30,32 +30,32 @@ export function MagazineScreen(props) {
     const renderFeedItem = (itemData) => {
         return (
             <View style={styles.gridItem} >
-                <View style={{paddingLeft: 5}}>
+                <View style={styles.nameDP}>
                     <TouchableOpacity onPress={() => props.navigation.navigate('OthersProfile')}>
-                        <View style={{flexDirection: 'row' , alignItems : 'center'}}>
-                            <View style={{borderRadius: 25, overflow: 'hidden'}}>
-                              <Image style={{width: 40, height: 40 }} source={require('../../assets/Images/tahsan.png')}/>
+                        <View style={styles.nameDP2}>
+                            <View style={styles.DP}>
+                              <Image style={styles.DPImage} source={require('../../assets/Images/tahsan.png')}/>
                             </View>
-                            <Text style={{fontWeight: 'bold', fontSize: 20}}> Tahsan </Text>
+                            <Text style={styles.Name}> Tahsan </Text>
                         </View>
                     </TouchableOpacity>     
                 </View>
 
-                <TouchableOpacity style={{paddingTop: 10}}>
-                    <View style={{flexDirection: 'column', width: '100%', height: 500, borderRadius: 30, overflow:'hidden'}}>
-                        <Image  source={require('../../assets/Images/suit.png')} style={{height: '80%', width: '100%', flex:7}}/> 
-                        <Text  style={{paddingTop: 10, flex:1, borderLeftColor: 'black',  fontWeight: 'bold', backgroundColor: 'grey'}} >   {itemData.item.caption}</Text>    
+                <TouchableOpacity style={styles.Post}>
+                    <View style={styles.Post2}>
+                        <Image  source={require('../../assets/Images/suit.png')} style={styles.PostImage}/> 
+                        <Text  style={styles.Caption} >   {itemData.item.caption}</Text>    
                     </View>    
                 </TouchableOpacity>
    
                 
                
-                <View style={{paddingTop:15,flexDirection: 'row'}}>
-                    <TouchableOpacity style={{paddingRight: 15, paddingLeft: 10, flex:1}} onPress={ () => {}}>
+                <View style={styles.LikeComment}>
+                    <TouchableOpacity style={styles.Like} onPress={ () => {}}>
                     <MaterialCommunityIcons name="thumb-up" size={40} color='black'/>
                     </TouchableOpacity>
     
-                    <TextInput placeholder="Comment" style={{flex: 3 ,paddingLeft: 5,height: 40, borderColor: 'black', backgroundColor: 'grey'}}/>
+                    <TextInput placeholder="Comment" style={styles.Comment}/>
                 </View>
                 
                
@@ -107,7 +107,7 @@ export default function MagazineStackScreen({navigation}) {
 }
 
 
-const styles = {
+const styles = StyleSheet.create({
     gridItem: {
         flex: 1,
         padding : 10,
@@ -116,4 +116,73 @@ const styles = {
         width: '100%',
         flexDirection: 'column'
     },
-}
+    nameDP : {
+        paddingLeft: 5
+    },
+    nameDP2 : 
+    {
+        flexDirection: 'row', 
+        alignItems : 'center'
+    },
+    DP :
+    {
+        borderRadius: 25, 
+        overflow: 'hidden'
+    },
+    DPImage :
+    {
+        width: 40, 
+        height: 40
+    },
+    Name: 
+    {
+        fontWeight: 'bold', 
+        fontSize: 20
+    },
+    Post:
+    {
+        paddingTop: 10
+    },
+    Post2:
+    {
+        flexDirection: 'column', 
+        width: '100%', 
+        height: 500, 
+        borderRadius: 30, 
+        overflow:'hidden'
+    },
+    PostImage:
+    {
+        height: '80%', 
+        width: '100%', 
+        flex:7
+    },
+    Caption:
+    {
+        paddingTop: 10, 
+        flex:1, 
+        borderLeftColor: 'black',  
+        fontWeight: 'bold', 
+        backgroundColor: 'grey'
+    },
+    LikeComment:
+    {
+        paddingTop:15,
+        flexDirection: 'row'
+    },
+    Like:
+    {
+        paddingRight: 15, 
+        paddingLeft: 10, 
+        flex:1
+    },
+    Comment:
+    {
+        flex: 3 ,
+        paddingLeft: 5,
+        height: 40, 
+        borderColor: 'black', 
+        backgroundColor: 'grey'
+    }
+    
+});
