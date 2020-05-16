@@ -34,7 +34,7 @@ export const PRODUCTS2 = [
 ]
 
 
-export const PRODUCTS = [
+const PRODUCTS = [
     {
         id: '1',
         name: 'Shirt',
@@ -168,3 +168,5 @@ export const PRODUCTS = [
 
     }
 ]
+
+export default PRODUCTS

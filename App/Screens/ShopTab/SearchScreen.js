@@ -9,6 +9,8 @@ import { SearchBar, Overlay } from 'react-native-elements';
 
 import BackButton from '../../components/BackButton'
 import ScreenStyle from '../../Styles/ScreenStyle';
+import ProductList from '../../components/ProductList'
+import PRODUCTS from '../../dummy-data/Products'
 
 
 export default function SearchScreen(props) {
@@ -24,14 +26,27 @@ export default function SearchScreen(props) {
     //     })
     return (
         <View style={{flexDirection: 'column', marginTop: 30, ...ScreenStyle}}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={styles.searchBarContainer}>
                 <BackButton navigation={props.navigation}/>
                 <SearchBar placeholder="Search..." lightTheme={true} containerStyle={{flex: 1}} platform={Platform.OS}/>
             </View>
             
-            <View style={{flexDirection: 'row'}}>
-                {/*place filters here*/}
+            
+
+            <View style={styles.productsContainer}>
+                <ProductList navigation={props.navigation} data={PRODUCTS}/>
             </View>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    searchBarContainer: {
+        flexDirection: 'row',
+        
+
+    },
+    productsContainer: {
+        
+    }
+})

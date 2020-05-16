@@ -16,7 +16,7 @@ import { Drawer } from 'react-native-paper';
 import Header from '../../components/Header.js'
 
 import { SHOPS } from '../../dummy-data/Sellers'
-import {PRODUCTS} from '../../dummy-data/Products'
+import PRODUCTS from '../../dummy-data/Products'
 
 import CheckoutScreen from  './CheckoutScreen'
 import CartScreen from './CartScreen';

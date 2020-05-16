@@ -14,6 +14,7 @@ import UIButtonTextStyle from '../Styles/UIButtonTextStyle';
 
 
 export default function UIButton(props) {
+    //props=onPress, height, width, text
     return (
         <TouchableOpacity onPress={props.onPress}>
             <View style={{ backgroundColor: Colors.buttonColor, height: props.height, width: props.width, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>

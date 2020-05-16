@@ -8,7 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import ScreenStyle from '../../Styles/ScreenStyle'
 import DrawerStack from './DrawerStack';
 import ProductList from '../../components/ProductList';
-import { PRODUCTS } from '../../dummy-data/Products';
+import  PRODUCTS from '../../dummy-data/Products';
 
 export default function FavoritesStack( {navigation} ) {
     return (

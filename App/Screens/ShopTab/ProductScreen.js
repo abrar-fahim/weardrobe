@@ -5,7 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import { PRODUCTS  } from '../../dummy-data/Products'
+import  PRODUCTS   from '../../dummy-data/Products'
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
 import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
