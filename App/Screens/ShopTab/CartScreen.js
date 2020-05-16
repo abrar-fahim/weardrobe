@@ -6,8 +6,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import ScreenStyle from '../../Styles/ScreenStyle'
 import CARTITEMS from '../../dummy-data/CartItems'
-import { FlatList } from 'react-native-gesture-handler';
-import { Ionicons, Entypo } from '@expo/vector-icons';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { Ionicons, Entypo, AntDesign } from '@expo/vector-icons';
+
+import UIButton from '../../components/UIButton'
 
 
 
@@ -16,23 +18,50 @@ export default function CartScreen(props) {
     const renderItems = (itemData) => {
         return (
 
-            <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', padding: 20, height: 200}}>
-                <View style={{flexDirection: 'row', backgroundColor: '#ECECEC'}}>
-                    <View>
-                        
-                        <Image source={itemData.item.picture} style={{height: 100, width: 100}}/>
-                        <Text> {itemData.item.name}</Text>
-                    </View>
-                    <View style={{marginRight: 50}}>
-                        <Text> {"BDT " + itemData.item.price} </Text>
-                        <Text>Quantity: 5000</Text>
+            <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', padding: 10, height: 120, alignItems: 'center'}}>
+        
+                    
+                <View style={styles.cartItem}>
+                    
+                    <TouchableOpacity>
+                        <Image source={itemData.item.picture} style={{height: 70, width: 70}}/> 
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <View>
+                            <Text style={{fontSize: 17, fontWeight: '400'}}> {itemData.item.name}</Text>
+                            <Text style={{fontWeight:'200'}} > {"Ref: " + itemData.item.id}</Text>
+                        </View>
+                    </TouchableOpacity>
+                  
+                    
+                    <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: 70, alignItems: 'center'}}>
+                        <Text>5000</Text>
+                        <View style={{ justifyContent: 'space-between', height: 50}}>
+                            <TouchableOpacity>
+                                <AntDesign name="pluscircle" size={20} color='grey'/>
+                            </TouchableOpacity>
 
+                            <TouchableOpacity>
+                                <AntDesign name="minuscircle" size={20} color='grey'/> 
+                            </TouchableOpacity>
+                            
+                            
+                            
+                        </View>
                     </View>
+                    
+                    
+                    <Text > {"BDT " + itemData.item.price} </Text>
+                    
                 </View>
+                   
+                    
+                <TouchableOpacity>
+                    <View style={{justifyContent: 'center', marginRight: 0, alignItems: 'center'}}>
+                        <Text>X</Text>
+                    </View>
+                </TouchableOpacity>
                 
-                <View style={{justifyContent: 'center', marginRight: 50}}>
-                    <Text>X</Text>
-                </View>
 
             </View>
         )
@@ -41,7 +70,24 @@ export default function CartScreen(props) {
         <View style={ScreenStyle}>
             <FlatList data={CARTITEMS} renderItem={renderItems}/>
             
-            <Button title="Checkout" onPress={ () => props.navigation.navigate('Checkout')}/>
+            <UIButton text="CHECKOUT" onPress={ () => props.navigation.navigate('Login')} width={400} height={50}/>
         </View>
     )
 }
+
+const styles = StyleSheet.create(
+    {
+        cartItem : {
+            marginRight: 10,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#eae9e9',
+            flex: 1,
+            height: 100,
+            width: 400,
+            marginLeft: 1,
+            padding: 10
+        }
+    }
+)

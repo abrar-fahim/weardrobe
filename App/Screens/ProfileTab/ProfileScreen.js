@@ -24,6 +24,7 @@ import CreateBlogScreen3 from './CreateBlogScreen3';
 import BlogScreen from './BlogScreen';
 import HeaderOptions from '../../Styles/HeaderOptions';
 import ScreenStyle from '../../Styles/ScreenStyle'
+import Colors from '../../Styles/Colors';
 
 
 
@@ -63,7 +64,7 @@ export function ProfileTabsScreen({navigation}) {
             <TopTab.Navigator
                 tabBarOptions={{
                     indicatorStyle: {
-                        backgroundColor: 'green'
+                        backgroundColor: Colors.tabBarActiveTintColor
                     }
                 }}
             >
@@ -92,8 +93,7 @@ export default function ProfileStackScreen(props) {
                 )
             }}/>
 
-            <ProfileStack.Screen name="Login" component={LoginScreen}/>
-            <ProfileStack.Screen name="Signup" component={SignupScreen}/>
+
             <ProfileStack.Screen name="ProfileSettings" component={ProfileSettingsScreen}/>
             <ProfileStack.Screen name="FollowersListTab" component={FollowersListTabScreen}/>
             <ProfileStack.Screen name="CreateBlog1" component={CreateBlogScreen1} options={{

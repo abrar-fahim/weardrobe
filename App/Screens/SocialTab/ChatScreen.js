@@ -93,7 +93,7 @@ export default function ChatStackScreen({navigation}) {
             }}/>
 
             <ChatStack.Screen name="NewChat" component={NewChatScreen} options={{
-                headerRight: () => (<SearchButton onPress={ () => navigation.navigate('PeopleSearch')}/>)
+               
             }}/>
             <ChatStack.Screen name="PeopleSearch" component={PeopleSearchScreen}/>
             <ChatStack.Screen name="GroupTab" component={GroupTabScreen} options={{

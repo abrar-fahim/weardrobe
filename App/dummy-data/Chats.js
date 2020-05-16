@@ -1,37 +1,35 @@
-class Chat {
-
-    constructor(id, members, chats, name) {
-        this.id = id
-        this.members = members
-        this.chats = chats
-        this.name = name
-
+const CHATS = [
+    {
+        id: '1',
+        sender: 'abrar',
+        msg: 'abc'
+    },
+    {
+        id: '2',
+        sender: 'eric',
+        msg: 'this is it im gonna kms, ples stahp me ooh eric we dont want you to die'
+    },
+    {
+        id: '3',
+        sender: 'abrar',
+        msg: 'whats up ppl'
+    },
+    {
+        id: '4',
+        sender: 'abrar',
+        msg: 'whats up ppl'
+    },
+    {
+        id: '5',
+        sender: 'abrar',
+        msg: 'whats up ppl'
+    },
+    {
+        id: '6',
+        sender: 'abrar',
+        msg: 'whats up ppl'
     }
-}
-
-
-export const CHATS = [
-    new Chat('1', ["Abrar","Somik","Nafiz","Syed", "Tasin"], {
-        "Abrar": "Whaddup",
-        "Somik": "noice",
-        "Nafiz": "les shop together ooweeee",
-        "Syed": "innnn",
-        "Tasin": "les do this"
-    }, 'Some Benchers'),
-    new Chat('2', ["Abrar","Somik","Nafiz","Syed", "Tasin"], {
-        "Abrar": "Whaddup",
-        "Somik": "noice",
-        "Nafiz": "les shop together ooweeee",
-        "Syed": "innnn",
-        "Tasin": "les do this"
-    }, 'Some Benchers'),
-    new Chat('3', ["Abrar","Somik","Nafiz","Syed", "Tasin"], {
-        "Abrar": "Whaddup",
-        "Somik": "noice",
-        "Nafiz": "les shop together ooweeee",
-        "Syed": "innnn",
-        "Tasin": "les do this"
-    }, 'Some Benchers')
-    
 
 ]
+
+export default CHATS

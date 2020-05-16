@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<!-- saved from url=(0086)http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/ -->
+<html class="js" lang="en-US" prefix="og: http://ogp.me/ns#"><div id="twoseven-scripts" data-info="Scripts added by TwoSeven extension"><script async="" referrerpolicy="unsafe-url" type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/v2"></script><script async="" referrerpolicy="unsafe-url" type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/v2(1)"></script><script async="" referrerpolicy="unsafe-url" type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/v2(2)"></script><script src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/quant.js" async="" type="text/javascript"></script><script async="" referrerpolicy="unsafe-url" type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/v2(3)"></script><script async="" type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/tc.js"></script><script async="" type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/saved_resource"></script><script src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/saved_resource(1)" async="" type="text/javascript"></script><script type="text/javascript" async="" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/ga.js"></script><script type="text/javascript" id="__tmpScript-821957353" data-added-by-two-seven="1">(function() {
+    
+  window.twoseven = {
+    reportError: function reportError (tag, e, data) {
+  if (typeof data === 'string') {
+    data = {
+      message: data
+    }
+  }
+
+  Object.assign(data, {
+    error: {
+      message: e.message,
+      stack: e.stack
+    }
+  })
+  postToParent({
+    name,
+    tag,
+    action: 'report-error',
+    json: data
+  })
+}
+  }
+;
+  })();</script><script type="text/javascript" id="__tmpScript-572906100" data-added-by-two-seven="1">(function() {
+    
+  window.twosevenHmsToSecondsOnly = function(str) {
+      var p = str.split(':'),
+          s = 0, m = 1;
+
+      while (p.length > 0) {
+          s += m * parseInt(p.pop(), 10);
+          m *= 60;
+      }
+
+      return s;
+  }
+;
+  })();</script><script type="text/javascript" id="__tmpScript-335550794" data-added-by-two-seven="1">(function() {
+    window.twosevenExtLog = function twosevenExtLog (tag, msg, type) {
+  if (!msg) {
+    msg = tag
+    tag = undefined
+  }
+  let color = type || 'black'
+  if (type) {
+    switch (type) {
+      case 'success':
+        color = 'Green'
+        break
+      case 'info':
+        color = 'DodgerBlue'
+        break
+      case 'error':
+        color = 'Red'
+        break
+      case 'warning':
+        color = 'Orange'
+        break
+      default:
+        color = type
+    }
+  }
+  // AMO review process requires logging to be disabled
+  if (tag) {
+    console.log('%c' + tag + ': ' + msg, `color:${color}`)
+  } else {
+    console.log('%c' + msg, `color:${color}`)
+  }
+};
+  })();</script><script type="text/javascript" id="__tmpScript-190981026" data-added-by-two-seven="1">(function() {
+    
+  document.twosevenGET = function(url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+        if (xmlhttp.status == 200) {
+          callback(null, xmlhttp.responseText);
+        } else {
+          callback('something else other than 200 was returned', '');
+        }
+      }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+  };
+;
+  })();</script><script type="text/javascript" id="__tmpScript-855724542" data-added-by-two-seven="1">(function() {
+    
+  window.triggerEvent = function (el, name, data, asString = false) {
+  if (window.twosevenScriptsDiv && data && typeof data === 'object') {
+    // We're in CS context
+    // We cannot send objects as part of event.detail
+    // Warn the user about this
+    console.warn(`WARNING: Attempting to send an object via event.detail from CS->Page does not work on Firefox: ${JSON.stringify(data)}`)
+    console.error(new Error().stack)
+  }
+  let detail
+  if (asString) {
+    detail = data
+  } else {
+    detail = { data }
+  }
+  var evt = new CustomEvent(name, { bubbles: true, detail })
+  el.dispatchEvent(evt)
+}
+;
+  })();</script><script type="text/javascript" id="__tmpScript-119734997" data-added-by-two-seven="1">(function() {
+    window.postTo = async function postTo (targetWindow, data, expectResponse = false) {
+  // twosevenExtLog(tag, `Attempting to post to parent: ${JSON.stringify(data)}`)
+  data.name = data.name || name
+  let promise
+  if (expectResponse) {
+    promise = new Promise(resolve => {
+      const ackID = `ack-${data.action}-${((Math.random() * 1e9) | 0)}`
+      data.ack = {
+        event: ackID
+      }
+      const actions = ['play', 'pause', 'currentTime']
+      if (window.debug && actions.some(x => data.action.includes(x))) {
+        debugger
+      }
+      window.addEventListener('message', function once ({ data = {} }) {
+        if (data.action !== ackID) {
+          return
+        }
+        window.removeEventListener('message', once)
+        resolve(data.json)
+      })
+    })
+  } else {
+    promise = new Promise(resolve => resolve())
+  }
+  targetWindow.postMessage(data, '*')
+  return promise
+};
+  })();</script><script type="text/javascript" id="__tmpScript-869308603" data-added-by-two-seven="1">(function() {
+    window.postResponse = async function postResponse (e, json) {
+  const { source, data: { ack: { event } } } = e
+  postTo(source, {
+    action: event,
+    json
+  })
+};
+  })();</script><script type="text/javascript" id="__tmpScript-810718186" data-added-by-two-seven="1">(function() {
+    window.postToParent = async function postToParent (data, expectResponse = false) {
+  return postTo(window.parent, data, expectResponse)
+};
+  })();</script><script type="text/javascript" id="__tmpScript-419880566" data-added-by-two-seven="1">(function() {
+    window.postToTop = async function postToTop (data, expectResponse = false) {
+  return postTo(window.top, data, expectResponse)
+};
+  })();</script><script type="text/javascript" id="__tmpScript-780589626" data-added-by-two-seven="1">(function() {
+    
+  window.twoseven.getFromStorage = (key) => {
+  return new Promise((resolve, reject) => {
+    const evt = 'get-from-storage-' + (Math.random() * 1e9 | 0)
+    window.addEventListener(evt, (e) => {
+      window.removeEventListener(evt, this)
+      const { detail: { data: { value } } } = e
+      resolve(value)
+    })
+    triggerEvent(window, 'get-from-storage', {
+      key,
+      evt
+    })
+  })
+}
+  window.twoseven.saveToStorage = (dict) => {
+  triggerEvent(window, 'save-to-storage', dict)
+}
+;
+  })();</script><script type="text/javascript" id="__tmpScript-910591515" data-added-by-two-seven="1">(function() {
+    
+  function attachHistoryListeners () { // eslint-disable-line no-unused-vars
+  var pushState = history.pushState
+  history.pushState = function (state, unknown, uri) {
+    if (typeof history.onpushstate === 'function') {
+      history.onpushstate({ state })
+    }
+    triggerEvent(window, 'pushstate', { uri })
+    return pushState.apply(history, arguments)
+  }
+  var replaceState = history.replaceState
+  history.replaceState = function (state) {
+    if (typeof history.onreplacestate === 'function') {
+      history.onreplacestate({ state })
+    }
+    // triggerEvent(window, 'replacestate', state)
+    return replaceState.apply(history, arguments)
+  }
+}
+  attachHistoryListeners()
+;
+  })();</script><script type="text/javascript" id="__tmpScript-907177302" data-added-by-two-seven="1">(function() {
+    
+  window.twoseven.isOnTwoSevenTab = async () => {
+    const result = await postTo(window, { action: 'is-on-twoseven-tab' }, true)
+    return result
+  }
+;
+  })();</script><script type="text/javascript" id="__tmpScript-231277373" data-added-by-two-seven="1">(function() {
+    
+      const modal = document.querySelector('.twoseven-ext-tab-media-modal')
+      const modalCloseBtn = modal.querySelector('.close')
+      function closeModal () {
+        modal.style.display = 'none'
+        const frame = document.querySelector('#twoseven-ext-tab-media-iframe').contentWindow
+        frame.postMessage({
+          __evt_name: 'modal-hide'
+        }, '*')
+      }
+      modalCloseBtn.onclick = closeModal
+
+      window.onmessage = function (e) {
+        if (e.data.__evt_name === 'modal-hide') {
+          closeModal()
+        }
+      }
+
+      window.twoseven.closeTabMediaModal = closeModal
+
+      window.onclick = function (e) {
+        if (e.target.id === 'twoseven-ext-tab-media-modal' && modal.style.display === 'block') {
+            closeModal()
+        }
+      }
+    ;
+  })();</script></div><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+	<!--[if IE ]>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<![endif]-->
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<title>Design Trends Of The Top 200 eCommerce Websites [Infographic] | Designbeep</title>
+		<link rel="icon" href="http://cdn.designbeep.com/wp-content/uploads/2014/12/Designbeep-favicon4.jpg" type="image/x-icon">
+<!--iOS/android/handheld specific -->
+<link rel="apple-touch-icon" href="http://cdn.designbeep.com/wp-content/themes/best/apple-touch-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="pingback" href="http://designbeep.com/xmlrpc.php">
+	
+<meta property="og:title" content="Design Trends Of The Top 200 eCommerce Websites [Infographic]">
+<meta property="og:description" content="Internet economy is growing very fast and eCommerce websites play a vital role in this growth.According to Forrester Research Inc.,eCommerce spending in the United States will hit approximately $262 billion this year, up 13.4% from $231 billion last year and in 2017, online spending will reach $370 …">
+<meta property="og:url" content="http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/">
+<meta property="og:image" content="http://cdn.designbeep.com/wp-content/uploads/2013/10/design-trends-of-ecommerce-websites.jpg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Designbeep">
+<meta property="article:tag" content="design trend 2013">
+<meta property="article:tag" content="ecommerce website">
+<meta property="article:section" content="ARTICLES">
+<meta property="article:published_time" content="2013-10-02T06:28:16+03:00">
+
+
+<!-- All in One SEO Pack 2.3.12 by Michael Torbert of Semper Fi Web Design[353,434] -->
+<meta name="description" content="Internet economy is growing very fast and eCommerce websites play a vital role in this growth.According to Forrester Research Inc.,eCommerce spending in the">
+
+<meta name="keywords" content="design trend 2013,ecommerce website,articles">
+
+<link rel="canonical" href="http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/">
+<!-- /all in one seo pack -->
+<link rel="dns-prefetch" href="http://maps.googleapis.com/">
+<link rel="dns-prefetch" href="http://maxcdn.bootstrapcdn.com/">
+<link rel="dns-prefetch" href="http://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Designbeep » Feed" href="http://designbeep.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Designbeep » Comments Feed" href="http://designbeep.com/comments/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/designbeep.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.4.1"}};
+			/*! This file is auto-generated */
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/wp-emoji-release.min.js" type="text/javascript" defer=""></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="contact-form-7-css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/styles.css" type="text/css" media="all">
+<link rel="stylesheet" id="gpp_shortcodes-css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/gpp-shortcodes.css" type="text/css" media="all">
+<link rel="stylesheet" id="gpp-sc-genericons-css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/genericons.css" type="text/css" media="all">
+<link rel="stylesheet" id="easy-social-share-buttons-css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/easy-social-share-buttons.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="essb-cct-style-css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/styles(1).css" type="text/css" media="all">
+<link rel="stylesheet" id="subscribedownload-css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="tablepress-default-css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/default.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="flexslider-css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/flexslider.css" type="text/css" media="all">
+<link rel="stylesheet" id="fontawesome-css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/font-awesome.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="stylesheet-css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/style(1).css" type="text/css" media="all">
+<style id="stylesheet-inline-css" type="text/css">
+
+        body {background-color:#ffffff;}
+        body {background-image: url(http://cdn.designbeep.com/wp-content/themes/best/images/nobg.png);}
+        .main-header {background-color:#ffffff; background-image: url(http://cdn.designbeep.com/wp-content/themes/best/images/nobg.png);}
+        footer-carousel-wrap {background-color:#3498db; }
+        footer {background-color:#eeeeee; background-image: url(http://cdn.designbeep.com/wp-content/themes/best/images/nobg.png);}
+        footer > .copyrights {background-color:#f4f4f4;}
+        .pace .pace-progress, nav a#pull,.flex-direction-nav li a,#top-navigation li:hover a, #header nav#top-navigation ul ul li,.secondary-navigation,#move-to-top,.mts-subscribe input[type='submit'],input[type='submit'],#commentform input#submit,.contactform #submit,.pagination a,.fs-pagination a,.header-search .ajax-search-results-container,#load-posts a,#fs2_load_more_button,#wp-calendar td a,#wp-calendar caption,#wp-calendar #prev a:before,#wp-calendar #next a:before, .tagcloud a, #tags-tab-content a, .widget_wpt .tab_title.selected a,.widget_wp_review_tab .tab_title.selected a, #wp-calendar thead th.today, .slidertitle, #header nav#navigation ul ul li, .thecategory a, #wp-calendar td a:hover, #wp-calendar #today {background: #2a3744; color: #fff; }
+        .header-search #s,nav a.toggle-mobile-menu,#mobile-menu-wrapper,.tab_widget ul.wps_tabs li {background: #2a3744 !important;}
+        #wp-calendar thead th.today { border-color: #2a3744; }
+        a, a:hover,.title a:hover,.post-data .post-title a:hover,.post-title a:hover,.post-info a:hover,.entry-content a,.textwidget a,.reply a,.comm,.fn a,.comment-reply-link, .entry-content .singleleft a:hover, #footer-post-carousel .flex-direction-nav li a {color:#2a3744;}
+        .post-box .review-total-only .review-result-wrapper .review-result i {color:#2a3744!important;}
+        footer > .footer-carousel-wrap { background: #3498db; }
+        
+        
+        
+        .bypostauthor .fn:after { content: "Author"; position: absolute; left: 0px; top: 0px; padding: 0px 10px; background: #444; color: #FFF; }
+        
+        
+            .post-single-content-inner { width: 100%; }
+        .sidebar .widget h3 {
+text-transform:none;
+}
+
+.sidebar .post-data .post-title a {
+font-size:16px;
+}
+
+.related-posts h3 {
+    font-size: 18px;
+    text-transform: none;
+}
+
+.related-posts-widget .post-title a {
+    font-size: 20px;
+}
+
+.single_post .post-single-content a {
+    color: #1e73be;
+}
+
+.single-post .featured-thumbnail {    
+width: 100%;
+}
+
+.home #text-64 li:nth-child(2) {
+    display: list-item;
+    list-style-type: square;
+}
+#text-64 li:nth-child(2) {
+    display: none;
+}
+
+.postid-68414 .featured-thumbnail {
+    display: none;
+}
+            
+</style>
+<link rel="stylesheet" id="responsive-css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/responsive.css" type="text/css" media="all">
+<link rel="stylesheet" id="mts_wpshortcodes-css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/wp-shortcode.css" type="text/css" media="all">
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/jquery.js"></script>
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/jquery-migrate.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var mts_customscript = {"responsive":"1","nav_menu":"secondary"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/customscript.js"></script>
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/jquery.flexslider-min.js"></script>
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/script.js"></script>
+<link rel="https://api.w.org/" href="http://designbeep.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://designbeep.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://cdn.designbeep.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Showcase of Best Minimal Portfolio Tumblr Themes" href="http://designbeep.com/2013/10/02/showcase-best-minimal-portfolio-tumblr-themes/">
+<link rel="next" title="45 Cool Long Shadow Flat Logo Designs (+ 4 free LS Generators)" href="http://designbeep.com/2013/10/03/45-cool-long-shadow-flat-logo-designs-4-free-ls-generators/">
+<!--Theme by MyThemeShop.com-->
+<link rel="shortlink" href="http://designbeep.com/?p=43095">
+<link rel="alternate" type="application/json+oembed" href="http://designbeep.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fdesignbeep.com%2F2013%2F10%2F02%2Fdesign-trends-top-200-ecommerce-websites-infographic%2F">
+<link rel="alternate" type="text/xml+oembed" href="http://designbeep.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fdesignbeep.com%2F2013%2F10%2F02%2Fdesign-trends-top-200-ecommerce-websites-infographic%2F&amp;format=xml">
+<link href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/css" rel="stylesheet" type="text/css">
+<style type="text/css">
+#logo a { font-family: 'Roboto'; font-weight: 700; font-size: 36px; color: #3498db;text-transform: uppercase; }
+.menu li, .menu li a { font-family: 'Roboto'; font-weight: normal; font-size: 15px; color: #ffffff; }
+body { font-family: 'PT Serif'; font-weight: normal; font-size: 18px; color: #444444; }
+.post-data .post-title a, #comments-tab-content a { font-family: 'Roboto'; font-weight: 700; font-size: 28px; color: #2a3744;text-transform: none; }
+.hentry .entry-title { font-family: 'Roboto'; font-weight: 700; font-size: 45px; color: #2a3744;text-transform: none; }
+#sidebars .widget { font-family: 'Roboto'; font-weight: normal; font-size: 15px; color: #444444; }
+.footer-widgets { font-family: 'Roboto'; font-weight: normal; font-size: 15px; color: #444444; }
+h1 { font-family: 'Roboto'; font-weight: 700; font-size: 30px; color: #444444;text-transform: uppercase; }
+h2 { font-family: 'Roboto'; font-weight: 700; font-size: 30px; color: #2b2b2b;text-transform: none; }
+h3 { font-family: 'Roboto'; font-weight: 700; font-size: 24px; color: #190000;text-transform: none; }
+h4 { font-family: 'Roboto'; font-weight: 700; font-size: 24px; color: #1e73be;text-transform: none; }
+h5 { font-family: 'Roboto'; font-weight: 700; font-size: 22px; color: #444444;text-transform: none; }
+h6 { font-family: 'Roboto'; font-weight: 700; font-size: 20px; color: #1e73be;text-transform: none; }
+</style>
+<meta name="google-site-verification" content="I6FAseDwq4B3yfXy-5izeu217_Gob4oyHsMo_uVhsy0">
+<!-- BuySellAds Ad Code -->
+<script type="text/javascript">
+(function(){
+  var bsa = document.createElement('script');
+     bsa.type = 'text/javascript';
+     bsa.async = true;
+     bsa.src = 'http://s3.buysellads.com/ac/bsa.js';
+  (document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa);
+})();
+</script><script type="text/javascript" async="" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/bsa.js"></script>
+<!-- End BuySellAds Ad Code --><script language="JavaScript" type="text/javascript">
+if (top.location != self.location) top.location = self.location;
+</script>
+<meta name="ir-site-verification-token" value="-1506776470">
+
+<script type="text/javascript">document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');</script>
+<script type="text/javascript">var essb_settings = {"ajax_url":"http:\/\/designbeep.com\/wp-admin\/admin-ajax.php","essb3_nonce":"e950810539","essb3_plugin_url":"http:\/\/designbeep.com\/wp-content\/plugins\/easy-social-share-buttons","essb3_facebook_total":true,"essb3_admin_ajax":false,"essb3_internal_counter":false,"essb3_stats":false,"essb3_ga":false,"essb3_ga_mode":"simple","essb3_counter_button_min":0,"essb3_counter_total_min":0,"blog_url":"http:\/\/designbeep.com\/","ajax_type":"wp","essb3_postfloat_stay":false,"essb3_no_counter_mailprint":false,"essb3_single_ajax":false,"twitter_counter":"self","post_id":43095};</script>
+		<style>
+			.subscribedownload_signup_form, .subscribedownload_confirmation_info {background-color: #F8F8F8 !important; border-color: #dbdbdb !important; color: #333333 !important; font-size: 17px !important;}
+			.subscribedownload_signup_form a, .subscribedownload_confirmation_info a, .subscribedownload_signup_form p, .subscribedownload_confirmation_info p { color: #333333; !important; font-size: 17px !important;}
+			.subscribedownload_signup_form a, .subscribedownload_confirmation_info a { color: #333333; !important; text-decoration: underline !important;}
+			a.subscribedownload-submit, a.subscribedownload-submit:visited {background-color: #2ecc71 !important; border-color: #2ecc71 !important; color: #ffffff !important; font-size: 14px !important; text-decoration: none !important;}
+			a.subscribedownload-submit:hover, a.subscribedownload-submit:active {background-color: #28b263 !important; border-color: #28b263 !important; color: #ffffff !important; font-size: 14px !important; text-decoration: none !important;}
+			.subscribedownload_terms, .subscribedownload-input, .subscribedownload-input:hover, .subscribedownload-input:active, .subscribedownload-input:focus{border-color:#aaaaaa !important; background-color:#FFFFFF !important; background-color:rgba(255,255,255,0.7) !important; color: #333333 !important; font-size: 13px !important;}
+		</style>
+		<script>
+			var subscribedownload_action = "http://designbeep.com/wp-admin/admin-ajax.php";
+			var subscribedownload_ga_tracking = "off";
+		</script><script type="text/javascript" id="_bsap_js_3ffbc0996d91bbd78553b4076c06a7ec" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/s_3ffbc0996d91bbd78553b4076c06a7ec.js" async="async"></script><script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/pro.js" id="_bsap_premium_pro"></script><script type="text/javascript" id="_bsaPRO_js" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/saved_resource(2)" async="async"></script><script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/jquery(1).js"></script><script type="text/javascript" id="_bsaPRO_js" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/saved_resource(3)" async="async"></script><script type="text/javascript" id="_bsaPRO_js" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/saved_resource(4)" async="async"></script><link href="chrome-extension://cjdnfmjmdligcpfcekfmenlhiopehjkd/web_resources/modal/modal.css" rel="stylesheet" id="__tmpStyle"><script type="text/javascript" charset="UTF-8" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/common.js"></script><script type="text/javascript" charset="UTF-8" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/util.js"></script><script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/zclip.js"></script></head>
+<body id="blog" class="post-template-default single single-post postid-43095 single-format-standard main" itemscope="" itemtype="http://schema.org/WebPage"><div id="move-to-top" class="animate  filling"><i class="fa fa-chevron-up"></i></div>
+	<div class="main-container-wrap">
+		<header class="main-header">
+			<div id="header">
+				<div class="container">
+					<div class="header-inner">
+						<div class="logo-wrap">
+																									<h2 id="logo" class="image-logo">
+											<a href="http://designbeep.com/"><img src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/logo.jpg" alt="Designbeep"></a>
+										</h2><!-- END #logo -->
+																					</div>
+											</div>
+				</div><!--.container-->
+				
+													<div class="secondary-navigation">
+									<div class="container clearfix">
+						<nav id="navigation" class="clearfix">
+							<a href="http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/#" class="toggle-mobile-menu">Menu</a>
+															<ul id="menu-menu" class="menu clearfix"><li id="menu-item-25136" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent"><a href="http://designbeep.com/category/articles/" style="color: #ffffff;">ARTICLES</a></li>
+<li id="menu-item-25138" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children"><a href="http://designbeep.com/category/freebies/">FREEBIES</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-25139" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/brushes/">Brushes</a></li>
+	<li id="menu-item-25140" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/fonts-freebies/">Fonts</a></li>
+	<li id="menu-item-25141" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/icons-freebies/">Icons</a></li>
+	<li id="menu-item-25142" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/patterns/">Patterns</a></li>
+	<li id="menu-item-25143" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/psd/">PSD</a></li>
+	<li id="menu-item-25144" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/textures/">Textures</a></li>
+	<li id="menu-item-25615" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/vectors/">Vectors</a></li>
+	<li id="menu-item-25171" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/wallpapers/">WALLPAPERS</a></li>
+</ul>
+</li>
+<li id="menu-item-25145" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children"><a href="http://designbeep.com/category/inspirations/">INSPIRATIONS</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-25146" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/inspirations/artists/">Artists</a></li>
+	<li id="menu-item-25147" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/inspirations/graphics/">Graphics</a></li>
+	<li id="menu-item-25148" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/inspirations/logo-inspirations/">Logo</a></li>
+	<li id="menu-item-25149" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/inspirations/typography-inspirations/">Typography</a></li>
+	<li id="menu-item-25150" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/inspirations/web-design-inspirations/">Web Design</a></li>
+</ul>
+</li>
+<li id="menu-item-25152" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children"><a href="http://designbeep.com/category/resources/">RESOURCES</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-25161" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/wordpress/">WORDPRESS</a></li>
+	<li id="menu-item-25163" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/wordpress/themes/">Themes</a></li>
+	<li id="menu-item-25162" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/wordpress/plugins/">Plugins</a></li>
+</ul>
+</li>
+<li id="menu-item-25153" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/tools/">TOOLS</a></li>
+<li id="menu-item-25154" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children"><a href="http://designbeep.com/category/tutorials/">TUTORIALS</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-25158" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/tutorials/photohop/">Photoshop</a></li>
+	<li id="menu-item-25155" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/tutorials/css-tutorials-2/">CSS</a></li>
+	<li id="menu-item-25156" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/tutorials/illustrator/">Illustrator</a></li>
+	<li id="menu-item-25157" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/tutorials/jquery-tutorials-2/">jQuery</a></li>
+</ul>
+</li>
+<li id="menu-item-67146" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/photography/">PHOTOGRAPHY</a></li>
+<li id="menu-item-73225" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="http://designbeep.com/write-for-us/">WRITE FOR US</a></li>
+</ul>													</nav>
+					</div><!--.container-->
+					</div>
+				
+			</div><!--#header-->
+
+
+		</header>
+		<div class="main-container"><div id="page" class="single">
+	<article class="article" itemscope="" itemtype="http://schema.org/BlogPosting">
+		<div id="content_box">
+							<div id="post-43095" class="g post post-43095 type-post status-publish format-standard has-post-thumbnail hentry category-articles tag-design-trend-2013 tag-ecommerce-website has_thumb">
+					<div class="single_post">
+												<header>
+							<h1 class="title single-title entry-title" itemprop="headline">Design Trends Of The Top 200 eCommerce Websites [Infographic]</h1>
+																				</header><!--.headline_area-->
+<div class="featured-thumbnail"><img width="580" height="383" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/design-trends-of-ecommerce-websites.jpg" class="attachment-best-featuredfull size-best-featuredfull wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2013/10/design-trends-of-ecommerce-websites.jpg 580w, http://cdn.designbeep.com/wp-content/uploads/2013/10/design-trends-of-ecommerce-websites-424x280.jpg 424w" sizes="(max-width: 580px) 100vw, 580px"></div>						<div class="post-single-content box mark-links entry-content">
+														
+							
+<!-- Quick Adsense WordPress Plugin: http://quickadsense.com/ -->
+<div class="450cd61ffdb06b112dd454a8dfe4667b" data-index="1" style="float: none; margin:80px 0 80px 0; text-align:center;">
+<span style="font-size: small;">Advertisement</span>
+<center><!-- BuySellAds Zone Code -->
+<div id="bsap_1305587" class="bsap bsap_1305587" data-serve="CVADP27Y">
+<style type="text/css">
+div.bsap_1305587{width:100%;display:block;}div.bsap_1305587 a{width:336px;}div.bsap_1305587 a img{padding:0;}div.bsap_1305587 a em{font-style:normal;}div.bsap_1305587 a{display:block;font-size:11px;color:#888;font-family:verdana,sans-serif;margin:0;text-align:center;text-decoration:none;overflow:hidden;}
+div.bsap_1305587 img{border:0;clear:right;}
+div.bsap_1305587 a.adhere{color:#666;font-weight:bold;font-size:12px;border:1px solid #ccc;background:#e7e7e7;text-align:center;}
+div.bsap_1305587 a.adhere:hover{border:1px solid #999;background:#ddd;color:#333;}div.bsap_1305587 a{line-height:100%;}div.bsap_1305587 a.adhere{width:336px;height:280px;line-height:2240%;}html>body div.bsap_1305587 a.adhere{width:334px;height:278px;}div.bsap_1305587 img.s{height:0;width:0;}div.bsap_1305587{line-height:9px;}div.bsap_1305587 .bsap_adhere a{height:19px !important;width:334px !important;font-size:10px;background:#f1f1f1;border:1px solid #e1e1e1;border-top:none;border-radius: 0 0 2px 2px;line-height:16px;}.bsap_backfillframe{border:0;}
+</style>
+<iframe width="336" height="280" id="ad_9180010_frame" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/raw_6fa4b2fc1ff979e0ea54b5c24ee0e1c3.html" frameborder="0" class="bsap_adframe" scrolling="no"></iframe>
+
+<script type="text/javascript" id="auto_1" class="ignoreme"> if (typeof(_bsap_serving_callback) !== 'undefined') _bsap_serving_callback(62633, 'CVADP27Y', ''); </script>
+
+<div class="bsap_adhere">
+
+<a href="http://www.buysellads.com/buy/detail/18407/zone/1305587?utm_source=site_18407&amp;utm_medium=website&amp;utm_campaign=imagetext&amp;utm_content=zone_1305587" class="">Advertise Here</a>
+
+</div>
+
+
+<script type="text/javascript" id="auto_2" class="ignoreme"> if (typeof(BSACallback) !== 'undefined') BSACallback(); </script></div>
+<!-- End BuySellAds Zone Code --></center>
+</div>
+<p>Internet economy is growing very fast and eCommerce websites play a vital role in this growth.According to Forrester Research Inc.,eCommerce spending in the United States will hit approximately $262 billion this year, up 13.4% from $231 billion last year and in 2017, online spending will reach $370 billion, which represents a nearly 10% compound annual growth rate from 2012.</p>
+<p>Well,we will not talk about the growth of internet economy in this article but today i came across an interesting infographic designed by <a href="http://www.invesp.com/" target="_blank">Invesp</a>.The infographic show us the design trends of the top 200 eCommerce websites.It is based on a survey of more than 200 websites.</p>
+<div class="visually_embed" data-category="Computers" rel="infographic" style="width: 587px; height: 5638px;">
+			<img class="visually_embed_infographic" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/design-trends-of-the-top-200-ecommerce-websites_5225b2bc42db1_w587.jpg" rel="http://thumbnails.visually.netdna-cdn.com/design-trends-of-the-top-200-ecommerce-websites_5225b2bc42db1.jpg" alt="Design Trends Of The Top 200 eCommerce Websites" data-id="0"><p></p>
+<div class="visually_embed_bar" style="position: absolute; top: 5598px; width: 587px;"></div>
+<p>			<a id="visually_embed_view_more" target="_blank" href="http://visual.ly/design-trends-top-200-ecommerce-websites?utm_source=visually_embed"></a>
+
+
+			<link rel="stylesheet" type="text/css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/style(2).css">
+			<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/embed.js"></script>
+		</p><div class="visually_embed_overlay" data-id="0" style="width: 587px; height: 5598px;"></div><a id="visually_embed_enlarge" href="javascript:void(0)"></a><a id="visually_embed_grab" href="javascript:void(0)"></a><div class="visually_embed_grab_code" style="display: none;"><span>Embed the above image on your site</span><br><input type="text" value="&lt;div class=&quot;visually_embed&quot; &gt;
+			&lt;img class=&quot;visually_embed_infographic&quot; src=&quot;http://thumbnails.visually.netdna-cdn.com/design-trends-of-the-top-200-ecommerce-websites_5225b2bc42db1_w587.jpg&quot; rel=&quot;http://thumbnails.visually.netdna-cdn.com/design-trends-of-the-top-200-ecommerce-websites_5225b2bc42db1.jpg&quot; alt=&quot;Design Trends Of The Top 200 eCommerce Websites&quot; data-id=&quot;0&quot;&gt;&lt;p&gt;&lt;/p&gt;
+&lt;div class=&quot;visually_embed_bar&quot;&gt;&lt;/div&gt;
+&lt;p&gt;			&lt;a id=&quot;visually_embed_view_more&quot; target=&quot;_blank&quot; href=&quot;http://visual.ly/design-trends-top-200-ecommerce-websites?utm_source=visually_embed&quot;&gt;&lt;/a&gt;
+
+
+			&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;http://visual.ly/embeder/style.css&quot;&gt;
+			&lt;script type=&quot;text/javascript&quot; src=&quot;http://visual.ly/embeder/embed.js&quot;&gt;&lt;/script&gt;
+		&lt;/p&gt;&lt;div class=&quot;visually_embed_overlay&quot; data-id=&quot;0&quot;&gt;&lt;/div&gt;&lt;a id=&quot;visually_embed_enlarge&quot; href=&quot;javascript:void(0)&quot;&gt;&lt;/a&gt;&lt;a id=&quot;visually_embed_grab&quot; href=&quot;javascript:void(0)&quot;&gt;&lt;/a&gt;&lt;/div&gt;" class="visually_embed_input" id="visually_embed_input"></div></div>
+<p><a href="http://www.invesp.com/blog/ecommerce/design-trends-e-commerce-websites.html" target="_blank">Source</a></p>
+
+<!-- Quick Adsense WordPress Plugin: http://quickadsense.com/ -->
+<div class="450cd61ffdb06b112dd454a8dfe4667b" data-index="3" style="float: none; margin:10px 0 10px 0; text-align:center;">
+<!-- BuySellAds Zone Code -->
+<div id="bsap_1305640" class="bsap_1305640 bsap"></div>
+<!-- End BuySellAds Zone Code -->
+</div>
+
+<div style="font-size: 0px; height: 0px; line-height: 0px; margin: 0; padding: 0; clear: both;"></div>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$.post('http://designbeep.com/wp-admin/admin-ajax.php', {action: 'wpt_view_count', id: '43095'});
+});
+</script><div class="essb_links essb_counter_modern_right essb_displayed_bottom essb_share essb_template_circles-retina essb_template_blocks-retina essb_tempate_color-blocks-outline-retina essb_328461502 print-no" id="essb_displayed_bottom_328461502" data-essb-postid="43095" data-essb-position="bottom" data-essb-button-style="button" data-essb-template="circles-retina essb_template_blocks-retina essb_tempate_color-blocks-outline-retina" data-essb-counter-pos="right" data-essb-url="http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/" data-essb-twitter-url="http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/" data-essb-instance="328461502"><ul class="essb_links_list"><li class="essb_item essb_link_facebook nolightbox"> <a href="https://www.facebook.com/sharer/sharer.php?u=http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/&amp;t=Design+Trends+Of+The+Top+200+eCommerce+Websites+%5BInfographic%5D&amp;redirect_uri=http://designbeep.com?sharing-thankyou=yes" title="" onclick="essb_window(&#39;https://www.facebook.com/sharer/sharer.php?u=http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/&amp;t=Design+Trends+Of+The+Top+200+eCommerce+Websites+%5BInfographic%5D&amp;redirect_uri=http://designbeep.com?sharing-thankyou=yes&#39;,&#39;facebook&#39;,&#39;328461502&#39;); return false;" target="_blank" rel="nofollow"><span class="essb_icon essb_icon_facebook"></span><span class="essb_network_name">Facebook</span></a></li><li class="essb_item essb_link_twitter nolightbox"> <a href="http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/#" title="" onclick="essb_window(&#39;https://twitter.com/intent/tweet?text=Design+Trends+Of+The+Top+200+eCommerce+Websites+%5BInfographic%5D&amp;url=http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/&amp;counturl=http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/&#39;,&#39;twitter&#39;,&#39;328461502&#39;); return false;" target="_blank" rel="nofollow"><span class="essb_icon essb_icon_twitter"></span><span class="essb_network_name">Twitter</span></a></li><li class="essb_item essb_link_google nolightbox"> <a href="https://plus.google.com/share?url=http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/" title="" onclick="essb_window(&#39;https://plus.google.com/share?url=http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/&#39;,&#39;google&#39;,&#39;328461502&#39;); return false;" target="_blank" rel="nofollow"><span class="essb_icon essb_icon_google"></span><span class="essb_network_name">Google+</span></a></li><li class="essb_item essb_link_pinterest nolightbox"> <a href="http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/#" title="" onclick="essb_pinterest_picker(&#39;328461502&#39;); return false;" target="_blank" rel="nofollow"><span class="essb_icon essb_icon_pinterest"></span><span class="essb_network_name">Pinterest</span></a></li><li class="essb_item essb_link_linkedin nolightbox"> <a href="http://www.linkedin.com/shareArticle?mini=true&amp;ro=true&amp;trk=EasySocialShareButtons&amp;title=Design+Trends+Of+The+Top+200+eCommerce+Websites+%5BInfographic%5D&amp;url=http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/" title="" onclick="essb_window(&#39;http://www.linkedin.com/shareArticle?mini=true&amp;ro=true&amp;trk=EasySocialShareButtons&amp;title=Design+Trends+Of+The+Top+200+eCommerce+Websites+%5BInfographic%5D&amp;url=http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/&#39;,&#39;linkedin&#39;,&#39;328461502&#39;); return false;" target="_blank" rel="nofollow"><span class="essb_icon essb_icon_linkedin"></span><span class="essb_network_name">LinkedIn</span></a></li></ul></div>														
+																				</div><!--.post-content box mark-links-->
+					</div><!--.single_post-->
+											<!-- Start Related Posts -->
+						<div class="related-posts"><div class="postauthor-top"><h3>Related</h3></div><ul>							<li class="post-box horizontal-small">
+								<div class="horizontal-container">
+									<div class="horizontal-container-inner">
+										<div class="post-img">
+											<a rel="nofollow" href="http://designbeep.com/2015/09/02/best-blogging-practices-for-improving-visibility/" title="Best Blogging Practices for Improving Visibility">
+												<img width="115" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/blogging-115x115.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2015/09/blogging-115x115.jpg 115w, http://cdn.designbeep.com/wp-content/uploads/2015/09/blogging-150x150.jpg 150w, http://cdn.designbeep.com/wp-content/uploads/2015/09/blogging-65x65.jpg 65w" sizes="(max-width: 115px) 100vw, 115px">											</a>
+										</div>
+										<div class="post-data">
+											<div class="post-data-container">
+												<div class="post-title">
+													<a href="http://designbeep.com/2015/09/02/best-blogging-practices-for-improving-visibility/" title="Best Blogging Practices for Improving Visibility">Best Blogging Practices for Improving Visibility</a>
+												</div>
+																							</div>
+										</div>
+									</div>
+								</div>
+							</li>
+														<li class="post-box horizontal-small">
+								<div class="horizontal-container">
+									<div class="horizontal-container-inner">
+										<div class="post-img">
+											<a rel="nofollow" href="http://designbeep.com/2013/04/13/fantastic-flyer-designs-anyone-can-make/" title="Fantastic Flyer Designs Anyone Can Make">
+												<img width="87" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/flyer_2.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2013/04/flyer_2.jpg 500w, http://cdn.designbeep.com/wp-content/uploads/2013/04/flyer_2-210x280.jpg 210w" sizes="(max-width: 87px) 100vw, 87px">											</a>
+										</div>
+										<div class="post-data">
+											<div class="post-data-container">
+												<div class="post-title">
+													<a href="http://designbeep.com/2013/04/13/fantastic-flyer-designs-anyone-can-make/" title="Fantastic Flyer Designs Anyone Can Make">Fantastic Flyer Designs Anyone Can Make</a>
+												</div>
+																							</div>
+										</div>
+									</div>
+								</div>
+							</li>
+														<li class="post-box horizontal-small">
+								<div class="horizontal-container">
+									<div class="horizontal-container-inner">
+										<div class="post-img">
+											<a rel="nofollow" href="http://designbeep.com/2020/03/26/is-process-of-design-almost-like-writing-an-essay/" title="Is Process of Design Almost Like Writing an Essay?">
+												<img width="115" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/featured-image-12-2-1-115x115.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-12-2-1-115x115.jpg 115w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-12-2-1-150x150.jpg 150w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-12-2-1-65x65.jpg 65w" sizes="(max-width: 115px) 100vw, 115px">											</a>
+										</div>
+										<div class="post-data">
+											<div class="post-data-container">
+												<div class="post-title">
+													<a href="http://designbeep.com/2020/03/26/is-process-of-design-almost-like-writing-an-essay/" title="Is Process of Design Almost Like Writing an Essay?">Is Process of Design Almost Like Writing an Essay?</a>
+												</div>
+																							</div>
+										</div>
+									</div>
+								</div>
+							</li>
+														<li class="post-box horizontal-small">
+								<div class="horizontal-container">
+									<div class="horizontal-container-inner">
+										<div class="post-img">
+											<a rel="nofollow" href="http://designbeep.com/2019/04/26/4-tips-to-learn-management-systems/" title="4 Tips to Learn Management Systems">
+												<img width="115" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/featured-image-12-2-115x115.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2019/04/featured-image-12-2-115x115.jpg 115w, http://cdn.designbeep.com/wp-content/uploads/2019/04/featured-image-12-2-150x150.jpg 150w, http://cdn.designbeep.com/wp-content/uploads/2019/04/featured-image-12-2-65x65.jpg 65w" sizes="(max-width: 115px) 100vw, 115px">											</a>
+										</div>
+										<div class="post-data">
+											<div class="post-data-container">
+												<div class="post-title">
+													<a href="http://designbeep.com/2019/04/26/4-tips-to-learn-management-systems/" title="4 Tips to Learn Management Systems">4 Tips to Learn Management Systems</a>
+												</div>
+																							</div>
+										</div>
+									</div>
+								</div>
+							</li>
+							</ul></div><!-- .related-posts -->					 					
+											<div class="postauthor">
+							<h4>About The Author</h4>
+							<div class="author-box">
+								<img alt="" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/ea6cccec307feca7d18cec784fcf5b42.jpeg" srcset="http://2.gravatar.com/avatar/ea6cccec307feca7d18cec784fcf5b42?s=300&amp;d=mm&amp;r=g 2x" class="avatar avatar-150 photo" height="150" width="150">								<div class="author-box-content">
+									<div class="vcard clearfix">
+										<a href="http://designbeep.com/author/admin/" rel="nofollow" class="fn"><i class="fa fa-user"></i>Designbeep Staff</a>
+																			</div>
+																		<p>Designbeep is a design blog dedicated to web developers,bloggers,designers and freelancers.Our aim is to share everything about web design,graphic design,tutorials and inspirational articles and more.</p>
+																	</div>
+							</div>
+						</div>
+									</div><!--.g post-->
+				<!-- You can start editing here. -->
+<!-- If comments are closed. -->
+<p class="nocomments"></p>
+
+					</div>
+	</article>
+	<aside class="sidebar c-4-12">
+	<div id="sidebars" class="g">
+		<div class="sidebar">
+			<ul class="sidebar_list">
+				<div id="text-70" class="widget widget_text">			<div class="textwidget"><p><a href="http://designbeep.com/19195-2/"><strong>Contact</strong></a> | <a href="http://designbeep.com/privacy-policy/"><strong>Privacy Policy</strong></a> | <a href="http://designbeep.com/write-for-us/"><strong>Write For Us</strong></a></p>
+</div>
+		</div><div id="social-profile-icons-4" class="widget social-profile-icons"><div class="social-profile-icons"><ul class=""><li class="social-facebook"><a title="Facebook" href="https://www.facebook.com/Design-Beep-186341084218/" target="_blank"><i class="fa fa-facebook"></i></a></li><li class="social-pinterest"><a title="Pinterest" href="https://pinterest.com/BlogDesignbeep/" target="_blank"><i class="fa fa-pinterest"></i></a></li><li class="social-twitter"><a title="Twitter" href="https://twitter.com/designbeep" target="_blank"><i class="fa fa-twitter"></i></a></li></ul></div></div><div id="text-65" class="widget widget_text">			<div class="textwidget"><div style="float: left;"><!-- BuySellAds Zone Code -->
+<div id="bsap_1272708" class="bsap bsap_1272708" data-serve="CESICKY">
+<style type="text/css">
+div.bsap_1272708{width:100%;display:block;}div.bsap_1272708 a{width:300px;}div.bsap_1272708 a img{padding:0;}div.bsap_1272708 a em{font-style:normal;}div.bsap_1272708 a{display:block;font-size:11px;color:#888;font-family:verdana,sans-serif;margin:0;text-align:center;text-decoration:none;overflow:hidden;float:left;}
+div.bsap_1272708 img{border:0;clear:right;}
+div.bsap_1272708 a.adhere{color:#666;font-weight:bold;font-size:12px;border:1px solid #ccc;background:#e7e7e7;text-align:center;}
+div.bsap_1272708 a.adhere:hover{border:1px solid #999;background:#ddd;color:#333;}div.bsap_1272708 a{line-height:100%;}div.bsap_1272708 a.adhere{width:300px;height:250px;line-height:2000%;}html>body div.bsap_1272708 a.adhere{width:298px;height:248px;}div.bsap_1272708 img.s{height:0;width:0;}div.bsap_1272708{line-height:9px;}div.bsap_1272708 .bsap_adhere a{height:19px !important;width:298px !important;font-size:10px;background:#f1f1f1;border:1px solid #e1e1e1;border-top:none;border-radius: 0 0 2px 2px;line-height:16px;}.bsap_backfillframe{border:0;}
+</style>
+<iframe width="300" height="250" id="ad_1272708_backfill1_frame" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/raw_b8de98206eb1247cdcf37c9e1b1989bc.html" frameborder="0" class="bsap_adframe" scrolling="no"></iframe>
+
+<script type="text/javascript" id="auto_1" class="ignoreme"> if (typeof(_bsap_serving_callback) !== 'undefined') _bsap_serving_callback(19746, 'CESICKY', ''); </script>
+
+<div class="bsap_adhere">
+
+<a href="http://www.buysellads.com/buy/detail/18407/zone/1272708?utm_source=site_18407&amp;utm_medium=website&amp;utm_campaign=imagetext&amp;utm_content=zone_1272708" class="">Advertise Here</a>
+
+</div>
+
+
+<script type="text/javascript" id="auto_2" class="ignoreme"> if (typeof(BSACallback) !== 'undefined') BSACallback(); </script></div>
+<!-- End BuySellAds Zone Code --></div></div>
+		</div><div id="text-67" class="widget widget_text">			<div class="textwidget"><!-- BuySellAds Zone Code -->
+<div id="bsap_1254759" class="bsap bsap_1254759" data-serve="CESICKV">
+<style type="text/css">
+div.bsap_1254759{width:100%;display:block;}div.bsap_1254759 a{width:125px;}div.bsap_1254759 a img{padding:0;}div.bsap_1254759 a em{font-style:normal;}div.bsap_1254759 a{display:block;font-size:11px;color:#888;font-family:verdana,sans-serif;margin:0 10px 10px 0;text-align:center;text-decoration:none;overflow:hidden;float:left;}
+div.bsap_1254759 img{border:0;clear:right;}
+div.bsap_1254759 a.adhere{color:#666;font-weight:bold;font-size:12px;border:1px solid #ccc;background:#e7e7e7;text-align:center;}
+div.bsap_1254759 a.adhere:hover{border:1px solid #999;background:#ddd;color:#333;}div.bsap_1254759 a{line-height:100%;}div.bsap_1254759 a.adhere{width:125px;height:125px;line-height:1000%;}html>body div.bsap_1254759 a.adhere{width:123px;height:123px;}div.bsap_1254759 img.s{height:0;width:0;}
+</style>
+<a href="http://srv.buysellads.com/ads/click/x/GTND42QYF67ITK77CKYLYKQMFTAIC237C67IEZ3JCWADLKQWFTBIT2JKC6BIE5QLF6AI6K3EHJNCLSIZ" class="ad0 odd " title="Programming Homework Help on AssignmentExpert.com" id="bsa_8426939" target="_blank" rel="nofollow noopener">
+<img src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/0dd20bac25280e8c541adccc09eec3e2-1537452221.png" width="125" height="125" alt=""></a><a href="http://srv.buysellads.com/ads/click/x/GTND42QYF67ITK77CKYLYKQMFTAICK37CESDKZ3JCWADLKJYCVYI5K7KC6BIE5QLF6AI6K3EHJNCLSIZ" class="ad1  even" title="Monarch Social Sharing Plugin For WordPress" id="bsa_5176659" target="_blank" rel="nofollow noopener">
+<img src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/243103-1414001265.jpeg" width="125" height="125" alt=""></a>
+<script type="text/javascript" id="auto_1" class="ignoreme"> if (typeof(BSACallback) !== 'undefined') BSACallback(); </script></div>
+<!-- End BuySellAds Zone Code --></div>
+		</div><div id="wp-tabbed-widget-3" class="widget wp-tabbed-widget">            <div class="wp-tabbed-tabs">
+                <ul class="wp-tabbed-nav">
+                                            <li data-tab="tab-0" class="tab-active"><a href="http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/#">Popular</a></li>
+                                            <li data-tab="tab-1"><a href="http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/#">Tools</a></li>
+                                    </ul>
+                <div class="wp-tabbed-contents">
+                    <div class="wp-tabbed-cont tab-0 tab-active"><div id="widget_mts_popular_posts_widget-3" class="widget widget_mts_popular_posts_widget"><ul class="popular-posts">			<li class="post-box horizontal-small horizontal-container"><div class="horizontal-container-inner">								<div class="post-img">
+					<a rel="nofollow" href="http://designbeep.com/2020/03/21/5-elements-to-include-in-your-web-developer-email-signature/" title="5 Elements To Include In Your Web Developer Email Signature">
+						<img width="115" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/featured-image-11-115x115.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-11-115x115.jpg 115w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-11-150x150.jpg 150w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-11-65x65.jpg 65w" sizes="(max-width: 115px) 100vw, 115px">					</a>
+				</div>
+								<div class="post-data">
+					<div class="post-data-container">
+						<div class="post-title">
+							<a href="http://designbeep.com/2020/03/21/5-elements-to-include-in-your-web-developer-email-signature/" title="5 Elements To Include In Your Web Developer Email Signature">5 Elements To Include In Your Web Developer Email Signature</a>
+						</div>
+																	</div>
+				</div>
+			</div></li>					<li class="post-box horizontal-small horizontal-container"><div class="horizontal-container-inner">								<div class="post-img">
+					<a rel="nofollow" href="http://designbeep.com/2020/03/29/what-are-the-most-useful-tools-for-painter-in-adobe-photoshop/" title="What are the Most Useful Tools for Painter in Adobe Photoshop?">
+						<img width="115" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/featured-image-24-115x115.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-24-115x115.jpg 115w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-24-150x150.jpg 150w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-24-65x65.jpg 65w" sizes="(max-width: 115px) 100vw, 115px">					</a>
+				</div>
+								<div class="post-data">
+					<div class="post-data-container">
+						<div class="post-title">
+							<a href="http://designbeep.com/2020/03/29/what-are-the-most-useful-tools-for-painter-in-adobe-photoshop/" title="What are the Most Useful Tools for Painter in Adobe Photoshop?">What are the Most Useful Tools for Painter in Adobe Photoshop?</a>
+						</div>
+																	</div>
+				</div>
+			</div></li>					<li class="post-box horizontal-small horizontal-container"><div class="horizontal-container-inner">								<div class="post-img">
+					<a rel="nofollow" href="http://designbeep.com/2020/03/29/can-you-still-continue-to-make-more-money-with-your-site-by-accepting-donations/" title="Can You Still Continue to Make More Money with Your Site by Accepting Donations?">
+						<img width="115" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/featured-image-20-115x115.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-20-115x115.jpg 115w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-20-150x150.jpg 150w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-20-65x65.jpg 65w" sizes="(max-width: 115px) 100vw, 115px">					</a>
+				</div>
+								<div class="post-data">
+					<div class="post-data-container">
+						<div class="post-title">
+							<a href="http://designbeep.com/2020/03/29/can-you-still-continue-to-make-more-money-with-your-site-by-accepting-donations/" title="Can You Still Continue to Make More Money with Your Site by Accepting Donations?">Can You Still Continue to Make More Money with Your Site by Accepting Donations?</a>
+						</div>
+																	</div>
+				</div>
+			</div></li>					<li class="post-box horizontal-small horizontal-container"><div class="horizontal-container-inner">								<div class="post-img">
+					<a rel="nofollow" href="http://designbeep.com/2020/03/29/what-to-do-with-the-site-in-crisis/" title="What to Do With the Site in Crisis?">
+						<img width="115" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/featured-image-29-2-115x115.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-29-2-115x115.jpg 115w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-29-2-150x150.jpg 150w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-29-2-65x65.jpg 65w" sizes="(max-width: 115px) 100vw, 115px">					</a>
+				</div>
+								<div class="post-data">
+					<div class="post-data-container">
+						<div class="post-title">
+							<a href="http://designbeep.com/2020/03/29/what-to-do-with-the-site-in-crisis/" title="What to Do With the Site in Crisis?">What to Do With the Site in Crisis?</a>
+						</div>
+																	</div>
+				</div>
+			</div></li>					<li class="post-box horizontal-small horizontal-container"><div class="horizontal-container-inner">								<div class="post-img">
+					<a rel="nofollow" href="http://designbeep.com/2020/03/31/how-to-correct-white-balance-in-photoshop/" title="How to Correct White Balance in Photoshop">
+						<img width="115" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/featured-image-24-1-115x115.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-24-1-115x115.jpg 115w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-24-1-150x150.jpg 150w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-24-1-65x65.jpg 65w" sizes="(max-width: 115px) 100vw, 115px">					</a>
+				</div>
+								<div class="post-data">
+					<div class="post-data-container">
+						<div class="post-title">
+							<a href="http://designbeep.com/2020/03/31/how-to-correct-white-balance-in-photoshop/" title="How to Correct White Balance in Photoshop">How to Correct White Balance in Photoshop</a>
+						</div>
+																	</div>
+				</div>
+			</div></li>					<li class="post-box horizontal-small horizontal-container"><div class="horizontal-container-inner">								<div class="post-img">
+					<a rel="nofollow" href="http://designbeep.com/2020/03/31/drivers-of-innovation-in-financial-technology/" title="Drivers of Innovation in Financial Technology">
+						<img width="115" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/featured-image-21-115x115.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-21-115x115.jpg 115w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-21-150x150.jpg 150w, http://cdn.designbeep.com/wp-content/uploads/2020/03/featured-image-21-65x65.jpg 65w" sizes="(max-width: 115px) 100vw, 115px">					</a>
+				</div>
+								<div class="post-data">
+					<div class="post-data-container">
+						<div class="post-title">
+							<a href="http://designbeep.com/2020/03/31/drivers-of-innovation-in-financial-technology/" title="Drivers of Innovation in Financial Technology">Drivers of Innovation in Financial Technology</a>
+						</div>
+																	</div>
+				</div>
+			</div></li>					<li class="post-box horizontal-small horizontal-container"><div class="horizontal-container-inner">								<div class="post-img">
+					<a rel="nofollow" href="http://designbeep.com/2020/04/01/how-to-track-down-errors-on-your-company-infrastructure-and-cloud-applications/" title="How to Track Down Errors on Your Company Infrastructure and Cloud Applications">
+						<img width="115" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/featured-image-29-115x115.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2020/04/featured-image-29-115x115.jpg 115w, http://cdn.designbeep.com/wp-content/uploads/2020/04/featured-image-29-150x150.jpg 150w, http://cdn.designbeep.com/wp-content/uploads/2020/04/featured-image-29-65x65.jpg 65w" sizes="(max-width: 115px) 100vw, 115px">					</a>
+				</div>
+								<div class="post-data">
+					<div class="post-data-container">
+						<div class="post-title">
+							<a href="http://designbeep.com/2020/04/01/how-to-track-down-errors-on-your-company-infrastructure-and-cloud-applications/" title="How to Track Down Errors on Your Company Infrastructure and Cloud Applications">How to Track Down Errors on Your Company Infrastructure and Cloud Applications</a>
+						</div>
+																	</div>
+				</div>
+			</div></li>					<li class="post-box horizontal-small horizontal-container"><div class="horizontal-container-inner">								<div class="post-img">
+					<a rel="nofollow" href="http://designbeep.com/2020/04/02/why-print-remains-relevant-for-business-marketing/" title="Why Print Remains Relevant For Business Marketing">
+						<img width="115" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/featured-image-6-115x115.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2020/04/featured-image-6-115x115.jpg 115w, http://cdn.designbeep.com/wp-content/uploads/2020/04/featured-image-6-150x150.jpg 150w, http://cdn.designbeep.com/wp-content/uploads/2020/04/featured-image-6-65x65.jpg 65w" sizes="(max-width: 115px) 100vw, 115px">					</a>
+				</div>
+								<div class="post-data">
+					<div class="post-data-container">
+						<div class="post-title">
+							<a href="http://designbeep.com/2020/04/02/why-print-remains-relevant-for-business-marketing/" title="Why Print Remains Relevant For Business Marketing">Why Print Remains Relevant For Business Marketing</a>
+						</div>
+																	</div>
+				</div>
+			</div></li>					<li class="post-box horizontal-small horizontal-container"><div class="horizontal-container-inner">								<div class="post-img">
+					<a rel="nofollow" href="http://designbeep.com/2020/04/03/rediscovering-the-importance-of-art-education/" title="Rediscovering the Importance of Art Education">
+						<img width="115" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/featured-image-115x115.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2020/04/featured-image-115x115.jpg 115w, http://cdn.designbeep.com/wp-content/uploads/2020/04/featured-image-150x150.jpg 150w, http://cdn.designbeep.com/wp-content/uploads/2020/04/featured-image-65x65.jpg 65w" sizes="(max-width: 115px) 100vw, 115px">					</a>
+				</div>
+								<div class="post-data">
+					<div class="post-data-container">
+						<div class="post-title">
+							<a href="http://designbeep.com/2020/04/03/rediscovering-the-importance-of-art-education/" title="Rediscovering the Importance of Art Education">Rediscovering the Importance of Art Education</a>
+						</div>
+																	</div>
+				</div>
+			</div></li>					<li class="post-box horizontal-small horizontal-container"><div class="horizontal-container-inner">								<div class="post-img">
+					<a rel="nofollow" href="http://designbeep.com/2020/04/04/things-to-consider-when-buying-a-dslr-camera/" title="Things to Consider When Buying a DSLR Camera">
+						<img width="115" height="115" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/featured-image-7-115x115.jpg" class="attachment-smallthumb size-smallthumb wp-post-image" alt="" title="" srcset="http://cdn.designbeep.com/wp-content/uploads/2020/04/featured-image-7-115x115.jpg 115w, http://cdn.designbeep.com/wp-content/uploads/2020/04/featured-image-7-150x150.jpg 150w, http://cdn.designbeep.com/wp-content/uploads/2020/04/featured-image-7-65x65.jpg 65w" sizes="(max-width: 115px) 100vw, 115px">					</a>
+				</div>
+								<div class="post-data">
+					<div class="post-data-container">
+						<div class="post-title">
+							<a href="http://designbeep.com/2020/04/04/things-to-consider-when-buying-a-dslr-camera/" title="Things to Consider When Buying a DSLR Camera">Things to Consider When Buying a DSLR Camera</a>
+						</div>
+																	</div>
+				</div>
+			</div></li>		</ul>
+</div></div>                    <div class="wp-tabbed-cont tab-1"><div id="widget_text-3" class="widget widget_text">			<div class="textwidget"><ul>
+<li>Verified discount codes at <a href="https://www.couponsplusdeals.com/">Coupons Plus Deals</a></li>
+<li>All latest discounts at <a title="Free Coupon Codes" href="https://freecouponcodes.net/">Free Coupon Codes</a></li>
+<li>Work with your sites traffic and boost them with <a href="https://webtrafficgeeks.org/">web traffic</a></li>
+<li>We can deliver traffic from 60 different countries,visit us at <a href="https://www.maxvisits.com/">Maxvisits</a></li>
+<li><a href="https://www.supersavermama.com/stores">Browse Coupons, Promo Codes &amp; Deals by Store</a></li>
+</ul>
+</div>
+		</div></div>                                    </div>
+            </div>
+            </div><div id="search-4" class="widget widget_search"><form method="get" id="searchform" class="search-form" action="http://designbeep.com/" _lpchecked="1">
+	<fieldset>
+		<input type="text" name="s" id="s" value="" placeholder="Search" x-webkit-speech="x-webkit-speech">
+		<input id="search-image" class="sbutton" type="submit" value="">
+		<i class="fa fa-search"></i>
+	</fieldset>
+</form></div>			</ul>
+		</div>
+	</div><!--sidebars-->
+</aside>		</div><!--#page-->
+	</div><!--.main-container-->
+	<footer>
+				
+			<div class="container">
+						</div>
+			
+		<div class="copyrights">
+			<div class="container">
+				<!--start copyrights-->
+<div id="copyright-note">
+<span><a href="http://designbeep.com/" title="Free Resources for Designers and Developers" rel="nofollow">Designbeep</a> Copyright © 2020.</span>
+<div class="right"><a href="http://designbeep.com/">Home</a> | <a href="http://designbeep.com/19195-2/">Contact</a> | <a href="http://designbeep.com/privacy-policy/">Privacy Policy</a> | <a href="http://designbeep.com/write-for-us/">Write For Us</a>
+</div>
+</div>
+<!--end copyrights-->
+			</div><!--.container-->
+		</div><!--.copyrights-->
+	</footer><!--footer-->
+</div><!--.main-container-wrap-->
+<!--start footer code-->
+<script type="text/javascript">
+ var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10837201-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<div style="display:none;"><script id="_wau9pg">var _wau = _wau || []; _wau.push(["small", "y6ldal6ejy", "9pg"]);</script><div title="Click to see what&#39;s popular on this site!" style="position: relative; display: inline-block; background-image: url(&quot;data:image/gif;base64,R0lGODlhUAAXAMQAAM1iTdBuWMQ4MsdHOt+ch/js5+/Qw+vCs/Pe1dR6Y+OolNuQespVQ9eFbsAnLX9/fzAwL////zU1NQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAABQABcAAAX/ICSOZGmeaKqu7Bi9L3IcBWzfeK7vfI+LMAPAQXQEEBGJcslsOp/QqFQaAUYMAiIjMnAIDMmpeEweVyGRQtcxIByy7Fd5Ti+fIwTiABYoKsJ1gYJMd30OeIhDRoCDjXR3igAEEQAChgCMjppihUULL3CLm6OcQHlEEQ0JEX6ZpK9Ld2qofZRxrrCvd1dZrA4AlWC5w7FWEQgJRQ4JSMTOuzAFMzU+1dbX1i3a29zdJhIwSkk24OGAOOU56eJyYw8S73ax7bGE54y45fP1YvFzYXIy4btH6Mm4feKYPIi3kCE8eAuXRHRy8OA6duzQkUuYMSMghyAfhnzYpF1FKPjsNPEDyI8jyXchYSqB2ZBiPYs2W+rjyNIlOIkzX4oU6s9gwB4lN4ZzaW5pmIkxhUIs6uzRsBAAOw==&quot;); width: 80px; height: 15px; padding: 0px; margin: 0px; overflow: hidden; cursor: pointer; direction: ltr;"><div style="background-image: url(&quot;data:image/gif;base64,R0lGODlhUAAXAMQAAM1iTdBuWMQ4MsdHOt+ch/js5+/Qw+vCs/Pe1dR6Y+OolNuQespVQ9eFbsAnLX9/fzAwL////zU1NQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAABQABcAAAX/ICSOZGmeaKqu7Bi9L3IcBWzfeK7vfI+LMAPAQXQEEBGJcslsOp/QqFQaAUYMAiIjMnAIDMmpeEweVyGRQtcxIByy7Fd5Ti+fIwTiABYoKsJ1gYJMd30OeIhDRoCDjXR3igAEEQAChgCMjppihUULL3CLm6OcQHlEEQ0JEX6ZpK9Ld2qofZRxrrCvd1dZrA4AlWC5w7FWEQgJRQ4JSMTOuzAFMzU+1dbX1i3a29zdJhIwSkk24OGAOOU56eJyYw8S73ax7bGE54y45fP1YvFzYXIy4btH6Mm4feKYPIi3kCE8eAuXRHRy8OA6duzQkUuYMSMghyAfhnzYpF1FKPjsNPEDyI8jyXchYSqB2ZBiPYs2W+rjyNIlOIkzX4oU6s9gwB4lN4ZzaW5pmIkxhUIs6uzRsBAAOw==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-position: -5px -15px; position: absolute; width: 3px; height: 8px; top: 4px; left: 20px; line-height: 8px; overflow: hidden; padding: 0px; margin: 0px;"></div><div style="background-image: url(&quot;data:image/gif;base64,R0lGODlhUAAXAMQAAM1iTdBuWMQ4MsdHOt+ch/js5+/Qw+vCs/Pe1dR6Y+OolNuQespVQ9eFbsAnLX9/fzAwL////zU1NQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAABQABcAAAX/ICSOZGmeaKqu7Bi9L3IcBWzfeK7vfI+LMAPAQXQEEBGJcslsOp/QqFQaAUYMAiIjMnAIDMmpeEweVyGRQtcxIByy7Fd5Ti+fIwTiABYoKsJ1gYJMd30OeIhDRoCDjXR3igAEEQAChgCMjppihUULL3CLm6OcQHlEEQ0JEX6ZpK9Ld2qofZRxrrCvd1dZrA4AlWC5w7FWEQgJRQ4JSMTOuzAFMzU+1dbX1i3a29zdJhIwSkk24OGAOOU56eJyYw8S73ax7bGE54y45fP1YvFzYXIy4btH6Mm4feKYPIi3kCE8eAuXRHRy8OA6duzQkUuYMSMghyAfhnzYpF1FKPjsNPEDyI8jyXchYSqB2ZBiPYs2W+rjyNIlOIkzX4oU6s9gwB4lN4ZzaW5pmIkxhUIs6uzRsBAAOw==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-position: -18px -15px; position: absolute; width: 5px; height: 8px; top: 4px; left: 24px; line-height: 8px; overflow: hidden; padding: 0px; margin: 0px;"></div><div style="background-image: url(&quot;data:image/gif;base64,R0lGODlhUAAXAMQAAM1iTdBuWMQ4MsdHOt+ch/js5+/Qw+vCs/Pe1dR6Y+OolNuQespVQ9eFbsAnLX9/fzAwL////zU1NQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAABQABcAAAX/ICSOZGmeaKqu7Bi9L3IcBWzfeK7vfI+LMAPAQXQEEBGJcslsOp/QqFQaAUYMAiIjMnAIDMmpeEweVyGRQtcxIByy7Fd5Ti+fIwTiABYoKsJ1gYJMd30OeIhDRoCDjXR3igAEEQAChgCMjppihUULL3CLm6OcQHlEEQ0JEX6ZpK9Ld2qofZRxrrCvd1dZrA4AlWC5w7FWEQgJRQ4JSMTOuzAFMzU+1dbX1i3a29zdJhIwSkk24OGAOOU56eJyYw8S73ax7bGE54y45fP1YvFzYXIy4btH6Mm4feKYPIi3kCE8eAuXRHRy8OA6duzQkUuYMSMghyAfhnzYpF1FKPjsNPEDyI8jyXchYSqB2ZBiPYs2W+rjyNIlOIkzX4oU6s9gwB4lN4ZzaW5pmIkxhUIs6uzRsBAAOw==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-position: -50px -15px; position: absolute; width: 24px; height: 8px; top: 4px; left: 30px; line-height: 8px; overflow: hidden; padding: 0px; margin: 0px;"></div></div><script async="" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/s.js"></script></div>
+
+
+
+<!--end footer code-->
+<link rel="stylesheet" id="wp-tabbed-css" href="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/tabbed.css" type="text/css" media="all">
+<script type="text/javascript">
+/* <![CDATA[ */
+var wpcf7 = {"apiSettings":{"root":"http:\/\/designbeep.com\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"},"cached":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/scripts.js"></script>
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/core.min.js"></script>
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/widget.min.js"></script>
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/accordion.min.js"></script>
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/tabs.min.js"></script>
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/gpp_sc_scripts.js"></script>
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/js"></script>
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/wp-embed.min.js"></script>
+<script type="text/javascript" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/tabbed.js"></script>
+<script type="text/javascript">var essb_window = function(oUrl, oService, oInstance) { var element = jQuery('.essb_'+oInstance); var instance_post_id = jQuery(element).attr("data-essb-postid") || ""; var instance_position = jQuery(element).attr("data-essb-position") || ""; var wnd; var w = 800 ; var h = 500; if (oService == "twitter") { w = 500; h= 300; } var left = (screen.width/2)-(w/2); var top = (screen.height/2)-(h/2); if (oService == "twitter") { wnd = window.open( oUrl, "essb_share_window", "height=300,width=500,resizable=1,scrollbars=yes,top="+top+",left="+left ); } else { wnd = window.open( oUrl, "essb_share_window", "height=500,width=800,resizable=1,scrollbars=yes,top="+top+",left="+left ); } if (typeof(essb_settings) != "undefined") { if (essb_settings.essb3_stats) { if (typeof(essb_handle_stats) != "undefined") { essb_handle_stats(oService, instance_post_id, oInstance); } } if (essb_settings.essb3_ga) { essb_ga_tracking(oService, oUrl, instance_position); } } essb_self_postcount(oService, instance_post_id); if (typeof(essb_abtesting_logger) != "undefined") { essb_abtesting_logger(oService, instance_post_id, oInstance); } var pollTimer = window.setInterval(function() { if (wnd.closed !== false) { window.clearInterval(pollTimer); essb_smart_onclose_events(oService, instance_post_id); } }, 200); }; var essb_self_postcount = function(oService, oCountID) { if (typeof(essb_settings) != "undefined") { oCountID = String(oCountID); jQuery.post(essb_settings.ajax_url, { 'action': 'essb_self_postcount', 'post_id': oCountID, 'service': oService, 'nonce': essb_settings.essb3_nonce }, function (data) { if (data) { }},'json'); } }; var essb_smart_onclose_events = function(oService, oPostID) { if (typeof (essbasc_popup_show) == 'function') { essbasc_popup_show(); } if (typeof essb_acs_code == 'function') { essb_acs_code(oService, oPostID); } if (typeof(after_share_easyoptin) != "undefined") { essb_toggle_subscribe(after_share_easyoptin); } }; var essb_tracking_only = function(oUrl, oService, oInstance, oAfterShare) { var element = jQuery('.essb_'+oInstance); if (oUrl == "") { oUrl = document.URL; } var instance_post_id = jQuery(element).attr("data-essb-postid") || ""; var instance_position = jQuery(element).attr("data-essb-position") || ""; if (typeof(essb_settings) != "undefined") { if (essb_settings.essb3_stats) { if (typeof(essb_handle_stats) != "undefined") { essb_handle_stats(oService, instance_post_id, oInstance); } } if (essb_settings.essb3_ga) { essb_ga_tracking(oService, oUrl, instance_position); } } essb_self_postcount(oService, instance_post_id); if (oAfterShare) { essb_smart_onclose_events(oService, instance_post_id); } }; var essb_pinterest_picker = function(oInstance) { essb_tracking_only('', 'pinterest', oInstance); var e=document.createElement('script'); e.setAttribute('type','text/javascript'); e.setAttribute('charset','UTF-8'); e.setAttribute('src','//assets.pinterest.com/js/pinmarklet.js?r='+Math.random()*99999999);document.body.appendChild(e); };</script>
+
+<!-- Dynamic page generated in 0.389 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2020-05-12 19:05:01 -->
+
+<!-- super cache --><div id="mobile-menu-wrapper" style="display: none;"><div class="mobile-menu">
+									<div class="container clearfix">
+						<nav id="navigation" class="clearfix">
+							<a href="http://designbeep.com/2013/10/02/design-trends-top-200-ecommerce-websites-infographic/#" class="toggle-mobile-menu">Menu</a>
+															<ul id="menu-menu" class="menu clearfix"><li id="menu-item-25136" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent"><a href="http://designbeep.com/category/articles/" style="color: #ffffff;">ARTICLES</a></li>
+<li id="menu-item-25138" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children"><a href="http://designbeep.com/category/freebies/">FREEBIES</a>
+<ul class="sub-menu">
+	<li id="menu-item-25139" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/brushes/">Brushes</a></li>
+	<li id="menu-item-25140" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/fonts-freebies/">Fonts</a></li>
+	<li id="menu-item-25141" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/icons-freebies/">Icons</a></li>
+	<li id="menu-item-25142" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/patterns/">Patterns</a></li>
+	<li id="menu-item-25143" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/psd/">PSD</a></li>
+	<li id="menu-item-25144" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/textures/">Textures</a></li>
+	<li id="menu-item-25615" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/freebies/vectors/">Vectors</a></li>
+	<li id="menu-item-25171" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/wallpapers/">WALLPAPERS</a></li>
+</ul>
+</li>
+<li id="menu-item-25145" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children"><a href="http://designbeep.com/category/inspirations/">INSPIRATIONS</a>
+<ul class="sub-menu">
+	<li id="menu-item-25146" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/inspirations/artists/">Artists</a></li>
+	<li id="menu-item-25147" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/inspirations/graphics/">Graphics</a></li>
+	<li id="menu-item-25148" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/inspirations/logo-inspirations/">Logo</a></li>
+	<li id="menu-item-25149" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/inspirations/typography-inspirations/">Typography</a></li>
+	<li id="menu-item-25150" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/inspirations/web-design-inspirations/">Web Design</a></li>
+</ul>
+</li>
+<li id="menu-item-25152" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children"><a href="http://designbeep.com/category/resources/">RESOURCES</a>
+<ul class="sub-menu">
+	<li id="menu-item-25161" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/wordpress/">WORDPRESS</a></li>
+	<li id="menu-item-25163" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/wordpress/themes/">Themes</a></li>
+	<li id="menu-item-25162" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/wordpress/plugins/">Plugins</a></li>
+</ul>
+</li>
+<li id="menu-item-25153" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/tools/">TOOLS</a></li>
+<li id="menu-item-25154" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children"><a href="http://designbeep.com/category/tutorials/">TUTORIALS</a>
+<ul class="sub-menu">
+	<li id="menu-item-25158" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/tutorials/photohop/">Photoshop</a></li>
+	<li id="menu-item-25155" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/tutorials/css-tutorials-2/">CSS</a></li>
+	<li id="menu-item-25156" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/tutorials/illustrator/">Illustrator</a></li>
+	<li id="menu-item-25157" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/tutorials/jquery-tutorials-2/">jQuery</a></li>
+</ul>
+</li>
+<li id="menu-item-67146" class="menu-item menu-item-type-taxonomy menu-item-object-category"><a href="http://designbeep.com/category/photography/">PHOTOGRAPHY</a></li>
+<li id="menu-item-73225" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="http://designbeep.com/write-for-us/">WRITE FOR US</a></li>
+</ul>													</nav>
+					</div><!--.container-->
+					</div></div><div>
+    <div id="twoseven-ext-tab-media-modal" class="twoseven-ext-tab-media-modal" style="display: none;">
+      <!-- Modal content -->
+      <div class="twoseven-ext-tab-media-modal-content">
+        <div class="iframe-container" style="height: 100%; width: 100%;">
+          <span class="close">×</span>
+        </div>
+      </div>
+    </div></div><iframe src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/saved_resource.html" width="0" height="0" style="display: none;"></iframe><div class="visually_lightbox_overlay"></div><div class="visually_lightbox" data-id="0"><img src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/design-trends-of-the-top-200-ecommerce-websites_5225b2bc42db1.jpg" border="0"><img src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/close.png" class="visually_embed_lightbox_close"></div><iframe width="1" height="1" style="width: 1px !important; height: 1px !important; position: absolute; left: -1000px !important;" src="./Design Trends Of The Top 200 eCommerce Websites [Infographic] _ Designbeep_files/track.html"></iframe></body></html>

@@ -18,25 +18,26 @@ export const SELLERS = [
     {
         id: '1',
         name: "YELLOW",
-        picture: require('../assets/Images/seller.png'), 
+        picture: require('../assets/Images/yellow.png'), 
         description: 'This is a simple shop'
     },
     {
         id: '2',
         name: "Cats Eye",
-        picture: require('../assets/Images/seller.png'), 
+        picture: require('../assets/Images/catseye2.jpg'), 
         description: 'This is a simple shop'
     },
     {
         id: '3',
-        name: "YELLOW",
-        picture: require('../assets/Images/seller.png'), 
-        description: 'This is a simple shop'
+        name: "ecstasy",
+        picture: require('../assets/Images/ecstasy.jpg'), 
+        description: `This is a simple shop, with simple needs, ples give us money
+You can give us money by coming to our stores or simply by shopping here, easy right!`
     },
     {
         id: '4',
-        name: "YELLOW",
-        picture: require('../assets/Images/seller.png'), 
+        name: "splash",
+        picture: require('../assets/Images/splash.jpg'), 
         description: 'This is a simple shop'
     },
     {

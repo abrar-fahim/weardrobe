@@ -28,13 +28,13 @@ export default function RatingStars(props) {
 
     for(let i = 0; i < ratingFloor ; i++) {
         stars.push(
-            <Ionicons name="md-star"/>
+            <Ionicons name="md-star" size={props.size}/>
         )
     }
 
     if(props.rating > ratingFloor) {
         stars.push(
-            <Ionicons name="md-star-half"/>
+            <Ionicons name="md-star-half" size={props.size}/>
         )
     }
 
@@ -42,7 +42,7 @@ export default function RatingStars(props) {
 
     for(let i = 0; i < starOutlines; i++) {
         stars.push(
-            <Ionicons name="md-star-outline"/>
+            <Ionicons name="md-star-outline" size={props.size}/>
         )
     }
 

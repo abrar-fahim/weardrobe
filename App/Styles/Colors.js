@@ -2,10 +2,16 @@ const Colors = {
   primaryColor: '#4a148c',
   accentColor: '#ffaaa5',
   textColor: 'black',
-  screenBackgroundColor: 'f7f7f7',
-  tabBarActiveTintColor: 'purple',
-  tabBarColor: '#0b0b0d',
+
+  screenBackgroundColor: '#f6f6f6',
+  tabBarActiveTintColor: '#420000',
+  tabBarColor: '#420000',
   headerColor: 'white',
-  headerFontColor: 'black'
+  headerFontColor: 'black',
+  buttonColor: '#420000',
+  buttonFontColor: 'white',
+  headerButtonColor: '#420000',
+  topTabBarAccentColor: '#420000'
+
 };
 export default Colors

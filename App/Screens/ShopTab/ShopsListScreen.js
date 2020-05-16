@@ -26,22 +26,30 @@ import ScreenStyle from '../../Styles/ScreenStyle';
 
 export default function ShopsListStack( {navigation} ) {
     return (
-        <DrawerStack name="MyShops" navigation={navigation} component={ShopsListScreen} title="Browse Stores"/>
+        <DrawerStack name="MyShops" navigation={navigation} component={AllShopsScreen} title="Browse Stores"/>
     )
 }
 
-function ShopsListScreen({navigation}) {
+
+function AllShopsScreen(props) {
+    return (
+        <ShopsListScreen navigation={props.navigation} sellers={SELLERS}/>
+    )
+}
+
+
+export function ShopsListScreen(props) {
 
 
     const renderGridItem = (itemData) => {
         return (
-            <View style={styles.gridItem}>
-                <TouchableOpacity onPress={ () => (navigation.navigate("Seller", {
+            <View style={styles.listItem}>
+                <TouchableOpacity onPress={ () => (props.navigation.navigate("Seller", {
                      sellerId: itemData.item.id
 
                 }))}>
-                    <Text> {itemData.item.name}</Text>
-                    <Image source={itemData.item.picture} style={{height: 100, width: 100}}/>
+
+                    <Image source={itemData.item.picture} style={{height: '100%', width: '100%'}}/>
                 </TouchableOpacity>
             </View>
         )
@@ -50,10 +58,8 @@ function ShopsListScreen({navigation}) {
     
     return (
         <View style={ScreenStyle}>
-        
-        <Text> ShopsList Screen</Text>
 
-        <FlatList data={SELLERS} renderItem={renderGridItem} numColumns={2}  />
+        <FlatList data={props.sellers} renderItem={renderGridItem} numColumns={1}  />
 
         </View>
     );
@@ -67,10 +73,12 @@ const styles = StyleSheet.create({
         flex: 1  //ensures that this view takes all space it can get
     },
 
-    gridItem: {
-        flex: 1,
+    listItem: {
         margin: 15,
-        height: 150
+        width:'90%',
+        marginVertical: 5,
+        height: 120
+
     },
     bottom: {
         flex: 1,

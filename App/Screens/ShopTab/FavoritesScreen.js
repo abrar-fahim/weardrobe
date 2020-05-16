@@ -6,11 +6,21 @@ import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import ScreenStyle from '../../Styles/ScreenStyle'
+import DrawerStack from './DrawerStack';
+import ProductList from '../../components/ProductList';
+import  PRODUCTS from '../../dummy-data/Products';
 
-export default function FavoritesScreen(props) {
+export default function FavoritesStack( {navigation} ) {
+    return (
+        <DrawerStack name="Favorites" navigation={navigation} component={FavoritesScreen} title="My Favorites"/>
+    )
+}
+
+
+ function FavoritesScreen(props) {
     return (
         <View style={ScreenStyle}>
-            <Text> Your Favorites here!!</Text>
+            <ProductList data={PRODUCTS} navigation={props.navigation}/>
         </View>
     )
 }

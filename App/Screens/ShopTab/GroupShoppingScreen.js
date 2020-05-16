@@ -11,12 +11,19 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import {GroupChatScreen} from '../SocialTab/GroupChatScreen'
 import GroupCartScreen from './GroupCartScreen';
+import Colors from '../../Styles/Colors';
 
 
 export default function GroupShoppingScreen(props) {
     const TopTab = createMaterialTopTabNavigator();
     return (
-        <TopTab.Navigator>
+        <TopTab.Navigator
+            tabBarOptions= {{
+                indicatorStyle: {
+                    backgroundColor: Colors.tabBarActiveTintColor
+                }
+            }}
+        >
 
             <TopTab.Screen name="GroupChat" component={GroupChatScreen}/>
             <TopTab.Screen name="GroupCart" component={GroupCartScreen}/>

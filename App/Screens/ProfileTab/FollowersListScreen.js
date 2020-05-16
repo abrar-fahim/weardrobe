@@ -6,6 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ScreenStyle from '../../Styles/ScreenStyle';
+import Colors from '../../Styles/Colors';
 
 function FollowersListScreen({navigation}) {
     return (
@@ -32,7 +33,13 @@ export default function FollowersListTabScreen(props) {
 
 
     return (
-        <TopTab.Navigator>
+        <TopTab.Navigator
+        tabBarOptions= {{
+            indicatorStyle: {
+                backgroundColor: Colors.tabBarActiveTintColor
+            }
+        }}
+        >
             <TopTab.Screen name="FollowersList" component={FollowersListScreen} />
             <TopTab.Screen name="FollowingList" component={FollowingListScreen} />
 
