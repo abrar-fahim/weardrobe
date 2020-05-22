@@ -5,7 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 
 import ScreenStyle from '../../Styles/ScreenStyle'
 import UIButton from '../../components/UIButton';
@@ -19,24 +19,48 @@ export default function SignupScreen({navigation}) {
         ...styles.container,
         ...ScreenStyle
       }}>
+
+        <Text style={styles.title}> Sign up</Text>
       
      
        
       <View style={styles.inputContainer}>
         <View style={styles.iconContainer}>
+          <Feather name="user" size={20} color="grey"/>
+        </View>
+        
+        <TextInput placeholder="Name" style={styles.inputStyle} />
+      </View>
+        
+      <View style={styles.inputContainer}>
+        <View style={styles.iconContainer}>
           <Ionicons name="md-mail" size={20} color="grey"/>
         </View>
-        
-        <TextInput placeholder="Enter Email" style={styles.inputStyle} />
+        <TextInput
+          secureTextEntry={true}
+          placeholder="Email"
+          style={styles.inputStyle}
+        />
       </View>
-        
+
       <View style={styles.inputContainer}>
         <View style={styles.iconContainer}>
-          <Ionicons name="md-lock" size={20} color="grey"/>
+          <Feather name="phone" size={20} color="grey"/>
         </View>
         <TextInput
           secureTextEntry={true}
-          placeholder="Enter Password"
+          placeholder="Phone"
+          style={styles.inputStyle}
+        />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <View style={styles.iconContainer}>
+          <MaterialIcons name="cake" size={20} color="grey"/>
+        </View>
+        <TextInput
+          secureTextEntry={false}
+          placeholder="Birthday"
           style={styles.inputStyle}
         />
       </View>
@@ -46,8 +70,8 @@ export default function SignupScreen({navigation}) {
           <Ionicons name="md-lock" size={20} color="grey"/>
         </View>
         <TextInput
-          secureTextEntry={true}
-          placeholder="Enter Password"
+          secureTextEntry={false}
+          placeholder="Password"
           style={styles.inputStyle}
         />
       </View>
@@ -57,28 +81,20 @@ export default function SignupScreen({navigation}) {
           <Ionicons name="md-lock" size={20} color="grey"/>
         </View>
         <TextInput
-          secureTextEntry={true}
-          placeholder="Enter Password"
+          secureTextEntry={false}
+          placeholder="Confirm Password"
           style={styles.inputStyle}
         />
       </View>
 
-      <View style={styles.inputContainer}>
-        <View style={styles.iconContainer}>
-          <Ionicons name="md-lock" size={20} color="grey"/>
-        </View>
-        <TextInput
-          secureTextEntry={true}
-          placeholder="Enter Password"
-          style={styles.inputStyle}
-        />
-      </View>
+
+      
      
 
       
 
       <View style={styles.buttons}>
-        <UIButton text="Sign up" height={40} width={300} />
+        <UIButton text="Create Account" height={40} width={300} />
        
   
       </View>
@@ -94,7 +110,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 200
+    margin: 20
+    
   },
   inputContainer : {
     flexDirection: 'row', 
@@ -132,5 +149,11 @@ const styles = StyleSheet.create({
  signUpText : {
     color: 'black',
     fontWeight: '300'
+ },
+ title: {
+   fontSize: 30,
+   fontWeight: '700',
+   alignSelf: 'flex-start',
+   marginBottom: 25
  }
 });

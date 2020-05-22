@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, ScrollView } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, ScrollView, SectionList } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -32,28 +32,38 @@ export default function SellerScreen(props) {
     return (
         <View style={ScreenStyle}>
 
-            <ScrollView>
 
-            <View style={{
-                alignItems: 'center'
-            }}>
-                <Image source={image} style={{height: 200, width: '99%'}}/>
-            </View>
+            <ProductList ListHeaderComponent={
+                <View>
+                     <View style={{
+                     alignItems: 'center'
+                     }}>
+                        <Image source={image} style={{height: 200, width: '99%'}}/>
+                     </View>
 
-            <View style={styles.ratingsContainer}>
-                <RatingStars rating={4} size={25}/>
+                    <View style={styles.ratingsContainer}>
+                        <RatingStars rating={4} size={25}/>
 
-            </View>
+                    </View>
 
-            <View style={styles.descriptionContainer}>
-                 <Text style={styles.description}>{description}</Text>
-            </View>
+                    <View style={styles.descriptionContainer}>
+                        <Text style={styles.description}>{description}</Text>
+                    </View>
+                </View>
 
-            
+            }
+            data={PRODUCTS} navigation={props.navigation}/>
 
-            <ProductList data={PRODUCTS} navigation={props.navigation}/>
+            {/* <SectionList 
+                sections={[
+                    {data: PRODUCTS, key: '1', renderItem: renderProductGridItem}
 
-            </ScrollView>
+                ]}
+            /> */}
+
+
+
+
             
 
             

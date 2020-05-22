@@ -24,7 +24,7 @@ export default function CartScreen(props) {
                 <View style={styles.cartItem}>
                     
                     <TouchableOpacity>
-                        <Image source={itemData.item.picture} style={{height: 70, width: 70}}/> 
+                        <Image source={itemData.item.picture} style={{height: 70, width: 70, borderRadius: 35}}/> 
                     </TouchableOpacity>
                     <TouchableOpacity>
                         <View>
@@ -67,7 +67,7 @@ export default function CartScreen(props) {
         )
     }
     return (
-        <View style={ScreenStyle}>
+        <View style={{...ScreenStyle, ...styles.screen}}>
             <FlatList data={CARTITEMS} renderItem={renderItems}/>
             
             <UIButton text="CHECKOUT" onPress={ () => props.navigation.navigate('Login')} width={400} height={50}/>
@@ -88,6 +88,9 @@ const styles = StyleSheet.create(
             width: 400,
             marginLeft: 1,
             padding: 10
+        },
+        screen: {
+            paddingBottom: 10
         }
     }
 )

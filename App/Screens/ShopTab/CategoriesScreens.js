@@ -37,7 +37,7 @@ function CategoriesScreen(props) {
         return (
             
                 <View style={styles.gridItem}>
-                    <TouchableOpacity onPress={() => (props.navigation.navigate('Shop'))}>
+                    <TouchableOpacity onPress={() => (props.navigation.navigate('ProductList'))}>
                         <Image style={styles.imageStyle} source={itemData.item.picture}/>
                         <Text style={styles.textStyle}>{itemData.item.name}</Text>
 

@@ -20,8 +20,28 @@ import Colors from '../Styles/Colors';
 export default function ProductList(props) {
     //props= navigation, data
 
+    
+
 
     const renderGridItem = (itemData) => {
+        let price;
+
+        if(itemData.item.oldPrice??0 > itemData.item.price) {
+            price=(
+                <View style={{justifyContent: 'flex-end', alignItems: 'flex-end', padding: 5}}>
+                    <Text style={styles.oldPrice}> {"BDT " + itemData.item.oldPrice}</Text>
+                    <Text style={styles.price}> {"BDT " + itemData.item.price}</Text>
+                </View> 
+            )
+        }
+
+        else {
+            price = (
+                <View style={{justifyContent: 'flex-end', alignItems: 'flex-end', padding: 5}}>
+                        <Text style={styles.price}> {"BDT " + itemData.item.price}</Text>
+                    </View>
+            )
+        }
         return (
             <View style={styles.gridItem}>
                 <TouchableOpacity onPress={ () => (props.navigation.navigate("Product", {
@@ -34,9 +54,7 @@ export default function ProductList(props) {
                     
 
                     <RatingStars rating={itemData.item.rating}/>
-                    <View style={{justifyContent: 'flex-end', alignItems: 'flex-end', padding: 5}}>
-                        <Text style={styles.price}> {"BDT " + itemData.item.price}</Text>
-                    </View>
+                    {price}
                     
                 </TouchableOpacity>
             </View>
@@ -47,7 +65,8 @@ export default function ProductList(props) {
     return (
         <View>
 
-            <FlatList data={props.data} renderItem={renderGridItem} numColumns={2}/>
+            <FlatList ListHeaderComponent={props.ListHeaderComponent} 
+            data={props.data} renderItem={renderGridItem} numColumns={2}/>
 
         </View>
     );
@@ -71,12 +90,21 @@ const styles = StyleSheet.create({
     },
     sellerName: {
         fontSize: 12,
-        fontWeight: '200',
+        fontWeight: '300',
+        color: 'grey'
     },
     price: {
         fontSize: 18,
         color: 'black',
         fontWeight: '600'
         
+    },
+    oldPrice: {
+        fontSize: 15,
+        color: 'black',
+        fontWeight: '400',
+        textDecorationLine: 'line-through',
+        color: 'grey'
     }
+    
 })

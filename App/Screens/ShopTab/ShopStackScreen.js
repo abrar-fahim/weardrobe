@@ -33,6 +33,9 @@ import ShopRightButtons from '../../components/ShopRightButtons';
 import SellerScreen from './SellerScreen';
 import HeaderOptions from '../../Styles/HeaderOptions';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
+import ProductListScreen from './ProductListScreen';
+
+import OrderScreen from './OrderScreen'
 
 export default function ShopStackScreen({navigation}) {
     const ShopStack = createStackNavigator();
@@ -73,6 +76,9 @@ export default function ShopStackScreen({navigation}) {
                     )
                 }}
             />
+
+            <ShopStack.Screen name="ProductList" component={ProductListScreen}/>
+            <ShopStack.Screen name="Order" component={OrderScreen}/>
 
         </ShopStack.Navigator>
     )

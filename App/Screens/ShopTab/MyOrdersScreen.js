@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS, TouchableOpacity } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
@@ -12,6 +12,7 @@ import HeaderButton from '../../components/HeaderButton';
 
 import { SearchBar, Overlay } from 'react-native-elements';
 import { Drawer } from 'react-native-paper';
+import { Ionicons, Entypo, AntDesign } from '@expo/vector-icons';
 
 import Header from '../../components/Header.js'
 
@@ -21,6 +22,48 @@ import ShopRightButtons from '../../components/ShopRightButtons';
 import DrawerStack from './DrawerStack';
 
 import ScreenStyle from '../../Styles/ScreenStyle'
+import CARTITEMS from '../../dummy-data/CartItems';
+import UIButton from '../../components/UIButton';
+import PRODUCTS from '../../dummy-data/Products'
+
+const ORDERS = [
+    {
+        id: '2',
+        products: PRODUCTS,
+        shops: ['YELLOW'],
+        deliveryDate: '5-5-2020',
+        status: 'delivered',
+        due: 500,
+        reference: 'abc'
+    },
+    {
+        id: '1',
+        products: PRODUCTS,
+        shops: ['Cats Eye'],
+        deliveryDate: '5-5-2020',
+        status: 'shipping',
+        due: 500,
+        reference: 'abc'
+    },
+    {
+        id: '3',
+        products: PRODUCTS,
+        shops: ['YELLOW'],
+        deliveryDate: '5-5-2020',
+        status: 'order placed',
+        due: 500,
+        reference: 'abc'
+    },
+    {
+        id: '4',
+        products: PRODUCTS,
+        shops: ['Cats Eye'],
+        deliveryDate: '5-5-2020',
+        status: 'shipping',
+        due: 500,
+        reference: 'abc'
+    }
+]
 
 
 export default function MyOrdersStack( {navigation} ) {
@@ -29,30 +72,86 @@ export default function MyOrdersStack( {navigation} ) {
    )
 }
 
-function MyOrdersScreen() {
+function MyOrdersScreen(props) {
+
+    const renderItems = (itemData) => {
+        return (
+            <TouchableOpacity onPress={() => (props.navigation.navigate('Order'))}>
+
+                <View style={styles.orderContainer}>
+
+                    <View style={styles.shopRef}>
+                        <Text style={styles.shop}> {itemData.item.shops} </Text>
+
+                        <Text style={styles.ref}> {"id: " + itemData.item.reference}</Text>
+                    </View>
+                 
+                    <Text style={styles.status}> {"Status: " + itemData.item.status}</Text>
+
+                    <View style={styles.shopRef}>
+                        
+                       
+                        <Text style={styles.due}> {"BDT " + itemData.item.due}</Text>
+                        <Text style={styles.date}> {"Get By: " + itemData.item.deliveryDate}</Text>
+
+                    </View>
+
+                </View>
+            </TouchableOpacity>
+        )
+    }
     return (
-        <View style={ScreenStyle}>
-            <Text> MyOrders!!</Text>
+        <View style={{...ScreenStyle, ...styles.screen}}>
+            <FlatList data={ORDERS} renderItem={renderItems}/>
+            
+            
         </View>
     )
 }
 
+const styles = StyleSheet.create(
+    {
+        orderContainer : {
+            marginRight: 10,
+            justifyContent: 'space-between',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            backgroundColor: '#eae9e9',
+            flex: 1,
+            height: 100,
+            padding: 10,
+            margin: 10
+        },
+        screen: {
+            paddingBottom: 10
+        },
+        shopRef: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%'
+        },
+        ref: {
+            fontWeight: '300',
+            color: 'grey'
+        },
+        shop: {
+            fontWeight: '700',
+            fontSize: 17
+        },
+        due: {
 
+            fontWeight: '700',
+            fontSize: 18
 
-const styles = StyleSheet.create({
-    screen: {
-        flex: 1  //ensures that this view takes all space it can get
-    },
+        },
+        date: {
+            fontWeight: '300'
 
-    gridItem: {
-        flex: 1,
-        margin: 15,
-        height: 150
-    },
-    bottom: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        marginBottom: 36
+        },
+        status: {
+            fontWeight: '300',
+        
+
+        }
     }
-})
-
+)

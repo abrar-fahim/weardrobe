@@ -54,7 +54,7 @@ export default function ProductScreen(props) {
     //     </View>
     // </TouchableOpacity>
     return (
-        <ScrollView style={ScreenStyle}>
+        <ScrollView style={{...ScreenStyle, ...styles.screen}}>
 
             <View style={{padding: 10, justifyContent: 'center',}}>
                 <Text style={{fontWeight: 'bold', fontSize: 35}} >{product.name}</Text>
@@ -64,9 +64,11 @@ export default function ProductScreen(props) {
                 <Image source={product.picture} style={{height: 300, width: 350}}/>
             </View>
 
-            <View style={{alignItems: 'flex-end', padding: 10, marginRight: 10}}>
-                <RatingStars rating={4.5} size={30}/> 
+            <View style={{justifyContent: 'flex-start', padding: 10, marginRight: 10, flexDirection: 'row'}}>
+                <RatingStars rating={4.5} size={30} /> 
+                <Ionicons color={Colors.buttonColor} name="ios-share-alt" size={40} style={{marginLeft: Dimensions.get('window').width / 1.9}}/>
             </View>
+           
 
             
 
@@ -114,6 +116,25 @@ export default function ProductScreen(props) {
                 
                 </View>
             </TouchableOpacity>
+
+            <View style={styles.qa}>
+
+                <Text style={styles.heading}>Customer Questions</Text>
+                <Text>{product.qa[0].question.asker}</Text>
+                <Text>{product.qa[0].question.question}</Text>
+                <Text>{product.qa[0].ans}</Text>
+
+            </View>
+
+            <View style={styles.reviews}>
+                <Text style={styles.heading}>Customer Reviews</Text>
+
+                <Text>{product.reviews[0].reviewer}</Text>
+                <RatingStars rating={product.reviews[0].stars} size={20}/>
+                <Text>{product.reviews[0].review}</Text>
+
+
+            </View>
             
 
             
@@ -128,6 +149,27 @@ export default function ProductScreen(props) {
 const styles = StyleSheet.create({
     text: {
         fontWeight: '600',
+    },
+    screen: {
+        marginBottom: 10
+    },
+    qa: {
+        width: '100%',
+        margin: 10
+
+    },
+    reviews: {
+        width: '100%',
+        margin: 10
+
+    },
+    heading: {
+        fontSize: 22,
+        fontWeight: '700'
+    },
+    shareButton: {
+        alignItems: 'flex-end'
+
     }
     
 
