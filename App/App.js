@@ -1,11 +1,12 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import {createStore, combineReducers} from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux'
+import ReduxThunk from 'redux-thunk'
 
 
 import HomeScreen from './Screens/MainTabScreen';
@@ -20,7 +21,14 @@ import * as RootNavigation from './RootNavigation'
 
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo'
+import productsReducer from './store/reducers/products';
 
+
+const rootReducer = combineReducers({
+  products: productsReducer
+})
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
 
 
 
@@ -50,19 +58,21 @@ export default function App({ navigation }) {
   //return <HomeNavigator />;
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name = "Home" component = {HomeScreen} 
-        options={{
-          title: "Fash-App",
-          headerShown: false
-        }}
-        />
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={HomeScreen}
+            options={{
+              title: "Fash-App",
+              headerShown: false
+            }}
+          />
 
-        <Stack.Screen name="Login" component ={LoginScreen}/>
-        <Stack.Screen name="Signup" component={SignupScreen}/>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Signup" component={SignupScreen} />
 
-      </Stack.Navigator>
-    </NavigationContainer>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
