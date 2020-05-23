@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -16,12 +16,16 @@ import RatingStars from './RatingStars';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../Styles/Colors';
 
+import { useSelector, useDispatch } from 'react-redux';
+
+import * as productActions from '../store/actions/products'
+
 
 export default function ProductList(props) {
     //props= navigation, data
 
 
-
+   
 
     const renderGridItem = (itemData) => {
         let price;
@@ -44,9 +48,11 @@ export default function ProductList(props) {
         }
         return (
             <View style={styles.gridItem}>
-                <TouchableOpacity onPress={() => (props.navigation.navigate("Product", {
-                    productId: itemData.item.id,
-                }))}>
+                <TouchableOpacity onPress={() => (
+                    props.navigation.navigate("Product", {
+                        productId: itemData.item.id
+                    })
+                )}>
 
                     <Image source={itemData.item.picture} style={{ height: 150, width: 150, justifyContent: 'center', alignItems: 'center' }} />
                     <Text style={styles.itemName}> {itemData.item.name}</Text>
