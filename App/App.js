@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux'
+import { Provider, useSelector } from 'react-redux'
 import ReduxThunk from 'redux-thunk'
 
 
@@ -23,9 +23,16 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo'
 import productsReducer from './store/reducers/products';
 
+import authReducer from './store/reducers/auth'
+import cartReducer from './store/reducers/cart'
+import wishlistReducer from './store/reducers/wishlist'
+
 
 const rootReducer = combineReducers({
-  products: productsReducer
+  products: productsReducer,
+  auth: authReducer,
+  cart: cartReducer,
+  wishlist: wishlistReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
@@ -57,10 +64,12 @@ export default function App({ navigation }) {
 
   //return <HomeNavigator />;
 
+
   return (
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator>
+
           <Stack.Screen name="Home" component={HomeScreen}
             options={{
               title: "Fash-App",

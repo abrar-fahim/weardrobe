@@ -68,8 +68,17 @@ export default function ProductList(props) {
 
     }
 
+    if(props.data.length === 0) {
+        return (
+            <View>
+                <Text> no products yet!</Text>
+            </View>
+        )
+
+    }
+
     return (
-        <View>
+        <View style={styles.screen}>
 
             <FlatList ListHeaderComponent={props.ListHeaderComponent}
                 data={props.data} renderItem={renderGridItem} numColumns={2} onRefresh={props.onRefresh} refreshing={props.refreshing}
@@ -81,8 +90,8 @@ export default function ProductList(props) {
 }
 
 const styles = StyleSheet.create({
-    screen: {
-        flex: 1  //ensures that this view takes all space it can get
+    screen: { 
+        height: '100%'
     },
 
     gridItem: {

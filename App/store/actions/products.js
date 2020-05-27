@@ -5,15 +5,11 @@ export const ADD_TO_CART = 'ADD_TO_CART';
 export const fetchProducts = () => {
     return async (dispatch) => {
         try {
-            const response = await fetch('http://localhost:3000/get/shop/products', {
-                method: 'POST',
+            const response = await fetch('http://localhost:3000/get/shop/157b9ad96ee8ad27443eb96c572afeb9/products/0', {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "iter": 0,
-                    "shopId": "157b9ad96ee8ad27443eb96c572afeb9"
-                })
+                }
             });
 
             if (!response.ok) {
@@ -26,10 +22,12 @@ export const fetchProducts = () => {
             for (const key in resData) {
                 loadedProducts.push({
                     id: resData[key].PRODUCT_ID,
-                    name: resData[key].PRODUCT_NAME
+                    name: resData[key].PRODUCT_NAME,
+                    price: resData[key].PRICE,
+                    rating: resData[key].PRODUCT_RATING
                 })
             }
-            console.log(loadedProducts);
+            // console.log(loadedProducts);
             dispatch({ type: SET_PRODUCTS_LIST, products: loadedProducts })
 
         }
@@ -44,14 +42,11 @@ export const fetchProductDetails = (productId) => {
     return async (dispatch) => {
 
         try {
-            const response = await fetch('http://localhost:3000/get/product/details', {
-                method: 'POST',
+            const response = await fetch(`http://localhost:3000/get/product/${productId}/details`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "productId": productId
-                })
+                }
             })
 
             if (!response.ok) {
@@ -69,7 +64,7 @@ export const fetchProductDetails = (productId) => {
                 rating: resData.PRODUCT_RATING
 
             }
-            console.log('acrtion product: ' + product)
+            // console.log('acrtion product: ' + product)
 
 
             dispatch({ type: GET_PRODUCT_DETAILS, product: product })
@@ -99,12 +94,12 @@ export const addToCart = (productId) => {
                 throw new Error('Somehthings wrong');
             }
             const resData = await response.json();
-            
+
 
             //console.log('acrtion product: ' + product)
 
 
-            dispatch({ type: ADD_TO_CART})
+            dispatch({ type: ADD_TO_CART })
         }
         catch (err) {
             throw err;

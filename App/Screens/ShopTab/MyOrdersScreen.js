@@ -1,13 +1,15 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS, TouchableOpacity } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
+import { useSelector, useDispatch } from 'react-redux';
 
-import {HeaderButtons, Item } from 'react-navigation-header-buttons';
+
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/HeaderButton';
 
 import { SearchBar, Overlay } from 'react-native-elements';
@@ -25,6 +27,8 @@ import ScreenStyle from '../../Styles/ScreenStyle'
 import CARTITEMS from '../../dummy-data/CartItems';
 import UIButton from '../../components/UIButton';
 import PRODUCTS from '../../dummy-data/Products'
+import AuthRequiredScreen from '../AuthRequiredScreen'
+import CheckLoggedIn from '../../components/CheckLoggedIn';
 
 const ORDERS = [
     {
@@ -66,13 +70,15 @@ const ORDERS = [
 ]
 
 
-export default function MyOrdersStack( {navigation} ) {
-   return (
-       <DrawerStack name="MyOrders" navigation={navigation} component={MyOrdersScreen} title="My Orders"/>
-   )
+export default function MyOrdersStack({ navigation }) {
+    return (
+        <DrawerStack name="MyOrders" navigation={navigation} component={MyOrdersScreen} title="My Orders" />
+    )
 }
 
 function MyOrdersScreen(props) {
+
+    const loggedIn = CheckLoggedIn();
 
     const renderItems = (itemData) => {
         return (
@@ -85,12 +91,12 @@ function MyOrdersScreen(props) {
 
                         <Text style={styles.ref}> {"id: " + itemData.item.reference}</Text>
                     </View>
-                 
+
                     <Text style={styles.status}> {"Status: " + itemData.item.status}</Text>
 
                     <View style={styles.shopRef}>
-                        
-                       
+
+
                         <Text style={styles.due}> {"BDT " + itemData.item.due}</Text>
                         <Text style={styles.date}> {"Get By: " + itemData.item.deliveryDate}</Text>
 
@@ -100,18 +106,24 @@ function MyOrdersScreen(props) {
             </TouchableOpacity>
         )
     }
+
+    if (!loggedIn) {
+        return (
+            <AuthRequiredScreen navigation={props.navigation} />
+        )
+    }
     return (
-        <View style={{...ScreenStyle, ...styles.screen}}>
-            <FlatList data={ORDERS} renderItem={renderItems}/>
-            
-            
+        <View style={{ ...ScreenStyle, ...styles.screen }}>
+            <FlatList data={ORDERS} renderItem={renderItems} />
+
+
         </View>
     )
 }
 
 const styles = StyleSheet.create(
     {
-        orderContainer : {
+        orderContainer: {
             marginRight: 10,
             justifyContent: 'space-between',
             flexDirection: 'column',
@@ -150,7 +162,7 @@ const styles = StyleSheet.create(
         },
         status: {
             fontWeight: '300',
-        
+
 
         }
     }

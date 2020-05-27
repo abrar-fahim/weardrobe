@@ -26,6 +26,8 @@ import HeaderOptions from '../../Styles/HeaderOptions';
 import ScreenStyle from '../../Styles/ScreenStyle'
 import Colors from '../../Styles/Colors';
 
+import * as authActions from '../../store/actions/auth'
+
 
 
 
@@ -40,6 +42,16 @@ export function ProfileScreen(props) {
 }
 
 export function ProfileTabsScreen({navigation}) {
+
+    const dispatch = useDispatch();
+
+    const logoutHandler = async () => {
+        try {
+            await dispatch(authActions.logout())
+        } catch(err) {
+            console.log('error while logging out')
+        }
+    }
     const TopTab = createMaterialTopTabNavigator();
 
     return(
@@ -59,6 +71,8 @@ export function ProfileTabsScreen({navigation}) {
                         
                     </View>
                 </TouchableOpacity>
+
+                <Button title="logout" onPress={logoutHandler} />
                 
             </View>
             <TopTab.Navigator

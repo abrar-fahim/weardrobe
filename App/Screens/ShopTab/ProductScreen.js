@@ -18,7 +18,10 @@ import ColorCircles from '../../components/ColorCircles'
 
 import { useSelector, useDispatch } from 'react-redux';
 import * as productActions from '../../store/actions/products'
+import * as wishlistActions from '../../store/actions/wishlist'
 import { ActivityIndicator } from 'react-native-paper';
+
+import GenericHeaderButton from '../../components/GenericHeaderButton'
 
 
 
@@ -29,11 +32,15 @@ export default function ProductScreen(props) {
 
 
 
+
+
     //const product= PRODUCTS.find(product => product.id === productId)
     const productId = props.route.params?.productId ?? 'default'
     // console.log(productId)
 
     const product = useSelector(state => state.products.productDetails);
+
+
     //product = PRODUCTS[0];
     const dispatch = useDispatch();
 
@@ -61,10 +68,31 @@ export default function ProductScreen(props) {
     const addToCart = useCallback(async () => {
         try {
             await dispatch(productActions.addToCart(productId))
-        } catch(err) {
+        } catch (err) {
             console.log(err.message)
         }
     })
+
+    const addToWishlist = useCallback(async () => {
+        try {
+            await dispatch(wishlistActions.addToWishlist(productId))
+        } catch (err) {
+            console.log(err.message)
+        }
+    })
+
+    let wishlistItems = useSelector(state => state.wishlist.items)
+
+    const isInWishlist = wishlistItems.some(item => item.id === productId);
+
+    const heartIcon = isInWishlist ? "md-heart" : "md-heart-empty";
+
+
+    React.useLayoutEffect(() => {
+        props.navigation.setOptions({
+            headerRight: () => (<GenericHeaderButton iconName={heartIcon} onPress={addToWishlist} />)
+        });
+    }, [props.navigation]);
 
     // useEffect(() => {
     //     setIsLoading(true);
@@ -72,7 +100,7 @@ export default function ProductScreen(props) {
     //         setIsLoading(false);
     //     });
     // }, [dispatch, loadProductDetails, setIsLoading]);
-    
+
 
     // if (isLoading) {
     //     return (

@@ -6,7 +6,7 @@ import {
 import PRODUCTS from '../../dummy-data/Products'
 
 const initialState = {
-    products: PRODUCTS,
+    products: [],
     productDetails: PRODUCTS[0]
 }
 
@@ -17,13 +17,13 @@ export default function productsReducer(state = initialState, action) {
         case SET_PRODUCTS_LIST:
 
             return {
-                ...initialState,
+                ...state,
                 products: action.products
             };
 
         case GET_PRODUCT_DETAILS:
             return {
-                ...initialState,
+                ...state,
                 productDetails: action.product
             }
 

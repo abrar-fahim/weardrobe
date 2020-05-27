@@ -31,6 +31,12 @@ export default function ProductListScreen(props) {
         }
         setIsRefreshing(false);
     }, [dispatch, setIsRefreshing])
+
+    useEffect(() => {
+        loadProducts();
+        console.log('loaded products')
+    }, [dispatch])
+
     return (
         <View>
             <ProductList navigation={props.navigation} data={products} onRefresh={loadProducts} refreshing={isRefreshing} />
