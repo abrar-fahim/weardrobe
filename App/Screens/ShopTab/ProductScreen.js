@@ -37,6 +37,8 @@ export default function ProductScreen(props) {
 
     const loggedIn = useSelector(state => state.auth.userId, (left, right) => (left.auth.userId === right.auth.userId)) === null ? false : true
 
+    const userId = useSelector(state => state.auth.userId);
+
     const [addCartModalVisible, setAddCartModalVisible] = useState(false);
     const [addWishlistModalVisible, setAddWishlistModalVisible] = useState(false);
     const [reviewModalVisible, setIsReviewModalVisible] = useState(false);
@@ -71,8 +73,9 @@ export default function ProductScreen(props) {
         //setIsLoading(true);
         try {
             if (mounted) {
-                await dispatch(productActions.fetchProductDetails(productId))
                 await dispatch(productActions.fetchProductReviews(productId))
+                await dispatch(productActions.fetchProductDetails(productId))
+
             }
         } catch (err) {
             console.log('error in product screen')
@@ -309,14 +312,7 @@ export default function ProductScreen(props) {
     const { colors, sizes, images, colorImages } = getInventory();
 
 
-    if (product === null) {
-        return (
-            <View style={styles.centered}>
-                <ActivityIndicator size="large" />
-            </View>
-        )
 
-    }
 
     const renderPic = (itemData) => {
         //console.log(itemData.item)
@@ -357,141 +353,160 @@ export default function ProductScreen(props) {
         }
 
     }
-    return (
-        <>
 
-            <SmallPopup setIsVisible={setAddCartModalVisible} isVisible={addCartModalVisible} text={cartMessage} />
-            <SmallPopup setIsVisible={setAddWishlistModalVisible} isVisible={addWishlistModalVisible} text={wishlistMessage} />
-            <SmallPopup setIsVisible={setAddReviewPopupVisible} isVisible={addReviewPopupVisible} text={reviewMessage}/>
-            <Modal
-                isVisible={reviewModalVisible}
-                onBackdropPress={() => (setIsReviewModalVisible(false))}
-            >
-                <View style={styles.addReviewContainer}>
-                    <TextInput placeholder="Rating" keyboardType="decimal-pad" style={styles.addRatingInput}
-                        onChangeText={(value) => (setRating(value))} />
-                    <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
-                        onChangeText={(value) => (setReviewText(value))} />
-                    <View style={styles.addReviewButtonContainer}>
-                        <Button title="Add Review" onPress={() => {
-                            //dispatch addreview action
-                            addReview(rating, reviewText)
-                            //setIsReviewModalVisible(false);
-                        }} />
+    if (product === null) {
+        console.log("reviews: " + reviews)
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size="large" />
+            </View>
+        )
+
+    }
+
+    else {
+        console.log("reviews not null: " + reviews)
+        return (
+            <>
+
+                <SmallPopup setIsVisible={setAddCartModalVisible} isVisible={addCartModalVisible} text={cartMessage} />
+                <SmallPopup setIsVisible={setAddWishlistModalVisible} isVisible={addWishlistModalVisible} text={wishlistMessage} />
+                <SmallPopup setIsVisible={setAddReviewPopupVisible} isVisible={addReviewPopupVisible} text={reviewMessage} />
+                <Modal
+                    isVisible={reviewModalVisible}
+                    onBackdropPress={() => (setIsReviewModalVisible(false))}
+                >
+                    <View style={styles.addReviewContainer}>
+                        <TextInput placeholder="Rating" keyboardType="decimal-pad" style={styles.addRatingInput}
+                            onChangeText={(value) => (setRating(value))} />
+                        <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
+                            onChangeText={(value) => (setReviewText(value))} />
+                        <View style={styles.addReviewButtonContainer}>
+                            <Button title="Add Review" onPress={() => {
+                                //dispatch addreview action
+                                addReview(rating, reviewText)
+                                //setIsReviewModalVisible(false);
+                            }} />
+                        </View>
+
                     </View>
 
-                </View>
-
-            </Modal>
+                </Modal>
 
 
 
-            <ScrollView style={{ ...ScreenStyle, ...styles.screen }}>
+                <ScrollView style={{ ...ScreenStyle, ...styles.screen }}>
 
-                <View style={{ padding: 10, justifyContent: 'center', }}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 35 }} >{product.name}</Text>
-                </View>
+                    <View style={{ padding: 10, justifyContent: 'center', }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 35 }} >{product.name}</Text>
+                    </View>
 
-                <View style={styles.imageContainer}>
-                    <FlatList pagingEnabled={true} horizontal={true} data={colorImages} renderItem={renderPic} />
+                    <View style={styles.imageContainer}>
+                        <FlatList pagingEnabled={true} horizontal={true} data={colorImages} renderItem={renderPic} />
 
-                </View>
+                    </View>
 
-                <View style={{ justifyContent: 'flex-start', padding: 10, marginRight: 10, flexDirection: 'row' }}>
-                    <RatingStars rating={product.rating} size={30} />
-                    <Ionicons color={Colors.buttonColor} name="ios-share-alt" size={40} style={{ marginLeft: Dimensions.get('window').width / 1.9 }} />
-                </View>
+                    <View style={{ justifyContent: 'flex-start', padding: 10, marginRight: 10, flexDirection: 'row' }}>
+                        <RatingStars rating={product.rating} size={30} />
+                        <Ionicons color={Colors.buttonColor} name="ios-share-alt" size={40} style={{ marginLeft: Dimensions.get('window').width / 1.9 }} />
+                    </View>
 
 
 
 
 
-                <View style={{ marginTop: 30, padding: 5 }}>
-                    <Text style={{
-                        fontSize: 18,
-                        fontWeight: '400',
-                        color: 'grey'
-                    }}> {product.description} </Text>
-                </View>
+                    <View style={{ marginTop: 30, padding: 5 }}>
+                        <Text style={{
+                            fontSize: 18,
+                            fontWeight: '400',
+                            color: 'grey'
+                        }}> {product.description} </Text>
+                    </View>
 
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 30, marginLeft: 30, marginTop: 30 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 30, marginLeft: 30, marginTop: 30 }}>
 
 
-                    <View>
                         <View>
-                            <Text style={styles.text}> COLOR </Text>
+                            <View>
+                                <Text style={styles.text}> COLOR </Text>
+                            </View>
+
+                            <ColorCircles setSelectedColor={setSelectedColor} selectedColor={selectedColor} colors={colors} />
                         </View>
 
-                        <ColorCircles setSelectedColor={setSelectedColor} selectedColor={selectedColor} colors={colors} />
-                    </View>
 
-
-                    <View>
-                        <Text style={styles.text}> SIZE </Text>
-                        <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes} />
-
-                    </View>
-
-
-
-                </View>
-
-
-
-                <TouchableOpacity onPress={() => {
-                    addToCart();
-                    //props.navigation.goBack();
-
-                }} >
-                    <View style={{ backgroundColor: Colors.buttonColor, height: 50, justifyContent: 'center', marginTop: 40 }}>
-                        <View style={{ marginLeft: 5, flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                            <Text style={UIButtonTextStyle}> ADD TO CART</Text>
-                            <Text style={UIButtonTextStyle}>{"BDT " + product.price}</Text>
+                        <View>
+                            <Text style={styles.text}> SIZE </Text>
+                            <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes} />
 
                         </View>
 
 
+
                     </View>
-                </TouchableOpacity>
-
-                {/* <View style={styles.qa}>
-
-                    <Text style={styles.heading}>Customer Questions</Text>
-                    <Text>{product.qa[0].question.asker}</Text>
-                    <Text>{product.qa[0].question.question}</Text>
-                    <Text>{product.qa[0].ans}</Text>
-
-                </View> */}
 
 
-                <View style={styles.reviewTitleContainer}>
-                    <Text style={styles.heading}>Reviews ({product.ratingCount})</Text>
+
                     <TouchableOpacity onPress={() => {
-                        if(loggedIn) {
-                            setIsReviewModalVisible(true)
-                        }
-                        else {
-                            props.navigation.navigate('Login')
-                        }
-                        
-                    
-                    }}>
-                        <Text style={styles.addReview}>+ ADD REVIEW</Text>
+                        addToCart();
+                        //props.navigation.goBack();
+
+                    }} >
+                        <View style={{ backgroundColor: Colors.buttonColor, height: 50, justifyContent: 'center', marginTop: 40 }}>
+                            <View style={{ marginLeft: 5, flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
+                                <Text style={UIButtonTextStyle}> ADD TO CART</Text>
+                                <Text style={UIButtonTextStyle}>{"BDT " + product.price}</Text>
+
+                            </View>
+
+
+                        </View>
                     </TouchableOpacity>
 
-                </View>
+                    {/* <View style={styles.qa}>
+    
+                        <Text style={styles.heading}>Customer Questions</Text>
+                        <Text>{product.qa[0].question.asker}</Text>
+                        <Text>{product.qa[0].question.question}</Text>
+                        <Text>{product.qa[0].ans}</Text>
+    
+                    </View> */}
+
+
+                    <View style={styles.reviewTitleContainer}>
+                        <Text style={styles.heading}>Reviews ({product.ratingCount})</Text>
+                        <TouchableOpacity onPress={() => {
+                            if (loggedIn) {
+                                setIsReviewModalVisible(true)
+                            }
+                            else {
+                                props.navigation.navigate('Login')
+                            }
+
+
+                        }}>
+                            <Text style={styles.addReview}>{reviews.some(review => review.reviewerId === userId) ? "EDIT REVIEW" : "+ ADD REVIEW"}</Text>
+                        </TouchableOpacity>
+
+                    </View>
 
 
 
 
 
-                <FlatList data={reviews} renderItem={renderReview} />
+                    <FlatList data={reviews} renderItem={renderReview} />
 
 
-            </ScrollView>
-        </>
-    )
+                </ScrollView>
+            </>
+        )
+    }
+
+
+
+
+
 }
 
 const styles = StyleSheet.create({

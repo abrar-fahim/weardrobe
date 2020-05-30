@@ -105,7 +105,7 @@ export const fetchProductReviews = (productId) => {
 
             for (const key in resData) {
                 productReviews.push({
-                    reviewerId: resData[key].PRODUCT_ID,
+                    reviewerId: resData[key].REVIEWER_ID,
                     review: resData[key].REVIEW,
                     rating: resData[key].RATING,
                     date: resData[key].REVIEW_DATE,
