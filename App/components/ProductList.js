@@ -30,11 +30,13 @@ export default function ProductList(props) {
     const renderGridItem = (itemData) => {
         let price;
 
-        if (itemData.item.oldPrice ?? 0 > itemData.item.price) {
+        if (itemData.item.discount > 0) {
+            const oldPrice = itemData.item.price;
+            const newPrice = oldPrice * (100 - itemData.item.discount) / 100;
             price = (
                 <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end', padding: 5 }}>
-                    <Text style={styles.oldPrice}> {"BDT " + itemData.item.oldPrice}</Text>
-                    <Text style={styles.price}> {"BDT " + itemData.item.price}</Text>
+                    <Text style={styles.oldPrice}> {"BDT " + oldPrice}</Text>
+                    <Text style={styles.price}> {"BDT " + newPrice}</Text>
                 </View>
             )
         }
@@ -54,7 +56,7 @@ export default function ProductList(props) {
                     })
                 )}>
 
-                    <Image source={itemData.item.picture} style={{ height: 150, width: 150, justifyContent: 'center', alignItems: 'center' }} />
+                    <Image source={itemData.item.thumbnail} style={{ height: 150, width: 150, justifyContent: 'center', alignItems: 'center' }} />
                     <Text style={styles.itemName}> {itemData.item.name}</Text>
                     <Text style={styles.sellerName}> {"From " + itemData.item.shopname} </Text>
 

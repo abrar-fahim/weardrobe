@@ -38,7 +38,8 @@ export default function HomeScreen(props) {
         try {
             await dispatch(authActions.getUserId())
         } catch (err) {
-            console.log('cant get userId')
+            console.log("error in trab screen: ");
+            console.log(err)
         }
         //setIsLoading(false);
     }, [dispatch])

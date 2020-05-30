@@ -4,7 +4,7 @@ export const GET_WISHLIST_ITEMS = 'GET_WISHLIST_ITEMS';
 
 export const addToWishlist = productId => {
     return async (dispatch) => {
-        const response = await fetch('http://localhost:3000/add/wishlist', {
+        const response = await fetch('http://192.168.0.20:3000/add/wishlist', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -23,19 +23,87 @@ export const addToWishlist = productId => {
         console.log(resData);
 
         if (Object.keys(resData)[0] === 'SUCCESS') {
-            // dispatch({
-            //     type: ADD_TO_WISHLIST,
-            //     productId: productId
-            // })
+            dispatch({
+                type: ADD_TO_WISHLIST,
+                message: 'Added to wishlist!'
+            })
+        }
+        else if (Object.keys(resData)[0] === 'ERROR') {
+            if (resData.ERROR === 'UNAUTHORIZED') {
+                dispatch({
+                    type: ADD_TO_WISHLIST,
+                    message: 'Log in first!'
+                })
+            }
+            else {
+                dispatch({
+                    type: ADD_TO_WISHLIST,
+                    message: 'Failed to add to wishlist'
+                })
+            }
+
         }
 
     }
 }
 
-export const removeFromWishlist= productId => {
+export const removeFromWishlist = productId => {
+
+    return async (dispatch) => {
+        try {
+            const response = await fetch('http://192.168.0.20:3000/delete/wishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    productId: productId
+                })
+
+            })
+
+            if (!response.ok) {
+                throw new Error('somethings wrong');
+            }
+
+            const resData = await response.json();  //converts response string to js object/array
+
+            console.log(resData);
+
+            if (Object.keys(resData)[0] === 'SUCCESS') {
+                dispatch({
+                    type: ADD_TO_WISHLIST,
+                    message: 'removed from wishlist!'
+                })
+            }
+            else if (Object.keys(resData)[0] === 'ERROR') {
+                if (resData.ERROR === 'UNAUTHORIZED') {
+                    dispatch({
+                        type: ADD_TO_WISHLIST,
+                        message: 'Log in first!'
+                    })
+                }
+                else {
+                    dispatch({
+                        type: ADD_TO_WISHLIST,
+                        message: 'Failed to remove from wishlist'
+                    })
+                }
+
+            }
+
+
+
+
+        }
+        catch (err) {
+            throw new Error(err.message)
+        }
+    }
     return {
         type: REMOVE_FROM_WISHLIST,
-        productId: productId
+        productId: productId,
+        message: ''
     }
 }
 
@@ -45,15 +113,15 @@ export const fetchItems = () => {
         const userId = getState().auth.userId;
 
         try {
-            const response = await fetch('http://localhost:3000/get/wishlist', {
+            const response = await fetch('http://192.168.0.20:3000/get/wishlist', {
                 method: 'GET'
             })
 
             const resData = await response.json();
             const wishListItems = [];
-            
 
-            for(const key in resData) {
+
+            for (const key in resData) {
                 wishListItems.push(
                     {
                         id: resData[key].PRODUCT_ID,
@@ -77,7 +145,7 @@ export const fetchItems = () => {
             })
 
 
-        } catch(err) {
+        } catch (err) {
             throw new Error(err.message)
         }
     }

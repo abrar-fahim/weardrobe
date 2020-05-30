@@ -1,3 +1,4 @@
+
 import { AsyncStorage } from "react-native";
 
 // import tough from 'tough-cookie';
@@ -17,11 +18,13 @@ export const login = (email, password) => {
         // const storedCookie = await AsyncStorage.getItem('user-cookie');
 
         // if (!storedCookie) {
-        const response = await fetch('http://localhost:3000/login-customer', {
+
+        const response = await fetch('http://192.168.0.20:3000/login-customer', {
             // credentials: 'omit',
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': "application/json"
             },
             body: JSON.stringify({
                 username: email,
@@ -29,13 +32,13 @@ export const login = (email, password) => {
             })
         });
 
-        console.log('ion action uasasd')
-        const header = await response.headers
-        console.log(header)
+        // console.log('ion action uasasd')
+        // const header = await response.headers
+        // console.log(header)
 
-        const cookie = header.map["set-cookie"];
+        //const cookie = header.map["set-cookie"];
 
-        console.log(cookie)
+        // console.log(cookie)
 
         if (!response.ok) {
             throw new Error('somethings wrong');
@@ -95,14 +98,18 @@ export const login = (email, password) => {
 
 export const getUserId = () => {
     return async dispatch => {
-        const response = await fetch('http://localhost:3000/authrequired', {
+        const response = await fetch('http://192.168.0.20:3000/authrequired', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': "application/json"
+
             }
         })
 
+        console.log('yaay')
         const resData = await response.json();  //converts 
+        console.log(resData)
 
         if (Object.keys(resData)[0] === 'SUCCESS') {
 
@@ -125,7 +132,7 @@ export const logout = () => {
 
     return async dispatch => {
 
-        const response = await fetch('http://localhost:3000/logout', {
+        const response = await fetch('http://192.168.0.20:3000/logout', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

@@ -63,13 +63,17 @@ export default function CartScreen(props) {
 
                 <View style={styles.cartItem}>
 
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
+                        productId: itemData.item.id
+                    }))}>
                         <Image source={itemData.item.picture} style={{ height: 70, width: 70, borderRadius: 35 }} />
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
+                        productId: itemData.item.id
+                    }))}>
                         <View>
                             <Text style={{ fontSize: 17, fontWeight: '400' }}> {itemData.item.name}</Text>
-                            <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.id}</Text>
+                            <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.name}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -107,13 +111,13 @@ export default function CartScreen(props) {
         )
     }
 
-    
 
-    if(!loggedIn) {
+
+    if (!loggedIn) {
         return (
-           <AuthRequiredScreen navigation={props.navigation}/>
+            <AuthRequiredScreen navigation={props.navigation} />
         )
-        
+
     }
 
 
@@ -125,9 +129,9 @@ export default function CartScreen(props) {
         )
     }
 
-    
 
-    
+
+
     return (
         <View style={{ ...ScreenStyle, ...styles.screen }}>
             <FlatList data={cartItems} renderItem={renderItems} />

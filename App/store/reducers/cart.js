@@ -5,6 +5,7 @@ import CARTITEMS from '../../dummy-data/CartItems';
 
 const initialState = {
     items: [],
+    message: 'Please Wait'
 }
 
 export default (state = initialState, action) => {
@@ -15,10 +16,15 @@ export default (state = initialState, action) => {
             }
 
         case LOGOUT: {
-            console.log('doneeee')
             return initialState
         }
-            
+
+        case ADD_TO_CART:
+            return {
+                ...state,
+                message: action.message
+            }
+
     }
 
     return state;
