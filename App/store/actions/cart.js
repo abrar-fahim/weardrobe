@@ -2,10 +2,11 @@ export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 export const GET_CART_ITEMS = 'GET_CART_ITEMS';
 export const UPDATE_CART = 'UPDATE_CART'
+import HOST from "../../components/host";
 
 export const addToCart = (productId, color, size, quantity) => {
     return async (dispatch) => {
-        const response = await fetch('http://192.168.0.20:3000/add/cart', {
+        const response = await fetch(`${HOST}/add/cart`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -55,7 +56,7 @@ export const addToCart = (productId, color, size, quantity) => {
 export const removeFromCart = (productId, color, size) => {
 
    return async (dispatch) => {
-        const response = await fetch('http://192.168.0.20:3000/delete/cart', {
+        const response = await fetch(`${HOST}/delete/cart`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -105,7 +106,7 @@ export const removeFromCart = (productId, color, size) => {
 export const updateCart = (productId, color, size, quantity) => {
 
     return async (dispatch) => {
-         const response = await fetch('http://192.168.0.20:3000/update/cart', {
+         const response = await fetch(`${HOST}/update/cart`, {
              method: 'POST',
              headers: {
                  'Content-Type': 'application/json'
@@ -161,7 +162,7 @@ export const fetchCartItems = () => {
         const userId = getState().auth.userId;
 
         try {
-            const response = await fetch('http://192.168.0.20:3000/get/cart', {
+            const response = await fetch(`${HOST}/get/cart`, {
                 method: 'GET'
             })
 
@@ -175,7 +176,7 @@ export const fetchCartItems = () => {
                         id: resData[key].PRODUCT_ID,
                         name: resData[key].PRODUCT_NAME,
                         shopname: 'YELLOW',
-                        picture: { uri: "http://192.168.0.20:3000/img/temp/" + resData[key].THUMBNAIL},
+                        picture: { uri: "${HOST}/img/temp/" + resData[key].THUMBNAIL},
                         price: resData[key].PRICE,
                         discount: resData[key].DISCOUNT,
                         color: resData[key].COLOR,

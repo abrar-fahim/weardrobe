@@ -5,11 +5,12 @@ export const SET_ERROR = 'SET_ERROR';
 export const GET_PRODUCT_REVIEWS = 'GET_PRODUCT_REVIEWS'
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const GET_PRODUCTS_FN = 'GET_PRODUCTS_FN'
+import HOST from "../../components/host";
 
 export const fetchProducts = () => {
     return async (dispatch) => {
         try {
-            const response = await fetch('http://192.168.0.20:3000/get/allproducts/0', {
+            const response = await fetch(`${HOST}/get/allproducts/0`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,7 +33,7 @@ export const fetchProducts = () => {
                     price: resData[key].PRICE,
                     rating: resData[key].PRODUCT_RATING,
                     discount: resData[key].DISCOUNT,
-                    thumbnail: { uri: "http://192.168.0.20:3000/img/temp/" + resData[key].THUMBNAIL }
+                    thumbnail: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL }
 
                 })
             }
@@ -53,7 +54,7 @@ export const fetchProductDetails = (productId) => {
     return async (dispatch) => {
 
         try {
-            const response = await fetch(`http://192.168.0.20:3000/get/product/${productId}/details`, {
+            const response = await fetch(`${HOST}/get/product/${productId}/details`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -92,7 +93,7 @@ export const fetchProductReviews = (productId) => {
     return async (dispatch) => {
 
         try {
-            const response = await fetch(`http://192.168.0.20:3000/get/product/${productId}/reviews/0`, {
+            const response = await fetch(`${HOST}/get/product/${productId}/reviews/0`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -135,7 +136,7 @@ export const addReview = (productId, rating, review) => {
     return async (dispatch) => {
 
         try {
-            const response = await fetch(`http://192.168.0.20:3000/review/product`, {
+            const response = await fetch(`${HOST}/review/product`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -193,7 +194,7 @@ export const addReview = (productId, rating, review) => {
 export const fetchCategories = () => {
     return async (dispatch) => {
         try {
-            const response = await fetch('http://192.168.0.20:3000/get/category/list/0', {
+            const response = await fetch(`${HOST}/get/category/list/0`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -230,7 +231,7 @@ export const fetchCategories = () => {
 export const fetchProductsByCategory = (categoryId) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`http://192.168.0.20:3000/get/category/${categoryId}/products/0`, {
+            const response = await fetch(`${HOST}/get/category/${categoryId}/products/0`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -252,7 +253,7 @@ export const fetchProductsByCategory = (categoryId) => {
                     price: resData[key].PRICE,
                     rating: resData[key].PRODUCT_RATING,
                     discount: resData[key].DISCOUNT,
-                    thumbnail: { uri: "http://localhost:3000/img/temp/" + resData[key].THUMBNAIL }
+                    thumbnail: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL }
 
                 })
             }

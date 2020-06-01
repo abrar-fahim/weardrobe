@@ -30,7 +30,7 @@ const formReducer = (state, action) => {
       email: action.value
     };
 
-    console.log(updatedValues)
+    // console.log(updatedValues)
 
 
 
@@ -200,7 +200,8 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     color: 'grey',
-    fontWeight: '300'
+    fontWeight: '300',
+    width: 150
   },
   signUpContainer: {
     marginTop: 150,

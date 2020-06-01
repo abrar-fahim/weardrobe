@@ -17,7 +17,7 @@ import * as shopsActions from '../../store/actions/shops'
 import { Ionicons } from '@expo/vector-icons';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import Colors from '../../Styles/Colors';
-
+import HOST from "../../components/host";
 
 
 
@@ -201,7 +201,7 @@ export default function SellerScreen(props) {
                     })
                 )}>
 
-                    <Image source={{ uri: "http://192.168.0.20:3000/img/temp/" + itemData.item.THUMBNAIL }} style={{ height: 150, width: 150, justifyContent: 'center', alignItems: 'center' }} />
+                    <Image source={{ uri: `${HOST}/img/temp` + itemData.item.THUMBNAIL }} style={{ height: 150, width: 150, justifyContent: 'center', alignItems: 'center' }} />
                     <Text style={styles.itemName}> {itemData.item.PRODUCT_NAME}</Text>
 
 

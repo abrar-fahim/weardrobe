@@ -1,10 +1,11 @@
 export const ADD_TO_WISHLIST = 'ADD_TO_WISHLIST';
 export const REMOVE_FROM_WISHLIST = 'REMOVE_FROM_WISHLIST';
 export const GET_WISHLIST_ITEMS = 'GET_WISHLIST_ITEMS';
+import HOST from "../../components/host";
 
 export const addToWishlist = productId => {
     return async (dispatch) => {
-        const response = await fetch('http://192.168.0.20:3000/add/wishlist', {
+        const response = await fetch(`${HOST}/add/wishlist`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -53,7 +54,7 @@ export const removeFromWishlist = productId => {
 
     return async (dispatch) => {
         try {
-            const response = await fetch('http://192.168.0.20:3000/delete/wishlist', {
+            const response = await fetch(`${HOST}/delete/wishlist`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -117,7 +118,7 @@ export const fetchItems = () => {
         const userId = getState().auth.userId;
 
         try {
-            const response = await fetch('http://192.168.0.20:3000/get/wishlist', {
+            const response = await fetch(`${HOST}/get/wishlist`, {
                 method: 'GET'
             })
 

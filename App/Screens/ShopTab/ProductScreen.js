@@ -27,6 +27,7 @@ import GenericHeaderButton from '../../components/GenericHeaderButton'
 import SmallPopup from '../../components/SmallPopup';
 import checkLoggedIn from '../../components/CheckLoggedIn'
 import SizeCircles from '../../components/SizeCircles';
+import HOST from "../../components/host";
 
 
 
@@ -82,7 +83,7 @@ export default function ProductScreen(props) {
 
             }
         } catch (err) {
-            console.log('error in product screen')
+            console.log(err)
         }
         finally {
             return () => mounted = false;
@@ -103,7 +104,7 @@ export default function ProductScreen(props) {
             const gotColors = product.colors.map(item => item.COLOR?.toLowerCase())
             const data = selectedColor === null ? product.colors[0] : product.colors.filter(item => (item.COLOR.toLowerCase() === selectedColor))[0]
 
-            const images = product.photos.map((item, index) => ({ id: index.toString() + item.IMAGE_URL, image: { uri: "http://192.168.0.20:3000/img/temp/" + item.IMAGE_URL } }))
+            const images = product.photos.map((item, index) => ({ id: index.toString() + item.IMAGE_URL, image: { uri: `${HOST}/img/temp/` + item.IMAGE_URL } }))
 
             let colorImageNames = null
 
@@ -118,7 +119,7 @@ export default function ProductScreen(props) {
 
             const colorImages = colorImageNames !== null ? colorImageNames.map((item, index) => (
                 {
-                    id: index.toString() + item.IMAGE_URL, image: { uri: "http://192.168.0.20:3000/img/temp/" + item.IMAGE_URL }
+                    id: index.toString() + item.IMAGE_URL, image: { uri: `${HOST}/img/temp/` + item.IMAGE_URL }
                 }
             )) : []
 

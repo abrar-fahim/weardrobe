@@ -7,10 +7,11 @@ export const UNFOLLOW_SHOP = 'UNFOLLOW_SHOP';
 export const GET_SHOP_REVIEWS = 'GET_SHOP_REVIEWS';
 export const ADD_SHOP_REVIEW = 'ADD_SHOP_REVIEW';
 export const GET_SHOP_CATEGORIES = 'GET_SHOP_CATEGORIES';
+import HOST from "../../components/host";
 
 export const getShops = () => {
     return async (dispatch) => {
-        const response = await fetch('http://192.168.0.20:3000/get/allshops/0', {
+        const response = await fetch(`${HOST}/get/allshops/0`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -32,7 +33,7 @@ export const getShops = () => {
                 id: resData[key].SHOP_ID,
                 name: resData[key].SHOP_NAME,
                 rating: resData[key].SHOP_RATING,
-                logo: {uri: "http://192.168.0.20:3000/img/temp/" + resData[key].LOGO_URL}
+                logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
             })
         } 
 
@@ -49,7 +50,7 @@ export const getShops = () => {
 export const fetchShopProducts = (shopId) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`http://192.168.0.20:3000/get/shop/${shopId}/products/0`, {
+            const response = await fetch(`${HOST}/get/shop/${shopId}/products/0`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,7 +72,7 @@ export const fetchShopProducts = (shopId) => {
                     price: resData[key].PRICE,
                     rating: resData[key].PRODUCT_RATING,
                     discount: resData[key].DISCOUNT,
-                    thumbnail: { uri: "http://192.168.0.20:3000/img/temp/" + resData[key].THUMBNAIL }
+                    thumbnail: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL }
 
                 })
             }
@@ -91,7 +92,7 @@ export const fetchShopProducts = (shopId) => {
 export const fetchShopDetails = (shopId) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`http://192.168.0.20:3000/get/shop/${shopId}/details`, {
+            const response = await fetch(`${HOST}/get/shop/${shopId}/details`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -114,7 +115,7 @@ export const fetchShopDetails = (shopId) => {
                 username: resData.SHOP_USERNAME,
                 category: resData.SHOP_CATEGORY,
                 rating: resData.SHOP_RATING,
-                logo: { uri: "http://192.168.0.20:3000/img/temp/" + resData.LOGO_URL }
+                logo: { uri: `${HOST}/img/temp/` + resData.LOGO_URL }
 
             }
             // console.log(loadedProducts);
@@ -135,7 +136,7 @@ export const fetchShopDetails = (shopId) => {
 
 export const followShop = (shopId) => {
     return async (dispatch) => {
-        const response = await fetch('http://192.168.0.20:3000/follow/shop', {
+        const response = await fetch('${HOST}/follow/shop', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -183,7 +184,7 @@ export const followShop = (shopId) => {
 
 export const fetchMyShops = () => {
     return async (dispatch) => {
-        const response = await fetch('http://192.168.0.20:3000/get/myshoplist/0', {
+        const response = await fetch(`${HOST}/get/myshoplist/0`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -206,7 +207,7 @@ export const fetchMyShops = () => {
                 id: resData[key].SHOP_ID,
                 name: resData[key].SHOP_NAME,
                 rating:resData[key].SHOP_RATING,
-                logo: { uri: "http://192.168.0.20:3000/img/temp/" + resData[key].LOGO_URL }
+                logo: { uri: `${HOST}/img/temp/` + resData[key].LOGO_URL }
             })
         }
 
@@ -243,7 +244,7 @@ export const fetchMyShops = () => {
 
 export const unFollowShop = (shopId) => {
     return async (dispatch) => {
-        const response = await fetch('http://192.168.0.20:3000/unfollow/shop', {
+        const response = await fetch(`${HOST}/unfollow/shop`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -292,7 +293,7 @@ export const unFollowShop = (shopId) => {
 export const fetchShopReviews = (shopId) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`http://192.168.0.20:3000/get/shop/${shopId}/reviews/0`, {
+            const response = await fetch(`${HOST}/get/shop/${shopId}/reviews/0`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -334,7 +335,7 @@ export const addReview = (shopId, rating, review) => {
     return async (dispatch) => {
 
         try {
-            const response = await fetch(`http://192.168.0.20:3000/review/shop`, {
+            const response = await fetch(`${HOST}/review/shop`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -387,7 +388,7 @@ export const addReview = (shopId, rating, review) => {
 export const fetchShopCategories = (shopId) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`http://192.168.0.20:3000/get/category/list-by-shops/${shopId}/0`, {
+            const response = await fetch(`${HOST}/get/category/list-by-shops/${shopId}/0`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

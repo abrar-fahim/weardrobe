@@ -1,5 +1,6 @@
 
 import { AsyncStorage } from "react-native";
+import HOST from "../../components/host";
 
 // import tough from 'tough-cookie';
 export const LOGIN = 'LOGIN';
@@ -19,7 +20,7 @@ export const login = (email, password) => {
 
         // if (!storedCookie) {
 
-        const response = await fetch('http://192.168.0.20:3000/login-customer', {
+        const response = await fetch(`${HOST}/login-customer`, {
             // credentials: 'omit',
             method: 'POST',
             headers: {
@@ -98,7 +99,7 @@ export const login = (email, password) => {
 
 export const getUserId = () => {
     return async dispatch => {
-        const response = await fetch('http://192.168.0.20:3000/authrequired', {
+        const response = await fetch(`${HOST}/authrequired`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -132,7 +133,7 @@ export const logout = () => {
 
     return async dispatch => {
 
-        const response = await fetch('http://192.168.0.20:3000/logout', {
+        const response = await fetch(`${HOST}/logout`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
