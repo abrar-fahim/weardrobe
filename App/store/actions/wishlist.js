@@ -44,6 +44,8 @@ export const addToWishlist = productId => {
 
         }
 
+        dispatch(fetchItems());
+
     }
 }
 
@@ -91,6 +93,8 @@ export const removeFromWishlist = productId => {
                 }
 
             }
+
+            dispatch(fetchItems());
 
 
 

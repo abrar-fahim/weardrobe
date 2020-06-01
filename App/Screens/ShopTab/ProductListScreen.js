@@ -16,11 +16,15 @@ import SmallPopup from '../../components/SmallPopup';
 
 export default function ProductListScreen(props) {
 
+    const fetchProducts = props.route.params?.getProducts
+    const categoryId = props.route.params?.categoryId
+
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [errorMessage, setErrorMessage]  = useState('error')
+    const [errorMessage, setErrorMessage] = useState('error')
 
     const products = useSelector(state => state.products.products)
+    const getProductsFn = useSelector(state => state.products.getProductsFn)
 
     //const errorMessage = useSelector(state => state.products.errorMessage)
 
@@ -32,7 +36,7 @@ export default function ProductListScreen(props) {
         setIsRefreshing(true);
         try {
             if (mounted) {
-                await dispatch(productActions.fetchProducts());
+                await dispatch(getProductsFn());
             }
 
         }
@@ -51,9 +55,10 @@ export default function ProductListScreen(props) {
 
     }, [dispatch])
 
+
     return (
         <>
-        <SmallPopup  setIsVisible={setIsModalVisible} text={errorMessage} isVisible={isModalVisible}/>
+            <SmallPopup setIsVisible={setIsModalVisible} text={errorMessage} isVisible={isModalVisible} />
             <View>
                 <ProductList navigation={props.navigation} data={products} onRefresh={loadProducts} refreshing={isRefreshing} />
             </View>

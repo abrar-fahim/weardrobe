@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useLayoutEffect, useCallback } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, ScrollView, SectionList } from 'react-native';
+import React, { useEffect, useLayoutEffect, useCallback, useState } from 'react';
+import { TextInput, Button, StyleSheet, Text, View, Image,ScrollView, SectionList, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,13 +16,19 @@ import RatingStars from '../../components/RatingStars';
 import * as shopsActions from '../../store/actions/shops'
 import { Ionicons } from '@expo/vector-icons';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
+import Colors from '../../Styles/Colors';
+
 
 
 
 export default function SellerScreen(props) {
     const shopId = props.route.params?.shopId ?? 'default'
 
-    const selectedSeller = SELLERS.find(seller => seller.id === shopId)
+    const loggedIn = useSelector(state => state.auth.userId, (left, right) => (left.auth.userId === right.auth.userId)) === null ? false : true
+
+
+
+    // const selectedSeller = SELLERS.find(seller => seller.id === shopId)
     //const image = selectedSeller.picture
     //2const description = selectedSeller.description
 
@@ -31,10 +37,38 @@ export default function SellerScreen(props) {
 
 
     const products = useSelector(state => state.shops.shopProducts)
+    const shopDetails = useSelector(state => state.shops.shopDetails)
+    const myShops = useSelector(state => state.shops.myShops)
+    const categories = useSelector(state => state.shops.categories)
+
+    const followShop = useCallback(async (shopId) => {
+        try {
+            await dispatch(shopsActions.followShop(shopId))
+        }
+        catch (err) {
+            console.log(err);
+
+        }
+    }, [dispatch])
+
+    const unFollowShop = useCallback(async (shopId) => {
+        try {
+            await dispatch(shopsActions.unFollowShop(shopId))
+        }
+        catch (err) {
+            console.log(err);
+
+        }
+    }, [dispatch])
+
+
 
     const loadShopProducts = useCallback(async (shopId) => {
         try {
-            await dispatch(shopsActions.fetchShopProducts())
+            await dispatch(shopsActions.fetchShopProducts(shopId))
+            await dispatch(shopsActions.fetchShopDetails(shopId))
+            await dispatch(shopsActions.fetchMyShops())
+            await dispatch(shopsActions.fetchShopCategories(shopId))
         }
         catch (err) {
             console.log(err)
@@ -42,24 +76,124 @@ export default function SellerScreen(props) {
     }, [dispatch])
 
 
+
+    const [liked, setLiked] = useState(false);
+
+
     useEffect(() => {
-        loadShopProducts()
-    }, [dispatch])
+        myShops.some(shop => shop.id === shopId) ? setLiked(true) : setLiked(false)
 
+        loadShopProducts(shopId)
+    }, [dispatch, props.navigation])
 
+    // useEffect(() => {
+    //     const unsubscribe = props.navigation.addListener('focus', () => {
+
+    //     })
+
+    //     return unsubscribe
+    // }, [props.navigation, dispatch])
 
 
     useLayoutEffect(() => {
+
+        const heartIcon = liked ? "md-heart" : "md-heart-empty"
+        console.log("liked: " + liked)
+
         props.navigation.setOptions({
-            headerTitle: "whaddip",
+            headerTitle: shopDetails === null ? "" : shopDetails.name,
             headerRight: () => (
                 <View style={styles.headerButtons}>
-                <GenericHeaderButton iconName="md-information-circle-outline" onPress={() => (props.navigation.navigate('SellerInfo'))}/>
-                <GenericHeaderButton iconName="md-heart" />
+                    <GenericHeaderButton iconName="md-information-circle-outline" onPress={() => {
+                        props.navigation.navigate('SellerInfo', {
+                            shopDetails: shopDetails
+                        })
+
+                    }} />
+                    <GenericHeaderButton iconName={heartIcon} onPress={() => {
+                        if (!loggedIn) {
+                            setLiked(false);
+                            props.navigation.navigate('Login');
+                        }
+                        else {
+                            if (liked === false) {
+                                followShop(shopId)
+                                setLiked(true)
+                            }
+                            else {
+                                unFollowShop(shopId)
+                                setLiked(false)
+                            }
+                        }
+
+
+                    }} />
                 </View>
             )
         })
-    })
+    }, [shopDetails, dispatch, liked])
+
+    if (shopDetails === null || products === null) {
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size="large" />
+            </View>
+        )
+    }
+
+    const renderCategory = (itemData) => {
+        
+        return (
+            <View>
+                <Text style={styles.categoryName}>{itemData.item.name}</Text>
+                <FlatList horizontal={true} data={itemData.item.inventory} renderItem={renderProduct}/>
+            </View>
+        )
+    }
+
+    const renderProduct = (itemData) => {
+
+
+        let price;
+
+        if (itemData.item.discount > 0) {
+            const oldPrice = itemData.item.PRICE;
+            const newPrice = oldPrice * (100 - itemData.item.DISCOUNT) / 100;
+            price = (
+                <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end', padding: 5 }}>
+                    <Text style={styles.oldPrice}> {"BDT " + oldPrice}</Text>
+                    <Text style={styles.price}> {"BDT " + newPrice}</Text>
+                </View>
+            )
+        }
+
+        else {
+            price = (
+                <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end', padding: 5 }}>
+                    <Text style={styles.price}> {"BDT " + itemData.item.PRICE}</Text>
+                </View>
+            )
+        }
+        return (
+            <View style={styles.gridItem}>
+                <TouchableOpacity onPress={() => (
+                    props.navigation.navigate("Product", {
+                        productId: itemData.item.PRODUCT_ID
+                    })
+                )}>
+
+                    <Image source={{uri: "http://192.168.0.20:3000/img/temp/" + itemData.item.THUMBNAIL}} style={{ height: 150, width: 150, justifyContent: 'center', alignItems: 'center' }} />
+                    <Text style={styles.itemName}> {itemData.item.PRODUCT_NAME}</Text>
+          
+
+
+                    <RatingStars rating={itemData.item.PRODUCT_RATING} />
+                    {price}
+
+                </TouchableOpacity>
+            </View>
+        )
+    }
     return (
         <View style={ScreenStyle}>
 
@@ -69,21 +203,31 @@ export default function SellerScreen(props) {
                     <View style={{
                         alignItems: 'center'
                     }}>
-                        {/* <Image source={image} style={{ height: 200, width: '99%' }} /> */}
+                        <Image source={shopDetails.logo} style={{ height: 200, width: '99%' }} />
                     </View>
 
                     <View style={styles.ratingsContainer}>
-                        <RatingStars rating={4} size={25} />
+                        <RatingStars rating={shopDetails.rating} size={25} />
 
                     </View>
 
                     <View style={styles.descriptionContainer}>
-                        <Text style={styles.description}>hellop</Text>
+                        <Text style={styles.description}>{shopDetails.description}</Text>
                     </View>
+                    <View style={styles.categoriesContainer}>
+                        <Text style={styles.title}>Categories</Text>
+
+                        <FlatList data={categories} renderItem={renderCategory} />
+                        <Text style={styles.categoryName}>All Products</Text>
+                    </View>
+                    
+
+
                 </View>
 
+
             }
-                data={PRODUCTS} navigation={props.navigation} />
+                data={products} navigation={props.navigation} />
 
             {/* <SectionList 
                 sections={[
@@ -124,5 +268,45 @@ const styles = StyleSheet.create({
     },
     headerButtons: {
         flexDirection: 'row'
+    },
+    centered: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: '600',
+
+    },
+    categoryName: {
+        fontSize: 20,
+        color: Colors.primaryColor
+    },
+    categoriesContainer: {
+        margin: 20
+    },
+    gridItem: {
+        margin: 20,
+        height: 250,
+        width: 150,
+        backgroundColor: '#eae9e9'
+    },
+    itemName: {
+        fontSize: 15,
+        fontWeight: 'bold'
+    },
+    price: {
+        fontSize: 18,
+        color: 'black',
+        fontWeight: '600'
+
+    },
+    oldPrice: {
+        fontSize: 15,
+        color: 'black',
+        fontWeight: '400',
+        textDecorationLine: 'line-through',
+        color: 'grey'
     }
 })

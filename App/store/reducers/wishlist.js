@@ -10,6 +10,7 @@ export default (state = initialState, action) => {
     switch (action.type) {
         case GET_WISHLIST_ITEMS:
             return {
+                ...state,
                 items: action.items
             }
 

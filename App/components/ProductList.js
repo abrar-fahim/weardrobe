@@ -25,7 +25,7 @@ export default function ProductList(props) {
     //props= navigation, data
 
 
-   
+
 
     const renderGridItem = (itemData) => {
         let price;
@@ -70,20 +70,25 @@ export default function ProductList(props) {
 
     }
 
-    if(props.data.length === 0) {
-        return (
-            <View>
-                <Text> no products yet!</Text>
-            </View>
-        )
+    // if (props.data.length === 0) {
+    //     return (
+    //         <View>
+    //             <Text> no products yet!</Text>
+    //         </View>
+    //     )
 
-    }
+    // }
 
     return (
         <View style={styles.screen}>
 
             <FlatList ListHeaderComponent={props.ListHeaderComponent}
                 data={props.data} renderItem={renderGridItem} numColumns={2} onRefresh={props.onRefresh} refreshing={props.refreshing}
+                ListEmptyComponent={(
+                    <View>
+                        <Text> no products yet!</Text>
+                    </View>
+                )}
             />
 
         </View>
@@ -92,7 +97,7 @@ export default function ProductList(props) {
 }
 
 const styles = StyleSheet.create({
-    screen: { 
+    screen: {
         height: '100%'
     },
 

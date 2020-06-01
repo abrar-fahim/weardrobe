@@ -36,7 +36,11 @@ export default function MyShopsStack({ navigation }) {
 
 function MyShopsScreen({ navigation }) {
 
+
+
     const loggedIn = useSelector(state => (state.auth.userId == null ? false : true));
+
+    const myShops = useSelector(state => state.shops.myShops)
 
     if (!loggedIn) {
         return (
@@ -46,7 +50,7 @@ function MyShopsScreen({ navigation }) {
 
 
     return (
-        <ShopsListScreen navigation={navigation} sellers={SELLERS} />
+        <ShopsListScreen navigation={navigation} sellers={myShops} />
     );
 
 }

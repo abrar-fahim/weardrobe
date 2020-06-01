@@ -1,13 +1,13 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
-import {HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/HeaderButton';
 
 import { SearchBar, Overlay } from 'react-native-elements';
@@ -23,36 +23,72 @@ import DrawerStack from './DrawerStack';
 import ScreenStyle from '../../Styles/ScreenStyle';
 import { CATEGORIES } from '../../dummy-data/Categories';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
+import * as productsActions from '../../store/actions/products'
 
 export default function CategoriesStack({ navigation }) {
     return (
-        <DrawerStack name="Categories" navigation={navigation} component={CategoriesScreen}/>
+        <DrawerStack name="Categories" navigation={navigation} component={CategoriesScreen} />
     )
 
 }
 
 function CategoriesScreen(props) {
 
+    const dispatch = useDispatch();
+
+    const categories = useSelector(state => state.products.categories)
+
+    const laodCategories = useCallback(async () => {
+        try {
+            await dispatch(productsActions.fetchCategories())
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }, [dispatch])
+
+
+
+
+    useEffect(() => {
+
+        laodCategories()
+    }, [dispatch])
+
+    const setProductsFn = useCallback(async (categoryId) => {
+        try {
+            await dispatch(productsActions.getProductsFn(() => (productsActions.fetchProductsByCategory(categoryId))))
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }, [dispatch])
+
     function renderItems(itemData) {
         return (
-            
-                <View style={styles.gridItem}>
-                    <TouchableOpacity onPress={() => (props.navigation.navigate('ProductList'))}>
-                        <Image style={styles.imageStyle} source={itemData.item.picture}/>
-                        <Text style={styles.textStyle}>{itemData.item.name}</Text>
 
-                    </TouchableOpacity>
-                </View>
-            
-            
+            <View style={styles.gridItem}>
+                <TouchableOpacity onPress={() => {
+                    setProductsFn(itemData.item.id)
+                    props.navigation.navigate('ProductList')
+                }}>
+                    <Image style={styles.imageStyle} source={itemData.item.picture} />
+                    <Text style={styles.textStyle}>{itemData.item.name}</Text>
+
+                </TouchableOpacity>
+            </View>
+
+
         )
 
     }
     return (
         <View style={ScreenStyle}>
-            
-            <FlatList data={CATEGORIES} renderItem={renderItems} numColumns={2}/>
-            
+
+            <FlatList data={categories} renderItem={renderItems} numColumns={2} />
+
         </View>
     )
 }
@@ -64,13 +100,12 @@ const styles = StyleSheet.create({
     },
 
     gridItem: {
-        flex: 1,
         width: '40%',
         margin: 10,
         height: 150,
 
     },
-    imageStyle : {
+    imageStyle: {
         height: '80%',
         width: '80%',
         alignSelf: 'center'

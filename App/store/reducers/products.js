@@ -3,7 +3,9 @@ import {
     GET_PRODUCT_DETAILS,
     ADD_TO_CART,
     SET_ERROR,
-    GET_PRODUCT_REVIEWS
+    GET_PRODUCT_REVIEWS,
+    GET_CATEGORIES,
+    GET_PRODUCTS_FN
 } from '../actions/products'
 import PRODUCTS from '../../dummy-data/Products'
 
@@ -11,7 +13,9 @@ const initialState = {
     products: [],
     productDetails: null,
     errorMessage: null,
-    productReviews: null
+    productReviews: null,
+    categories: [],
+    getProductsFn: null
 }
 
 export default function productsReducer(state = initialState, action) {
@@ -45,6 +49,18 @@ export default function productsReducer(state = initialState, action) {
             return {
                 ...state,
                 productReviews: action.productReviews
+            }
+
+        case GET_CATEGORIES:
+            return {
+                ...state,
+                categories: action.categories
+            }
+
+        case GET_PRODUCTS_FN:
+            return {
+                ...state,
+                getProductsFn: action.fn
             }
 
     }
