@@ -47,12 +47,12 @@ export default function SizeCircles(props) {
     // }
 
     const render = (itemData) => {
-        if (props.selectedSize === itemData.item) {
+        if (props.selectedSize === itemData.item.size) {
             return (
                 <TouchableOpacity style={styles.circleContainer}>
                     <FontAwesome name="circle" color="black" size={30} />
                     <View style={styles.sizeTextContainer}>
-                        <Text style={styles.selectedSizeText}>{itemData.item}</Text>
+                        <Text style={styles.selectedSizeText}>{itemData.item.size}</Text>
                     </View>
 
                 </TouchableOpacity>
@@ -62,11 +62,11 @@ export default function SizeCircles(props) {
         else {
             return (
                 <TouchableOpacity style={styles.circleContainer} onPress={() => (
-                    props.setSelectedSize(itemData.item)
+                    props.setSelectedSize(itemData.item.size)
                 )}>
                     <FontAwesome name="circle" color="grey" size={30} />
                     <View style={styles.sizeTextContainer}>
-                        <Text style={styles.sizeText}>{itemData.item}</Text>
+                        <Text style={styles.sizeText}>{itemData.item.size}</Text>
                     </View>
 
                 </TouchableOpacity>
@@ -74,11 +74,17 @@ export default function SizeCircles(props) {
         }
     }
 
+    const sizes = props.sizes.map((item, index) => ({id: index.toString(), size: item}))
+
+
+    if(props.sizes[0] === null | props.sizes[0] === undefined) {
+        return null;
+    }
 
 
     return (
 
-        <FlatList horizontal={true} data={props.sizes} renderItem={render} />
+        <FlatList horizontal={true} data={sizes} renderItem={render} />
         // <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: 100 }}>
         //     {colors}
 

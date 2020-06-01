@@ -47,10 +47,10 @@ export default function ColorCircles(props) {
     // }
 
     const render = (itemData) => {
-        if (props.selectedColor === itemData.item) {
+        if (props.selectedColor === itemData.item.color) {
             return (
                 <TouchableOpacity style={styles.circleContainer}>
-                    <FontAwesome name="check-circle" color={itemData.item} size={30} />
+                    <FontAwesome name="check-circle" color={itemData.item.color} size={30} />
                 </TouchableOpacity>
 
             )
@@ -58,19 +58,25 @@ export default function ColorCircles(props) {
         else {
             return (
                 <TouchableOpacity style={styles.circleContainer} onPress={() => (
-                    props.setSelectedColor(itemData.item)
+                    props.setSelectedColor(itemData.item.color)
                 )}>
-                    <FontAwesome name="circle" color={itemData.item} size={30} />
+                    <FontAwesome name="circle" color={itemData.item.color} size={30} />
                 </TouchableOpacity>
             )
         }
+    }
+
+    const colors = props.colors.map((item, index) => ({id: index.toString(), color: item}))
+
+    if(props.colors[0] === null || props.colors[0] === undefined) {
+        return null
     }
 
 
 
     return (
 
-        <FlatList horizontal={true} data={props.colors} renderItem={render}/>
+        <FlatList horizontal={true} data={colors} renderItem={render}/>
         // <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: 100 }}>
         //     {colors}
 

@@ -22,7 +22,7 @@ import * as productActions from '../store/actions/products'
 
 
 export default function ProductList(props) {
-    //props= navigation, data
+    //props= navigation, data, showShopName
 
 
 
@@ -58,7 +58,8 @@ export default function ProductList(props) {
 
                     <Image source={itemData.item.thumbnail} style={{ height: 150, width: 150, justifyContent: 'center', alignItems: 'center' }} />
                     <Text style={styles.itemName}> {itemData.item.name}</Text>
-                    <Text style={styles.sellerName}> {"From " + itemData.item.shopname} </Text>
+                    {props.showShopName? <Text style={styles.sellerName}> {"From " + itemData.item.shopName} </Text>: null}
+                    
 
 
                     <RatingStars rating={itemData.item.rating} />

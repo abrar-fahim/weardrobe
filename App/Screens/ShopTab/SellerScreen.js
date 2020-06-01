@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useLayoutEffect, useCallback, useState } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image,ScrollView, SectionList, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView, SectionList, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -142,12 +142,31 @@ export default function SellerScreen(props) {
     }
 
     const renderCategory = (itemData) => {
-        
+
+        if (itemData.index < 2) {
+            return (
+                <View>
+                    <View style={styles.categoryNameContainer}>
+                        <Text style={styles.categoryName}>{itemData.item.name}</Text>
+                        <TouchableOpacity>
+                            <Text>View all</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <FlatList horizontal={true} data={itemData.item.inventory} renderItem={renderProduct} />
+                </View>
+            )
+        }
+
+
+
+    }
+
+    const renderSmallCategory = (itemData) => {
         return (
-            <View>
-                <Text style={styles.categoryName}>{itemData.item.name}</Text>
-                <FlatList horizontal={true} data={itemData.item.inventory} renderItem={renderProduct}/>
-            </View>
+            <TouchableOpacity style={styles.smallCategory}>
+                <Text>{itemData.item.name}</Text>
+            </TouchableOpacity>
         )
     }
 
@@ -182,9 +201,9 @@ export default function SellerScreen(props) {
                     })
                 )}>
 
-                    <Image source={{uri: "http://192.168.0.20:3000/img/temp/" + itemData.item.THUMBNAIL}} style={{ height: 150, width: 150, justifyContent: 'center', alignItems: 'center' }} />
+                    <Image source={{ uri: "http://192.168.0.20:3000/img/temp/" + itemData.item.THUMBNAIL }} style={{ height: 150, width: 150, justifyContent: 'center', alignItems: 'center' }} />
                     <Text style={styles.itemName}> {itemData.item.PRODUCT_NAME}</Text>
-          
+
 
 
                     <RatingStars rating={itemData.item.PRODUCT_RATING} />
@@ -218,15 +237,24 @@ export default function SellerScreen(props) {
                         <Text style={styles.title}>Categories</Text>
 
                         <FlatList data={categories} renderItem={renderCategory} />
-                        <Text style={styles.categoryName}>All Products</Text>
+                        {/* <FlatList data={categories.filter((item, index) => {
+                            if (index > 1) {
+                                return item
+                            }
+                        })}
+                            renderItem={renderSmallCategory}
+                            numColumns={2}
+                        /> */}
+                        < Text style={styles.categoryName}>All Products</Text>
                     </View>
-                    
+
 
 
                 </View>
 
 
             }
+                showShopName={false}
                 data={products} navigation={props.navigation} />
 
             {/* <SectionList 
@@ -308,5 +336,14 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         textDecorationLine: 'line-through',
         color: 'grey'
+    },
+    categoryNameContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    smallCategory: {
+        height: 100,
+        width: 200,
+        borderRadius: 50
     }
 })

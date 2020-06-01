@@ -19,7 +19,8 @@ const initialState = {
 }
 
 export default function productsReducer(state = initialState, action) {
-    console.log('reducer got action');
+    console.log(action.type)
+
     switch (action.type) {
 
         case SET_PRODUCTS_LIST:

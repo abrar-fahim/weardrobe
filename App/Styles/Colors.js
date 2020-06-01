@@ -1,6 +1,6 @@
 const Colors = {
   primaryColor: '#420000',
-  accentColor: '#ffaaa5',
+  accentColor: '#f6f6f6',
   textColor: 'black',
 
   screenBackgroundColor: '#f6f6f6',

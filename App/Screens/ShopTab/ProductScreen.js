@@ -1,13 +1,13 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions, Alert, ActivityIndicator } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions, Alert, ActivityIndicator, FlatList } from 'react-native';
 import Modal from 'react-native-modal';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import PRODUCTS from '../../dummy-data/Products'
-import { TouchableOpacity, ScrollView, FlatList } from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'; //FlatList import was here
 
 import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import ScreenStyle from '../../Styles/ScreenStyle';
@@ -76,8 +76,9 @@ export default function ProductScreen(props) {
         try {
             if (mounted) {
                 await dispatch(productActions.fetchProductReviews(productId))
-                await dispatch(productActions.fetchProductDetails(productId))
+
                 await dispatch(wishlistActions.fetchItems())
+                await dispatch(productActions.fetchProductDetails(productId))
 
             }
         } catch (err) {
@@ -90,13 +91,83 @@ export default function ProductScreen(props) {
 
     }, [dispatch])
 
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedSize, setSelectedSize] = useState(null);
+
+    const getInventory = useCallback(() => {
+
+
+        if (product !== null) {
+
+
+            const gotColors = product.colors.map(item => item.COLOR?.toLowerCase())
+            const data = selectedColor === null ? product.colors[0] : product.colors.filter(item => (item.COLOR.toLowerCase() === selectedColor))[0]
+
+            const images = product.photos.map((item, index) => ({ id: index.toString() + item.IMAGE_URL, image: { uri: "http://192.168.0.20:3000/img/temp/" + item.IMAGE_URL } }))
+
+            let colorImageNames = null
+
+            if (gotColors[0] !== null || gotColors[0] === undefined) {
+                const gotColorImages = selectedColor === null ? product.colors[0].IMAGES : product.colors.filter(item => item.COLOR.toLowerCase() === selectedColor)[0].IMAGES
+                colorImageNames = JSON.parse(gotColorImages)
+            }
 
 
 
+            //console.log(colorImageNames)
+
+            const colorImages = colorImageNames !== null ? colorImageNames.map((item, index) => (
+                {
+                    id: index.toString() + item.IMAGE_URL, image: { uri: "http://192.168.0.20:3000/img/temp/" + item.IMAGE_URL }
+                }
+            )) : []
+
+
+            const finalColorImages = colorImages.concat(images)
+
+
+
+
+
+            const inventory = JSON.parse(data.INVENTORY)
+
+
+            const sizes = inventory.map(item => {
+                if (item.QUANTITY > 0) {
+                    return item.SIZE
+                }
+            })
+
+
+
+            // setSelectedColor(gotColors[0]);
+            return {
+                colors: gotColors,
+                sizes: sizes,
+                images: images,
+                colorImages: finalColorImages
+
+            };
+        }
+
+        else return {
+            colors: null,
+            sizes: null,
+            images: null,
+            colorImages: null
+        }
+
+
+    }, [product, selectedColor])
+
+
+
+    const { colors, sizes, images, colorImages } = getInventory();
 
 
     const addToCart = useCallback(async (color, size, quantity) => {
         let mounted = true;
+        console.log("selected: " + selectedColor)
 
         if (!loggedIn) {
             props.navigation.navigate('Login');
@@ -104,10 +175,21 @@ export default function ProductScreen(props) {
         else {
             try {
                 if (mounted) {
-                    await dispatch(cartActions.addToCart(productId, color, size, quantity))
-                    setAddCartModalVisible(true)
-                    //setAddCartMessage(cartMessage);
-                    window.setTimeout(() => (setAddCartModalVisible(false)), 2500)
+                    if (colors !== null && selectedColor === null) {
+                        console.log('select color pless')
+                    }
+                    else if (sizes !== null && selectedSize === null) {
+                        console.log('select size pless')
+                    }
+                    else {
+                        await dispatch(cartActions.addToCart(productId, color, size, quantity))
+                        setAddCartModalVisible(true)
+                        //setAddCartMessage(cartMessage);
+                        window.setTimeout(() => (setAddCartModalVisible(false)), 2500)
+                    }
+
+
+
                 }
 
             } catch (err) {
@@ -121,11 +203,12 @@ export default function ProductScreen(props) {
         }
 
 
-    }, [loggedIn])
+    }, [loggedIn, selectedColor, selectedSize])
 
 
 
     const addToWishlist = useCallback(async () => {
+        console.log("ohno")
         let mounted = true;
         try {
             if (mounted) {
@@ -196,22 +279,14 @@ export default function ProductScreen(props) {
     }, [loggedIn])
 
 
-
-
-
-
-
-
-
     const [inWishlist, setInWishlist] = useState(false);
 
     useEffect(() => {
-        console.log("wishlistitems: " + wishlistItems)
         wishlistItems.some(item => item.id === productId) ? setInWishlist(true) : setInWishlist(false)
 
         loadProductDetails()
 
-    }, [props.navigation, dispatch]);
+    }, [dispatch]);
 
 
 
@@ -234,6 +309,7 @@ export default function ProductScreen(props) {
                             setInWishlist(false);
                         }
                         else {
+                            console.log("added")
                             addToWishlist();
                             setInWishlist(true)
 
@@ -246,17 +322,7 @@ export default function ProductScreen(props) {
                 } />)
         });
 
-    }, [inWishlist, loggedIn, dispatch, product]);
-
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     loadProductDetails().then(() => {
-    //         setIsLoading(false);
-    //     });
-    // }, [dispatch, loadProductDetails, setIsLoading]);
-
-
-
+    }, [inWishlist, loggedIn, product]);
 
     // if (isLoading) {
     //     return (
@@ -270,76 +336,19 @@ export default function ProductScreen(props) {
 
 
 
-    const [selectedColor, setSelectedColor] = useState(null);
-    const [selectedSize, setSelectedSize] = useState(null);
-
-    const getInventory = useCallback(() => {
-
-        if (product !== null) {
-
-
-            const gotColors = product.colors.map(item => item.COLOR.toLowerCase())
-            const data = selectedColor === null ? product.colors[0] : product.colors.filter(item => (item.COLOR.toLowerCase() === selectedColor))[0]
-
-            const images = product.photos.map(item => item.IMAGE_URL)    //array of strings 
-
-            const gotColorImages = selectedColor === null ? product.colors[0].IMAGES : product.colors.filter(item => item.COLOR.toLowerCase() === selectedColor)[0].IMAGES
-
-            const colorImageNames = JSON.parse(gotColorImages)
-            //console.log(colorImageNames)
-
-            const colorImages = colorImageNames.map(item => ({ uri: "http://localhost:3000/img/temp/" + item.IMAGE_URL }))
 
 
 
-            // console.log(colorImages)
-
-
-            const inventory = JSON.parse(data.INVENTORY)
-
-
-            const sizes = inventory.map(item => {
-                if (item.QUANTITY > 0) {
-                    return item.SIZE
-                }
-            })
-
-
-
-            // setSelectedColor(gotColors[0]);
-            return {
-                colors: gotColors,
-                sizes: sizes,
-                images: images,
-                colorImages: colorImages
-
-            };
-        }
-
-        else return {
-            colors: null,
-            sizes: null,
-            images: null
-        }
-
-
-    }, [product, props.navigation, selectedColor])
-
-
-
-    const { colors, sizes, images, colorImages } = getInventory();
+    // console.log(colorImages)
 
 
 
 
     const renderPic = (itemData) => {
-        //console.log(itemData.item)
 
-
-        //const url = { uri: "http://localhost:3000/img/temp/" + itemData.item}
         return (
 
-            <Image source={itemData.item} style={styles.image} />
+            <Image source={itemData.item.image} style={styles.image} resizeMode="cover" resizeMethod="scale" />
 
 
         )
@@ -405,24 +414,33 @@ export default function ProductScreen(props) {
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 30, marginLeft: 30, marginTop: 30 }}>
 
 
-                <View>
+                {colors[0] === null | colors[0] === undefined ? null :
                     <View>
-                        <Text style={styles.text}> COLOR </Text>
+
+                        <View>
+                            <Text style={styles.text}> COLOR </Text>
+                        </View>
+
+
+
+                        <ColorCircles setSelectedColor={setSelectedColor} selectedColor={selectedColor} colors={colors} />
                     </View>
-
-                    <ColorCircles setSelectedColor={setSelectedColor} selectedColor={selectedColor} colors={colors} />
-                </View>
+                }
 
 
-                <View>
-                    <Text style={styles.text}> SIZE </Text>
-                    <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes} />
 
-                </View>
+                {sizes[0] === null | sizes[0] === undefined ? null :
+                    <View>
+                        <Text style={styles.text}> SIZE </Text>
+                        <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes} />
+
+                    </View>
+                }
 
 
 
             </View>
+
 
 
 
@@ -471,7 +489,7 @@ export default function ProductScreen(props) {
         </View>
     )
 
-    if (product === null) {
+    if (product === null || colors === null) {
         console.log("reviews: " + reviews)
         return (
             <View style={styles.centered}>
@@ -482,7 +500,7 @@ export default function ProductScreen(props) {
     }
 
     else {
-        console.log("reviews not null: " + reviews)
+        // console.log("reviews not null: " + reviews)
         return (
             <>
 
@@ -551,7 +569,8 @@ const styles = StyleSheet.create({
     },
     heading: {
         fontSize: 22,
-        fontWeight: '700'
+        fontWeight: '700',
+        width: 300
     },
     shareButton: {
         alignItems: 'flex-end'
@@ -575,25 +594,29 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 10,
-        marginTop: 30
+        marginTop: 30,
+        width: '100%'
     },
     addReview: {
         color: 'grey',
         fontWeight: '700',
-        fontSize: 12
+        fontSize: 12,
+        width: 100
     },
     reviewerName: {
         fontWeight: '600',
-        color: 'grey'
+        color: 'grey',
+        flex: 1
     },
     reviewerNameContainer: {
         flexDirection: 'row',
-        marginTop: 15
+        marginTop: 15,
     },
     reviewText: {
         fontSize: 15,
         marginVertical: 20,
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        flex: 1
     },
     addReviewContainer: {
         height: Dimensions.get('window').height * 0.8,

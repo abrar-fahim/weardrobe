@@ -74,20 +74,20 @@ export const removeFromWishlist = productId => {
 
             if (Object.keys(resData)[0] === 'SUCCESS') {
                 dispatch({
-                    type: ADD_TO_WISHLIST,
+                    type: REMOVE_FROM_WISHLIST,
                     message: 'removed from wishlist!'
                 })
             }
             else if (Object.keys(resData)[0] === 'ERROR') {
                 if (resData.ERROR === 'UNAUTHORIZED') {
                     dispatch({
-                        type: ADD_TO_WISHLIST,
+                        type: REMOVE_FROM_WISHLIST,
                         message: 'Log in first!'
                     })
                 }
                 else {
                     dispatch({
-                        type: ADD_TO_WISHLIST,
+                        type: REMOVE_FROM_WISHLIST,
                         message: 'Failed to remove from wishlist'
                     })
                 }

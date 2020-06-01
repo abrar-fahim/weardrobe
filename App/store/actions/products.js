@@ -9,7 +9,7 @@ export const GET_PRODUCTS_FN = 'GET_PRODUCTS_FN'
 export const fetchProducts = () => {
     return async (dispatch) => {
         try {
-            const response = await fetch('http://192.168.0.20:3000/get/shop/157b9ad96ee8ad27443eb96c572afeb9/products/0', {
+            const response = await fetch('http://192.168.0.20:3000/get/allproducts/0', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -28,10 +28,11 @@ export const fetchProducts = () => {
                 loadedProducts.push({
                     id: resData[key].PRODUCT_ID,
                     name: resData[key].PRODUCT_NAME,
+                    shopName: resData[key].SHOP_NAME,
                     price: resData[key].PRICE,
                     rating: resData[key].PRODUCT_RATING,
                     discount: resData[key].DISCOUNT,
-                    thumbnail: { uri: "http://localhost:3000/img/temp/" + resData[key].THUMBNAIL }
+                    thumbnail: { uri: "http://192.168.0.20:3000/img/temp/" + resData[key].THUMBNAIL }
 
                 })
             }
