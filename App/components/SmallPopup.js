@@ -4,7 +4,15 @@ import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions, Alert } f
 import Modal from 'react-native-modal';
 
 const SmallPopup = (props) => {
-    //props = isVisible, text, 
+    //props = message, setMessage
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            props.setMessage("");
+        }, 2000)
+
+        return () => clearTimeout(timer)
+    }, [props.message])
     return (
         <Modal
             animationIn="bounceInDown"
@@ -13,13 +21,10 @@ const SmallPopup = (props) => {
             animationOut="bounceOutUp"
             hasBackdrop={false}
             coverScreen={false}
-            isVisible={props.isVisible}
-            onShow={window.setTimeout(() => (props.setIsVisible(false)), 2500)}
-
-
+            isVisible={props.message === "" ? false : true}
         >
             <View style={styles.popup}>
-                <Text>{props.text}</Text>
+                <Text>{props.message}</Text>
             </View>
 
 
@@ -34,7 +39,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
-        position:'absolute',
+        position: 'absolute',
         top: 0,
         alignSelf: 'center',
         borderRadius: 20,

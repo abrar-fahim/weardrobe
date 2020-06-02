@@ -288,6 +288,7 @@ function ShopScreen({ navigation }) {
             <FlatList
                 ListHeaderComponent={ListHeader}
                 data={SHOP} renderItem={renderShopFeedItems}
+                onEndReached={loadAllProducts}
                 ListFooterComponent={
                     <>
                         <Text style={styles.title}>All Products</Text>

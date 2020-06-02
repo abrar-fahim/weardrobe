@@ -18,6 +18,7 @@ import { Ionicons } from '@expo/vector-icons';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import Colors from '../../Styles/Colors';
 import HOST from "../../components/host";
+import * as productsActions from '../../store/actions/products'
 
 
 
@@ -61,6 +62,15 @@ export default function SellerScreen(props) {
         }
     }, [dispatch])
 
+
+    const setProductsFn = useCallback(async (categoryId) => {
+        try {
+            await dispatch(productsActions.getProductsFn(() => (productsActions.fetchProductsByCategory(categoryId))))
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }, [dispatch])
 
 
     const loadShopProducts = useCallback(async (shopId) => {
@@ -161,15 +171,6 @@ export default function SellerScreen(props) {
 
 
     }
-
-    const renderSmallCategory = (itemData) => {
-        return (
-            <TouchableOpacity style={styles.smallCategory}>
-                <Text>{itemData.item.name}</Text>
-            </TouchableOpacity>
-        )
-    }
-
     const renderProduct = (itemData) => {
 
 
@@ -201,7 +202,7 @@ export default function SellerScreen(props) {
                     })
                 )}>
 
-                    <Image source={{ uri: `${HOST}/img/temp` + itemData.item.THUMBNAIL }} style={{ height: 150, width: 150, justifyContent: 'center', alignItems: 'center' }} />
+                    <Image source={{ uri: `${HOST}/img/temp/` + itemData.item.THUMBNAIL }} style={{ height: 150, width: 150, justifyContent: 'center', alignItems: 'center' }} />
                     <Text style={styles.itemName}> {itemData.item.PRODUCT_NAME}</Text>
 
 
@@ -213,6 +214,57 @@ export default function SellerScreen(props) {
             </View>
         )
     }
+
+    let categoriesViews = [];
+    // console.log(categories)
+    let i = 2;
+
+    while (i < categories.length) {
+
+
+        if (i + 1 < categories.length) {
+            const category1 = categories[i].id
+            const category2 = categories[i + 1].id
+            categoriesViews.push(
+                <View>
+                    <TouchableOpacity style={styles.smallCategory} onPress={() => {
+                        setProductsFn(category1)
+                        props.navigation.navigate('ProductList')
+                    }}>
+                        <Text style={styles.smallCategoryName}>{categories[i].name}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.smallCategory} onPress={() => {
+                        setProductsFn(category2)
+                        props.navigation.navigate('ProductList')
+                    }}>
+                        <Text style={styles.smallCategoryName}>{categories[i + 1].name}</Text>
+                    </TouchableOpacity>
+                </View>
+
+
+            )
+            i += 2;
+        }
+        else {
+            const category1 = categories[i].id
+            categoriesViews.push(
+                <View>
+                    <TouchableOpacity style={styles.smallCategory} onPress={() => {
+                        setProductsFn(category1)
+                        props.navigation.navigate('ProductList')
+                    }}>
+                        <Text style={styles.smallCategoryName}>{categories[i].name}</Text>
+                    </TouchableOpacity>
+                </View>
+
+
+            )
+            i++;
+
+        }
+
+    }
+
     return (
         <View style={ScreenStyle}>
 
@@ -236,15 +288,25 @@ export default function SellerScreen(props) {
                     <View style={styles.categoriesContainer}>
                         <Text style={styles.title}>Categories</Text>
 
-                        <FlatList data={categories} renderItem={renderCategory} />
-                        {/* <FlatList data={categories.filter((item, index) => {
-                            if (index > 1) {
-                                return item
-                            }
-                        })}
-                            renderItem={renderSmallCategory}
-                            numColumns={2}
-                        /> */}
+                        <FlatList data={categories} renderItem={renderCategory} ListFooterComponent={(
+                            <>
+                                <View style={styles.categoryNameContainer}>
+                                    <Text>Browse All Categories</Text>
+                                    <TouchableOpacity>
+                                        <Text>View All</Text>
+                                    </TouchableOpacity>
+
+                                </View>
+
+                                <ScrollView horizontal={true}>
+
+                                    {categoriesViews}
+                                </ScrollView>
+
+                            </>
+
+                        )} />
+
                         < Text style={styles.categoryName}>All Products</Text>
                     </View>
 
@@ -342,8 +404,20 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     smallCategory: {
-        height: 100,
-        width: 200,
-        borderRadius: 50
+        height: 50,
+        width: 100,
+        borderRadius: 50,
+        backgroundColor: Colors.primaryColor,
+        margin: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    smallCategoryName: {
+        color: 'white',
+        fontSize: 12,
+        fontWeight: '700',
+        width: '100%',
+        textAlign: 'center'
+
     }
 })

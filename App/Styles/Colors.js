@@ -2,7 +2,7 @@ const Colors = {
   primaryColor: '#420000',
   accentColor: '#f6f6f6',
   textColor: 'black',
-
+  anotherColor: '#d4d7dd',
   screenBackgroundColor: '#f6f6f6',
   tabBarActiveTintColor: '#420000',
   tabBarColor: '#420000',
