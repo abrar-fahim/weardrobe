@@ -1,7 +1,10 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions, Alert, ActivityIndicator, FlatList } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Dimensions, Image, Alert, ActivityIndicator, FlatList } from 'react-native';
 import Modal from 'react-native-modal';
+
+// import {Image} from "react-native-expo-image-cache";
+import CachedImage from '../../components/CachedImage'
 
 
 import PRODUCTS from '../../dummy-data/Products'
@@ -27,8 +30,16 @@ import checkLoggedIn from '../../components/CheckLoggedIn'
 import SizeCircles from '../../components/SizeCircles';
 import HOST from "../../components/host";
 
+import TouchableStars from '../../components/TouchableStars'
+
+import { createSelector } from 'reselect'
 
 
+
+
+// const selectProduct = createSelector(
+//     state => state.products.productDetails
+// )
 
 export default function ProductScreen(props) {
     const dispatch = useDispatch();
@@ -46,16 +57,18 @@ export default function ProductScreen(props) {
 
 
     const [reviewModalVisible, setIsReviewModalVisible] = useState(false);
-    const [selectedColor, setSelectedColor] = useState(null);
-    const [selectedSize, setSelectedSize] = useState(null);
     const [reviewText, setReviewText] = useState(null)
     const [rating, setRating] = useState(null);
-    const [popupMessage, setPopupMessage] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
+
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedSize, setSelectedSize] = useState(null);
+    
     const [colorImages, setColorImages] = useState([])
     const [colors, setColors] = useState([]);
     const [sizes, setSizes] = useState([]);
 
+    const [popupMessage, setPopupMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
 
 
 
@@ -66,7 +79,6 @@ export default function ProductScreen(props) {
             if (mounted) {
                 setIsLoading(true)
                 await dispatch(productActions.fetchProductReviews(productId))
-
                 await dispatch(wishlistActions.fetchItems())
                 await dispatch(productActions.fetchProductDetails(productId))
                 setIsLoading(false)
@@ -84,6 +96,8 @@ export default function ProductScreen(props) {
 
 
     const getInventory = useCallback(() => {
+        
+        console.log('INVENTORY')
 
         if (product !== null) {
             //console.log('invenroty')
@@ -135,8 +149,17 @@ export default function ProductScreen(props) {
 
             // setSelectedColor(gotColors[0]);
             setColorImages(finalColorImages);
-            setSizes(sizes);
-            setColors(gotColors);
+            if (sizes[0] === null) {
+                setSizes([])
+            }
+            else {
+                setSizes(sizes)
+            }
+            if (gotColors[0] === undefined) setColors([])
+            else {
+                setColors(gotColors);
+            }
+
             // return {
             //     colors: gotColors,
             //     sizes: sizes,
@@ -173,11 +196,13 @@ export default function ProductScreen(props) {
         else {
             try {
                 if (mounted) {
-                    if (colors !== null && selectedColor === null) {
+                    console.log(colors.length)
+                    if (colors.length !== 0 && selectedColor === null) {
+
                         throw new Error('select color pless')
 
                     }
-                    else if (sizes !== null && selectedSize === null) {
+                    else if (sizes.length !== 0 && selectedSize === null) {
                         throw new Error('select size pless')
 
                     }
@@ -214,45 +239,36 @@ export default function ProductScreen(props) {
         try {
             if (mounted) {
                 await dispatch(wishlistActions.addToWishlist(productId))
-                //setInWishlist(true);
                 setPopupMessage("added to wishlist!")
-                // setAddWishlistModalVisible(true);
-                //setAddWishlistMessage(wishlistMessage)
-                //window.setTimeout(() => (setAddWishlistModalVisible(false)), 2500)
+
             }
 
         } catch (err) {
             console.log(err.message)
             setPopupMessage(err.message)
-            // setAddWishlistMessage('Failed to add to wishlist')
         }
         finally {
             return () => mounted = false;
         }
 
-    }, [dispatch])
+    }, [])
 
     const removeFromWishlist = useCallback(async () => {
         let mounted = true;
         try {
             if (mounted) {
                 await dispatch(wishlistActions.removeFromWishlist(productId))
-                //setInWishlist(false);
                 setPopupMessage("removed from wishlist!")
-                // setAddWishlistModalVisible(true);
-                //setAddWishlistMessage(wishlistMessage)
-                // window.setTimeout(() => (setAddWishlistModalVisible(false)), 2500)
             }
         } catch (err) {
             setPopupMessage(err.message)
             console.log(err.message)
-            // setAddWishlistMessage('Failed to add to wishlist')
         }
         finally {
             return () => mounted = false;
         }
 
-    }, [dispatch])
+    }, [])
 
     const addReview = useCallback(async (rating, review) => {
         let mounted = true;
@@ -286,25 +302,18 @@ export default function ProductScreen(props) {
     }, [loggedIn])
 
 
-
-
-
-
     useEffect(() => {
         loadProductDetails()
-
+        
     }, []);
 
     useEffect(() => {
         getInventory()
-
-    }, [product]);
+    }, [product, selectedColor]);
 
 
 
     useLayoutEffect(() => {
-        // console.log('useLayoutEffect with isLoading: ' + isLoading);
-
         const inWishlist = wishlistItems.some(item => item.id === productId);
 
         const heartIcon = inWishlist ? "md-heart" : "md-heart-empty";
@@ -334,7 +343,7 @@ export default function ProductScreen(props) {
             )
         });
 
-    });
+    }, [ wishlistItems]);
 
 
 
@@ -375,22 +384,27 @@ export default function ProductScreen(props) {
 
     }
 
-    const PictureView = useCallback(() => {
+
+    const PictureView = useCallback((props) => {
+        //console.log('pic')
         return (
             <ScrollView
                 horizontal={true}
                 pagingEnabled={true}
             >
                 {colorImages.map((item, index) => (
-                    <Image source={item.image} style={styles.image} resizeMode="cover" resizeMethod="scale" />
+                    // <Image style={styles.image} {...item.image} transitionDuration={500} />
+
+                     <Image style={styles.image} source={item.image}/>
+                    // <Image style={styles.image} source={require('../../assets/Images/groom.jpg')} />
                 ))}
 
             </ScrollView>
         )
 
-    }, [colorImages])
+    }, [colorImages]) //, [colorImages]) a useCallback was here
 
-    const productPage = () => (
+    const productPage = useCallback(() => (
         <View style={{ ...ScreenStyle, ...styles.screen }}>
 
             <View style={{ padding: 10, justifyContent: 'center', }}>
@@ -399,7 +413,7 @@ export default function ProductScreen(props) {
 
             <View style={styles.imageContainer}>
 
-                <PictureView />
+                <PictureView/>
                 {/* <FlatList initialNumToRender={8} pagingEnabled={true} horizontal={true} data={colorImages} renderItem={renderPic} /> */}
 
             </View>
@@ -408,9 +422,6 @@ export default function ProductScreen(props) {
                 <RatingStars rating={product.rating} size={30} />
                 <Ionicons color={Colors.buttonColor} name="ios-share-alt" size={40} style={{ marginLeft: Dimensions.get('window').width / 1.9 }} />
             </View>
-
-
-
 
 
             <View style={{ marginTop: 30, padding: 5 }}>
@@ -461,9 +472,10 @@ export default function ProductScreen(props) {
 
             }} >
                 <View style={{ backgroundColor: Colors.buttonColor, height: 50, justifyContent: 'center', marginTop: 40 }}>
-                    <View style={{ marginLeft: 5, flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                        <Text style={UIButtonTextStyle}> ADD TO CART</Text>
-                        <Text style={UIButtonTextStyle}>{"BDT " + product.price}</Text>
+                    <View style={styles.cartButtonContainer}>
+
+                        <Text style={styles.cartText}>ADD TO CART</Text>
+                        <Text style={styles.priceText}>{"BDT " + product.price}</Text>
 
                     </View>
 
@@ -498,17 +510,7 @@ export default function ProductScreen(props) {
 
             </View>
         </View>
-    )
-
-    // if (product === null) {     // || colors === null
-    //     return (
-    //         <View style={styles.centered}>
-    //             <ActivityIndicator size="large" />
-    //         </View>
-    //     )
-
-    // }
-
+    ), [product, colors, selectedColor, selectedSize])
 
     if (isLoading) {
         return (
@@ -517,19 +519,23 @@ export default function ProductScreen(props) {
             </View>
         )
     }
-    // else {
-    //     console.log(product)
-    // }
-
     return (
         <>
 
-            <SmallPopup setMessage={setPopupMessage} message={popupMessage} />
+            {/* <SmallPopup setMessage={setPopupMessage} message={popupMessage} /> */}
             <Modal
                 isVisible={reviewModalVisible}
                 onBackdropPress={() => (setIsReviewModalVisible(false))}
+                onBackButtonPress={() => (setIsReviewModalVisible(false))}
+                swipeDirection={["up", "down"]}
+                swipeThreshold={100}
+                onSwipeComplete={() => (setIsReviewModalVisible(false))}
             >
                 <View style={styles.addReviewContainer}>
+                    <View style={styles.reviewModalTopHandle} />
+                    <View style={styles.starsContainer}>
+                        <TouchableStars rating={rating} setRating={setRating} size={50} />
+                    </View>
                     <TextInput placeholder="Rating" keyboardType="decimal-pad" style={styles.addRatingInput}
                         onChangeText={(value) => (setRating(value))} />
                     <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
@@ -545,15 +551,6 @@ export default function ProductScreen(props) {
                 </View>
 
             </Modal>
-
-
-
-
-
-
-
-
-
             <FlatList ListHeaderComponent={productPage} data={reviews} renderItem={renderReview} />
 
 
@@ -569,6 +566,9 @@ export default function ProductScreen(props) {
 }
 
 const styles = StyleSheet.create({
+    screenContainer: {
+        justifyContent: 'flex-end'
+    },
     text: {
         fontWeight: '600',
     },
@@ -588,7 +588,8 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 22,
         fontWeight: '700',
-        width: 300
+        flex: 1,
+        alignSelf: 'flex-start'
     },
     shareButton: {
         alignItems: 'flex-end'
@@ -610,16 +611,19 @@ const styles = StyleSheet.create({
     },
     reviewTitleContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         padding: 10,
         marginTop: 30,
-        width: '100%'
+        width: '100%',
+        justifyContent: 'space-between'
     },
     addReview: {
         color: 'grey',
         fontWeight: '700',
         fontSize: 12,
-        width: 100
+        flex: 1,
+        width: 100,
+        textAlign: 'right'
+
     },
     reviewerName: {
         fontWeight: '600',
@@ -642,7 +646,9 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width * 0.9,
         maxWidth: 400,
         backgroundColor: 'white',
-        flex: 1,
+        marginTop: Dimensions.get('window').height / 1.8,
+        borderRadius: 20
+
     },
     addReviewButtonContainer: {
 
@@ -656,6 +662,49 @@ const styles = StyleSheet.create({
     addRatingInput: {
         margin: 20
 
+    },
+    cartText: {
+        color: 'white',
+        fontWeight: '700',
+        fontSize: 15,
+        flex: 1
+
+    },
+    priceText: {
+        color: 'white',
+        fontWeight: '700',
+        fontSize: 15,
+        flex: 1,
+        textAlign: 'right'
+
+    },
+    cartButtonContainer: {
+        marginLeft: 5,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginLeft: 10,
+        marginRight: 10
+    },
+    textContainer: {
+        width: 'auto',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 30,
+        padding: 5
+    },
+    reviewModalTopHandle: {
+        height: 3,
+        width: '40%',
+        backgroundColor: 'lightgrey',
+        alignSelf: 'center',
+        marginTop: 5,
+        borderRadius: 2,
+
+    },
+    starsContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20
     }
 
 

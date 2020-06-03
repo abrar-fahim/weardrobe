@@ -21,8 +21,8 @@ export default function ProductListScreen(props) {
     const showShopName = props.route.params?.showShopName
 
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('error')
+    // const [isModalVisible, setIsModalVisible] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('')
 
     const products = useSelector(state => state.products.products)
     const getProductsFn = useSelector(state => state.products.getProductsFn)
@@ -59,7 +59,7 @@ export default function ProductListScreen(props) {
 
     return (
         <>
-            <SmallPopup setIsVisible={setIsModalVisible} text={errorMessage} isVisible={isModalVisible} />
+            <SmallPopup setMessage={setErrorMessage} message={errorMessage} />
             <View>
                 <ProductList showShopName={showShopName} navigation={props.navigation} data={products} onRefresh={loadProducts} refreshing={isRefreshing} />
             </View>

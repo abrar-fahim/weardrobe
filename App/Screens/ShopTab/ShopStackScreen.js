@@ -37,6 +37,7 @@ import ProductListScreen from './ProductListScreen';
 
 import OrderScreen from './OrderScreen'
 import SellerInfoScreen from './SellerInfoScreen';
+import TestScreen from './TestScreen'
 
 export default function ShopStackScreen({ navigation }) {
     const ShopStack = createStackNavigator();

@@ -19,7 +19,8 @@ const initialState = {
 }
 
 export default function productsReducer(state = initialState, action) {
-    console.log(action.type)
+     console.log(action.type)
+    //console.log(state)
 
     switch (action.type) {
 
@@ -31,14 +32,13 @@ export default function productsReducer(state = initialState, action) {
             };
 
         case GET_PRODUCT_DETAILS:
+            if (state.productDetails?.id === action.product.id) {
+                return state;
+            }
             return {
                 ...state,
                 productDetails: action.product
             }
-
-        case ADD_TO_CART:
-            return state;
-
 
         case SET_ERROR:
             return {
@@ -65,7 +65,6 @@ export default function productsReducer(state = initialState, action) {
             }
 
     }
-
     return state;
 }
 

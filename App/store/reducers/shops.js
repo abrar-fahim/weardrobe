@@ -12,7 +12,7 @@ const initialState = {
 
 
 export default function shopsReducer(state = initialState, action) {
-    console.log(action.type)
+    // console.log(action.type)
     switch (action.type) {
         case GET_SHOPS:
             return {
