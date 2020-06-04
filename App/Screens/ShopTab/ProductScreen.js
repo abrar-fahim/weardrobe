@@ -148,7 +148,7 @@ export default function ProductScreen(props) {
 
             // setSelectedColor(gotColors[0]);
             setColorImages(finalColorImages);
-            if (sizes[0] === null) {
+            if (sizes[0] === null || sizes[0] === "") {
                 setSizes([])
             }
             else {
