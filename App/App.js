@@ -27,6 +27,7 @@ import authReducer from './store/reducers/auth'
 import cartReducer from './store/reducers/cart'
 import wishlistReducer from './store/reducers/wishlist'
 import shopsReducer from './store/reducers/shops'
+import profileReducer from './store/reducers/profile';
 
 
 const rootReducer = combineReducers({
@@ -34,7 +35,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   cart: cartReducer,
   wishlist: wishlistReducer,
-  shops: shopsReducer
+  shops: shopsReducer,
+  profile: profileReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))

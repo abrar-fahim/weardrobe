@@ -50,7 +50,7 @@ export default function ColorCircles(props) {
         if (props.selectedColor === itemData.item.color) {
             return (
                 <TouchableOpacity style={styles.circleContainer}>
-                    <FontAwesome name="check-circle" color={itemData.item.color} size={30} />
+                    <Ionicons name="ios-checkmark-circle-outline" color={itemData.item.color} size={props.size} />
                 </TouchableOpacity>
 
             )
@@ -60,7 +60,7 @@ export default function ColorCircles(props) {
                 <TouchableOpacity style={styles.circleContainer} onPress={() => (
                     props.setSelectedColor(itemData.item.color)
                 )}>
-                    <FontAwesome name="circle" color={itemData.item.color} size={30} />
+                    <FontAwesome name="circle" color={itemData.item.color} size={props.size} />
                 </TouchableOpacity>
             )
         }

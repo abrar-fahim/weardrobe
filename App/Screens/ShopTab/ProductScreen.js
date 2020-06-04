@@ -238,7 +238,7 @@ export default function ProductScreen(props) {
         try {
             if (mounted) {
                 await dispatch(wishlistActions.addToWishlist(productId))
-                setPopupMessage("added to wishlist!")
+                // setPopupMessage("added to wishlist!")
 
             }
 
@@ -257,7 +257,7 @@ export default function ProductScreen(props) {
         try {
             if (mounted) {
                 await dispatch(wishlistActions.removeFromWishlist(productId))
-                setPopupMessage("removed from wishlist!")
+                // setPopupMessage("removed from wishlist!")
             }
         } catch (err) {
             setPopupMessage(err.message)
@@ -390,6 +390,7 @@ export default function ProductScreen(props) {
             <ScrollView
                 horizontal={true}
                 pagingEnabled={true}
+                style={styles.imageContainer}
             >
                 {colorImages.map((item, index) => (
                     // <Image style={styles.image} {...item.image} transitionDuration={500} />
@@ -417,50 +418,45 @@ export default function ProductScreen(props) {
 
             </View>
 
-            <View style={{ justifyContent: 'flex-start', padding: 10, marginRight: 10, flexDirection: 'row' }}>
-                <RatingStars rating={product.rating} size={30} />
-                <Ionicons color={Colors.buttonColor} name="ios-share-alt" size={40} style={{ marginLeft: Dimensions.get('window').width / 1.9 }} />
-            </View>
-
-
-            <View style={{ marginTop: 30, padding: 5 }}>
-                <Text style={{
-                    fontSize: 18,
-                    fontWeight: '400',
-                    color: 'grey'
-                }}> {product.description} </Text>
-            </View>
-
-
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 30, marginLeft: 30, marginTop: 30 }}>
-
-
-                {colors[0] === null | colors[0] === undefined ? null :
-                    <View>
-
-                        <View>
-                            <Text style={styles.text}> COLOR </Text>
-                        </View>
 
 
 
-                        <ColorCircles setSelectedColor={setSelectedColor} selectedColor={selectedColor} colors={colors} />
-                    </View>
-                }
+
+
+            {colors[0] === null | colors[0] === undefined ? null :
+
+                <View style={styles.colorContainer}>
+
+
+                    <Text style={styles.text}> COLOR </Text>
+
+                    <ColorCircles setSelectedColor={setSelectedColor} selectedColor={selectedColor} colors={colors} size={45} />
 
 
 
-                {sizes[0] === null | sizes[0] === undefined ? null :
-                    <View>
-                        <Text style={styles.text}> SIZE </Text>
-                        <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes} />
 
-                    </View>
-                }
+                </View>
+            }
+            {sizes[0] === null | sizes[0] === undefined ? null :
+                <View style={styles.sizeContainer}>
 
 
 
-            </View>
+
+
+                    <Text style={styles.text}> SIZE </Text>
+
+
+                    <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes} size={45} />
+
+
+
+
+
+
+
+                </View>
+            }
 
 
 
@@ -470,17 +466,34 @@ export default function ProductScreen(props) {
                 //props.navigation.goBack();
 
             }} >
-                <View style={{ backgroundColor: Colors.buttonColor, height: 50, justifyContent: 'center', marginTop: 40 }}>
-                    <View style={styles.cartButtonContainer}>
 
-                        <Text style={styles.cartText}>ADD TO CART</Text>
-                        <Text style={styles.priceText}>{"BDT " + product.price}</Text>
+                <View style={styles.cartButtonContainer}>
 
-                    </View>
-
+                    <Text style={styles.cartText}>+ ADD TO CART</Text>
+                    <Text style={styles.priceText}>{"BDT " + product.price}</Text>
 
                 </View>
+
+
+
             </TouchableOpacity>
+
+            <View style={styles.descriptionContainer}>
+
+                <Text style={styles.heading}>Description</Text>
+
+
+                <Text style={{
+                    fontSize: 18,
+                    fontWeight: '400',
+                    color: 'grey'
+                }}> {product.description} </Text>
+            </View>
+
+            <View style={{ justifyContent: 'flex-start', padding: 10, marginRight: 10, flexDirection: 'row' }}>
+                <RatingStars rating={product.rating} size={30} />
+                <Ionicons color={Colors.buttonColor} name="ios-share-alt" size={40} style={{ marginLeft: Dimensions.get('window').width / 1.9 }} />
+            </View>
 
             {/* <View style={styles.qa}>
 
@@ -513,7 +526,7 @@ export default function ProductScreen(props) {
 
     if (isLoading) {
         return (
-           <LoadingScreen />
+            <LoadingScreen />
         )
     }
     return (
@@ -529,10 +542,10 @@ export default function ProductScreen(props) {
                 onSwipeComplete={() => (setIsReviewModalVisible(false))}
                 scrollOffset={50}
                 scrollOffsetMax={500}
-                
+
             >
                 <KeyboardAvoidingView
-                    // behavior={Platform.OS == "ios" ? "padding" : "height"}
+                // behavior={Platform.OS == "ios" ? "padding" : "height"}
                 >
 
 
@@ -580,14 +593,38 @@ export default function ProductScreen(props) {
 
 const styles = StyleSheet.create({
     screenContainer: {
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        marginVertical: 20
     },
     text: {
-        fontWeight: '600',
+        fontWeight: '700',
+        marginBottom: 10,
+        marginRight: 30,
+        width: 70,
+        color: 'grey'
     },
     screen: {
         marginBottom: 10
     },
+    colorContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        height: 70,
+        borderBottomWidth: 0.8,
+        borderBottomColor: 'grey',
+        marginHorizontal: 20,
+        alignItems: 'center',
+        marginTop: 20
+    },
+    sizeContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        height: 70,
+        marginHorizontal: 20,
+        marginBottom: 20
+    },
+
     qa: {
         width: '100%',
         margin: 10
@@ -602,7 +639,7 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: '700',
         flex: 1,
-        alignSelf: 'flex-start'
+        width: 200,
     },
     shareButton: {
         alignItems: 'flex-end'
@@ -620,6 +657,11 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
 
+        shadowOffset: {
+            height: 3,
+        },
+        shadowOpacity: 0.5,
+        elevation: 100
 
     },
     reviewTitleContainer: {
@@ -698,11 +740,28 @@ const styles = StyleSheet.create({
 
     },
     cartButtonContainer: {
-        marginLeft: 5,
+        marginVertical: 20,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginLeft: 10,
-        marginRight: 10
+        marginHorizontal: 10,
+        backgroundColor: Colors.primaryColor,
+        height: 60,
+        alignItems: 'center',
+        padding: 20,
+        borderRadius: 40,
+        shadowOffset: {
+            height: 3,
+        },
+        shadowOpacity: 0.5,
+        elevation: 20
+    },
+    descriptionContainer: {
+        marginTop: 40,
+        padding: 10,
+
+        width: '100%',
+        alignItems: 'flex-start',
+        justifyContent: 'center'
     },
     textContainer: {
         width: 'auto',
@@ -736,7 +795,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     titleContainer: {
-       
+
     }
 
 

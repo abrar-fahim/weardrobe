@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -94,7 +94,7 @@ export default function CartScreen(props) {
         // console.log(itemData.item)
         return (
 
-            <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', padding: 5, height: 120, alignItems: 'center' }}>
+            <View style={styles.cartItemContainer}>
 
 
                 <View style={styles.cartItem}>
@@ -104,12 +104,13 @@ export default function CartScreen(props) {
                     }))}>
                         <Image source={itemData.item.picture} style={{ height: 70, width: 70, borderRadius: 35 }} />
                     </TouchableOpacity>
+
                     <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
                         productId: itemData.item.id
                     }))}>
                         <View>
-                            <Text style={{ fontSize: 17, fontWeight: '400' }}> {itemData.item.name}</Text>
-                            <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.name}</Text>
+                            <Text style={styles.itemName}> {itemData.item.name}</Text>
+                            {/* <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.name}</Text> */}
                             <View style={styles.sizeColorContainer}>
                                 <FontAwesome name="circle" color={itemData.item.color} size={25} />
 
@@ -117,7 +118,7 @@ export default function CartScreen(props) {
                                 <View style={styles.sizeContainer}>
                                     {/* <FontAwesome name="circle" color="grey" size={25} /> */}
                                     {/* <View style={styles.sizeTextContainer}> */}
-                                    <Text style={styles.sizeText}>{itemData.item.size}</Text>
+                                    <Text style={styles.sizeText}>{itemData.item.size?.toUpperCase()}</Text>
                                     {/* </View> */}
 
                                 </View>
@@ -128,14 +129,16 @@ export default function CartScreen(props) {
                     </TouchableOpacity>
 
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', width: 70, alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, }}>
+                        
                         <Text>{itemData.item.quantity}</Text>
-                        <View style={{ justifyContent: 'space-between', height: 50 }}>
+
+                        <View style={{ justifyContent: 'space-evenly', height: '99%' }}>
                             <TouchableOpacity
                                 onPress={() => {
                                     updateCart(itemData.item.id, itemData.item.color, itemData.item.size, itemData.item.quantity + 1)
                                 }}>
-                                <AntDesign name="pluscircle" size={20} color='grey' />
+                                <AntDesign name="pluscircle" size={35} color='grey' />
                             </TouchableOpacity>
 
                             <TouchableOpacity
@@ -143,7 +146,7 @@ export default function CartScreen(props) {
                                     updateCart(itemData.item.id, itemData.item.color, itemData.item.size, itemData.item.quantity - 1)
                                 }}
                             >
-                                <AntDesign name="minuscircle" size={20} color='grey' />
+                                <AntDesign name="minuscircle" size={35} color='grey' />
                             </TouchableOpacity>
 
 
@@ -239,6 +242,14 @@ export default function CartScreen(props) {
 
 const styles = StyleSheet.create(
     {
+
+        cartItemContainer: {
+            flexDirection: 'row',
+            flex: 1,
+            padding: 5,
+            height: 150,
+            alignItems: 'center'
+        },
         cartItem: {
             marginRight: 10,
             justifyContent: 'space-between',
@@ -246,19 +257,26 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             backgroundColor: '#eae9e9',
             flex: 1,
-            height: 100,
+            height: 120,
             width: 400,
             marginLeft: 1,
-            padding: 10
+            padding: 8
         },
         screen: {
-            paddingBottom: 10
+            paddingBottom: 10,
+            padding: 10
+        },
+        itemName: {
+            fontSize: 17,
+            fontWeight: '700',
+            maxWidth: Dimensions.get('window').width / 3,
+            height: 40
         },
         sizeColorContainer: {
             flexDirection: 'row',
             marginTop: 5,
             width: 100,
-            justifyContent: 'space-between',
+            justifyContent: 'space-evenly',
             marginLeft: 5
         },
         sizeContainer: {
@@ -280,13 +298,13 @@ const styles = StyleSheet.create(
         },
         priceContainer: {
             alignItems: 'flex-end',
-            marginRight: 15,
-            alignSelf: 'flex-end'
+            alignSelf: 'flex-end',
 
         },
         priceText: {
             fontSize: 18,
-            fontWeight: '500'
+            fontWeight: '700',
+            minWidth: 100,
         },
         buttonContainer: {
             backgroundColor: Colors.buttonColor,

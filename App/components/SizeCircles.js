@@ -50,9 +50,9 @@ export default function SizeCircles(props) {
         if (props.selectedSize === itemData.item.size) {
             return (
                 <TouchableOpacity style={styles.circleContainer}>
-                    <FontAwesome name="circle" color="black" size={30} />
+                    <FontAwesome name="circle" color="lightgrey" size={props.size} />
                     <View style={styles.sizeTextContainer}>
-                        <Text style={styles.selectedSizeText}>{itemData.item.size}</Text>
+                        <Text style={styles.selectedSizeText}>{itemData.item.size.toUpperCase()}</Text>
                     </View>
 
                 </TouchableOpacity>
@@ -64,9 +64,12 @@ export default function SizeCircles(props) {
                 <TouchableOpacity style={styles.circleContainer} onPress={() => (
                     props.setSelectedSize(itemData.item.size)
                 )}>
-                    <FontAwesome name="circle" color="grey" size={30} />
+                    <FontAwesome name="circle" color="white" size={props.size} />
                     <View style={styles.sizeTextContainer}>
-                        <Text style={styles.sizeText}>{itemData.item.size}</Text>
+                        <View style={styles.sizeContainer}>
+                            <Text style={styles.sizeText}>{itemData.item.size.toUpperCase()}</Text>
+                        </View>
+
                     </View>
 
                 </TouchableOpacity>
@@ -74,10 +77,10 @@ export default function SizeCircles(props) {
         }
     }
 
-    const sizes = props.sizes.map((item, index) => ({id: index.toString(), size: item}))
+    const sizes = props.sizes.map((item, index) => ({ id: index.toString(), size: item }))
 
 
-    if(props.sizes[0] === null | props.sizes[0] === undefined) {
+    if (props.sizes[0] === null | props.sizes[0] === undefined) {
         return null;
     }
 
@@ -97,14 +100,26 @@ export default function SizeCircles(props) {
 
 const styles = StyleSheet.create({
     circleContainer: {
-        marginHorizontal: 5
+        marginHorizontal: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     selectedSizeText: {
-        color: 'white'
+        color: 'black',
+        fontWeight: '700',
+        width: 40,
+        textAlign: 'center',
+        textAlignVertical: 'center'
 
     },
     sizeText: {
-        color: 'black'
+        color: 'black',
+        color: 'grey',
+        fontWeight: '700',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        letterSpacing: 0,
+        width: 40
 
     },
     sizeTextContainer: {
@@ -115,6 +130,13 @@ const styles = StyleSheet.create({
         bottom: 0,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    sizeContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1
+
+
     }
 
 })

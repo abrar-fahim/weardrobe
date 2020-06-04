@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
+import React, { useEffect, useCallback } from 'react';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions } from 'react-native';
 import {NavigationContainer, TabActions} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
@@ -27,14 +27,47 @@ import ScreenStyle from '../../Styles/ScreenStyle'
 import Colors from '../../Styles/Colors';
 
 import * as authActions from '../../store/actions/auth'
+import * as profileActions from '../../store/actions/profile'
+import checkLoggedIn from '../../components/CheckLoggedIn'
+import AuthRequiredScreen from '../AuthRequiredScreen'
 
 
 
 
 export function ProfileScreen(props) {
+
+    
+    const myPosts = useSelector(state => state.profile.posts)
+    const dispatch = useDispatch()
+    const loadMyPosts = useCallback( async() => {
+        try {
+            await dispatch(profileActions.fetchMyPosts())
+        }
+        catch(err) {
+            console.log(err)
+
+        }
+    }, [])
+
+    useEffect(() => {
+        loadMyPosts()
+    }, [])
+
+    const renderMyPosts = (itemData) => {
+        return (
+            <View style={styles.postGridItem}>
+
+                <Image source={itemData.item.images[0].image} style={styles.postImage}/>
+
+
+            </View>
+        )
+    }
     return (
         <View style={ScreenStyle}>
-            <Text> Profile Screen</Text>
+            <FlatList data={myPosts} renderItem={renderMyPosts} numColumns={3}/>
+
+
             
         </View>
     );
@@ -42,6 +75,8 @@ export function ProfileScreen(props) {
 }
 
 export function ProfileTabsScreen({navigation}) {
+
+    const loggedIn = checkLoggedIn();
 
     const dispatch = useDispatch();
 
@@ -53,6 +88,13 @@ export function ProfileTabsScreen({navigation}) {
         }
     }
     const TopTab = createMaterialTopTabNavigator();
+
+    if(!loggedIn) {
+        return (
+            <AuthRequiredScreen navigation={navigation}/>
+        )
+
+    }
 
     return(
         <View style={{ ...ScreenStyle, flex: 1}}>
@@ -130,3 +172,13 @@ export default function ProfileStackScreen(props) {
         
     )
 }
+
+const styles = StyleSheet.create({
+    postGridItem: {
+        margin: 10,
+        width: Dimensions.get('window').width / 3.5
+    },
+    postImage: {
+        height: Dimensions.get('window').width / 3.5,
+    }
+})
