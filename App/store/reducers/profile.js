@@ -1,7 +1,9 @@
-import { GET_SELF_POSTS } from "../actions/profile";
+import { GET_SELF_POSTS, GET_SELF_BLOGS } from "../actions/profile";
 
 const initialState = {
-    posts: []
+    posts: [],
+    blogs: [],
+    
 }
 
 export default function profileReducer(state = initialState, action) {
@@ -11,6 +13,12 @@ export default function profileReducer(state = initialState, action) {
             return {
                 ...state,
                 posts: action.posts
+            }
+
+        case GET_SELF_BLOGS:
+            return {
+                ...state,
+                blogs: action.blogs
             }
     }
 
