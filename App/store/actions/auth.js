@@ -5,8 +5,57 @@ import HOST from "../../components/host";
 // import tough from 'tough-cookie';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
+export const SIGNUP = 'SIGNUP';
 
-// const cookiejar = new tough.CookieJar();
+export const signup = ({ firstName, lastName, username, email, phone, birthday, password }) => {
+    return async (dispatch) => {
+        const response = await fetch(`${HOST}/register-customer`, {
+            // credentials: 'omit',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': "application/json"
+            },
+            body: JSON.stringify({
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                username: username,
+                phoneNumber: phone,
+                birthday: birthday,
+                password: password,
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('somethings wrong');
+        }
+
+        const resData = await response.json();  //converts response string to js object/array
+
+        console.log(resData);
+
+
+
+        if (Object.keys(resData)[0] === 'SUCCESS') {
+
+            const userId = resData.SUCCESS;
+
+            console.log(userId)
+
+            dispatch({
+                type: LOGIN,
+                userId: userId
+            })
+
+
+        }
+        else {
+            console.log('erroring')
+            throw new Error(resData.ERROR)
+        }
+    }
+}
 
 
 
@@ -63,6 +112,10 @@ export const login = (email, password) => {
             })
 
 
+        }
+
+        else {
+            throw new Error(resData.ERROR)
         }
 
         // AsyncStorage.setItem('user-cookie', JSON.stringify({
@@ -125,7 +178,7 @@ export const getUserId = () => {
 
 
         }
-        
+
     }
 }
 

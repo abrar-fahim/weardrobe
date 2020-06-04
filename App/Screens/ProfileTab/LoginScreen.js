@@ -86,7 +86,7 @@ export default function LoginScreen({ navigation }) {
       navigation.goBack();
 
     } catch (err) {
-      navigation.popToTop();
+      //navigation.popToTop();
       throw new Error(err.message);
       
     }
