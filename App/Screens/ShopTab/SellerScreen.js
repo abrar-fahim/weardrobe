@@ -19,6 +19,7 @@ import GenericHeaderButton from '../../components/GenericHeaderButton'
 import Colors from '../../Styles/Colors';
 import HOST from "../../components/host";
 import * as productsActions from '../../store/actions/products'
+import LoadingScreen from '../../components/LoadingScreen'
 
 
 
@@ -26,12 +27,6 @@ export default function SellerScreen(props) {
     const shopId = props.route.params?.shopId ?? 'default'
 
     const loggedIn = useSelector(state => state.auth.userId, (left, right) => (left.auth.userId === right.auth.userId)) === null ? false : true
-
-
-
-    // const selectedSeller = SELLERS.find(seller => seller.id === shopId)
-    //const image = selectedSeller.picture
-    //2const description = selectedSeller.description
 
 
     const dispatch = useDispatch();
@@ -42,6 +37,8 @@ export default function SellerScreen(props) {
     const myShops = useSelector(state => state.shops.myShops)
     const categories = useSelector(state => state.shops.categories)
 
+    const [isLoading, setIsLoading] = useState(true);
+
     const followShop = useCallback(async (shopId) => {
         try {
             await dispatch(shopsActions.followShop(shopId))
@@ -50,7 +47,7 @@ export default function SellerScreen(props) {
             console.log(err);
 
         }
-    }, [dispatch])
+    }, [])
 
     const unFollowShop = useCallback(async (shopId) => {
         try {
@@ -60,7 +57,7 @@ export default function SellerScreen(props) {
             console.log(err);
 
         }
-    }, [dispatch])
+    }, [])
 
 
     const setProductsFn = useCallback(async (categoryId) => {
@@ -70,45 +67,35 @@ export default function SellerScreen(props) {
         catch (err) {
             console.log(err)
         }
-    }, [dispatch])
+    }, [])
 
 
     const loadShopProducts = useCallback(async (shopId) => {
         try {
+            setIsLoading(true)
             await dispatch(shopsActions.fetchShopProducts(shopId))
             await dispatch(shopsActions.fetchShopDetails(shopId))
             await dispatch(shopsActions.fetchMyShops())
             await dispatch(shopsActions.fetchShopCategories(shopId))
+            setIsLoading(false)
         }
         catch (err) {
             console.log(err)
         }
-    }, [dispatch])
-
-
-
-    const [liked, setLiked] = useState(false);
+    }, [])
 
 
     useEffect(() => {
-        myShops.some(shop => shop.id === shopId) ? setLiked(true) : setLiked(false)
 
         loadShopProducts(shopId)
-    }, [dispatch, props.navigation])
-
-    // useEffect(() => {
-    //     const unsubscribe = props.navigation.addListener('focus', () => {
-
-    //     })
-
-    //     return unsubscribe
-    // }, [props.navigation, dispatch])
+    }, [])
 
 
     useLayoutEffect(() => {
 
+        const liked = myShops.some(shop => shop.id === shopId) ? true: false
+
         const heartIcon = liked ? "md-heart" : "md-heart-empty"
-        console.log("liked: " + liked)
 
         props.navigation.setOptions({
             headerTitle: shopDetails === null ? "" : shopDetails.name,
@@ -122,17 +109,15 @@ export default function SellerScreen(props) {
                     }} />
                     <GenericHeaderButton iconName={heartIcon} onPress={() => {
                         if (!loggedIn) {
-                            setLiked(false);
+                            
                             props.navigation.navigate('Login');
                         }
                         else {
                             if (liked === false) {
                                 followShop(shopId)
-                                setLiked(true)
                             }
                             else {
                                 unFollowShop(shopId)
-                                setLiked(false)
                             }
                         }
 
@@ -141,13 +126,13 @@ export default function SellerScreen(props) {
                 </View>
             )
         })
-    }, [shopDetails, dispatch, liked])
+    }, [shopDetails, loggedIn, myShops])
 
-    if (shopDetails === null || products === null) {
+    
+
+    if (isLoading) {
         return (
-            <View style={styles.centered}>
-                <ActivityIndicator size="large" />
-            </View>
+            <LoadingScreen />
         )
     }
 
@@ -158,7 +143,10 @@ export default function SellerScreen(props) {
                 <View>
                     <View style={styles.categoryNameContainer}>
                         <Text style={styles.categoryName}>{itemData.item.name}</Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            setProductsFn(itemData.item.id)
+                            props.navigation.navigate('ProductList')
+                        }}>
                             <Text>View all</Text>
                         </TouchableOpacity>
                     </View>
@@ -292,7 +280,11 @@ export default function SellerScreen(props) {
                             <>
                                 <View style={styles.categoryNameContainer}>
                                     <Text>Browse All Categories</Text>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity onPress={() => {
+                                        props.navigation.navigate('Categories', {
+                                            shopId: shopDetails.id
+                                        })
+                                    }}>
                                         <Text>View All</Text>
                                     </TouchableOpacity>
 

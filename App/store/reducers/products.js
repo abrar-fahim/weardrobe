@@ -5,7 +5,8 @@ import {
     SET_ERROR,
     GET_PRODUCT_REVIEWS,
     GET_CATEGORIES,
-    GET_PRODUCTS_FN
+    GET_PRODUCTS_FN,
+    GET_SHOP_FEED
 } from '../actions/products'
 import PRODUCTS from '../../dummy-data/Products'
 
@@ -15,7 +16,8 @@ const initialState = {
     errorMessage: null,
     productReviews: null,
     categories: [],
-    getProductsFn: null
+    getProductsFn: null,
+    feed: []
 }
 
 export default function productsReducer(state = initialState, action) {
@@ -62,6 +64,12 @@ export default function productsReducer(state = initialState, action) {
             return {
                 ...state,
                 getProductsFn: action.fn
+            }
+
+            case GET_SHOP_FEED: 
+            return {
+                ...state,
+                feed: action.feed
             }
 
     }

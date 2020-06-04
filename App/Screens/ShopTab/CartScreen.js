@@ -91,7 +91,7 @@ export default function CartScreen(props) {
 
 
     const renderItems = (itemData) => {
-        console.log(itemData.item)
+        // console.log(itemData.item)
         return (
 
             <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', padding: 5, height: 120, alignItems: 'center' }}>

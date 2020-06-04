@@ -136,7 +136,7 @@ export const fetchShopDetails = (shopId) => {
 
 export const followShop = (shopId) => {
     return async (dispatch) => {
-        const response = await fetch('${HOST}/follow/shop', {
+        const response = await fetch(`${HOST}/follow/shop`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

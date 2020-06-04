@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS, ScrollView, Dimensions } from 'react-native';
+import React, { useEffect, useState, useLayoutEffect, useCallback, useDebugValue } from 'react';
+import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS, ScrollView, Dimensions, ActivityIndicator } from 'react-native';
 
 import PRODUCTS from '../../dummy-data/Products'
 
@@ -11,6 +11,7 @@ import ScreenStyle from '../../Styles/ScreenStyle'
 import Colors from '../../Styles/Colors';
 import { useDispatch, useSelector } from 'react-redux';
 import * as productsActions from '../../store/actions/products'
+import { } from 'react-native-paper';
 
 
 
@@ -99,11 +100,34 @@ const TOPSCROLLER = [
 
 
 
+
+
+
 function ShopScreen({ navigation }) {
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [isRefreshing, setIsRefreshing] = useState(false)
 
 
     const dispatch = useDispatch();
     const allProducts = useSelector(state => state.products.products)
+
+    const feed = useSelector(state => state.products.feed);
+
+
+    const loadFeed = useCallback(async () => {
+        try {
+            setIsLoading(true);
+            setIsRefreshing(true);
+
+            await dispatch(productsActions.fetchShopFeed());
+            setIsRefreshing(false)
+            setIsLoading(false)
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }, [])
 
 
     const setProductFn = useCallback(async (fn) => {
@@ -113,7 +137,7 @@ function ShopScreen({ navigation }) {
         catch (err) {
 
         }
-    })
+    }, [])
 
     const loadAllProducts = useCallback(async () => {
         try {
@@ -122,54 +146,76 @@ function ShopScreen({ navigation }) {
         catch (err) {
             console.log(err)
         }
-    })
+    }, [])
+
+    useEffect(() => {
+        loadFeed()
+    }, [])
 
 
 
+
+    function renderTopScroller(itemData) {
+        return (
+            <TouchableOpacity onPress={() => {
+                setProductFn(productsActions.fetchProducts)
+                navigation.navigate('ProductList', {
+                    showShopName: true
+                })
+
+            }}>
+                <View>
+                    <Image style={styles.scrollerImage} source={itemData.item.image} />
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
+    const render4by4GridItem = (itemData) => {
+        return (
+            <View style={styles.smallGridItem}>
+                <TouchableOpacity onPress={() => (navigation.navigate("Product", {
+                    productId: itemData.item.id,
+                }))}>
+                    <Image source={itemData.item.image} style={styles.productGridImage} />
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+    const render3by3GridItem = (itemData) => {
+        return (
+            <View style={styles.bigGridItem}>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate('Product', {
+                        productId: itemData.item.id
+                    })
+                }}>
+
+                    <Image source={itemData.item.image} style={styles.bigGridImage} resizeMode="cover" />
+                    <Text style={styles.bigGridLabel}>{itemData.item.name}</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
 
     function renderShopFeedItems(itemData) {
-        if (itemData.item.type === 'grid') {
+
+        if (itemData.item.type === 1) {
+            //scrollable horizontal banners
             return (
-                <View style={styles.productGridContainer}>
-                    <Text style={styles.title}> Trending now</Text>
-                    <View style={styles.productGridRow}>
-                        <TouchableOpacity onPress={() => (navigation.navigate("Product", {
-                            productId: itemData.item.data[0].id,
-                        }))}>
-                            <Image source={itemData.item.data[0].picture} style={styles.productGridImage} />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity onPress={() => (navigation.navigate("Product", {
-                            productId: itemData.item.data[0].id,
-                        }))}>
-                            <Image source={itemData.item.data[0].picture} style={styles.productGridImage} />
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.productGridRow}>
-                        <TouchableOpacity onPress={() => (navigation.navigate("Product", {
-                            productId: itemData.item.data[0].id,
-                        }))}>
-                            <Image source={itemData.item.data[0].picture} style={styles.productGridImage} />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => (navigation.navigate("Product", {
-                            productId: itemData.item.data[0].id,
-                        }))}>
-                            <Image source={itemData.item.data[0].picture} style={styles.productGridImage} />
-                        </TouchableOpacity>
-
-                    </View>
-
-                </View>
+                <FlatList style={styles.scoller} data={itemData.item.banners} horizontal={true} pagingEnabled={true} renderItem={renderTopScroller} />
             )
+
         }
 
-        if (itemData.item.type === 'banner') {
+        if (itemData.item.type === 2) {
+            //horizontal banner
 
             return (
                 <TouchableOpacity onPress={() => (navigation.navigate('ProductList'))}>
                     <View style={styles.banner}>
-                        <Image source={itemData.item.data.picture} style={styles.featuredImage} />
+                        <Image source={itemData.item.banners[0].image} style={styles.featuredImage} />
                     </View>
                 </TouchableOpacity>
 
@@ -177,12 +223,12 @@ function ShopScreen({ navigation }) {
 
         }
 
-        if (itemData.item.type === 'tile') {
+        if (itemData.item.type === 3) {
             return (
                 <TouchableOpacity>
+                    <Text style={styles.title}>{itemData.item.title}</Text>
                     <View style={styles.tile}>
-                        <Text style={styles.title}>{itemData.item.data.title}</Text>
-                        <Image source={itemData.item.data.picture} style={styles.tileImage} resizeMode="cover" />
+                        <Image source={itemData.item.banners[0].image} style={styles.tileImage} resizeMode="cover" />
 
                     </View>
 
@@ -190,14 +236,31 @@ function ShopScreen({ navigation }) {
                 </TouchableOpacity>
             )
         }
+        if (itemData.item.type === 4) {
 
-        if (itemData.item.type === '3x3') {
+            return (
+                <>
+                    <Text style={styles.title}>{itemData.item.title}</Text>
+                    <View style={styles.productGridContainer}>
+                        <FlatList data={itemData.item.lists} renderItem={render4by4GridItem} numColumns={2} />
+                    </View>
+                </>
+            )
+        }
+
+
+
+
+
+        if (itemData.item.type === 5) {
 
             return (
                 <>
                     <Text style={styles.title}>{itemData.item.title}</Text>
                     <View style={styles.bigGrid}>
-                        <View style={styles.bigGridRow}>
+
+                        <FlatList data={itemData.item.lists} renderItem={render3by3GridItem} numColumns={3} />
+                        {/* <View style={styles.bigGridRow}>
                             <TouchableOpacity>
 
                                 <Image source={itemData.item.data[0].picture} style={styles.bigGridImage} resizeMode="cover" />
@@ -252,7 +315,7 @@ function ShopScreen({ navigation }) {
                             </TouchableOpacity>
 
 
-                        </View>
+                        </View> */}
 
                     </View>
                 </>
@@ -262,33 +325,23 @@ function ShopScreen({ navigation }) {
 
     }
 
-    function renderTopScroller(itemData) {
-        return (
-            <TouchableOpacity onPress={() => {
-                setProductFn(productsActions.fetchProducts)
-                navigation.navigate('ProductList', {
-                    showShopName: true
-                })
 
-            }}>
-                <View>
-                    <Image style={styles.scrollerImage} source={itemData.item.picture} />
-                </View>
-            </TouchableOpacity>
+
+    if(isLoading && !isRefreshing) {
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size="large"/>
+            </View>
         )
     }
-
-
-    const ListHeader = (
-        <FlatList style={styles.scoller} data={TOPSCROLLER} horizontal={true} pagingEnabled={true} renderItem={renderTopScroller} />
-    )
     return (
         <View style={ScreenStyle}>
 
             <FlatList
-                ListHeaderComponent={ListHeader}
-                data={SHOP} renderItem={renderShopFeedItems}
+                data={feed} renderItem={renderShopFeedItems}
                 onEndReached={loadAllProducts}
+                onRefresh={loadFeed}
+                refreshing={isRefreshing}
                 ListFooterComponent={
                     <>
                         <Text style={styles.title}>All Products</Text>
@@ -338,19 +391,16 @@ const styles = StyleSheet.create({
     productGridContainer: {
         flexDirection: 'column',
         width: '100%',
-        height: 300,
         alignItems: 'center',
         justifyContent: 'center'
     },
-    productGridRow: {
-        flexDirection: 'row',
-        height: '45%',
-        width: '95%'
+    smallGridItem: {
+        margin: 20,
     },
     productGridImage: {
-        height: '99%',
-        width: Dimensions.get('window').width / 2,
-        resizeMode: 'contain'
+        height: 100,
+        width: Dimensions.get('window').width / 3,
+        resizeMode: 'contain',
     },
     productGridTitle: {
         alignSelf: 'flex-start',
@@ -371,7 +421,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: Colors.primaryColor,
         fontWeight: '700',
-        margin: 20,
+        margin: 10,
         alignSelf: 'flex-start',
         width: '100%'
     },
@@ -400,15 +450,25 @@ const styles = StyleSheet.create({
 
     },
     bigGridImage: {
-        height: 100,
-        width: 100,
-        borderRadius: 50
+        height: Dimensions.get('window').width / 4,
+        width: Dimensions.get('window').width / 4,
+        borderRadius: Dimensions.get('window').width / 8
 
     },
     bigGridLabel: {
         alignSelf: 'center',
         fontWeight: '500',
-        marginTop: 10
+        marginTop: 10,
+        maxWidth: Dimensions.get('window').width / 4
+    },
+    bigGridItem: {
+        margin: 10,
+        alignItems: 'center'
+    },
+    centered: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 
 

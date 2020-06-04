@@ -20,7 +20,7 @@ import { SHOPS } from '../../dummy-data/Sellers'
 import CheckoutScreen from './CheckoutScreen'
 import CartScreen from './CartScreen';
 import DealsStack from './DealsScreens'
-import CategoriesStack from './CategoriesScreens'
+import CategoriesStack, { CategoriesScreen } from './CategoriesScreens'
 import ShopDrawer from './ShopDrawer'
 import ShopStack from './ShopScreens'
 import SearchScreen from './SearchScreen'
@@ -73,6 +73,7 @@ export default function ShopStackScreen({ navigation }) {
             <ShopStack.Screen name="ProductList" component={ProductListScreen} />
             <ShopStack.Screen name="Order" component={OrderScreen} />
             <ShopStack.Screen name="SellerInfo" component={SellerInfoScreen} />
+            <ShopStack.Screen name="Categories" component={CategoriesScreen} />
 
         </ShopStack.Navigator>
     )

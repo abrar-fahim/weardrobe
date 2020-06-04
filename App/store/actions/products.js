@@ -5,6 +5,7 @@ export const SET_ERROR = 'SET_ERROR';
 export const GET_PRODUCT_REVIEWS = 'GET_PRODUCT_REVIEWS'
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const GET_PRODUCTS_FN = 'GET_PRODUCTS_FN'
+export const GET_SHOP_FEED = 'GET_SHOP_FEED';
 import HOST from "../../components/host";
 
 export const fetchProducts = () => {
@@ -279,6 +280,98 @@ export const getProductsFn = (getProductsFn) => {
         })
 
 
+    }
+}
+
+export const fetchShopFeed = () => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${HOST}/get/shopfeed`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('wrong!!');
+            }
+
+            const resData = await response.json();
+            const feed = [];
+
+            for (const key in resData) {
+                const banners = JSON.parse(resData[key].BANNERS)
+
+                if (resData[key].FEED_TYPE < 4) {
+                    //banners
+                    const processedBanners = banners.map((item, index) => (
+                        {
+                            id: index.toString(),
+                            image: { uri: `${HOST}/img/temp/` + item.BANNER_URL },
+                            searchTerm: item.SEARCH_TERM,
+                        }
+                    ))
+
+                    feed.push({
+                        id: resData[key].FEED_ID,
+                        type: resData[key].FEED_TYPE,
+                        listSize: resData[key].LIST_SIZE,
+                        description: resData[key].DESCRIPTION,
+                        title: resData[key].TITLE,
+                        order: resData[key].FEED_ORDER,
+                        searchTerm: resData[key].SEARCH_TERM,
+                        destinationType: resData[key].DESTINATION_TYPE,
+                        banners: processedBanners,
+                    })
+
+
+                }
+                else {
+
+                    
+
+                    const processedLists = resData[key].LISTS.map(item => ({
+                        id: item.PRODUCT_ID,
+                        name: item.PRODUCT_NAME,
+                        shopId: item.SHOP_ID,
+                        price: item.PRICE,
+                        rating: item.PRODUCT_RATING,
+                        ratingCount: item.RATING_COUNT,
+                        description: item.DESCRIPTION,
+                        postDate: item.PRODUCT_POST_DATE,
+                        discount: item.DISCOUNT,
+                        modelNo: item.MODEL_NO,
+                        image: { uri: `${HOST}/img/temp/` + item.THUMBNAIL }
+
+                    }))
+                    feed.push({
+                        id: resData[key].FEED_ID,
+                        type: resData[key].FEED_TYPE,
+                        listSize: resData[key].LIST_SIZE,
+                        description: resData[key].DESCRIPTION,
+                        title: resData[key].TITLE,
+                        order: resData[key].FEED_ORDER,
+                        searchTerm: resData[key].SEARCH_TERM,
+                        destinationType: resData[key].DESTINATION_TYPE,
+                        banners: banners,
+                        lists: processedLists
+                    })
+
+                }
+
+            }
+            // console.log(loadedProducts);
+            dispatch({ type: GET_SHOP_FEED, feed: feed })
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
     }
 }
 

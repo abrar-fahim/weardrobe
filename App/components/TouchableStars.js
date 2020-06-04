@@ -37,7 +37,8 @@ export default function TouchableStars(props) {
 
                 item: (
                     <TouchableWithoutFeedback onPressIn={() => (props.setRating(n))}
-                        delayPressIn={100}
+                        onPressOut={() => {}}
+
 
                     >
                         <Ionicons name="md-star" size={props.size} />
@@ -58,7 +59,6 @@ export default function TouchableStars(props) {
                 id: n.toString(),
                 item: (
                     <TouchableWithoutFeedback onPressIn={() => (props.setRating(n))}
-                        delayPressIn={100}
                     >
                         <Ionicons name="md-star-outline" size={props.size} />
                     </TouchableWithoutFeedback>

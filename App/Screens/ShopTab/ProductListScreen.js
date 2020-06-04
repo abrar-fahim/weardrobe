@@ -12,6 +12,7 @@ import ProductList from '../../components/ProductList'
 import * as productActions from '../../store/actions/products'
 import { useSelector, useDispatch } from 'react-redux';
 import SmallPopup from '../../components/SmallPopup';
+import LoadingScreen from '../../components/LoadingScreen'
 
 
 export default function ProductListScreen(props) {
@@ -23,6 +24,7 @@ export default function ProductListScreen(props) {
     const [isRefreshing, setIsRefreshing] = useState(false);
     // const [isModalVisible, setIsModalVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState('')
+    const [isLoading, setIsLoading] = useState(true);
 
     const products = useSelector(state => state.products.products)
     const getProductsFn = useSelector(state => state.products.getProductsFn)
@@ -34,11 +36,13 @@ export default function ProductListScreen(props) {
     const loadProducts = useCallback(async () => {
 
         let mounted = true;
-        setIsRefreshing(true);
+        // setIsRefreshing(true);
         try {
+            setIsLoading(true);
             if (mounted) {
                 await dispatch(getProductsFn());
             }
+            setIsLoading(false)
 
         }
         catch (err) {
@@ -46,22 +50,30 @@ export default function ProductListScreen(props) {
             setErrorMessage('Couldnt get products')
             setIsModalVisible(true);
         }
-        setIsRefreshing(false);
+        // setIsRefreshing(false);
         return () => mounted = false;
 
-    }, [dispatch, setIsRefreshing])
+    }, [isLoading])
 
     useEffect(() => {
         loadProducts();
 
     }, [dispatch])
 
+    if (isLoading) {
+        return (
+            <LoadingScreen />
+        )
+    }
+
+
 
     return (
         <>
             <SmallPopup setMessage={setErrorMessage} message={errorMessage} />
             <View>
-                <ProductList showShopName={showShopName} navigation={props.navigation} data={products} onRefresh={loadProducts} refreshing={isRefreshing} />
+                <ProductList showShopName={showShopName} navigation={props.navigation} data={products}
+                    onRefresh={loadProducts} refreshing={isRefreshing} />
             </View>
         </>
 

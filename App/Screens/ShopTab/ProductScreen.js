@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Dimensions, Image, Alert, ActivityIndicator, FlatList } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Dimensions, Image, Alert, ActivityIndicator, FlatList, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 
 // import {Image} from "react-native-expo-image-cache";
@@ -8,7 +8,7 @@ import CachedImage from '../../components/CachedImage'
 
 
 import PRODUCTS from '../../dummy-data/Products'
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'; //FlatList import was here
+import { } from 'react-native-gesture-handler'; //FlatList import was here
 
 import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import ScreenStyle from '../../Styles/ScreenStyle';
@@ -26,13 +26,12 @@ import * as cartActions from '../../store/actions/cart'
 
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import SmallPopup from '../../components/SmallPopup';
-import checkLoggedIn from '../../components/CheckLoggedIn'
 import SizeCircles from '../../components/SizeCircles';
 import HOST from "../../components/host";
 
 import TouchableStars from '../../components/TouchableStars'
 
-import { createSelector } from 'reselect'
+import LoadingScreen from '../../components/LoadingScreen'
 
 
 
@@ -62,7 +61,7 @@ export default function ProductScreen(props) {
 
     const [selectedColor, setSelectedColor] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
-    
+
     const [colorImages, setColorImages] = useState([])
     const [colors, setColors] = useState([]);
     const [sizes, setSizes] = useState([]);
@@ -96,7 +95,7 @@ export default function ProductScreen(props) {
 
 
     const getInventory = useCallback(() => {
-        
+
         console.log('INVENTORY')
 
         if (product !== null) {
@@ -304,7 +303,7 @@ export default function ProductScreen(props) {
 
     useEffect(() => {
         loadProductDetails()
-        
+
     }, []);
 
     useEffect(() => {
@@ -343,7 +342,7 @@ export default function ProductScreen(props) {
             )
         });
 
-    }, [ wishlistItems]);
+    }, [wishlistItems]);
 
 
 
@@ -395,7 +394,7 @@ export default function ProductScreen(props) {
                 {colorImages.map((item, index) => (
                     // <Image style={styles.image} {...item.image} transitionDuration={500} />
 
-                     <Image style={styles.image} source={item.image}/>
+                    <Image style={styles.image} source={item.image} />
                     // <Image style={styles.image} source={require('../../assets/Images/groom.jpg')} />
                 ))}
 
@@ -413,7 +412,7 @@ export default function ProductScreen(props) {
 
             <View style={styles.imageContainer}>
 
-                <PictureView/>
+                <PictureView />
                 {/* <FlatList initialNumToRender={8} pagingEnabled={true} horizontal={true} data={colorImages} renderItem={renderPic} /> */}
 
             </View>
@@ -510,19 +509,17 @@ export default function ProductScreen(props) {
 
             </View>
         </View>
-    ), [product, colors, selectedColor, selectedSize])
+    ), [product, colors, selectedColor, selectedSize, loggedIn, reviews])
 
     if (isLoading) {
         return (
-            <View style={styles.centered}>
-                <ActivityIndicator size="large" />
-            </View>
+           <LoadingScreen />
         )
     }
     return (
         <>
 
-            {/* <SmallPopup setMessage={setPopupMessage} message={popupMessage} /> */}
+            <SmallPopup setMessage={setPopupMessage} message={popupMessage} />
             <Modal
                 isVisible={reviewModalVisible}
                 onBackdropPress={() => (setIsReviewModalVisible(false))}
@@ -530,25 +527,41 @@ export default function ProductScreen(props) {
                 swipeDirection={["up", "down"]}
                 swipeThreshold={100}
                 onSwipeComplete={() => (setIsReviewModalVisible(false))}
+                scrollOffset={50}
+                scrollOffsetMax={500}
+                
             >
-                <View style={styles.addReviewContainer}>
-                    <View style={styles.reviewModalTopHandle} />
-                    <View style={styles.starsContainer}>
-                        <TouchableStars rating={rating} setRating={setRating} size={50} />
-                    </View>
-                    <TextInput placeholder="Rating" keyboardType="decimal-pad" style={styles.addRatingInput}
-                        onChangeText={(value) => (setRating(value))} />
-                    <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
-                        onChangeText={(value) => (setReviewText(value))} />
-                    <View style={styles.addReviewButtonContainer}>
-                        <Button title="Add Review" onPress={() => {
-                            //dispatch addreview action
-                            addReview(rating, reviewText)
-                            //setIsReviewModalVisible(false);
-                        }} />
-                    </View>
+                <KeyboardAvoidingView
+                    // behavior={Platform.OS == "ios" ? "padding" : "height"}
+                >
 
-                </View>
+
+                    <View style={styles.addReviewContainer}>
+
+                        <View style={styles.reviewModalTopHandle} />
+
+                        {/* <View style={styles.titleContainer}>
+                            <Text style={styles.title}>ADD REVIEW</Text>
+
+                        </View> */}
+
+
+                        <View style={styles.starsContainer}>
+                            <TouchableStars rating={rating} setRating={setRating} size={35} />
+                        </View>
+                        <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
+                            onChangeText={(value) => (setReviewText(value))} />
+                        <View style={styles.addReviewButtonContainer}>
+                            <TouchableOpacity onPress={() => {
+                                addReview(rating, reviewText)
+                            }}>
+                                <Text style={styles.cartText}>+ ADD REVIEW</Text>
+
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+                </KeyboardAvoidingView>
 
             </Modal>
             <FlatList ListHeaderComponent={productPage} data={reviews} renderItem={renderReview} />
@@ -643,31 +656,37 @@ const styles = StyleSheet.create({
     addReviewContainer: {
         height: Dimensions.get('window').height * 0.8,
         maxHeight: 400,
-        width: Dimensions.get('window').width * 0.9,
-        maxWidth: 400,
+        width: Dimensions.get('window').width * 0.95,
+        alignSelf: 'center',
         backgroundColor: 'white',
         marginTop: Dimensions.get('window').height / 1.8,
-        borderRadius: 20
+        borderRadius: 20,
+        padding: 10
 
     },
     addReviewButtonContainer: {
+        backgroundColor: Colors.primaryColor,
+        width: '100%',
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+
 
     },
     addReviewInput: {
-        marginTop: 20,
-        margin: 20,
         backgroundColor: 'lightgrey',
-        height: '50%'
-    },
-    addRatingInput: {
-        margin: 20
-
+        height: 100,
+        borderWidth: 1,
+        borderRadius: 10,
+        marginBottom: 20,
+        padding: 10
     },
     cartText: {
         color: 'white',
         fontWeight: '700',
         fontSize: 15,
-        flex: 1
+        flex: 1,
+        textAlignVertical: 'center'
 
     },
     priceText: {
@@ -699,12 +718,25 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 5,
         borderRadius: 2,
+        marginBottom: 5
 
     },
     starsContainer: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20
+        marginBottom: 20
+    },
+    title: {
+        alignSelf: 'center',
+        fontSize: 20,
+        fontWeight: '700',
+        width: '100%',
+        textAlign: 'center',
+        color: Colors.primaryColor,
+        marginBottom: 10
+    },
+    titleContainer: {
+       
     }
 
 

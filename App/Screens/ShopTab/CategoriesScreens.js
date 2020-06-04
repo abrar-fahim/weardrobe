@@ -25,6 +25,7 @@ import { CATEGORIES } from '../../dummy-data/Categories';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import * as productsActions from '../../store/actions/products'
+import * as shopActions from '../../store/actions/shops'
 
 export default function CategoriesStack({ navigation }) {
     return (
@@ -33,15 +34,23 @@ export default function CategoriesStack({ navigation }) {
 
 }
 
-function CategoriesScreen(props) {
+export function CategoriesScreen(props) {
 
     const dispatch = useDispatch();
 
-    const categories = useSelector(state => state.products.categories)
+    const categories = props.route.params?.shopId? useSelector(state => state.shops.categories): useSelector(state => state.products.categories)
 
     const laodCategories = useCallback(async () => {
+
         try {
-            await dispatch(productsActions.fetchCategories())
+            if (props.route.params?.shopId) {
+
+                await dispatch(shopActions.fetchShopCategories(props.route.params?.shopId))
+            }
+            else {
+                await dispatch(productsActions.fetchCategories())
+            }
+
 
         }
         catch (err) {
@@ -55,7 +64,7 @@ function CategoriesScreen(props) {
     useEffect(() => {
 
         laodCategories()
-    }, [dispatch])
+    }, [])
 
     const setProductsFn = useCallback(async (categoryId) => {
         try {

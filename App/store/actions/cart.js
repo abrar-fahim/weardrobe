@@ -176,7 +176,7 @@ export const fetchCartItems = () => {
                         id: resData[key].PRODUCT_ID,
                         name: resData[key].PRODUCT_NAME,
                         shopname: 'YELLOW',
-                        picture: { uri: "${HOST}/img/temp/" + resData[key].THUMBNAIL},
+                        picture: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL},
                         price: resData[key].PRICE,
                         discount: resData[key].DISCOUNT,
                         color: resData[key].COLOR,
