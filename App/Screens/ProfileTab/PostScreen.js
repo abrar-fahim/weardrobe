@@ -5,15 +5,15 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import * as magazineActions from '../../store/actions/magazine'
 
-const BlogScreen = (props) => {
+const PostScreen = (props) => {
 
 
-    const blogId = props.route.params?.blog.id;
+    const postId = props.route.params?.postId;
 
-    const images = props.route.params?.blog.images;
-    const numComments = props.route.params?.blog.numComments ?? 0
-    const numReacts = props.route.params?.blog.numReacts ?? 0
-    const blog = props.route.params?.blog
+    const images = props.route.params?.images;
+    const numComments = props.route.params?.numComments ?? 0
+    const numReacts = props.route.params?.numReacts ?? 0
+    const post = props.route.params?.post
 
 
 
@@ -31,18 +31,18 @@ const BlogScreen = (props) => {
     const reacts = useSelector(state => state.magazine.shopPostReacts)
     const comments = useSelector(state => state.magazine.shopPostComments)
 
-    const loadUserBlogComments = useCallback(async (blogId) => {
+    const loadUserPostComments = useCallback(async (postId) => {
         try {
-            await dispatch(magazineActions.fetchUserBlogComments(blogId))
+            await dispatch(magazineActions.fetchUserPostComments(postId))
         }
         catch (err) {
             console.log(err)
         }
     })
 
-    const loadUserBlogReacts = useCallback(async (blogId) => {
+    const loadUserPostReacts = useCallback(async (postId) => {
         try {
-            await dispatch(magazineActions.fetchUserBlogPostReacts(blogId))
+            await dispatch(magazineActions.fetchUserPostReacts(postId))
 
         }
         catch (err) {
@@ -56,13 +56,20 @@ const BlogScreen = (props) => {
         console.log(itemData.item.image.image)
         return (
 
+
+
             <Image source={itemData.item.image.image} style={styles.postImage}
                 resizeMode="contain" />
+
+
+
+
+
         )
     }
 
     useEffect(() => {
-        loadUserBlogComments(blogId);
+        loadUserPostComments(postId);
 
     }, [])
 
@@ -87,10 +94,11 @@ const BlogScreen = (props) => {
         <View>
 
             <FlatList data={listImages} pagingEnabled={true} horizontal={true} renderItem={renderImage} />
+            <Text>{post.captions}</Text>
 
             <View style={styles.nums}>
                 <TouchableOpacity onPress={() => {
-                    loadUserBlogReacts(blogId);
+                    loadUserPostReacts(postId);
                     setShowReacts(state => !state)
                     // console.log(postComments)
                 }}>
@@ -107,17 +115,15 @@ const BlogScreen = (props) => {
 
             </View>
 
-            {showReacts ? <FlatList listKey={blogId + "1"} data={reacts} renderItem={renderReact} /> : null}
+            {showReacts ? <FlatList listKey={postId + "1"} data={reacts} renderItem={renderReact} /> : null}
 
-            <FlatList listKey={blogId + "2"} data={comments} renderItem={renderComment} />
-
-            <Text>{blog.text}</Text>
+            <FlatList listKey={postId + "2"} data={comments} renderItem={renderComment} />
 
         </View>
     )
 }
 
-export default BlogScreen;
+export default PostScreen;
 
 const styles = StyleSheet.create({
     postGridItem: {

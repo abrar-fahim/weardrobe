@@ -35,7 +35,10 @@ export default function BlogListScreen(props) {
 
     function renderItems(itemData) {
         return (
-            <TouchableOpacity onPress={() => props.navigation.navigate('BlogScreen')}>
+            <TouchableOpacity onPress={() => props.navigation.navigate('BlogScreen', {
+                blog: itemData.item
+
+            })}>
                 <View style={{height: 30, margin: 30}}>
                     <Text>{itemData.item.writing}</Text>
                     <Text>{itemData.item.date}</Text>

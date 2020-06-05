@@ -126,7 +126,7 @@ export const fetchShopDetails = (shopId) => {
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
-            throw new Error('error while retrieving products')
+            throw new Error(err)
         }
     }
 }
@@ -435,7 +435,7 @@ export const fetchShopCategories = (shopId) => {
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
-            throw new Error('error while retrieving shop categories')
+            throw new Error(err)
         }
     }
 }

@@ -28,6 +28,7 @@ import cartReducer from './store/reducers/cart'
 import wishlistReducer from './store/reducers/wishlist'
 import shopsReducer from './store/reducers/shops'
 import profileReducer from './store/reducers/profile';
+import magazineReducer from './store/reducers/magazine';
 
 
 const rootReducer = combineReducers({
@@ -36,7 +37,8 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   wishlist: wishlistReducer,
   shops: shopsReducer,
-  profile: profileReducer
+  profile: profileReducer,
+  magazine: magazineReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))

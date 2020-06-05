@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -8,7 +8,28 @@ import ScreenStyle from '../../Styles/ScreenStyle';
 import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { useDispatch, useSelector } from 'react-redux';
+import * as magazineActions from '../../store/actions/magazine'
+
 export default function NewPostScreen3(props) {
+    const formData = props.route.params?.formData;
+
+    const [caption, setCaption] = useState('');
+
+    const dispatch = useDispatch();
+    // console.log('screen3: '  + formData)
+
+    const createUserPost = useCallback(async (formData) => {
+        try {
+            console.log(formData)
+            await dispatch(magazineActions.createUserPost(formData))
+        }
+        catch(err) {
+            console.log(err)
+        }
+    })
+
+
     return (
         <View style={styles.Main}>
 
@@ -21,18 +42,23 @@ export default function NewPostScreen3(props) {
             </View>
 
             <View style={styles.Caption}>
-                 <Text style={styles.Txt}>Caption</Text>
-                 <TextInput placeholder="Write Caption" style={styles.CapBox}/>
+                <Text style={styles.Txt}>Caption</Text>
+                <TextInput placeholder="Write Caption" style={styles.CapBox} onChangeText={setCaption} />
             </View>
 
             <View style={styles.Caption}>
                 <Text style={styles.Txt}>Tag Someone</Text>
-                <Button title='Tag' color='black' onPress={() => {props.navigation.navigate('NewPostTag')}} ></Button>
+                <Button title='Tag' color='black' onPress={() => { props.navigation.navigate('NewPostTag') }} ></Button>
 
             </View>
 
             <View style={styles.PostButton}>
-                <Button title='POST' color='black' onPress={() => {props.navigation.navigate('Magazine')}}></Button>
+                <Button title='POST' color='black' onPress={() => {
+                    props.navigation.navigate('Magazine')
+                    formData.append('caption', caption)
+                    createUserPost(formData)
+                
+                }}></Button>
 
             </View>
 
@@ -56,17 +82,17 @@ const styles = StyleSheet.create({
     },
     Caption:
     {
-        flex : 2,
-        paddingLeft : 15,
-        paddingRight : 15
+        flex: 2,
+        paddingLeft: 15,
+        paddingRight: 15
 
     },
-    PostButton :
-    { 
-        flex : 2,
-        paddingTop : 150,
-        paddingLeft : 100,
-        paddingRight : 100,
+    PostButton:
+    {
+        flex: 2,
+        paddingTop: 150,
+        paddingLeft: 100,
+        paddingRight: 100,
     },
     Txt:
     {
@@ -75,10 +101,10 @@ const styles = StyleSheet.create({
     },
     CapBox:
     {
-        backgroundColor : 'grey',
-        height : 40
+        backgroundColor: 'grey',
+        height: 40
     }
-    
+
 });
 
 // onPress={() => {props.navigation.navigate('NewPostTag')}

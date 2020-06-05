@@ -34,10 +34,10 @@ export const fetchMyPosts = () => {
                         userId: resData[key].CUSTOMER_UID,
                         postDate: resData[key].POST_DATE,
                         captions: resData[key].CAPTIONS,
-                        productId: resData[key].PRODUCTID,
+                        productId: resData[key].PRODUCT_ID,
                         images: processedImages,
-                        comments: resData[key].COMMENT,
-                        reacts: resData[key].REACT,
+                        numComments: resData[key].COMMENT,
+                        numReacts: resData[key].REACT,
 
                     })
                 }
@@ -94,8 +94,8 @@ export const fetchMyBlogs = () => {
                         date: resData[key].BLOG_DATE,
                         writing: resData[key].WRITING,
                         images: processedImages,
-                        comments: resData[key].COMMENT,
-                        reacts: resData[key].REACT,
+                        numComments: resData[key].COMMENT,
+                        numReacts: resData[key].REACT,
                         structure: resData[key].STRUCTURE
 
                     })

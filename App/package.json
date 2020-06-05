@@ -46,7 +46,8 @@
     "redux-thunk": "^2.3.0",
     "tough-cookie": "^4.0.0",
     "expo-file-system": "~8.1.0",
-    "expo-crypto": "~8.1.0"
+    "expo-crypto": "~8.1.0",
+    "expo-image-picker": "~8.1.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^8.1.0",
