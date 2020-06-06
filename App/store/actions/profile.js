@@ -119,3 +119,47 @@ export const fetchMyBlogs = () => {
         }
     }
 }
+
+export const createUserBlog = (formData) => {
+    return async (dispatch) => {
+        try {
+            
+            const response = await fetch(`${HOST}/upload/blog`, {
+                method: 'POST',
+                body: formData,
+                //no headers here, otherwise error
+
+            });
+
+
+            if (!response.ok) {
+                throw new Error('response not ok');
+            }
+
+            
+            const resData = await response.json();
+            
+            console.log(resData);
+
+            if (Object.keys(resData)[0] === 'SUCCESS') {
+
+
+            }
+
+            else {
+                throw new Error(resData.ERROR)
+            }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+
+        dispatch(fetchMyBlogs())
+    }
+}

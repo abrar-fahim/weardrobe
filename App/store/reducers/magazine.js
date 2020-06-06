@@ -22,10 +22,32 @@ const magazineReducer = (state = initialState, action) => {
                 friendPosts: action.friendPosts
             }
         case GET_SHOP_POST_COMMENTS:
-            return {
-                ...state,
-                shopPostComments: action.shopPostComments
+
+            //5 items per iter
+
+
+            if (action.shopPostComments.length !== 0) {
+
+                if (action.iter * 5 >= state.shopPostComments.length) {
+                    return {
+                        ...state,
+                        shopPostComments: state.shopPostComments.concat(action.shopPostComments)
+                    }
+                }
+                else {
+                    return {
+                        ...state,
+                        shopPostComments: action.shopPostComments
+                    }
+
+                }
+
             }
+            else {
+                return state
+            }
+
+
 
         case GET_SHOP_POST_REACTS:
             return {

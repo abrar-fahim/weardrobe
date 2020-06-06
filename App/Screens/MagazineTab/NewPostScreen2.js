@@ -46,15 +46,11 @@ export default function NewPostScreen2(props) {
             setImage(result);
             //dont formData.append here, cuz it doesnt work
         }
-
-        // uploadImage(image)
     };
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
             headerRight: () => (<GenericHeaderButton title="newPost" iconName="md-create" onPress={() => {
-                // console.log(formData)
-                // createUserPost(formData)
                 if (image !== null) {
                     formData.append("photos", {
                         name: '1.jpg',
@@ -71,7 +67,7 @@ export default function NewPostScreen2(props) {
             } />)
 
         })
-    }, [formData])
+    }, [formData, image])
 
 
 

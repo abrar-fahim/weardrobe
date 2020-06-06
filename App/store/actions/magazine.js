@@ -140,10 +140,10 @@ export const fetchFriendsPosts = () => {
     }
 }
 
-export const fetchShopPostComments = (postId) => {
+export const fetchShopPostComments = (postId, iter) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${HOST}/get/shop-post/${postId}/comments/0`, {
+            const response = await fetch(`${HOST}/get/shop-post/${postId}/comments/${iter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ export const fetchShopPostComments = (postId) => {
 
                 for (const key in resData) {
                     shopPostComments.push({
-                        id: resData[key].COMMENTER_ID + resData[key].DATE,
+                        id: resData[key].COMMENT_ID,
                         postId: resData[key].POST_ID,
                         commenterId: resData[key].COMMENTER_ID,
                         date: resData[key].DATE,
@@ -172,7 +172,7 @@ export const fetchShopPostComments = (postId) => {
                     })
                 }
                 // console.log(loadedProducts);
-                dispatch({ type: GET_SHOP_POST_COMMENTS, shopPostComments: shopPostComments })
+                dispatch({ type: GET_SHOP_POST_COMMENTS, shopPostComments: shopPostComments, iter: iter })
             }
 
             else {
@@ -329,6 +329,50 @@ export const reactShopPost = (postId) => {
     }
 }
 
+export const unReactShopPost = (postId) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${HOST}/delete/shop-post/react`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+                body: JSON.stringify({
+                    postId: postId
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('wrong!!');
+            }
+
+            const resData = await response.json();
+            console.log(resData);
+
+            if (Object.keys(resData)[0] === 'SUCCESS') {
+
+
+            }
+
+            else {
+                throw new Error(resData.ERROR)
+            }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+
+        //         dispatch(fetchShopPostReacts(postId))
+    }
+}
+
 export const commentShopPost = (postId, comment) => {
     return async (dispatch) => {
         try {
@@ -370,7 +414,52 @@ export const commentShopPost = (postId, comment) => {
             throw new Error(err)
         }
 
-        //dispatch(fetchShopPostReacts(postId))
+        // dispatch(fetchShopPostComments(postId, 0))
+    }
+}
+
+export const deleteCommentShopPost = (commentId, postId) => {
+    //here, iter is the current iter where the comment was found, needed to refetch comments in current iter
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${HOST}/delete/shop-post/comment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+                body: JSON.stringify({
+                    commentId: commentId,
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('wrong!!');
+            }
+
+            const resData = await response.json();
+            console.log(resData);
+
+            if (Object.keys(resData)[0] === 'SUCCESS') {
+
+
+            }
+
+            else {
+                throw new Error(resData.ERROR)
+            }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+
+        // dispatch(fetchShopPostComments(postId, 0))
     }
 }
 
