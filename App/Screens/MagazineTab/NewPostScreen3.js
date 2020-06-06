@@ -21,10 +21,10 @@ export default function NewPostScreen3(props) {
 
     const createUserPost = useCallback(async (formData) => {
         try {
-            console.log(formData)
+            // console.log(formData)
             await dispatch(magazineActions.createUserPost(formData))
         }
-        catch(err) {
+        catch (err) {
             console.log(err)
         }
     })
@@ -54,10 +54,10 @@ export default function NewPostScreen3(props) {
 
             <View style={styles.PostButton}>
                 <Button title='POST' color='black' onPress={() => {
-                    props.navigation.navigate('Magazine')
+
                     formData.append('caption', caption)
                     createUserPost(formData)
-                
+                    props.navigation.navigate('Magazine')
                 }}></Button>
 
             </View>

@@ -12,6 +12,8 @@ export const GET_USER_POST_COMMENTS = 'GET_USER_POST_COMMENTS';
 export const GET_USER_BLOG_REACTS = 'GET_USER_BLOG_REACTS';
 export const GET_USER_BLOG_COMMENTS = 'GET_USER_BLOG_COMMENTS';
 
+import * as profileActions from './profile'
+
 export const fetchShopPosts = () => {
     return async (dispatch) => {
         try {
@@ -53,8 +55,8 @@ export const fetchShopPosts = () => {
                         name: resData[key].SHOP_NAME,
                         username: resData[key].SHOP_USERNAME,
                         logo: { uri: `${HOST}/img/temp/` + resData[key].LOGO_URL },
-                        
-                         
+
+
 
                     })
                 }
@@ -262,7 +264,7 @@ export const reactFriendPost = (postId) => {
 
             if (Object.keys(resData)[0] === 'SUCCESS') {
 
-               
+
             }
 
             else {
@@ -281,7 +283,7 @@ export const reactFriendPost = (postId) => {
 
         // dispatch(fetchPostReacts(productId))
     }
-} 
+}
 
 export const reactShopPost = (postId) => {
     return async (dispatch) => {
@@ -306,7 +308,7 @@ export const reactShopPost = (postId) => {
 
             if (Object.keys(resData)[0] === 'SUCCESS') {
 
-               
+
             }
 
             else {
@@ -323,9 +325,9 @@ export const reactShopPost = (postId) => {
             throw new Error(err)
         }
 
-//         dispatch(fetchShopPostReacts(postId))
+        //         dispatch(fetchShopPostReacts(postId))
     }
-} 
+}
 
 export const commentShopPost = (postId, comment) => {
     return async (dispatch) => {
@@ -351,7 +353,7 @@ export const commentShopPost = (postId, comment) => {
 
             if (Object.keys(resData)[0] === 'SUCCESS') {
 
-               
+
             }
 
             else {
@@ -368,9 +370,9 @@ export const commentShopPost = (postId, comment) => {
             throw new Error(err)
         }
 
-         //dispatch(fetchShopPostReacts(postId))
+        //dispatch(fetchShopPostReacts(postId))
     }
-} 
+}
 
 export const fetchUserPostComments = (postId) => {
     return async (dispatch) => {
@@ -597,7 +599,7 @@ export const reactUserBlog = (blogId) => {
 
             if (Object.keys(resData)[0] === 'SUCCESS') {
 
-               
+
             }
 
             else {
@@ -614,11 +616,11 @@ export const reactUserBlog = (blogId) => {
             throw new Error(err)
         }
 
-//         dispatch(fetchShopPostReacts(postId))
+        //         dispatch(fetchShopPostReacts(postId))
     }
-} 
+}
 
-export const commentUserBlog= (blogId, comment) => {
+export const commentUserBlog = (blogId, comment) => {
     return async (dispatch) => {
         try {
             const response = await fetch(`${HOST}/blog/comment`, {
@@ -642,7 +644,7 @@ export const commentUserBlog= (blogId, comment) => {
 
             if (Object.keys(resData)[0] === 'SUCCESS') {
 
-               
+
             }
 
             else {
@@ -659,32 +661,37 @@ export const commentUserBlog= (blogId, comment) => {
             throw new Error(err)
         }
 
-         //dispatch(fetchShopPostReacts(postId))
+        //dispatch(fetchShopPostReacts(postId))
     }
-} 
+}
 
-export const createUserPost= (formData) => {
+export const createUserPost = (formData) => {
     return async (dispatch) => {
         try {
+            
             const response = await fetch(`${HOST}/upload/post`, {
                 method: 'POST',
-                headers: {
-                    'enctype': 'multipart/form-data',
-                    'Accept': "application/json"
-                },
-                body: formData
+                body: formData,
+                // headers: {
+                //     'Content-Type': 'multipart/form-data',
+                //     'Accept': "application/json"
+                // }
+
             });
 
-            // if (!response.ok) {
-            //     throw new Error();
-            // }
 
+            if (!response.ok) {
+                throw new Error('response not ok');
+            }
+
+            
             const resData = await response.json();
+            
             console.log(resData);
 
             if (Object.keys(resData)[0] === 'SUCCESS') {
 
-               
+
             }
 
             else {
@@ -701,7 +708,7 @@ export const createUserPost= (formData) => {
             throw new Error(err)
         }
 
-         //dispatch(fetchShopPostReacts(postId))
+        dispatch(profileActions.fetchMyPosts())
     }
-} 
+}
 

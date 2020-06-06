@@ -1,10 +1,7 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -264,8 +261,8 @@ export function MagazineScreen(props) {
 
                     }}>
 
-                        {itemData.item.hasReacted === 1 ?  <AntDesign name="like1" size={40} color='black' />: <AntDesign name="like2" size={40} color='black' />}
-                        
+                        {itemData.item.hasReacted === 1 ? <AntDesign name="like1" size={40} color='black' /> : <AntDesign name="like2" size={40} color='black' />}
+
                     </TouchableOpacity>
 
                     <View style={styles.commentContainer}>
@@ -320,15 +317,13 @@ export default function MagazineStackScreen({ navigation }) {
                 headerRight: () => (< NewPostButton onPress={() => navigation.navigate('NewPostChooseLayout')} />)
             }} />
             <MagazineStack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options={{
-               
+
             }} />
             <MagazineStack.Screen name="NewPost2" component={NewPostScreen2} options={{
                 headerRight: () => (<NewPostNextButton onPress={() => navigation.navigate('NewPost3')} />),
 
             }} />
-            <MagazineStack.Screen name="NewPost3" component={NewPostScreen3} options={{
-                headerRight: () => (<NewPostNextButton navigation={navigation} onPress={() => navigation.popToTop()} />)
-            }} />
+            <MagazineStack.Screen name="NewPost3" component={NewPostScreen3} />
             <MagazineStack.Screen name="NewPostTag" component={NewPostTagScreen} />
             <MagazineStack.Screen name="OthersProfile" component={ProfileTabsScreen} />
 

@@ -15,6 +15,8 @@ import * as magazineActions from '../../store/actions/magazine'
 
 export default function NewPostScreen2(props) {
 
+    const formData = new FormData();
+
     const [image, setImage] = useState(null)
     const dispatch = useDispatch()
 
@@ -31,24 +33,6 @@ export default function NewPostScreen2(props) {
     }, []);
 
 
-    const createUserPost = useCallback(async (formData) => {
-        try {
-            // console.log(formData)
-            await dispatch(magazineActions.createUserPost(formData))
-        }
-        catch(err) {
-            console.log(err)
-        }
-    })
-
-
-    // const uploadImage = async (uri) => {
-    //     const response = await fetch(uri);
-    //     const blob = await response.blob();
-
-
-    // }
-    const formData = new FormData();
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -60,11 +44,7 @@ export default function NewPostScreen2(props) {
 
         if (!result.cancelled) {
             setImage(result);
-            const response = await fetch(result.uri);
-            const blob = await response.blob()
-            formData.append("photos", blob)
-            formData.append("caption", "mwahahahaha")
-            console.log('done')
+            //dont formData.append here, cuz it doesnt work
         }
 
         // uploadImage(image)
@@ -74,15 +54,24 @@ export default function NewPostScreen2(props) {
         props.navigation.setOptions({
             headerRight: () => (<GenericHeaderButton title="newPost" iconName="md-create" onPress={() => {
                 // console.log(formData)
-                createUserPost(formData)
-                // props.navigation.navigate('NewPost3', {
-                //     formData: formData
-                // })
+                // createUserPost(formData)
+                if (image !== null) {
+                    formData.append("photos", {
+                        name: '1.jpg',
+                        type: 'image/jpeg',
+                        uri:
+                            Platform.OS === "android" ? image.uri : image.uri.replace("file://", "")
+                    });
+                }
+
+                props.navigation.navigate('NewPost3', {
+                    formData: formData
+                })
             }
             } />)
 
         })
-    })
+    }, [formData])
 
 
 
@@ -163,7 +152,8 @@ const styles = StyleSheet.create({
     },
     Pic:
     {
-        width: '100%'
+        width: '100%',
+        maxHeight: 300
 
     }
 
