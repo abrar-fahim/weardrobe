@@ -34,6 +34,7 @@ import AuthRequiredScreen from '../AuthRequiredScreen'
 import PostScreen from './PostScreen';
 
 import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import DpUploadScreen from './DpUploadScreen';
 
 
 
@@ -361,7 +362,10 @@ export function ProfileScreen(props) {
     })
 
 
-    
+
+
+
+
 
 
 
@@ -545,7 +549,7 @@ export function ProfileScreen(props) {
                     deletePost(itemData.item.id)
 
 
-                 }} /> : null}
+                }} /> : null}
             </View>
 
         )
@@ -594,9 +598,58 @@ export function ProfileTabsScreen(props) {
 
     const myProfile = userId === profileId || profileId === undefined //secure this check using backend auth in production
 
+    const profile = myProfile ? useSelector(state => state.profile.myProfile) : useSelector(state => state.profile.otherProfile)
+
+
+    const numFollowers = useSelector(state => state.profile.numFollowers);
+    const numFollowing = useSelector(state => state.profile.numFollowing);
+    const numFollowingShop = useSelector(state => state.profile.numFollowingShop);
+
+
+
 
 
     const dispatch = useDispatch();
+
+    const followUser = useCallback(async (userId) => {
+        try {
+            await dispatch(profileActions.followUser(userId))
+
+        }
+        catch (err) {
+
+            console.log(err);
+        }
+    })
+
+    const getFollowCounts = useCallback(async () => {
+        try {
+            await dispatch(profileActions.getFollowCounts())
+            // setError('')
+        }
+        catch (err) {
+            // setError(err.message)
+            console.log(err);
+        }
+    })
+
+    const getProfile = useCallback(async () => {
+        try {
+            myProfile ? await dispatch(profileActions.getMyProfile(userId, [
+                "firstName", "lastName", "email", "phoneNumber", "birthday", "profilePic", "bio", "privacyType", "points", "type"
+            ])) : await dispatch(profileActions.getProfile(profileId, [
+                "firstName", "lastName", "email", "phoneNumber", "birthday", "profilePic", "bio", "privacyType", "points", "type"
+            ]))
+
+            // setError('')
+        }
+        catch (err) {
+            // setError(err.message)
+            console.log(err);
+        }
+    }, [myProfile, profileId])
+
+
 
     const logoutHandler = async () => {
         try {
@@ -605,7 +658,16 @@ export function ProfileTabsScreen(props) {
             console.log('error while logging out')
         }
     }
+
+
     const TopTab = createMaterialTopTabNavigator();
+
+    useEffect(() => {
+        getFollowCounts()
+        getProfile();
+    }, [])
+
+
 
     if (!loggedIn) {
         return (
@@ -618,19 +680,33 @@ export function ProfileTabsScreen(props) {
         <View style={{ ...ScreenStyle, flex: 1 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 150 }}>
                 <View style={{ flexDirection: 'column', marginLeft: 40, alignItems: 'center' }}>
-                    <Image style={{ height: 100, width: 100 }} source={require('../../assets/Images/face.png')} />
+                    <TouchableOpacity onPress={() => {
+                        props.navigation.navigate('DpUpload')
+                    }}>
+                        <Image style={{ height: 100, width: 100 }} source={profile.profilePic} />
+                    </TouchableOpacity>
 
-                    <Text> Stick Man</Text>
-                    <Text> Hi! </Text>
+
+                    <Text> {profile.firstName}    {profile.lastName}</Text>
+                    <Text> {profile.bio} </Text>
 
                 </View>
-                <TouchableOpacity onPress={() => props.navigation.navigate('FollowersListTab')}>
-                    <View style={{ flexDirection: 'column', height: 80, marginRight: 40, justifyContent: 'center' }}>
-                        <Text>Followers: 1,000,000</Text>
-                        <Text>Following: 0</Text>
 
-                    </View>
-                </TouchableOpacity>
+                <View style={{ flexDirection: 'column', height: 80, marginRight: 40, justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('FollowersListTab')}>
+                        <Text>Followers: {numFollowers}</Text>
+                        <Text>Following: {numFollowing}</Text>
+                        <Text>Following Shops: {numFollowingShop}</Text>
+
+                    </TouchableOpacity>
+
+                    {myProfile ? null : <Button title="Send Follow Req" onPress={() => {
+                        followUser(profileId)
+                    }} />}
+                </View>
+
+
+
 
                 {myProfile ? <Button title="logout" onPress={logoutHandler} /> : null}
 
@@ -696,6 +772,8 @@ export default function ProfileStackScreen(props) {
             }} />
             <ProfileStack.Screen name="BlogScreen" component={BlogScreen} />
             <ProfileStack.Screen name="Post" component={PostScreen} />
+
+            <ProfileStack.Screen name="DpUpload" component={DpUploadScreen} />
         </ProfileStack.Navigator>
 
     )

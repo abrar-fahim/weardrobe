@@ -98,11 +98,6 @@ const TOPSCROLLER = [
 
 
 
-
-
-
-
-
 function ShopScreen({ navigation }) {
 
     const [isLoading, setIsLoading] = useState(true);
@@ -110,7 +105,9 @@ function ShopScreen({ navigation }) {
 
 
     const dispatch = useDispatch();
-    const allProducts = useSelector(state => state.products.products)
+    const allProducts = useSelector(
+        state => state.products.products
+    )
 
     const feed = useSelector(state => state.products.feed);
 
@@ -147,6 +144,8 @@ function ShopScreen({ navigation }) {
             console.log(err)
         }
     }, [])
+
+
 
     useEffect(() => {
         loadFeed()
@@ -327,10 +326,10 @@ function ShopScreen({ navigation }) {
 
 
 
-    if(isLoading && !isRefreshing) {
+    if (isLoading && !isRefreshing) {
         return (
             <View style={styles.centered}>
-                <ActivityIndicator size="large"/>
+                <ActivityIndicator size="large" />
             </View>
         )
     }
@@ -349,8 +348,6 @@ function ShopScreen({ navigation }) {
                     </>
 
                 }
-
-                onEndReached={() => (loadAllProducts())}
             />
         </View>
     );

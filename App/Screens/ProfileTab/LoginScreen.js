@@ -30,10 +30,6 @@ const formReducer = (state, action) => {
       email: action.value
     };
 
-    // console.log(updatedValues)
-
-
-
     return {
       ...state.inputValues,
 
@@ -146,6 +142,7 @@ export default function LoginScreen({ navigation }) {
 
 
       <View style={styles.buttons}>
+
         <UIButton text="Login" height={40} width={300} onPress={loginHandler} />
         <TouchableOpacity>
 

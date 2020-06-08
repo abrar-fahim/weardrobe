@@ -1,10 +1,19 @@
-import { GET_SELF_POSTS, GET_SELF_BLOGS, GET_BLOGS, GET_POSTS } from "../actions/profile";
+import { GET_SELF_POSTS, GET_SELF_BLOGS, GET_BLOGS, GET_POSTS, GET_FOLLOW_REQUESTS, GET_FOLLOW_COUNTS, GET_MY_FOLLOWERS, GET_MY_FOLLOWING, GET_PROFILE, GET_MY_PROFILE } from "../actions/profile";
 
 const initialState = {
     posts: [],
     blogs: [],
     myPosts: [],
-    myBlogs: []
+    myBlogs: [],
+    myProfile: [],
+    followRequests: [],
+    numFollowers: 0,
+    numFollowing: 0,
+    numFollowingShop: 0,
+    myFollowers: [],
+    myFollowing: [],
+    otherProfile: []
+
 
 }
 
@@ -34,6 +43,45 @@ export default function profileReducer(state = initialState, action) {
                 ...state,
                 blogs: action.blogs
             }
+
+        case GET_FOLLOW_REQUESTS: {
+            return {
+                ...state,
+                followRequests: action.followRequests
+            }
+        }
+        case GET_FOLLOW_COUNTS:
+            return {
+                ...state,
+                numFollowers: action.numFollowers,
+                numFollowing: action.numFollowing,
+                numFollowingShop: action.numFollowingShop
+
+            }
+
+        case GET_MY_FOLLOWERS:
+            return {
+                ...state,
+                myFollowers: action.followers
+            }
+
+        case GET_MY_FOLLOWING:
+            return {
+                ...state,
+                myFollowing: action.following
+            }
+
+        case GET_PROFILE:
+            return {
+                ...state,
+                myProfile: action.profile
+            }
+        case GET_PROFILE:
+            return {
+                ...state,
+                otherProfile: action.profile
+            }
+
     }
 
     return state

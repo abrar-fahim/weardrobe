@@ -27,6 +27,7 @@ export const fetchProducts = () => {
             const loadedProducts = [];
 
             for (const key in resData) {
+                
                 loadedProducts.push({
                     id: resData[key].PRODUCT_ID,
                     name: resData[key].PRODUCT_NAME,
@@ -39,7 +40,9 @@ export const fetchProducts = () => {
                 })
             }
             // console.log(loadedProducts);
-            dispatch({ type: SET_PRODUCTS_LIST, products: loadedProducts })
+            dispatch(
+                { type: SET_PRODUCTS_LIST, products: loadedProducts }
+            )
 
         }
         catch (err) {
@@ -330,7 +333,7 @@ export const fetchShopFeed = () => {
                 }
                 else {
 
-                    
+
 
                     const processedLists = resData[key].LISTS.map(item => ({
                         id: item.PRODUCT_ID,

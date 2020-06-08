@@ -131,9 +131,6 @@ export const fetchShopDetails = (shopId) => {
     }
 }
 
-
-
-
 export const followShop = (shopId) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/follow/shop`, {

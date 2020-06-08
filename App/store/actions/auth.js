@@ -1,4 +1,3 @@
-
 import { AsyncStorage } from "react-native";
 import HOST from "../../components/host";
 
@@ -58,34 +57,32 @@ export const signup = ({ firstName, lastName, username, email, phone, birthday, 
 }
 
 export const login = (email, password) => {
-  
+
+
+
 
     return async (dispatch) => {
 
-        // const storedCookie = await AsyncStorage.getItem('user-cookie');
 
-        // if (!storedCookie) {
+        const response = fetch(`${HOST}/login-customer`,
+            {
+                // credentials: 'omit',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+                body: JSON.stringify(
+                    {
+                        username: email,
+                        password: password
+                    }
+                )
+            }
+        );
 
-        const response = await fetch(`${HOST}/login-customer`, {
-            // credentials: 'omit',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': "application/json"
-            },
-            body: JSON.stringify({
-                username: email,
-                password: password
-            })
-        });
 
-        // console.log('ion action uasasd')
-        // const header = await response.headers
-        // console.log(header)
 
-        //const cookie = header.map["set-cookie"];
-
-        // console.log(cookie)
 
         if (!response.ok) {
             throw new Error('somethings wrong');
@@ -103,10 +100,12 @@ export const login = (email, password) => {
 
             console.log(userId)
 
-            dispatch({
-                type: LOGIN,
-                userId: userId
-            })
+            dispatch(
+                {
+                    type: LOGIN,
+                    userId: userId
+                }
+            )
 
 
         }
