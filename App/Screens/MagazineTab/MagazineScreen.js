@@ -13,7 +13,7 @@ import NewPostScreen2 from './NewPostScreen2';
 import NewPostScreen3 from './NewPostScreen3';
 import NewPostTagScreen from './NewPostTagScreen';
 import NewPostNextButton from '../../components/NewPostNextButton';
-import { ProfileTabsScreen } from '../ProfileTab/ProfileScreen';
+import ProfileStackScreen, { ProfileTabsScreen } from '../ProfileTab/ProfileScreen';
 import GenericHeaderButton from '../../components/GenericHeaderButton';
 import Colors from '../../Styles/Colors'
 import HeaderOptions from '../../Styles/HeaderOptions'
@@ -22,7 +22,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import * as magazineActions from '../../store/actions/magazine'
 import LoadingScreen from '../../components/LoadingScreen'
-
 
 
 
@@ -80,10 +79,27 @@ export function MagazineScreen(props) {
             console.log(err)
         }
     })
+    const loadUserPostComments = useCallback(async (postId, iter) => {
+        try {
+            await dispatch(magazineActions.fetchUserPostComments(postId, iter))
+        }
+        catch (err) {
+            console.log(err)
+        }
+    })
 
     const loadShopPostReacts = useCallback(async (postId) => {
         try {
             await dispatch(magazineActions.fetchShopPostReacts(postId))
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+    })
+    const loadUserPostReacts = useCallback(async (postId) => {
+        try {
+            await dispatch(magazineActions.fetchUserPostReacts(postId))
 
         }
         catch (err) {
@@ -101,10 +117,30 @@ export function MagazineScreen(props) {
             console.log(err);
         }
     })
-
     const unReactShopPost = useCallback(async (postId) => {
         try {
             await dispatch(magazineActions.unReactShopPost(postId))
+            setError('')
+        }
+        catch (err) {
+            setError(err.message)
+            console.log(err);
+        }
+    })
+
+    const reactUserPost = useCallback(async (postId) => {
+        try {
+            await dispatch(magazineActions.reactUserPost(postId))
+            setError('')
+        }
+        catch (err) {
+            setError(err.message)
+            console.log(err);
+        }
+    })
+    const unReactUserPost = useCallback(async (postId) => {
+        try {
+            await dispatch(magazineActions.unReactUserPost(postId))
             setError('')
         }
         catch (err) {
@@ -123,10 +159,30 @@ export function MagazineScreen(props) {
             console.log(err);
         }
     })
-
     const deleteCommentShopPost = useCallback(async (commentId, postId) => {
         try {
             await dispatch(magazineActions.deleteCommentShopPost(commentId, postId))
+            setError('')
+        }
+        catch (err) {
+            setError(err.message)
+            console.log(err);
+        }
+    })
+
+    const commentUserPost = useCallback(async (postId, comment) => {
+        try {
+            await dispatch(magazineActions.commentUserPost(postId, comment))
+            setError('')
+        }
+        catch (err) {
+            setError(err.message)
+            console.log(err);
+        }
+    })
+    const deleteCommentUserPost = useCallback(async (commentId, postId) => {
+        try {
+            await dispatch(magazineActions.deleteCommentUserPost(commentId, postId))
             setError('')
         }
         catch (err) {
@@ -145,10 +201,30 @@ export function MagazineScreen(props) {
             console.log(err);
         }
     })
+    const unReactUserBlog = useCallback(async (blogId) => {
+        try {
+            await dispatch(magazineActions.unReactUserBlog(blogId))
+            setError('')
+        }
+        catch (err) {
+            setError(err.message)
+            console.log(err);
+        }
+    })
 
     const commentUserBlog = useCallback(async (blogId, comment) => {
         try {
             await dispatch(magazineActions.commentUserBlog(blogId, comment))
+            setError('')
+        }
+        catch (err) {
+            setError(err.message)
+            console.log(err);
+        }
+    })
+    const deleteCommentUserBlog = useCallback(async (commentId, postId) => {
+        try {
+            await dispatch(magazineActions.deleteCommentUserBlog(commentId))
             setError('')
         }
         catch (err) {
@@ -197,6 +273,31 @@ export function MagazineScreen(props) {
         )
     }
 
+    const renderUserPostComment = (itemData) => {
+
+        return (
+            <View style={styles.comment}>
+                <Text>{itemData.item.username}:  </Text>
+                <Text>{itemData.item.comment}</Text>
+                {itemData.item.commenterId === userId ?
+                    (
+                        <TouchableOpacity
+                            onPress={() => {
+                                deleteCommentUserPost(itemData.item.id, itemData.item.postId)
+                                setChange(state => state + 1)
+
+                            }}
+                            style={styles.commentX}
+
+                        >
+                            <Text>X</Text>
+                        </TouchableOpacity>
+                    ) : null}
+
+            </View>
+        )
+    }
+
     const renderReact = (itemData) => {
         return (
             <Text>{itemData.item.username}:   {itemData.item.type}</Text>
@@ -204,7 +305,23 @@ export function MagazineScreen(props) {
     }
 
     const renderFeedItem = (itemData) => {
-        itemData.seperators
+        if (itemData.index === 0) {
+            return (
+                <FlatList
+                    listKey="a"
+                    extraData={change}
+                    ref={flatListRef}
+                    viewabilityConfig={{
+                        waitForInteraction: false,
+                        viewAreaCoveragePercentThreshold: 95
+                    }}
+                    data={friendPosts}
+                    renderItem={renderFriendPost}
+                />
+            )
+
+
+        }
         return (
             <View style={styles.gridItem} >
                 <View style={styles.nameDP}>
@@ -243,7 +360,7 @@ export function MagazineScreen(props) {
                             ...iters,
                             shopPostComments: 1
                         }))
-                         console.log(iters.shopPostComments)
+                        console.log(iters.shopPostComments)
                     }}>
                         <Text>{itemData.item.numComments} Comments</Text>
                     </TouchableOpacity>
@@ -326,21 +443,149 @@ export function MagazineScreen(props) {
         )
     }
 
+    const renderFriendPost = useCallback((itemData) => {
+        return (
+            <View style={styles.gridItem} >
+                <View style={styles.nameDP}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('OthersProfile', {
+                        profileId: itemData.item.posterId
+                    })}>
+                        <View style={styles.nameDP2}>
+                            <View style={styles.DP}>
+                                <Image style={styles.DPImage} source={itemData.item.dp} />
+                            </View>
+                            <Text style={styles.Name}> {itemData.item.username} </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity style={styles.Post}>
+                    <View style={styles.Post2}>
+                        <FlatList horizontal={true} pagingEnabled={true} data={itemData.item.images} renderItem={renderImages} />
+                        {/* <Image  source={require('../../assets/Images/suit.png')} style={styles.PostImage}/>  */}
+                        <Text style={styles.Caption} >   {itemData.item.text}</Text>
+                    </View>
+                </TouchableOpacity>
+
+                <View style={styles.nums}>
+                    <TouchableOpacity onPress={() => {
+                        loadUserPostReacts(itemData.item.id);
+                        setShowReacts(state => !state)
+                        // console.log(postComments)
+                    }}>
+                        <Text>{itemData.item.numReacts} Reacts</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {
+                        loadUserPostComments(itemData.item.id, 0);
+                        setShowComments(state => !state)
+                        setIters(iters => ({
+                            ...iters,
+                            shopPostComments: 1
+                        }))
+                        console.log(iters.shopPostComments)
+                    }}>
+                        <Text>{itemData.item.numComments} Comments</Text>
+                    </TouchableOpacity>
+
+                </View>
+
+                {showReacts ? <FlatList listKey={itemData.item.id + "1"} data={shopPostReacts[0]?.postId === itemData.item.id ? shopPostReacts : []} renderItem={renderReact} /> : null}
+
+                {showComments ? <FlatList listKey={itemData.item.id + "2"} data={shopPostComments[0]?.postId === itemData.item.id ? shopPostComments : []} renderItem={renderUserPostComment}
+                    onEndReached={() => {
+                        loadUserPostComments(itemData.item.id, iters.shopPostComments)
+                        setIters(iters => ({
+                            ...iters,
+                            shopPostComments: iters.shopPostComments + 1
+                        }))
+                    }} /> : null}
+
+
+
+
+
+                <View style={styles.LikeComment}>
+                    <TouchableOpacity style={styles.Like} onPress={async () => {
+
+
+                        if (itemData.item.hasReacted === 1) {
+                            //unlike
+                            await unReactUserPost(itemData.item.id)
+                            if (error === '') {
+                                console.log(itemData.item.id)
+
+                                // flatListRef.current.recordInteraction()
+                                itemData.item.hasReacted = 0;
+                                itemData.item.numReacts -= 1;
+                                setChange(state => state - 1)
+                            }
+
+                        }
+                        else {
+                            await reactUserPost(itemData.item.id)
+                            if (error === '') {
+                                itemData.item.hasReacted = 1;
+                                itemData.item.numReacts += 1;
+                                setChange(state => state + 1)
+                            }
+
+
+                        }
+
+
+
+
+                    }}>
+
+                        {itemData.item.hasReacted === 1 ? <AntDesign name="like1" size={40} color='black' /> : <AntDesign name="like2" size={40} color='black' />}
+
+                    </TouchableOpacity>
+
+                    <View style={styles.commentContainer}>
+                        <TextInput placeholder="Comment" style={styles.Comment} onChangeText={setComment} />
+                        <TouchableOpacity style={styles.sendComment}
+                            onPress={() => {
+                                comment !== '' ?
+                                    commentUserPost(itemData.item.id, comment) : null;
+                                setChange(state => state + 1)
+
+                            }}
+
+                        >
+                            <Ionicons name="md-send" size={30} />
+                        </TouchableOpacity>
+                    </View>
+
+
+                </View>
+
+
+            </View>
+
+        )
+    })
+
+
     if (isLoading) {
         return <LoadingScreen />
     }
     return (
         <View style={ScreenStyle}>
 
+
+
             <FlatList
+                listKey="b"
                 extraData={change}
                 ref={flatListRef}
                 viewabilityConfig={{
                     waitForInteraction: false,
                     viewAreaCoveragePercentThreshold: 95
                 }}
-                data={shopPosts}
+                data={[{ id: '1' }].concat(shopPosts)}
                 renderItem={renderFeedItem}
+
             />
 
         </View>
@@ -369,7 +614,9 @@ export default function MagazineStackScreen({ navigation }) {
             }} />
             <MagazineStack.Screen name="NewPost3" component={NewPostScreen3} />
             <MagazineStack.Screen name="NewPostTag" component={NewPostTagScreen} />
-            <MagazineStack.Screen name="OthersProfile" component={ProfileTabsScreen} />
+            <MagazineStack.Screen name="OthersProfile" component={ProfileStackScreen} options={{
+                headerShown: false
+            }} />
 
         </MagazineStack.Navigator>
 

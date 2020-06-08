@@ -79,7 +79,6 @@ export const fetchShopPosts = () => {
         }
     }
 }
-
 export const fetchFriendsPosts = () => {
     return async (dispatch) => {
         try {
@@ -110,13 +109,16 @@ export const fetchFriendsPosts = () => {
                     ))
                     friendPosts.push({
                         id: resData[key].POST_ID,
-                        shopId: resData[key].SHOP_ID,
-                        postDate: resData[key].POST_DATE,
-                        text: resData[key].TEXT,
+                        posterId: resData[key].CUSTOMER_UID,
+                        date: resData[key].POST_DATE,
+                        text: resData[key].CAPTIONS,
                         productId: resData[key].PRODUCT_ID,
+                        username: resData[key].USERNAME,
+                        dp: { uri: `${HOST}/img/temp/` + resData[key].PROFILE_PIC },
                         images: processedImages,
                         numComments: resData[key].COMMENT,
                         numReacts: resData[key].REACT,
+                        hasReacted: resData[key].HAS_REACTED,
 
                     })
                 }
@@ -241,7 +243,7 @@ export const fetchShopPostReacts = (postId) => {
     }
 }
 
-export const reactFriendPost = (postId) => {
+export const reactUserPost = (postId) => {
     return async (dispatch) => {
         try {
             const response = await fetch(`${HOST}/post/react`, {
@@ -284,6 +286,50 @@ export const reactFriendPost = (postId) => {
         // dispatch(fetchPostReacts(productId))
     }
 }
+export const unReactUserPost = (postId) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${HOST}/delete/post/react`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+                body: JSON.stringify({
+                    postId: postId
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('wrong!!');
+            }
+
+            const resData = await response.json();
+            console.log(resData);
+
+            if (Object.keys(resData)[0] === 'SUCCESS') {
+
+
+            }
+
+            else {
+                throw new Error(resData.ERROR)
+            }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+
+        // dispatch(fetchPostReacts(productId))
+    }
+}
+
 
 export const reactShopPost = (postId) => {
     return async (dispatch) => {
@@ -328,7 +374,6 @@ export const reactShopPost = (postId) => {
         //         dispatch(fetchShopPostReacts(postId))
     }
 }
-
 export const unReactShopPost = (postId) => {
     return async (dispatch) => {
         try {
@@ -417,7 +462,6 @@ export const commentShopPost = (postId, comment) => {
         // dispatch(fetchShopPostComments(postId, 0))
     }
 }
-
 export const deleteCommentShopPost = (commentId, postId) => {
     //here, iter is the current iter where the comment was found, needed to refetch comments in current iter
     return async (dispatch) => {
@@ -463,10 +507,101 @@ export const deleteCommentShopPost = (commentId, postId) => {
     }
 }
 
+
+export const commentUserPost = (postId, comment) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${HOST}/post/comment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+                body: JSON.stringify({
+                    comment: comment,
+                    postId: postId
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('wrong!!');
+            }
+
+            const resData = await response.json();
+            console.log(resData);
+
+            if (Object.keys(resData)[0] === 'SUCCESS') {
+
+
+            }
+
+            else {
+                throw new Error(resData.ERROR)
+            }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+
+        // dispatch(fetchShopPostComments(postId, 0))
+    }
+}
+export const deleteCommentUserPost = (commentId, postId) => {
+    //here, iter is the current iter where the comment was found, needed to refetch comments in current iter
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${HOST}/delete/post/comment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+                body: JSON.stringify({
+                    commentId: commentId,
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('wrong!!');
+            }
+
+            const resData = await response.json();
+            console.log(resData);
+
+            if (Object.keys(resData)[0] === 'SUCCESS') {
+
+
+            }
+
+            else {
+                throw new Error(resData.ERROR)
+            }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+
+        // dispatch(fetchShopPostComments(postId, 0))
+    }
+}
+
+
 export const fetchUserPostComments = (postId) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${HOST}/get/shop-post/${postId}/comments/0`, {
+            const response = await fetch(`${HOST}/get/post/${postId}/comments/0`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -485,8 +620,8 @@ export const fetchUserPostComments = (postId) => {
 
                 for (const key in resData) {
                     userPostComments.push({
-                        id: resData[key].COMMENTER_ID + resData[key].DATE,
-                        postId: resData[key].POST_ID,
+                        id: resData[key].COMMENT_ID,
+                        postId: resData[key].CUSTOMER_POST_ID,
                         commenterId: resData[key].COMMENTER_ID,
                         date: resData[key].DATE,
                         username: resData[key].USERNAME,
@@ -535,11 +670,11 @@ export const fetchUserPostReacts = (postId) => {
 
                 for (const key in resData) {
                     userPostReacts.push({
-                        id: resData[key].POST_ID + resData[key].LIKER_UID,
+                        id: resData[key].CUSTOMER_POST_ID + resData[key].LIKER_UID,
                         likerId: resData[key].LIKER_UID,
                         date: resData[key].REACT_DATE,
                         type: resData[key].REACT_TYPE,
-                        postId: resData[key].POST_ID,
+                        postId: resData[key].CUSTOMER_POST_ID,
                         username: resData[key].USERNAME
 
                     })
@@ -564,10 +699,10 @@ export const fetchUserPostReacts = (postId) => {
     }
 }
 
-export const fetchUserBlogComments = (blogId) => {
+export const fetchUserBlogComments = (blogId, iter = 0) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${HOST}/get/blog/${blogId}/comments/0`, {
+            const response = await fetch(`${HOST}/get/blog/${blogId}/comments/${iter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -586,8 +721,9 @@ export const fetchUserBlogComments = (blogId) => {
 
                 for (const key in resData) {
                     userBlogComments.push({
-                        id: resData[key].COMMENTER_ID + resData[key].DATE,
-                        postId: resData[key].POST_ID,
+                        id: resData[key].COMMENT_ID,
+
+                        blogId: resData[key].CUSTOMER_BLOG_ID,
                         commenterId: resData[key].COMMENTER_ID,
                         date: resData[key].DATE,
                         username: resData[key].USERNAME,
@@ -596,7 +732,7 @@ export const fetchUserBlogComments = (blogId) => {
                     })
                 }
                 // console.log(loadedProducts);
-                dispatch({ type: GET_SHOP_POST_COMMENTS, shopPostComments: userBlogComments })
+                dispatch({ type: GET_SHOP_POST_COMMENTS, shopPostComments: userBlogComments, iter: iter })
             }
 
             else {
@@ -708,6 +844,49 @@ export const reactUserBlog = (blogId) => {
         //         dispatch(fetchShopPostReacts(postId))
     }
 }
+export const unReactUserBlog = (blogId) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${HOST}/delete/blog/react`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+                body: JSON.stringify({
+                    blogId: blogId
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('wrong!!');
+            }
+
+            const resData = await response.json();
+            console.log(resData);
+
+            if (Object.keys(resData)[0] === 'SUCCESS') {
+
+
+            }
+
+            else {
+                throw new Error(resData.ERROR)
+            }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+
+        //         dispatch(fetchShopPostReacts(postId))
+    }
+}
 
 export const commentUserBlog = (blogId, comment) => {
     return async (dispatch) => {
@@ -753,11 +932,58 @@ export const commentUserBlog = (blogId, comment) => {
         //dispatch(fetchShopPostReacts(postId))
     }
 }
+export const deleteCommentUserBlog = (commentId) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${HOST}/delete/blog/comment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+                body: JSON.stringify({
+                    commentId: commentId
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('wrong!!');
+            }
+
+            const resData = await response.json();
+            console.log(resData);
+
+            if (Object.keys(resData)[0] === 'SUCCESS') {
+
+
+            }
+
+            else {
+                throw new Error(resData.ERROR)
+            }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+
+        //dispatch(fetchShopPostReacts(postId))
+    }
+}
+
+
+
+
 
 export const createUserPost = (formData) => {
     return async (dispatch) => {
         try {
-            
+
             const response = await fetch(`${HOST}/upload/post`, {
                 method: 'POST',
                 body: formData,
@@ -773,9 +999,9 @@ export const createUserPost = (formData) => {
                 throw new Error('response not ok');
             }
 
-            
+
             const resData = await response.json();
-            
+
             console.log(resData);
 
             if (Object.keys(resData)[0] === 'SUCCESS') {
@@ -800,4 +1026,5 @@ export const createUserPost = (formData) => {
         dispatch(profileActions.fetchMyPosts())
     }
 }
+
 

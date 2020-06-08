@@ -26,26 +26,26 @@ const magazineReducer = (state = initialState, action) => {
             //5 items per iter
 
 
-            if (action.shopPostComments.length !== 0) {
 
-                if (action.iter * 5 >= state.shopPostComments.length) {
-                    return {
-                        ...state,
-                        shopPostComments: state.shopPostComments.concat(action.shopPostComments)
-                    }
+
+
+            //need to debug this logic later
+            if (action.iter * 5 >= state.shopPostComments.length) {
+                return {
+                    ...state,
+                    shopPostComments: state.shopPostComments.concat(action.shopPostComments)
                 }
-                else {
-                    return {
-                        ...state,
-                        shopPostComments: action.shopPostComments
-                    }
-
-                }
-
             }
             else {
-                return state
+                return {
+                    ...state,
+                    shopPostComments: action.shopPostComments
+                }
+
             }
+
+
+
 
 
 

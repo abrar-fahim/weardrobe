@@ -57,11 +57,8 @@ export const signup = ({ firstName, lastName, username, email, phone, birthday, 
     }
 }
 
-
-
-
 export const login = (email, password) => {
-
+  
 
     return async (dispatch) => {
 
