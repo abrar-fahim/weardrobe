@@ -184,6 +184,7 @@ import DpUploadScreen from './DpUploadScreen';
 
 
 //this is both my profile and others profile
+
 export function ProfileScreen(props) {
 
     const flatListRef = useRef(null);
@@ -635,12 +636,15 @@ export function ProfileTabsScreen(props) {
     })
 
     const getProfile = useCallback(async () => {
+        console.log('myProfile: ' + myProfile)
         try {
             myProfile ? await dispatch(profileActions.getMyProfile(userId, [
                 "firstName", "lastName", "email", "phoneNumber", "birthday", "profilePic", "bio", "privacyType", "points", "type"
             ])) : await dispatch(profileActions.getProfile(profileId, [
                 "firstName", "lastName", "email", "phoneNumber", "birthday", "profilePic", "bio", "privacyType", "points", "type"
             ]))
+
+            console.log(profile.firstName)
 
             // setError('')
         }

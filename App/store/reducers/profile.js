@@ -71,7 +71,7 @@ export default function profileReducer(state = initialState, action) {
                 myFollowing: action.following
             }
 
-        case GET_PROFILE:
+        case GET_MY_PROFILE:
             return {
                 ...state,
                 myProfile: action.profile
