@@ -13,23 +13,20 @@ import { useSelector, useDispatch } from 'react-redux';
 
 
 
+function FollowersListScreen(props) {
+
+    const myProfile = props.route.params?.myProfile;
+    const profileId = props.route.params?.profileId;
 
 
+    const followers = myProfile ? useSelector(state => state.profile.myFollowers) : useSelector(state => state.profile.followers)
 
-
-
-
-
-
-
-
-function FollowersListScreen({ navigation }) {
 
     const dispatch = useDispatch()
 
-    const getMyFollowers = useCallback(async () => {
+    const getFollowers = useCallback(async () => {
         try {
-            await dispatch(profileActions.getMyFollowers())
+            myProfile ? await dispatch(profileActions.getMyFollowers()) : await dispatch(profileActions.getUserFollowers(profileId))
             // setError('')
         }
         catch (err) {
@@ -38,7 +35,7 @@ function FollowersListScreen({ navigation }) {
         }
     })
 
-    const myFollowers = useSelector(state => state.profile.myFollowers)
+
 
 
     const renderFollowers = (itemData) => {
@@ -54,7 +51,7 @@ function FollowersListScreen({ navigation }) {
 
 
     useEffect(() => {
-        getMyFollowers()
+        getFollowers()
     }, [])
 
 
@@ -63,19 +60,28 @@ function FollowersListScreen({ navigation }) {
 
         <View>
             <Text> Followers</Text>
-            <FlatList data={myFollowers} renderItem={renderFollowers} />
+            <FlatList data={followers} renderItem={renderFollowers} />
         </View>
     )
 
 }
 
-function FollowingListScreen({ navigation }) {
+function FollowingListScreen(props) {
+    const myProfile = props.route.params?.myProfile;
+    const profileId = props.route.params?.profileId;
+
+
+    const following = myProfile ? useSelector(state => state.profile.myFollowing) : useSelector(state => state.profile.following)
 
     const dispatch = useDispatch()
 
-    const getMyFollowing = useCallback(async () => {
+
+
+
+
+    const getFollowing = useCallback(async () => {
         try {
-            await dispatch(profileActions.getMyFollowing())
+            myProfile ? await dispatch(profileActions.getMyFollowing()) : await dispatch(profileActions.getUserFollowing(profileId))
             // setError('')
         }
         catch (err) {
@@ -95,16 +101,15 @@ function FollowingListScreen({ navigation }) {
     }
 
 
-    const myFollowing = useSelector(state => state.profile.myFollowing)
-    useEffect(() => {
 
-        getMyFollowing()
+    useEffect(() => {
+        getFollowing()
     }, [])
     return (
         <View style={ScreenStyle}>
             <Text> Following</Text>
 
-            <FlatList data={myFollowing} renderItem={renderFollowers} />
+            <FlatList data={following} renderItem={renderFollowers} />
 
 
 
@@ -115,7 +120,11 @@ function FollowingListScreen({ navigation }) {
 
 
 export default function FollowersListTabScreen(props) {
+    const myProfile = props.route.params?.myProfile;
+    const profileId = props.route.params?.profileId;
+
     const TopTab = createMaterialTopTabNavigator();
+
 
 
 
@@ -127,8 +136,15 @@ export default function FollowersListTabScreen(props) {
                 }
             }}
         >
-            <TopTab.Screen name="FollowersList" component={FollowersListScreen} />
-            <TopTab.Screen name="FollowingList" component={FollowingListScreen} />
+            <TopTab.Screen name="FollowersList" component={FollowersListScreen} initialParams={{
+                myProfile: myProfile,
+                profileId: profileId
+
+            }} />
+            <TopTab.Screen name="FollowingList" component={FollowingListScreen} initialParams={{
+                myProfile: myProfile,
+                profileId: profileId
+            }} />
 
         </TopTab.Navigator>
     )

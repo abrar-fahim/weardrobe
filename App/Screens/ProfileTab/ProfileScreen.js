@@ -186,12 +186,13 @@ import DpUploadScreen from './DpUploadScreen';
 //this is both my profile and others profile
 
 export function ProfileScreen(props) {
+    const userId = useSelector(state => state.auth.userId)
 
     const flatListRef = useRef(null);
     const profileId = props.route.params?.profileId
     const myProfile = userId === profileId || profileId === undefined//secure this check using backend auth in production
 
-    const userId = useSelector(state => state.auth.userId)
+
 
 
 
@@ -603,9 +604,9 @@ export function ProfileTabsScreen(props) {
     const profile = myProfile ? useSelector(state => state.profile.myProfile) : useSelector(state => state.profile.otherProfile)
 
 
-    const numFollowers = useSelector(state => state.profile.numFollowers);
-    const numFollowing = useSelector(state => state.profile.numFollowing);
-    const numFollowingShop = useSelector(state => state.profile.numFollowingShop);
+    const numFollowers = myProfile ? useSelector(state => state.profile.myNumFollowers) : useSelector(state => state.profile.numFollowers)
+    const numFollowing = myProfile ? useSelector(state => state.profile.myNumFollowing) : useSelector(state => state.profile.numFollowing)
+    const numFollowingShop = myProfile ? useSelector(state => state.profile.myNumFollowingShop) : useSelector(state => state.profile.numFollowingShop)
 
 
 
@@ -625,8 +626,9 @@ export function ProfileTabsScreen(props) {
     })
 
     const getFollowCounts = useCallback(async () => {
+        // const id = myProfile? userId: profileId
         try {
-            await dispatch(profileActions.getFollowCounts())
+            myProfile ? await dispatch(profileActions.getMyFollowCounts(userId)) : await dispatch(profileActions.getFollowCounts(profileId))
             // setError('')
         }
         catch (err) {
@@ -670,6 +672,7 @@ export function ProfileTabsScreen(props) {
     useEffect(() => {
         getFollowCounts()
         getProfile();
+
     }, [])
 
 
@@ -698,7 +701,10 @@ export function ProfileTabsScreen(props) {
                 </View>
 
                 <View style={{ flexDirection: 'column', height: 80, marginRight: 40, justifyContent: 'center' }}>
-                    <TouchableOpacity onPress={() => props.navigation.navigate('FollowersListTab')}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('FollowersListTab', {
+                        myProfile: myProfile,
+                        profileId: profileId
+                    })}>
                         <Text>Followers: {numFollowers}</Text>
                         <Text>Following: {numFollowing}</Text>
                         <Text>Following Shops: {numFollowingShop}</Text>

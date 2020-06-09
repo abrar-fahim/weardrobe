@@ -7,11 +7,17 @@ export const GET_FOLLOW_COUNTS = 'GET_FOLLOW_COUNTS';
 export const GET_MY_FOLLOWERS = 'GET_MY_FOLLOWERS';
 export const GET_MY_FOLLOWING = 'GET_MY_FOLLOWING';
 
+export const GET_MY_FOLLOW_COUNTS = 'GET_MY_ FOLLOW_COUNTS';
+export const GET_FOLLOWERS = 'GET_FOLLOWERS';
+export const GET_FOLLOWING = 'GET_FOLLOWING';
+
 export const GET_POSTS = 'GET_POSTS';
 export const GET_BLOGS = 'GET_BLOGS';
 
 export const GET_PROFILE = 'GET_PROFILE';
 export const GET_MY_PROFILE = 'GET_MY_PROFILE';
+
+
 
 
 
@@ -521,6 +527,87 @@ export const acceptFollowRequest = (userId) => {
     }
 }
 
+export const getMyFollowCounts = (userId) => {
+    return async (dispatch) => {
+        try {
+
+
+            const response = await fetch(`${HOST}/get/follow-counts/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+
+
+            });
+
+
+
+            if (!response.ok) {
+                throw new Error('response not ok');
+            }
+
+
+
+            const resData = await response.json();
+
+            const numFollowers = resData[0].FOLLOWERS;
+            const numFollowing = resData[0].FOLLOWING;
+            const numFollowingShop = resData[0].FOLLOWING_SHOP;
+
+
+
+            //const followRequests = []
+
+
+            // if (Object.keys(resData)[0] === 'SUCCESS') {
+
+            // for(const key in resData) {
+            //     followRequests.push({
+            //         id: resData[key].UID,
+            //         firstName: resData[key].FIRST_NAME,
+            //         lastName: resData[key].LAST_NAME,
+            //         username: resData[key].USERNAME,
+            //     })
+            // }
+
+
+
+
+
+            dispatch({
+                type: GET_MY_FOLLOW_COUNTS,
+                numFollowers: numFollowers,
+                numFollowing: numFollowing,
+                numFollowingShop: numFollowingShop
+
+            })
+
+
+
+
+
+            // }
+
+
+            // else {
+            //     throw new Error(resData.ERROR)
+            // }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+
+        //dispatch(fetchMyBlogs())
+    }
+}
 export const getFollowCounts = (userId) => {
     return async (dispatch) => {
         try {
@@ -717,6 +804,149 @@ export const getMyFollowing = () => {
 
             dispatch({
                 type: GET_MY_FOLLOWING,
+                following: following
+            })
+
+
+
+
+
+            // }
+
+
+            // else {
+            //     throw new Error(resData.ERROR)
+            // }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+
+        //dispatch(fetchMyBlogs())
+    }
+}
+
+
+export const getUserFollowers = (userId) => {
+    return async (dispatch) => {
+        try {
+
+
+
+            const response = await fetch(`${HOST}/get/followers/${userId}/0`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+
+
+            });
+
+
+
+            if (!response.ok) {
+                throw new Error('response not ok');
+            }
+
+
+
+            const resData = await response.json();
+
+
+            const followers = []
+
+
+            // if (Object.keys(resData)[0] === 'SUCCESS') {
+
+            for (const key in resData) {
+                followers.push({
+                    id: resData[key].UID,
+                    firstName: resData[key].FIRST_NAME,
+                    lastName: resData[key].LAST_NAME,
+                    username: resData[key].USERNAME,
+                })
+            }
+
+            dispatch({
+                type: GET_FOLLOWERS,
+                followers: followers
+            })
+
+
+
+
+
+            // }
+
+
+            // else {
+            //     throw new Error(resData.ERROR)
+            // }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+
+        //dispatch(fetchMyBlogs())
+    }
+}
+
+export const getUserFollowing = (userId) => {
+    return async (dispatch) => {
+        try {
+
+
+
+            const response = await fetch(`${HOST}/get/following-people/${userId}/0`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+
+
+            });
+
+
+
+            if (!response.ok) {
+                throw new Error('response not ok');
+            }
+
+
+
+            const resData = await response.json();
+
+
+            const following = []
+
+
+            // if (Object.keys(resData)[0] === 'SUCCESS') {
+
+            for (const key in resData) {
+                following.push({
+                    id: resData[key].UID,
+                    firstName: resData[key].FIRST_NAME,
+                    lastName: resData[key].LAST_NAME,
+                    username: resData[key].USERNAME,
+                })
+            }
+
+            dispatch({
+                type: GET_FOLLOWING,
                 following: following
             })
 
