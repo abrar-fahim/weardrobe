@@ -38,6 +38,8 @@ import DpUploadScreen from './DpUploadScreen';
 
 
 
+//THIS COMMENTED VERSION IS INSTA STYLE GRID
+
 
 // export function ProfileScreen(props) {
 
@@ -178,14 +180,19 @@ import DpUploadScreen from './DpUploadScreen';
 
 // }
 
+
+
+
+//this is both my profile and others profile
 export function ProfileScreen(props) {
 
     const flatListRef = useRef(null);
     const profileId = props.route.params?.profileId
+    const myProfile = userId === profileId || profileId === undefined//secure this check using backend auth in production
 
     const userId = useSelector(state => state.auth.userId)
 
-    const myProfile = userId === profileId || profileId === undefined//secure this check using backend auth in production
+
 
     const dispatch = useDispatch();
 
@@ -360,12 +367,6 @@ export function ProfileScreen(props) {
             console.log(err);
         }
     })
-
-
-
-
-
-
 
 
 

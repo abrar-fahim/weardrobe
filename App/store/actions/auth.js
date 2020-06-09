@@ -64,7 +64,7 @@ export const login = (email, password) => {
     return async (dispatch) => {
 
 
-        const response = fetch(`${HOST}/login-customer`,
+        const response = await fetch(`${HOST}/login-customer`,
             {
                 // credentials: 'omit',
                 method: 'POST',
@@ -86,6 +86,7 @@ export const login = (email, password) => {
 
         if (!response.ok) {
             throw new Error('somethings wrong');
+            //console.log(response)
         }
 
         const resData = await response.json();  //converts response string to js object/array
