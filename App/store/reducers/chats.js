@@ -1,8 +1,10 @@
-import { GET_GROUPS, GET_CHATS } from '../actions/chats'
+import { GET_GROUPS, GET_CHATS, GET_SHOPPING_SESSIONS, GET_SESSION_CART } from '../actions/chats'
 
 const initialState = {
     groups: [],
-    chats: []
+    chats: [],
+    sessions: [],
+    sessionCart: []
 }
 
 
@@ -19,6 +21,18 @@ export default function socialReducer(state = initialState, action) {
             return {
                 ...state,
                 chats: action.chats
+            }
+
+        case GET_SHOPPING_SESSIONS:
+            return {
+                ...state,
+                sessions: action.sessions
+            }
+
+        case GET_SESSION_CART:
+            return {
+                ...state,
+                sessionCart: action.cartItems
             }
     }
 

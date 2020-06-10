@@ -68,29 +68,31 @@ export function GroupChatScreen(props) {
 
 
     function renderItems(itemData) {
-        if (itemData.item.sender === 'abrar') {
-            return (
-                <View style={styles.chat}>
-                    <Image style={styles.picture} source={require('../../assets/Images/pic1.jpeg')} />
-                    <View>
-                        <Image
-                            style={{
-                                ...styles.msgBubble,
-                                width: 30 + itemData.item.text?.length ?? 0 * 6,
-                                height: (Math.floor(itemData.item.text?.length ?? 0 / 60) + 1) * 50
-                            }}
-                            source={require('../../assets/Images/darkGrey.png')}
-                        />
-                        <View style={styles.msgTextContainer}>
-                            <Text style={styles.msgText}>{itemData.item.text}</Text>
-                        </View>
-                    </View>
+        // if (itemData.item.sender === 'abrar') {
+        //     return (
+        //         <View style={styles.chat}>
+        //             <Image style={styles.picture} source={require('../../assets/Images/pic1.jpeg')} />
+        //             <View>
+        //                 <Image
+        //                     style={{
+        //                         ...styles.msgBubble,
+        //                         width: 30 + itemData.item.text?.length ?? 0 * 6,
+        //                         height: (Math.floor(itemData.item.text?.length ?? 0 / 60) + 1) * 50
+        //                     }}
+        //                     source={require('../../assets/Images/darkGrey.png')}
+        //                 />
+        //                 <View style={styles.msgTextContainer}>
+        //                     <Text style={styles.msgText}>{itemData.item.text}</Text>
+        //                 </View>
+        //             </View>
 
 
 
-                </View>
-            )
-        }
+        //         </View>
+        //     )
+        // }
+
+
         return (
             <View style={styles.chat}>
                 <Image style={styles.picture} source={require('../../assets/Images/pic1.jpeg')} />
@@ -98,8 +100,8 @@ export function GroupChatScreen(props) {
                     <Image
                         style={{
                             ...styles.msgBubble,
-                            width: itemData.item.text !== null ? 30 + itemData.item.text?.length * 6 : 0,
-                            height: itemData.item.text !== null ? (Math.floor(itemData.item.text?.length / 60) + 1) * 50 : 0
+                            width: itemData.item.text !== null && itemData.item.text !== undefined ? 30 + itemData.item.text?.length * 6 : 0,
+                            height: itemData.item.text !== null && itemData.item.text !== undefined ? (Math.floor(itemData.item.text?.length / 60) + 1) * 50 : 0
                         }}
                         source={require('../../assets/Images/white.png')}
                     />

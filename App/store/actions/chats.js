@@ -2,10 +2,14 @@ import HOST from "../../components/host";
 export const GET_GROUPS = 'GET_GROUPS';
 export const GET_CHATS = 'GET_CHATS';
 
-export const getGroups = () => {
+export const GET_SHOPPING_SESSIONS = 'GET_SHOPPING_SESSIONS';
+export const GET_SESSION_CART = 'GET_SESSION_CART';
+
+
+export const getGroups = (iter = 0) => {
     return async (dispatch) => {
-        const response = await fetch(`${HOST}/get/groups`, {
-            method: 'POST',
+        const response = await fetch(`${HOST}/get/groups/${iter}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -44,15 +48,11 @@ export const getGroups = () => {
 
 export const getChats = (groupId, iter = 0) => {
     return async (dispatch) => {
-        const response = await fetch(`${HOST}/get/groups-chat`, {
-            method: 'POST',
+        const response = await fetch(`${HOST}/get/group/${groupId}/chat/${iter}`, {
+            method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                groupId: groupId,
-                iter: iter
-            })
 
         });
 
@@ -80,6 +80,86 @@ export const getChats = (groupId, iter = 0) => {
         dispatch({
             type: GET_CHATS,
             chats: chats
+        })
+
+
+    }
+}
+
+export const getShoppingSessions = (groupId) => {
+    return async (dispatch) => {
+        const response = await fetch(`${HOST}/get/session/${groupId}/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+        });
+
+        if (!response.ok) {
+            throw new Error('somethings wrong');
+        }
+
+        const resData = await response.json();  //converts response string to js object/array
+
+        console.log(resData);
+        const sessions = [];
+
+        for (const key in resData) {
+            sessions.push({
+                id: resData[key].SESSION_ID,
+                name: resData[key].SESSION_NAME,
+                date: resData[key].DATE_CREATED,
+                duration: resData[key].DURATION,
+                isExpired: resData[key].IS_EXPIRED,
+                discount: resData[key].DISCOUNT,
+                minCost: resData[key].MIN_COST,
+            })
+        }
+
+        dispatch({
+            type: GET_SHOPPING_SESSIONS,
+            sessions: sessions
+        })
+
+
+    }
+}
+
+export const getSessionCart = (sessionId) => {
+    return async (dispatch) => {
+        const response = await fetch(`${HOST}/get/session/cart/${sessionId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+        });
+
+        if (!response.ok) {
+            throw new Error('somethings wrong');
+        }
+
+        const resData = await response.json();  //converts response string to js object/array
+
+        console.log(resData);
+        const cartItems = [];
+
+        for (const key in resData) {
+            cartItems.push({
+                id: resData[key].SESSION_ID,
+                productId: resData[key].PRODUCT_ID,
+                color: resData[key].COLOR,
+                size: resData[key].SIZE,
+                quantity: resData[key].QUANTITY,
+                data: resData[key].DATE,
+                customerId: resData[key].CUSTOMER_ID,
+            })
+        }
+
+        dispatch({
+            type: GET_SESSION_CART,
+            cartItems: cartItems
         })
 
 

@@ -64,7 +64,15 @@ export default function GroupListScreen(props) {
     }
     return (
         <View style={ScreenStyle}>
-            <FlatList data={groups} renderItem={renderItems} />
+            <FlatList
+                data={groups}
+                renderItem={renderItems}
+                ListEmptyComponent={
+                    <View>
+                        <Text>No chats yet!</Text>
+                    </View>
+                }
+            />
         </View>
     )
 }
