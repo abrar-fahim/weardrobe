@@ -21,7 +21,7 @@ const initialState = {
 }
 
 export default function productsReducer(state = initialState, action) {
-     console.log(action.type)
+    console.log(action.type)
     //console.log(state)
 
     switch (action.type) {
@@ -34,9 +34,7 @@ export default function productsReducer(state = initialState, action) {
             };
 
         case GET_PRODUCT_DETAILS:
-            if (state.productDetails?.id === action.product.id) {
-                return state;
-            }
+
             return {
                 ...state,
                 productDetails: action.product
@@ -66,7 +64,7 @@ export default function productsReducer(state = initialState, action) {
                 getProductsFn: action.fn
             }
 
-            case GET_SHOP_FEED: 
+        case GET_SHOP_FEED:
             return {
                 ...state,
                 feed: action.feed

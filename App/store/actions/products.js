@@ -27,7 +27,7 @@ export const fetchProducts = () => {
             const loadedProducts = [];
 
             for (const key in resData) {
-                
+
                 loadedProducts.push({
                     id: resData[key].PRODUCT_ID,
                     name: resData[key].PRODUCT_NAME,
@@ -78,7 +78,8 @@ export const fetchProductDetails = (productId) => {
                 rating: resData.PRODUCT_RATING,
                 colors: resData.COLORS,
                 photos: resData.PHOTOS,
-                ratingCount: resData.RATING_COUNT
+                ratingCount: resData.RATING_COUNT,
+                isFavorite: resData.IS_FAVOURITE
 
             }
             // console.log('acrtion product: ' + product)

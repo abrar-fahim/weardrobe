@@ -34,7 +34,7 @@ export default function SellerScreen(props) {
 
     const products = useSelector(state => state.shops.shopProducts)
     const shopDetails = useSelector(state => state.shops.shopDetails)
-    const myShops = useSelector(state => state.shops.myShops)
+    // const myShops = useSelector(state => state.shops.myShops)
     const categories = useSelector(state => state.shops.categories)
 
     const [isLoading, setIsLoading] = useState(true);
@@ -42,6 +42,7 @@ export default function SellerScreen(props) {
     const followShop = useCallback(async (shopId) => {
         try {
             await dispatch(shopsActions.followShop(shopId))
+            await dispatch(shopsActions.fetchShopDetails(shopId))
         }
         catch (err) {
             console.log(err);
@@ -52,6 +53,7 @@ export default function SellerScreen(props) {
     const unFollowShop = useCallback(async (shopId) => {
         try {
             await dispatch(shopsActions.unFollowShop(shopId))
+            await dispatch(shopsActions.fetchShopDetails(shopId))
         }
         catch (err) {
             console.log(err);
@@ -75,7 +77,7 @@ export default function SellerScreen(props) {
             setIsLoading(true)
             await dispatch(shopsActions.fetchShopProducts(shopId))
             await dispatch(shopsActions.fetchShopDetails(shopId))
-            await dispatch(shopsActions.fetchMyShops())
+            // await dispatch(shopsActions.fetchMyShops())
             await dispatch(shopsActions.fetchShopCategories(shopId))
             setIsLoading(false)
         }
@@ -94,7 +96,7 @@ export default function SellerScreen(props) {
 
     useLayoutEffect(() => {
 
-        const liked = myShops.some(shop => shop.id === shopId) ? true: false
+        const liked = shopDetails?.isFavorite === 1
 
         const heartIcon = liked ? "md-heart" : "md-heart-empty"
 
@@ -110,7 +112,7 @@ export default function SellerScreen(props) {
                     }} />
                     <GenericHeaderButton iconName={heartIcon} onPress={() => {
                         if (!loggedIn) {
-                            
+
                             props.navigation.navigate('Login');
                         }
                         else {
@@ -127,9 +129,9 @@ export default function SellerScreen(props) {
                 </View>
             )
         })
-    }, [shopDetails, loggedIn, myShops])
+    }, [shopDetails, loggedIn])
 
-    
+
 
     if (isLoading) {
         return (

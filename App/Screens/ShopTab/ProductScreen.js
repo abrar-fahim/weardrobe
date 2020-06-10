@@ -52,7 +52,7 @@ export default function ProductScreen(props) {
 
     const reviews = useSelector(state => state.products.productReviews)
 
-    const wishlistItems = useSelector(state => state.wishlist.items)
+    // const wishlistItems = useSelector(state => state.wishlist.items)
 
 
     const [reviewModalVisible, setIsReviewModalVisible] = useState(false);
@@ -78,7 +78,7 @@ export default function ProductScreen(props) {
             if (mounted) {
                 setIsLoading(true)
                 await dispatch(productActions.fetchProductReviews(productId))
-                await dispatch(wishlistActions.fetchItems())
+                // await dispatch(wishlistActions.fetchItems())
                 await dispatch(productActions.fetchProductDetails(productId))
                 setIsLoading(false)
 
@@ -238,6 +238,11 @@ export default function ProductScreen(props) {
         try {
             if (mounted) {
                 await dispatch(wishlistActions.addToWishlist(productId))
+
+                await dispatch(productActions.fetchProductDetails(productId))
+
+
+
                 // setPopupMessage("added to wishlist!")
 
             }
@@ -257,6 +262,8 @@ export default function ProductScreen(props) {
         try {
             if (mounted) {
                 await dispatch(wishlistActions.removeFromWishlist(productId))
+
+                await dispatch(productActions.fetchProductDetails(productId))
                 // setPopupMessage("removed from wishlist!")
             }
         } catch (err) {
@@ -313,7 +320,8 @@ export default function ProductScreen(props) {
 
 
     useLayoutEffect(() => {
-        const inWishlist = wishlistItems.some(item => item.id === productId);
+        console.log(product?.isFavorite)
+        const inWishlist = product?.isFavorite === 1
 
         const heartIcon = inWishlist ? "md-heart" : "md-heart-empty";
         props.navigation.setOptions({
@@ -342,23 +350,138 @@ export default function ProductScreen(props) {
             )
         });
 
-    }, [wishlistItems]);
+    }, [product]);
 
 
 
-    // const renderPic = (itemData) => {
+    const renderPic = (itemData) => {
 
-    //     return (
+        return (
 
-    //         <Image source={itemData.item.image} style={styles.image} resizeMode="cover" resizeMethod="scale" />
+            <Image source={itemData.item.image} style={styles.image} resizeMode="cover" resizeMethod="scale" />
 
 
-    //     )
+        )
 
-    // }
+    }
+    const PictureView = useCallback((props) => {
+        //console.log('pic')
+        return (
+            <ScrollView
+                horizontal={true}
+                pagingEnabled={true}
+                style={styles.imageContainer}
+            >
+                {colorImages.map((item, index) => (
+                    // <Image style={styles.image} {...item.image} transitionDuration={500} />
+
+                    <Image style={styles.image} source={item.image} />
+                    // <Image style={styles.image} source={require('../../assets/Images/groom.jpg')} />
+                ))}
+
+            </ScrollView>
+        )
+
+    }, [colorImages]) //, [colorImages]) a useCallback was here
+
+    const productPage = //useCallback(() => ( 
+        (
+            <View style={{ ...ScreenStyle, ...styles.screen }}>
+
+                <View style={{ padding: 10, justifyContent: 'center', }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 35 }} >{product.name}</Text>
+                </View>
+
+                <View style={styles.imageContainer}>
+
+                    {/* <PictureView /> */}
+                    <FlatList initialNumToRender={8} pagingEnabled={true} horizontal={true} data={colorImages} renderItem={renderPic} />
+
+                </View>
+
+
+                {colors[0] === null | colors[0] === undefined ? null :
+
+                    <View style={styles.colorContainer}>
+                        <Text style={styles.text}> COLOR </Text>
+
+                        <ColorCircles setSelectedColor={setSelectedColor} selectedColor={selectedColor} colors={colors} size={45} />
+
+                    </View>
+                }
+                {sizes[0] === null | sizes[0] === undefined ? null :
+                    <View style={styles.sizeContainer}>
+                        <Text style={styles.text}> SIZE </Text>
+                        <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes} size={45} />
+                    </View>
+                }
+                <TouchableOpacity onPress={() => {
+                    addToCart(selectedColor, selectedSize, 1);
+                    //props.navigation.goBack();
+
+                }} >
+
+                    <View style={styles.cartButtonContainer}>
+
+                        <Text style={styles.cartText}>+ ADD TO CART</Text>
+                        <Text style={styles.priceText}>{"BDT " + product.price}</Text>
+
+                    </View>
+
+                </TouchableOpacity>
+
+                <View style={styles.descriptionContainer}>
+
+                    <Text style={styles.heading}>Description</Text>
+
+
+                    <Text style={{
+                        fontSize: 18,
+                        fontWeight: '400',
+                        color: 'grey'
+                    }}> {product.description} </Text>
+                </View>
+
+                <View style={{ justifyContent: 'flex-start', padding: 10, marginRight: 10, flexDirection: 'row' }}>
+                    <RatingStars rating={product.rating} size={30} />
+                    <Ionicons color={Colors.buttonColor} name="ios-share-alt" size={40} style={{ marginLeft: Dimensions.get('window').width / 1.9 }} />
+                </View>
+
+                {/* <View style={styles.qa}>
+
+            <Text style={styles.heading}>Customer Questions</Text>
+            <Text>{product.qa[0].question.asker}</Text>
+            <Text>{product.qa[0].question.question}</Text>
+            <Text>{product.qa[0].ans}</Text>
+
+        </View> */}
+
+
+                <View style={styles.reviewTitleContainer}>
+                    <Text style={styles.heading}>Reviews ({product.ratingCount})</Text>
+                    <TouchableOpacity onPress={() => {
+                        if (loggedIn) {
+                            setIsReviewModalVisible(true)
+                        }
+                        else {
+                            props.navigation.navigate('Login')
+                        }
+
+
+                    }}>
+                        <Text style={styles.addReview}>{reviews.some(review => review.reviewerId === userId) ? "EDIT REVIEW" : "+ ADD REVIEW"}</Text>
+                    </TouchableOpacity>
+
+                </View>
+            </View>
+        )
+    // , [product, colors, selectedColor, selectedSize, loggedIn, reviews])
 
     const renderReview = (itemData) => {
-        if (itemData.length === 0) {
+        // if (itemData.index === 0) {
+        //     return productPage
+        // }
+        if (itemData.length === 1) {
             return (
                 <Text>No reviews yet!</Text>
             )
@@ -384,145 +507,9 @@ export default function ProductScreen(props) {
     }
 
 
-    const PictureView = useCallback((props) => {
-        //console.log('pic')
-        return (
-            <ScrollView
-                horizontal={true}
-                pagingEnabled={true}
-                style={styles.imageContainer}
-            >
-                {colorImages.map((item, index) => (
-                    // <Image style={styles.image} {...item.image} transitionDuration={500} />
-
-                    <Image style={styles.image} source={item.image} />
-                    // <Image style={styles.image} source={require('../../assets/Images/groom.jpg')} />
-                ))}
-
-            </ScrollView>
-        )
-
-    }, [colorImages]) //, [colorImages]) a useCallback was here
-
-    const productPage = useCallback(() => (
-        <View style={{ ...ScreenStyle, ...styles.screen }}>
-
-            <View style={{ padding: 10, justifyContent: 'center', }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 35 }} >{product.name}</Text>
-            </View>
-
-            <View style={styles.imageContainer}>
-
-                <PictureView />
-                {/* <FlatList initialNumToRender={8} pagingEnabled={true} horizontal={true} data={colorImages} renderItem={renderPic} /> */}
-
-            </View>
 
 
 
-
-
-
-            {colors[0] === null | colors[0] === undefined ? null :
-
-                <View style={styles.colorContainer}>
-
-
-                    <Text style={styles.text}> COLOR </Text>
-
-                    <ColorCircles setSelectedColor={setSelectedColor} selectedColor={selectedColor} colors={colors} size={45} />
-
-
-
-
-                </View>
-            }
-            {sizes[0] === null | sizes[0] === undefined ? null :
-                <View style={styles.sizeContainer}>
-
-
-
-
-
-                    <Text style={styles.text}> SIZE </Text>
-
-
-                    <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes} size={45} />
-
-
-
-
-
-
-
-                </View>
-            }
-
-
-
-
-            <TouchableOpacity onPress={() => {
-                addToCart(selectedColor, selectedSize, 1);
-                //props.navigation.goBack();
-
-            }} >
-
-                <View style={styles.cartButtonContainer}>
-
-                    <Text style={styles.cartText}>+ ADD TO CART</Text>
-                    <Text style={styles.priceText}>{"BDT " + product.price}</Text>
-
-                </View>
-
-
-
-            </TouchableOpacity>
-
-            <View style={styles.descriptionContainer}>
-
-                <Text style={styles.heading}>Description</Text>
-
-
-                <Text style={{
-                    fontSize: 18,
-                    fontWeight: '400',
-                    color: 'grey'
-                }}> {product.description} </Text>
-            </View>
-
-            <View style={{ justifyContent: 'flex-start', padding: 10, marginRight: 10, flexDirection: 'row' }}>
-                <RatingStars rating={product.rating} size={30} />
-                <Ionicons color={Colors.buttonColor} name="ios-share-alt" size={40} style={{ marginLeft: Dimensions.get('window').width / 1.9 }} />
-            </View>
-
-            {/* <View style={styles.qa}>
-
-            <Text style={styles.heading}>Customer Questions</Text>
-            <Text>{product.qa[0].question.asker}</Text>
-            <Text>{product.qa[0].question.question}</Text>
-            <Text>{product.qa[0].ans}</Text>
-
-        </View> */}
-
-
-            <View style={styles.reviewTitleContainer}>
-                <Text style={styles.heading}>Reviews ({product.ratingCount})</Text>
-                <TouchableOpacity onPress={() => {
-                    if (loggedIn) {
-                        setIsReviewModalVisible(true)
-                    }
-                    else {
-                        props.navigation.navigate('Login')
-                    }
-
-
-                }}>
-                    <Text style={styles.addReview}>{reviews.some(review => review.reviewerId === userId) ? "EDIT REVIEW" : "+ ADD REVIEW"}</Text>
-                </TouchableOpacity>
-
-            </View>
-        </View>
-    ), [product, colors, selectedColor, selectedSize, loggedIn, reviews])
 
     if (isLoading) {
         return (
@@ -530,7 +517,7 @@ export default function ProductScreen(props) {
         )
     }
     return (
-        <>
+        <View>
 
             <SmallPopup setMessage={setPopupMessage} message={popupMessage} />
             <Modal
@@ -581,7 +568,7 @@ export default function ProductScreen(props) {
 
 
 
-        </>
+        </View>
     )
 
 

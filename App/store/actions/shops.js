@@ -16,7 +16,7 @@ export const getShops = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-           
+
         });
 
         if (!response.ok) {
@@ -28,14 +28,14 @@ export const getShops = () => {
         console.log(resData);
         const shops = [];
 
-        for(const key in resData) {
+        for (const key in resData) {
             shops.push({
                 id: resData[key].SHOP_ID,
                 name: resData[key].SHOP_NAME,
                 rating: resData[key].SHOP_RATING,
-                logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
+                logo: { uri: `${HOST}/img/temp/` + resData[key].LOGO_URL }
             })
-        } 
+        }
 
         dispatch({
             type: GET_SHOPS,
@@ -104,7 +104,9 @@ export const fetchShopDetails = (shopId) => {
                 throw new Error('wrong!!');
             }
 
+
             const resData = await response.json();
+
 
             const shopDetails = {
                 id: resData.SHOP_ID,
@@ -115,7 +117,9 @@ export const fetchShopDetails = (shopId) => {
                 username: resData.SHOP_USERNAME,
                 category: resData.SHOP_CATEGORY,
                 rating: resData.SHOP_RATING,
-                logo: { uri: `${HOST}/img/temp/` + resData.LOGO_URL }
+                logo: { uri: `${HOST}/img/temp/` + resData.LOGO_URL },
+                isFavorite: resData.IS_FAVOURITE
+
 
             }
             // console.log(loadedProducts);
@@ -139,7 +143,7 @@ export const followShop = (shopId) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-               shopId: shopId
+                shopId: shopId
             })
         });
 
@@ -199,11 +203,11 @@ export const fetchMyShops = () => {
 
         const myShops = []
 
-        for(const key in resData) {
+        for (const key in resData) {
             myShops.push({
                 id: resData[key].SHOP_ID,
                 name: resData[key].SHOP_NAME,
-                rating:resData[key].SHOP_RATING,
+                rating: resData[key].SHOP_RATING,
                 logo: { uri: `${HOST}/img/temp/` + resData[key].LOGO_URL }
             })
         }
@@ -247,7 +251,7 @@ export const unFollowShop = (shopId) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-               shopId: shopId
+                shopId: shopId
             })
         });
 
@@ -305,7 +309,7 @@ export const fetchShopReviews = (shopId) => {
             const resData = await response.json();
             const shopReviews = []
 
-            for(const key in resData) {
+            for (const key in resData) {
                 shopReviews.push({
                     shopId: resData[key].SHOP_ID,
                     reviewerId: resData[key].REVIEWER_ID,
@@ -356,14 +360,14 @@ export const addReview = (shopId, rating, review) => {
                 dispatch(
                     {
                         type: SET_ERROR,
-                        message: 'Added review Successfully!' 
+                        message: 'Added review Successfully!'
                     }
                 )
 
                 dispatch(fetchShopReviews(shopId))
-                
+
             }
-            
+
             else {
                 throw new Error(resData.ERROR)
             }
@@ -400,28 +404,30 @@ export const fetchShopCategories = (shopId) => {
             const resData = await response.json();
             const categories = []
 
-            
-
-            for(const key in resData) {
-
-                let inventory = await JSON.parse(resData[key].INVENTORY)
 
 
-                for(const id in inventory) {
+            for (const key in resData) {
+
+                console.log('before')
+                let inventory = resData[key].INVENTORY
+                console.log('aftet')
+
+
+                for (const id in inventory) {
                     inventory[id] = {
                         ...inventory[id],
                         id: id
-                    } 
+                    }
                 }
 
-                
+
 
                 categories.push({
-            
+
                     id: resData[key].CATEGORY_ID,
                     name: resData[key].CATEGORY_NAME,
                     inventory: inventory
-                    
+
                 })
             }
             // console.log(loadedProducts);

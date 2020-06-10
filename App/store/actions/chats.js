@@ -42,7 +42,7 @@ export const getGroups = () => {
     }
 }
 
-export const getChats = (groupId, iter) => {
+export const getChats = (groupId, iter = 0) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/get/groups-chat`, {
             method: 'POST',
