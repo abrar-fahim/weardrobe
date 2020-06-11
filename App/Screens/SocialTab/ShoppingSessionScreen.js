@@ -13,6 +13,7 @@ import UIButton from '../../components/UIButton'
 
 import * as chatActions from '../../store/actions/chats'
 import { useSelector, useDispatch } from 'react-redux';
+import GenericHeaderButton from '../../components/GenericHeaderButton'
 
 
 
@@ -93,7 +94,14 @@ export default function CartScreen(props) {
     }
     return (
         <View style={ScreenStyle}>
-            <FlatList data={sessionCart} renderItem={renderItems} />
+            <FlatList 
+            data={sessionCart} 
+            renderItem={renderItems}
+            ListEmptyComponent={
+                <Text> no items yet</Text>
+
+            }
+             />
 
 
         </View>

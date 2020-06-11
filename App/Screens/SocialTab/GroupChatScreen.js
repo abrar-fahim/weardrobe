@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useLayoutEffect } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,10 +15,36 @@ import { MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 
 import * as chatActions from '../../store/actions/chats'
 import { useSelector, useDispatch } from 'react-redux';
+import GenericHeaderButton from '../../components/GenericHeaderButton'
 
 export default function GroupTabScreen(props) {
     const groupId = props.route.params?.groupId
     const TopTab = createMaterialTopTabNavigator();
+
+    useLayoutEffect(() => {
+        props.navigation.setOptions(
+            {
+                headerRight: () => (
+                    <View style={styles.headerButtons}>
+                        <GenericHeaderButton
+                            title="GroupInfo" iconName="md-information-circle-outline" onPress={
+                                () => props.navigation.navigate('GroupInfo',
+                                    {
+                                        groupId: groupId
+                                    }
+                                )
+                            } />
+                        <GenericHeaderButton title="NewShoppingSession" iconName="md-cart" onPress={
+                            () => props.navigation.navigate('NewShoppingSession',
+                                {
+                                    groupId: groupId
+                                })
+                        } />
+                    </View>
+                )
+            }
+        )
+    })
     return (
         <TopTab.Navigator
             tabBarOptions={{
@@ -65,6 +91,8 @@ export function GroupChatScreen(props) {
     useEffect(() => {
         loadChats()
     }, [])
+
+
 
 
     function renderItems(itemData) {
@@ -134,6 +162,9 @@ export function GroupChatScreen(props) {
 }
 
 const styles = StyleSheet.create({
+    headerButtons: {
+        flexDirection: 'row'
+    },
     chat: {
         marginVertical: 20,
         marginHorizontal: 10,

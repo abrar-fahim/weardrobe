@@ -180,11 +180,6 @@ export default function ProductScreen(props) {
 
     }, [product, selectedColor])
 
-    // const { colors, sizes  } = getInventory(); // , colorImages
-
-
-    // const { colors, sizes, images, colorImages } = getInventory();
-
 
     const addToCart = useCallback(async (color, size, quantity) => {
         let mounted = true;
@@ -350,7 +345,7 @@ export default function ProductScreen(props) {
             )
         });
 
-    }, [product]);
+    }, [product, loggedIn]);
 
 
 
@@ -385,7 +380,7 @@ export default function ProductScreen(props) {
     }, [colorImages]) //, [colorImages]) a useCallback was here
 
     const productPage = //useCallback(() => ( 
-        (
+        isLoading ? null : (
             <View style={{ ...ScreenStyle, ...styles.screen }}>
 
                 <View style={{ padding: 10, justifyContent: 'center', }}>
@@ -481,7 +476,7 @@ export default function ProductScreen(props) {
         // if (itemData.index === 0) {
         //     return productPage
         // }
-        if (itemData.length === 1) {
+        if (itemData.length === 0) {
             return (
                 <Text>No reviews yet!</Text>
             )
@@ -507,69 +502,69 @@ export default function ProductScreen(props) {
     }
 
 
-
-
-
-
     if (isLoading) {
         return (
             <LoadingScreen />
         )
     }
-    return (
-        <View>
+    else {
+        return (
+            <View>
 
-            <SmallPopup setMessage={setPopupMessage} message={popupMessage} />
-            <Modal
-                isVisible={reviewModalVisible}
-                onBackdropPress={() => (setIsReviewModalVisible(false))}
-                onBackButtonPress={() => (setIsReviewModalVisible(false))}
-                swipeDirection={["up", "down"]}
-                swipeThreshold={100}
-                onSwipeComplete={() => (setIsReviewModalVisible(false))}
-                scrollOffset={50}
-                scrollOffsetMax={500}
+                <SmallPopup setMessage={setPopupMessage} message={popupMessage} />
+                <Modal
+                    isVisible={reviewModalVisible}
+                    onBackdropPress={() => (setIsReviewModalVisible(false))}
+                    onBackButtonPress={() => (setIsReviewModalVisible(false))}
+                    swipeDirection={["up", "down"]}
+                    swipeThreshold={100}
+                    onSwipeComplete={() => (setIsReviewModalVisible(false))}
+                    scrollOffset={50}
+                    scrollOffsetMax={500}
 
-            >
-                <KeyboardAvoidingView
-                // behavior={Platform.OS == "ios" ? "padding" : "height"}
                 >
+                    <KeyboardAvoidingView
+                    // behavior={Platform.OS == "ios" ? "padding" : "height"}
+                    >
 
 
-                    <View style={styles.addReviewContainer}>
+                        <View style={styles.addReviewContainer}>
 
-                        <View style={styles.reviewModalTopHandle} />
+                            <View style={styles.reviewModalTopHandle} />
 
-                        {/* <View style={styles.titleContainer}>
-                            <Text style={styles.title}>ADD REVIEW</Text>
+                            {/* <View style={styles.titleContainer}>
+                                <Text style={styles.title}>ADD REVIEW</Text>
+    
+                            </View> */}
 
-                        </View> */}
 
+                            <View style={styles.starsContainer}>
+                                <TouchableStars rating={rating} setRating={setRating} size={35} />
+                            </View>
+                            <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
+                                onChangeText={(value) => (setReviewText(value))} />
+                            <View style={styles.addReviewButtonContainer}>
+                                <TouchableOpacity onPress={() => {
+                                    addReview(rating, reviewText)
+                                }}>
+                                    <Text style={styles.cartText}>+ ADD REVIEW</Text>
 
-                        <View style={styles.starsContainer}>
-                            <TouchableStars rating={rating} setRating={setRating} size={35} />
+                                </TouchableOpacity>
+                            </View>
+
                         </View>
-                        <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
-                            onChangeText={(value) => (setReviewText(value))} />
-                        <View style={styles.addReviewButtonContainer}>
-                            <TouchableOpacity onPress={() => {
-                                addReview(rating, reviewText)
-                            }}>
-                                <Text style={styles.cartText}>+ ADD REVIEW</Text>
+                    </KeyboardAvoidingView>
 
-                            </TouchableOpacity>
-                        </View>
-
-                    </View>
-                </KeyboardAvoidingView>
-
-            </Modal>
-            <FlatList ListHeaderComponent={productPage} data={reviews} renderItem={renderReview} />
+                </Modal>
+                <FlatList ListHeaderComponent={productPage} data={reviews} renderItem={renderReview} />
 
 
 
-        </View>
-    )
+            </View>
+        )
+    }
+
+
 
 
 

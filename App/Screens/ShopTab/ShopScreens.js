@@ -11,7 +11,6 @@ import ScreenStyle from '../../Styles/ScreenStyle'
 import Colors from '../../Styles/Colors';
 import { useDispatch, useSelector } from 'react-redux';
 import * as productsActions from '../../store/actions/products'
-import { } from 'react-native-paper';
 
 
 
@@ -124,7 +123,7 @@ function ShopScreen({ navigation }) {
         catch (err) {
             console.log(err);
         }
-    }, [])
+    }, [navigation])
 
 
     const setProductFn = useCallback(async (fn) => {
@@ -326,7 +325,7 @@ function ShopScreen({ navigation }) {
 
 
 
-    if (isLoading && !isRefreshing) {
+    if (isLoading) {
         return (
             <View style={styles.centered}>
                 <ActivityIndicator size="large" />

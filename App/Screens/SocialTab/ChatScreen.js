@@ -26,12 +26,16 @@ import SearchButton from '../../components/SearchButton'
 import GroupTabScreen from './GroupChatScreen';
 import ShoppingSessionScreen from './ShoppingSessionScreen';
 
-import GenericHeaderButton from '../../components/GenericHeaderButton'
+
 import NewShoppingSessionScreen from './NewShoppingSessionScreen';
 import HeaderOptions from '../../Styles/HeaderOptions';
 import ScreenStyle from '../../Styles/ScreenStyle';
 import checkLoggedIn from '../../components/CheckLoggedIn'
 import AuthRequiredScreen from '../AuthRequiredScreen'
+import GroupInfoScreen from './GroupInfoScreen';
+
+import * as chatActions from '../../store/actions/chats'
+import { useSelector, useDispatch } from 'react-redux';
 
 
 
@@ -103,13 +107,10 @@ export default function ChatStackScreen({ navigation }) {
 
                     }} />
                     <ChatStack.Screen name="PeopleSearch" component={PeopleSearchScreen} />
-                    <ChatStack.Screen name="GroupTab" component={GroupTabScreen} options={{
-                        headerRight: () => (<GenericHeaderButton title="NewShoppingSession" iconName="md-cart" onPress={
-                            () => navigation.navigate('NewShoppingSession')
-                        } />)
-                    }} />
+                    <ChatStack.Screen name="GroupTab" component={GroupTabScreen} />
                     <ChatStack.Screen name="ShoppingSession" component={ShoppingSessionScreen} />
                     <ChatStack.Screen name="NewShoppingSession" component={NewShoppingSessionScreen} />
+                    <ChatStack.Screen name="GroupInfo" component={GroupInfoScreen} />
                 </>
                 :
                 <ChatStack.Screen name="AuthReq" component={AuthRequiredScreen} />

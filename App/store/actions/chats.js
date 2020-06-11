@@ -4,6 +4,11 @@ export const GET_CHATS = 'GET_CHATS';
 
 export const GET_SHOPPING_SESSIONS = 'GET_SHOPPING_SESSIONS';
 export const GET_SESSION_CART = 'GET_SESSION_CART';
+export const GET_GROUP_PEOPLE = 'GET_GROUP_PEOPLE';
+
+
+
+
 
 
 export const getGroups = (iter = 0) => {
@@ -22,7 +27,7 @@ export const getGroups = (iter = 0) => {
 
         const resData = await response.json();  //converts response string to js object/array
 
-        console.log(resData);
+        // console.log(resData);
         const groups = [];
 
         for (const key in resData) {
@@ -62,7 +67,7 @@ export const getChats = (groupId, iter = 0) => {
 
         const resData = await response.json();  //converts response string to js object/array
 
-        console.log(resData);
+        // console.log(resData);
         const chats = [];
 
         for (const key in resData) {
@@ -102,7 +107,7 @@ export const getShoppingSessions = (groupId) => {
 
         const resData = await response.json();  //converts response string to js object/array
 
-        console.log(resData);
+        // console.log(resData);
         const sessions = [];
 
         for (const key in resData) {
@@ -142,7 +147,7 @@ export const getSessionCart = (sessionId) => {
 
         const resData = await response.json();  //converts response string to js object/array
 
-        console.log(resData);
+        // console.log(resData);
         const cartItems = [];
 
         for (const key in resData) {
@@ -165,5 +170,149 @@ export const getSessionCart = (sessionId) => {
 
     }
 }
+
+export const startSession = (groupId, sessionName) => {
+    return async (dispatch) => {
+        const response = await fetch(`${HOST}/session/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                groupId: groupId,
+                sessionName: sessionName
+            })
+
+        });
+
+        if (!response.ok) {
+            throw new Error('somethings wrong');
+        }
+
+        const resData = await response.json();  //converts response string to js object/array
+
+        console.log(resData);
+
+        if (Object.keys(resData)[0] === 'SUCCESS') {
+
+
+        }
+        else {
+
+        }
+        // const cartItems = [];
+
+        // for (const key in resData) {
+        //     cartItems.push({
+        //         id: resData[key].SESSION_ID,
+        //         productId: resData[key].PRODUCT_ID,
+        //         color: resData[key].COLOR,
+        //         size: resData[key].SIZE,
+        //         quantity: resData[key].QUANTITY,
+        //         data: resData[key].DATE,
+        //         customerId: resData[key].CUSTOMER_ID,
+        //     })
+        // }
+
+        // dispatch({
+        //     type: GET_SESSION_CART,
+        //     cartItems: cartItems
+        // })
+
+
+    }
+}
+
+export const getGroupPeople = (groupId) => {
+    return async (dispatch) => {
+        const response = await fetch(`${HOST}/get/group/${groupId}/participants`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+        });
+
+        if (!response.ok) {
+            throw new Error('somethings wrong');
+        }
+
+        const resData = await response.json();  //converts response string to js object/array
+
+        // console.log(resData);
+        const people = [];
+
+        for (const key in resData) {
+            people.push({
+                id: resData[key].PARTICIPANT_UID,
+                firstName: resData[key].FIRST_NAME,
+                lastName: resData[key].LAST_NAME,
+                profilePic: { uri: `${HOST}/img/temp/` + resData[key].PROFILE_PIC },
+                username: resData[key].USERNAME,
+            })
+        }
+
+        dispatch({
+            type: GET_GROUP_PEOPLE,
+            groupPeople: people
+        })
+
+
+    }
+}
+
+export const createGroup = (participants) => {
+    return async (dispatch) => {
+        const response = await fetch(`${HOST}/create-group`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                participants: participants
+            })
+
+        });
+
+        if (!response.ok) {
+            throw new Error('somethings wrong');
+        }
+
+        const resData = await response.json();  //converts response string to js object/array
+
+        console.log(resData);
+
+        if (Object.keys(resData)[0] === 'SUCCESS') {
+
+
+        }
+        else {
+
+        }
+        // const cartItems = [];
+
+        // for (const key in resData) {
+        //     cartItems.push({
+        //         id: resData[key].SESSION_ID,
+        //         productId: resData[key].PRODUCT_ID,
+        //         color: resData[key].COLOR,
+        //         size: resData[key].SIZE,
+        //         quantity: resData[key].QUANTITY,
+        //         data: resData[key].DATE,
+        //         customerId: resData[key].CUSTOMER_ID,
+        //     })
+        // }
+
+        // dispatch({
+        //     type: GET_SESSION_CART,
+        //     cartItems: cartItems
+        // })
+
+
+    }
+}
+
+
+
 
 

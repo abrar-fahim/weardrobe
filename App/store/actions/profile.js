@@ -7,7 +7,7 @@ export const GET_FOLLOW_COUNTS = 'GET_FOLLOW_COUNTS';
 export const GET_MY_FOLLOWERS = 'GET_MY_FOLLOWERS';
 export const GET_MY_FOLLOWING = 'GET_MY_FOLLOWING';
 
-export const GET_MY_FOLLOW_COUNTS = 'GET_MY_ FOLLOW_COUNTS';
+export const GET_MY_FOLLOW_COUNTS = 'GET_MY_FOLLOW_COUNTS';
 export const GET_FOLLOWERS = 'GET_FOLLOWERS';
 export const GET_FOLLOWING = 'GET_FOLLOWING';
 
@@ -690,7 +690,7 @@ export const getFollowCounts = (userId) => {
     }
 }
 
-export const getMyFollowers = (userId) => {
+export const getMyFollowers = (userId = 0) => {
     return async (dispatch) => {
         try {
 
