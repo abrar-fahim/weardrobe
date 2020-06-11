@@ -1,11 +1,19 @@
 import React, { useEffect, useCallback, useState, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const MySearchBar = (props) => {
     return (
         <View style={styles.searchContainer}>
-            <Ionicons name="md-search" size={25} color="grey" />
+            {props.showBackButton ?
+                <TouchableOpacity style={styles.backButton} onPress={() => {
+                    props.navigation.goBack()
+                }}>
+                    <Ionicons name="md-arrow-back" size={25} color="black" />
+                </TouchableOpacity> : <Ionicons name="md-search" size={25} color="grey" />}
+
+
+
             <TextInput
                 // placeholder="Search for people..."
                 // onChangeText={searchAllUsernames}
@@ -13,7 +21,7 @@ const MySearchBar = (props) => {
 
                 {...props}
                 style={styles.searchBar}
-                
+
 
             />
         </View>
@@ -33,6 +41,11 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         paddingHorizontal: 10,
-        marginLeft: 10
+        marginLeft: 10,
+        height: '100%',
+        width: '100%',
     },
+    backButton: {
+        marginRight: 10
+    }
 })

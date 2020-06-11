@@ -78,6 +78,8 @@ export function CategoriesSearchScreen(props) {
             <MySearchBar
                 placeholder="Search for categories..."
                 onChangeText={searchCategories}
+                navigation={props.navigation}
+                showBackButton={true}
             />
 
             <FlatList

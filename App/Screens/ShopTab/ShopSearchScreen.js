@@ -40,6 +40,8 @@ export default function ShopSearchScreen(props) {
             <MySearchBar
                 placeholder="Search for Shops..."
                 onChangeText={searchAllShops}
+                navigation={props.navigation}
+                showBackButton={true}
             />
 
 

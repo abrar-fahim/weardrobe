@@ -7,7 +7,6 @@ const UIButtonTextStyle = {
     width: 100,
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
     textAlign: 'center'
 }
 

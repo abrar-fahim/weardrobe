@@ -91,7 +91,6 @@ export default function CartScreen(props) {
 
 
     const renderItems = (itemData) => {
-        // console.log(itemData.item)
         return (
 
             <View style={styles.cartItemContainer}>
@@ -112,16 +111,19 @@ export default function CartScreen(props) {
                             <Text style={styles.itemName}> {itemData.item.name}</Text>
                             {/* <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.name}</Text> */}
                             <View style={styles.sizeColorContainer}>
-                                <FontAwesome name="circle" color={itemData.item.color} size={25} />
+                                {itemData.item.color === null ? null : <FontAwesome name="circle" color={itemData.item.color} size={25} />}
 
-
-                                <View style={styles.sizeContainer}>
+                                {itemData.item.size === null ? null : <View style={styles.sizeContainer}>
                                     {/* <FontAwesome name="circle" color="grey" size={25} /> */}
                                     {/* <View style={styles.sizeTextContainer}> */}
                                     <Text style={styles.sizeText}>{itemData.item.size?.toUpperCase()}</Text>
                                     {/* </View> */}
 
-                                </View>
+                                </View>}
+
+
+
+
 
                             </View>
 
@@ -130,7 +132,7 @@ export default function CartScreen(props) {
 
 
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, }}>
-                        
+
                         <Text>{itemData.item.quantity}</Text>
 
                         <View style={{ justifyContent: 'space-evenly', height: '99%' }}>
@@ -207,22 +209,54 @@ export default function CartScreen(props) {
 
     return (
         <View style={{ ...ScreenStyle, ...styles.screen }}>
-            <FlatList data={cartItems} renderItem={renderItems} />
+            <FlatList
+                data={cartItems}
+                renderItem={renderItems}
+                ListFooterComponent={
+                    <View style={styles.summaryContainer}>
+                        <View style={styles.summaryRow}>
+                            <Text style={styles.lightText}>Sub Total</Text>
+                            <Text style={styles.lightText}> BDT {sum}</Text>
+
+                        </View>
+
+                        <View style={styles.summaryRow}>
+                            <Text style={styles.lightText}>VAT</Text>
+                            <Text style={styles.lightText}> BDT {vat}</Text>
+
+                        </View>
+
+                        <View style={styles.summaryRow}>
+                            <Text style={styles.lightText}>Delivery</Text>
+                            <Text style={styles.lightText}> BDT 60</Text>
+
+                        </View>
+
+                        <View style={styles.summaryTotalRow}>
+                            <Text style={styles.totalText}>Total Payable</Text>
+                            <Text style={styles.totalText}>BDT {sum + vat + 60}</Text>
+
+
+                        </View>
+
+
+
+
+
+                    </View>
+                }
+                style={styles.list}
+
+            />
 
 
             <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
                 <View style={styles.buttonContainer}>
-                    <View style={styles.buttonPriceContainer}>
-                        <Text style={styles.buttonText}>SUBTOTAL - BDT {sum}</Text>
-                        <Text style={styles.buttonText}>VAT - BDT {vat}</Text>
-                        <Text style={styles.buttonText}>DELIVERY - BDT 60</Text>
 
-                    </View>
-                    <View style={styles.buttonCheckoutContainer}>
-                        <Text style={styles.buttonTotalText}>BDT {sum + vat + 60}</Text>
 
-                        <Text style={UIButtonTextStyle}>CHECKOUT</Text>
-                    </View>
+
+                    <Text style={UIButtonTextStyle}>CHECKOUT</Text>
+
 
 
 
@@ -243,6 +277,11 @@ export default function CartScreen(props) {
 const styles = StyleSheet.create(
     {
 
+        list: {
+            marginBottom: 20
+
+        },
+
         cartItemContainer: {
             flexDirection: 'row',
             flex: 1,
@@ -262,10 +301,7 @@ const styles = StyleSheet.create(
             marginLeft: 1,
             padding: 8
         },
-        screen: {
-            paddingBottom: 10,
-            padding: 10
-        },
+
         itemName: {
             fontSize: 17,
             fontWeight: '700',
@@ -308,32 +344,48 @@ const styles = StyleSheet.create(
         },
         buttonContainer: {
             backgroundColor: Colors.buttonColor,
-            height: 80,
+            height: 50,
             width: '100%',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             alignItems: 'center',
+
+        },
+        summaryContainer: {
+            padding: 5,
+            borderWidth: 0.5,
+            borderColor: 'grey',
+            marginHorizontal: 10
+
+        },
+        summaryRow: {
             flexDirection: 'row',
-            padding: 5
-
-        },
-        buttonText: {
-            color: 'white',
-            fontSize: 13,
-            fontWeight: '600'
-        },
-        buttonPriceContainer: {
-
-        },
-        buttonCheckoutContainer: {
-            alignItems: 'flex-end',
             justifyContent: 'space-between',
-            height: '80%'
+            marginVertical: 10,
+
+
+
         },
-        buttonTotalText: {
-            fontSize: 25,
-            color: 'white',
-            fontWeight: '800'
+
+        summaryTotalRow: {
+            borderTopColor: 'grey',
+            borderTopWidth: 0.5,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginVertical: 10
+
+
+        },
+        lightText: {
+            fontWeight: '600',
+            color: 'grey'
+        },
+        totalText: {
+            fontWeight: '700',
+            color: 'black',
+            fontSize: 20,
+            marginTop: 10
         }
+
 
     }
 )

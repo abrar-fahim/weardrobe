@@ -120,6 +120,8 @@ export default function NewChatScreen(props) {
             <MySearchBar
                 placeholder="Search for people..."
                 onChangeText={searchAllUsernames}
+                navigation={props.navigation}
+                showBackButton={false}
             />
 
             {/* <View style={styles.searchContainer}>
