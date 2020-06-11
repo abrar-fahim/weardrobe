@@ -32,7 +32,14 @@ import * as shopsActions from '../../store/actions/shops'
 
 export default function ShopsListStack({ navigation }) {
     return (
-        <DrawerStack name="MyShops" navigation={navigation} component={AllShopsScreen} title="Browse Stores" />
+        <DrawerStack
+            name="MyShops"
+            navigation={navigation}
+            component={AllShopsScreen}
+            title="Browse Stores"
+            search='SHOP'
+
+        />
     )
 }
 
@@ -69,10 +76,13 @@ function AllShopsScreen(props) {
 
 export function ShopsListScreen(props) {
 
+    //props = sellers
+
 
     const renderGridItem = (itemData) => {
         return (
             <View style={styles.listItem}>
+                <Text>{itemData.item.name}</Text>
                 <TouchableOpacity onPress={() => (props.navigation.navigate("Seller", {
                     shopId: itemData.item.id
 
@@ -88,7 +98,7 @@ export function ShopsListScreen(props) {
     return (
         <View style={ScreenStyle}>
 
-            <FlatList data={props.sellers} renderItem={renderGridItem} numColumns={1} />
+            <FlatList  data={props.sellers} renderItem={renderGridItem} numColumns={1} {...props} />
 
         </View>
     );

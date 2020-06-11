@@ -18,6 +18,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import GenericHeaderButton from '../../components/GenericHeaderButton';
 import { Ionicons } from '@expo/vector-icons';
 
+import MySearchBar from '../../components/MySearchBar'
+
 
 export default function NewChatScreen(props) {
 
@@ -30,7 +32,7 @@ export default function NewChatScreen(props) {
 
 
 
-    const searchResults = useSelector(state => state.search.usernames)
+    const searchResults = useSelector(state => state.search.people)
 
     const loadMyFollowers = useCallback(async () => {
         try {
@@ -86,7 +88,7 @@ export default function NewChatScreen(props) {
 
         return (
             <View style={styles.listItem}>
-                <Image source={require('../../assets/Images/pic2.jpg')} style={styles.image} />
+                <Image source={itemData.item.profilePic} style={styles.image} />
 
                 <Text style={styles.name} >{itemData.item.firstName}</Text>
 
@@ -106,16 +108,21 @@ export default function NewChatScreen(props) {
 
     }
 
-    const MySearchBar = useCallback((props) => (
-        <SearchBar
-            {...props}
-        />
+    // const MySearchBar = useCallback((props) => (
+    //     <SearchBar
+    //         {...props}
+    //     />
 
-    ))
+    // ))
     return (
         <View style={ScreenStyle}>
 
-            <View style={styles.searchContainer}>
+            <MySearchBar
+                placeholder="Search for people..."
+                onChangeText={searchAllUsernames}
+            />
+
+            {/* <View style={styles.searchContainer}>
                 <Ionicons name="md-search" size={25} color="grey" />
                 <TextInput
                     placeholder="Search for people..."
@@ -123,7 +130,7 @@ export default function NewChatScreen(props) {
                     style={styles.searchBar}
 
                 />
-            </View>
+            </View> */}
 
 
             {/* <SearchBar

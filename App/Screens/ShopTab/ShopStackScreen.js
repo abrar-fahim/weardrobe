@@ -24,6 +24,7 @@ import CategoriesStack, { CategoriesScreen } from './CategoriesScreens'
 import ShopDrawer from './ShopDrawer'
 import ShopStack from './ShopScreens'
 import SearchScreen from './SearchScreen'
+import ShopSearchScreen from './ShopSearchScreen'
 
 import DrawerButton from '../../components/DrawerButton'
 import FavoritesScreen from './FavoritesScreen';
@@ -38,6 +39,7 @@ import ProductListScreen from './ProductListScreen';
 import OrderScreen from './OrderScreen'
 import SellerInfoScreen from './SellerInfoScreen';
 import TestScreen from './TestScreen'
+import { CategoriesSearchScreen } from './CategoriesSearchScreen';
 
 export default function ShopStackScreen({ navigation }) {
     const ShopStack = createStackNavigator();
@@ -57,6 +59,23 @@ export default function ShopStackScreen({ navigation }) {
             <ShopStack.Screen name="Checkout" component={CheckoutScreen} />
             <ShopStack.Screen name="Cart" component={CartScreen} />
             <ShopStack.Screen name="Search" component={SearchScreen}
+                options={{
+                    headerShown: false,
+                    headerTitle: 'asdasd',
+                    animationEnabled: false
+
+                }}
+            />
+            <ShopStack.Screen name="ShopSearch" component={ShopSearchScreen}
+                options={{
+                    headerShown: false,
+                    headerTitle: 'asdasd',
+                    animationEnabled: false
+
+                }}
+            />
+
+            <ShopStack.Screen name="CategorySearch" component={CategoriesSearchScreen}
                 options={{
                     headerShown: false,
                     headerTitle: 'asdasd',

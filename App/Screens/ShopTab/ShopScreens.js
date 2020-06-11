@@ -123,7 +123,7 @@ function ShopScreen({ navigation }) {
         catch (err) {
             console.log(err);
         }
-    }, [navigation])
+    })
 
 
     const setProductFn = useCallback(async (fn) => {

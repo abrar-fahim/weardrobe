@@ -1,17 +1,39 @@
-import { SEARCH_ALL_USERNAMES } from '../actions/search'
+import { SEARCH_PEOPLE, SEARCH_PRODUCTS, SEARCH_SHOPS, SEARCH_CATEGORIES } from '../actions/search'
 
 const initialState = {
-    usernames: []
+    people: [],
+    shops: [],
+    products: [],
+    categories: []
 }
 
 export default function searchReducer(state = initialState, action) {
 
     switch (action.type) {
-        case SEARCH_ALL_USERNAMES:
+        case SEARCH_PEOPLE:
             return {
                 ...state,
-                usernames: action.results
+                people: action.results
             }
+
+        case SEARCH_SHOPS:
+            return {
+                ...state,
+                shops: action.results
+            }
+
+        case SEARCH_PRODUCTS:
+            return {
+                ...state,
+                products: action.results
+            }
+
+        case SEARCH_CATEGORIES:
+            return {
+                ...state,
+                categories: action.results
+            }
+
 
 
     }

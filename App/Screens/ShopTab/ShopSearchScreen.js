@@ -1,9 +1,9 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SearchBar, Overlay } from 'react-native-elements';
 
@@ -11,6 +11,7 @@ import BackButton from '../../components/BackButton'
 import ScreenStyle from '../../Styles/ScreenStyle';
 import ProductList from '../../components/ProductList'
 import PRODUCTS from '../../dummy-data/Products'
+import { ShopsListScreen } from './ShopsListScreen';
 
 import * as searchActions from '../../store/actions/search'
 
@@ -20,38 +21,35 @@ import { Ionicons } from '@expo/vector-icons';
 import MySearchBar from '../../components/MySearchBar';
 
 
-export default function SearchScreen(props) {
+export default function ShopSearchScreen(props) {
 
     const dispatch = useDispatch();
-    const products = useSelector(state => state.search.products)
+    const shops = useSelector(state => state.search.shops)
 
-    const searchAllProducts = useCallback(async (name) => {
+    const searchAllShops = useCallback(async (name) => {
         try {
-            await dispatch(searchActions.searchAllProducts(name))
+            await dispatch(searchActions.searchAllShops(name))
         }
         catch (err) {
             console.log(err)
         }
 
     })
-
-
     return (
-        <View style={{flexDirection: 'column', marginTop: 30, ...ScreenStyle}}>
-            {/* <View style={styles.searchBarContainer}>
-                <BackButton navigation={props.navigation}/>
-                <SearchBar placeholder="Search..." lightTheme={true} containerStyle={{flex: 1}} platform={Platform.OS}/>
-            </View> */}
-
-            <MySearchBar 
-                placeholder="Search for products..."
-                onChangeText={searchAllProducts}
+        <View style={{ flexDirection: 'column', marginTop: 30, ...ScreenStyle }}>
+            <MySearchBar
+                placeholder="Search for Shops..."
+                onChangeText={searchAllShops}
             />
-            
-            
+
+
 
             <View style={styles.productsContainer}>
-                <ProductList navigation={props.navigation} data={products}/>
+                <ShopsListScreen navigation={props.navigation} sellers={shops} ListEmptyComponent={
+                    <View>
+                        <Text>no shops found!</Text>
+                    </View>
+                } />
             </View>
         </View>
     )
@@ -60,10 +58,11 @@ export default function SearchScreen(props) {
 const styles = StyleSheet.create({
     searchBarContainer: {
         flexDirection: 'row',
-        
+
 
     },
     productsContainer: {
-        
+        flex: 1
+
     }
 })

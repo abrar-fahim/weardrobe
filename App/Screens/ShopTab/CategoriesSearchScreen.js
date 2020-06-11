@@ -26,50 +26,24 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import * as productsActions from '../../store/actions/products'
 import * as shopActions from '../../store/actions/shops'
+import * as searchActions from '../../store/actions/search'
+import MySearchBar from '../../components/MySearchBar';
 
-export default function CategoriesStack({ navigation }) {
-    return (
-        <DrawerStack
-            name="Categories"
-            navigation={navigation}
-            component={CategoriesScreen}
-            search="CATEGORY"
-        />
-    )
-
-}
-
-export function CategoriesScreen(props) {
+export function CategoriesSearchScreen(props) {
 
     const dispatch = useDispatch();
 
-    const categories = props.route.params?.shopId ? useSelector(state => state.shops.categories) : useSelector(state => state.products.categories)
+    const categories = useSelector(state => state.search.categories)
 
-    const laodCategories = useCallback(async () => {
-
+    const searchCategories = useCallback(async (name) => {
         try {
-            if (props.route.params?.shopId) {
-
-                await dispatch(shopActions.fetchShopCategories(props.route.params?.shopId))
-            }
-            else {
-                await dispatch(productsActions.fetchCategories())
-            }
-
-
+            await dispatch(searchActions.searchCategories(name))
         }
         catch (err) {
             console.log(err)
         }
-    }, [dispatch])
 
-
-
-
-    useEffect(() => {
-
-        laodCategories()
-    }, [])
+    })
 
     const setProductsFn = useCallback(async (categoryId) => {
         try {
@@ -99,9 +73,22 @@ export function CategoriesScreen(props) {
 
     }
     return (
-        <View style={ScreenStyle}>
+        <View style={styles.screen}>
 
-            <FlatList data={categories} renderItem={renderItems} numColumns={2} />
+            <MySearchBar
+                placeholder="Search for categories..."
+                onChangeText={searchCategories}
+            />
+
+            <FlatList
+                data={categories}
+                renderItem={renderItems}
+                numColumns={2}
+                ListEmptyComponent={
+                <Text>No categories found!</Text>
+                }
+
+            />
 
         </View>
     )
@@ -110,7 +97,9 @@ export function CategoriesScreen(props) {
 
 const styles = StyleSheet.create({
     screen: {
-        flex: 1  //ensures that this view takes all space it can get
+        ...ScreenStyle,
+        flex: 1,  //ensures that this view takes all space it can get
+        paddingTop: 20
     },
 
     gridItem: {
