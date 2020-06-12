@@ -9,24 +9,23 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from './HeaderButton';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { SearchBar, Overlay } from 'react-native-elements';
-import { Drawer } from 'react-native-paper';
-
-import Header from './Header.js'
 
 
 export default function ShopRightButtons(props) {
 
+    const activeSession = useSelector(state => state.social.sessionGroupId)
+
 
     return (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item
+            {activeSession !== null ? <Item
                 title='groupButton'
                 iconName='md-people'
                 //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
                 onPress={() => props.navigation.navigate('GroupShopping')}
-            />
+            /> : null}
             <Item
                 title='CartButton'
                 iconName='md-cart'
@@ -37,8 +36,8 @@ export default function ShopRightButtons(props) {
                 iconName='md-search'
                 //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
                 onPress={() => {
-                    props.search === 'SHOP' ? props.navigation.navigate('ShopSearch') : 
-                    props.search === 'CATEGORY' ?  props.navigation.navigate('CategorySearch')  :  props.navigation.navigate('Search')
+                    props.search === 'SHOP' ? props.navigation.navigate('ShopSearch') :
+                        props.search === 'CATEGORY' ? props.navigation.navigate('CategorySearch') : props.navigation.navigate('Search')
                 }}
             />
 

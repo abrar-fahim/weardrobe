@@ -1,11 +1,15 @@
-import { GET_GROUPS, GET_CHATS, GET_SHOPPING_SESSIONS, GET_SESSION_CART, GET_GROUP_PEOPLE } from '../actions/chats'
+import { GET_GROUPS, GET_CHATS, GET_SHOPPING_SESSIONS, GET_SESSION_CART, GET_GROUP_PEOPLE, SET_SESSION_ACTIVE, UPDATE_SESSION_TIMER } from '../actions/chats'
 
 const initialState = {
     groups: [],
     chats: [],
     sessions: [],
     sessionCart: [],
-    groupPeople: []
+    groupPeople: [],
+    sessionGroupId: null,
+    activeSessionId: null,
+    timeLeft: 0,
+    expiresIn: 0
 }
 
 
@@ -40,6 +44,20 @@ export default function socialReducer(state = initialState, action) {
             return {
                 ...state,
                 groupPeople: action.groupPeople
+            }
+
+        case SET_SESSION_ACTIVE:
+            return {
+                ...state,
+                sessionGroupId: action.sessionGroupId,
+                activeSessionId: action.sessionId,
+                timeLeft: action.timeLeft,
+                expiresIn: action.expiresIn
+            }
+        case UPDATE_SESSION_TIMER:
+            return {
+                ...state,
+                timeLeft: action.timeLeft
             }
     }
 

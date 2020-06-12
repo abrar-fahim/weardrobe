@@ -21,7 +21,7 @@ const initialState = {
 }
 
 export default function productsReducer(state = initialState, action) {
-    console.log(action.type)
+    action.type !== 'UPDATE_SESSION_TIMER' ? console.log(action.type) : null
     //console.log(state)
 
     switch (action.type) {

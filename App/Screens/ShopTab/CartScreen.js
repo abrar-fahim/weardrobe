@@ -99,13 +99,13 @@ export default function CartScreen(props) {
                 <View style={styles.cartItem}>
 
                     <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
-                        productId: itemData.item.id
+                        productId: itemData.item.productId
                     }))}>
                         <Image source={itemData.item.picture} style={{ height: 70, width: 70, borderRadius: 35 }} />
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
-                        productId: itemData.item.id
+                        productId: itemData.item.productId
                     }))}>
                         <View>
                             <Text style={styles.itemName}> {itemData.item.name}</Text>
@@ -138,14 +138,14 @@ export default function CartScreen(props) {
                         <View style={{ justifyContent: 'space-evenly', height: '99%' }}>
                             <TouchableOpacity
                                 onPress={() => {
-                                    updateCart(itemData.item.id, itemData.item.color, itemData.item.size, itemData.item.quantity + 1)
+                                    updateCart(itemData.item.productId, itemData.item.color, itemData.item.size, itemData.item.quantity + 1)
                                 }}>
                                 <AntDesign name="pluscircle" size={35} color='grey' />
                             </TouchableOpacity>
 
                             <TouchableOpacity
                                 onPress={() => {
-                                    updateCart(itemData.item.id, itemData.item.color, itemData.item.size, itemData.item.quantity - 1)
+                                    updateCart(itemData.item.productId, itemData.item.color, itemData.item.size, itemData.item.quantity - 1)
                                 }}
                             >
                                 <AntDesign name="minuscircle" size={35} color='grey' />
@@ -168,7 +168,7 @@ export default function CartScreen(props) {
 
 
                 <TouchableOpacity onPress={() => {
-                    removeFromCart(itemData.item.id, itemData.item.color, itemData.item.size)
+                    removeFromCart(itemData.item.productId, itemData.item.color, itemData.item.size)
                 }}>
                     <View style={{ justifyContent: 'center', marginRight: 0, alignItems: 'center' }}>
                         <Text>X</Text>

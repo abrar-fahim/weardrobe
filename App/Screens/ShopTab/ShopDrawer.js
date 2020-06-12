@@ -40,6 +40,7 @@ export default function ShopDrawer() {
                 labelStyle: {width: 100}
             }}
             
+            
          >
             <ShopDrawer.Screen  name="Shop" component={ShopStack} options={{
                 title: 'Shop'

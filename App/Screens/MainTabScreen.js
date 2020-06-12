@@ -25,12 +25,23 @@ import Colors from '../Styles/Colors'
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as authActions from '../store/actions/auth'
+import * as socialActions from '../store/actions/chats'
 
 export default function HomeScreen(props) {
 
     const dispatch = useDispatch();
 
     const userId = useSelector(state => state.auth.userId);
+
+    const activeSessionId = useSelector(state => state.social.activeSessionId);
+    const sessionGroupId = useSelector(state => state.social.sessionGroupId);
+
+    const timeLeft = useSelector(state => state.social.timeLeft);
+    const expiresIn = useSelector(state => state.social.expiresIn);
+
+
+
+
 
 
     const loadUserId = useCallback(async () => {
@@ -44,14 +55,29 @@ export default function HomeScreen(props) {
         //setIsLoading(false);
     }, [dispatch])
 
-    useEffect(() => {
-        const willFocusSub = props.navigation.addListener(
-            'focus',
-            loadUserId
-        );
+    // useEffect(() => {
+    //     const willFocusSub = props.navigation.addListener(
+    //         'focus',
+    //         loadUserId
+    //     );
 
-        return willFocusSub;
-    }, [loadUserId]);
+    //     return willFocusSub;
+    // }, [loadUserId]);
+
+    useEffect(() => {
+
+
+        const shoppingSessionTimer = setInterval(() => {
+            dispatch(socialActions.updateSessionTimer(expiresIn - Date.now()))
+        }, 1000)
+        return () => clearInterval(shoppingSessionTimer)
+
+
+    }, [expiresIn]);
+
+    useEffect(() => {
+        loadUserId()
+    }, [])
 
 
     const Tab = Platform.OS === 'android' ? createMaterialBottomTabNavigator() : createBottomTabNavigator();

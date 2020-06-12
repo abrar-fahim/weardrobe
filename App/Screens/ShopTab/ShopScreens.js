@@ -11,6 +11,7 @@ import ScreenStyle from '../../Styles/ScreenStyle'
 import Colors from '../../Styles/Colors';
 import { useDispatch, useSelector } from 'react-redux';
 import * as productsActions from '../../store/actions/products'
+import ShoppingSessionTimer from '../../components/ShoppingSessionTimer';
 
 
 
@@ -109,6 +110,8 @@ function ShopScreen({ navigation }) {
     )
 
     const feed = useSelector(state => state.products.feed);
+    const activeSessionId = useSelector(state => state.social.activeSessionId);
+    const sessionGroupId = useSelector(state => state.social.sessionGroupId);
 
 
     const loadFeed = useCallback(async () => {
@@ -142,14 +145,13 @@ function ShopScreen({ navigation }) {
         catch (err) {
             console.log(err)
         }
-    }, [])
+    })
 
 
 
     useEffect(() => {
         loadFeed()
     }, [])
-
 
 
 
@@ -332,8 +334,11 @@ function ShopScreen({ navigation }) {
             </View>
         )
     }
+
     return (
         <View style={ScreenStyle}>
+            <ShoppingSessionTimer />
+
 
             <FlatList
                 data={feed} renderItem={renderShopFeedItems}
@@ -465,6 +470,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    groupShopBanner: {
+        height: 50,
+        width: '100%',
+        backgroundColor: Colors.anotherColor,
+        justifyContent: 'center',
+        padding: 10
     }
 
 

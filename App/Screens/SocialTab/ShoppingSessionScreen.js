@@ -52,23 +52,28 @@ export default function CartScreen(props) {
                         <TouchableOpacity onPress={() => (props.navigation.navigate("Product", {
                             productId: itemData.item.id,
                         }))}>
-                            <Image source={itemData.item.picture} style={{ height: 70, width: 70 }} />
+                            <Image source={itemData.item.picture} style={styles.productPicture} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => (props.navigation.navigate("Product", {
                             productId: itemData.item.id,
                         }))}>
                             <View>
                                 <Text style={{ fontSize: 17, fontWeight: '400' }}> {itemData.item.name}</Text>
-                                <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.id}</Text>
+                                {/* <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.id}</Text> */}
                             </View>
                         </TouchableOpacity>
 
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', width: 70, alignItems: 'center' }}>
                             <Text style={styles.quantity}> Qty: </Text>
-                            <Text>5000</Text>
+                            <Text>{itemData.item.quantity}</Text>
 
                         </View>
+                        <View style={styles.colorSize}>
+                            <Text>{itemData.item.color}</Text>
+                            <Text>{itemData.item.size}</Text>
+                        </View>
+
 
                         <View style={{ justifyContent: 'center', height: 50, marginTop: 37 }}>
 
@@ -94,14 +99,14 @@ export default function CartScreen(props) {
     }
     return (
         <View style={ScreenStyle}>
-            <FlatList 
-            data={sessionCart} 
-            renderItem={renderItems}
-            ListEmptyComponent={
-                <Text> no items yet</Text>
+            <FlatList
+                data={sessionCart}
+                renderItem={renderItems}
+                ListEmptyComponent={
+                    <Text> no items yet</Text>
 
-            }
-             />
+                }
+            />
 
 
         </View>
@@ -134,6 +139,12 @@ const styles = StyleSheet.create(
             marginHorizontal: 10,
             marginVertical: 10
         },
+        productPicture: {
+            backgroundColor: 'purple',
+            height: 70,
+            width: 70,
+            borderRadius: 35
+        },
         picture: {
             height: 30,
             width: 30,
@@ -143,6 +154,9 @@ const styles = StyleSheet.create(
             fontSize: 12,
             fontWeight: '300',
             color: 'grey'
+        },
+        colorSize: {
+
         },
         itemStatus: {
             fontWeight: '200',

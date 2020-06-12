@@ -44,7 +44,7 @@ const formReducer = (state, action) => {
       password: action.value
     };
 
-    console.log(updatedValues)
+    // console.log(updatedValues)
 
 
 

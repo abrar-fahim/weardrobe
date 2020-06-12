@@ -36,6 +36,7 @@ import GroupInfoScreen from './GroupInfoScreen';
 
 import * as chatActions from '../../store/actions/chats'
 import { useSelector, useDispatch } from 'react-redux';
+import PictureUploadScreen from './PictureUploadScreen';
 
 
 
@@ -111,6 +112,7 @@ export default function ChatStackScreen({ navigation }) {
                     <ChatStack.Screen name="ShoppingSession" component={ShoppingSessionScreen} />
                     <ChatStack.Screen name="NewShoppingSession" component={NewShoppingSessionScreen} />
                     <ChatStack.Screen name="GroupInfo" component={GroupInfoScreen} />
+                    <ChatStack.Screen name="PictureUpload" component={PictureUploadScreen} />
                 </>
                 :
                 <ChatStack.Screen name="AuthReq" component={AuthRequiredScreen} />

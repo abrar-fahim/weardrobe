@@ -173,7 +173,8 @@ export const fetchCartItems = () => {
             for (const key in resData) {
                 cartItems.push(
                     {
-                        id: resData[key].PRODUCT_ID,
+                        id: resData[key].PRODUCT_ID + resData[key].COLOR + resData[key].SIZE,
+                        productId: resData[key].PRODUCT_ID,
                         name: resData[key].PRODUCT_NAME,
                         shopname: 'YELLOW',
                         picture: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL},

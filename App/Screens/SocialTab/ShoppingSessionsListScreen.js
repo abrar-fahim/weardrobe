@@ -39,6 +39,18 @@ export default function ShoppingSessionsListScreen(props) {
     }, [])
 
     const renderItems = (itemData) => {
+
+        const date = Date.parse(itemData.item.date);
+
+        const expiresIn = date + itemData.item.duration * 1000;
+
+        const now = Date.now()
+
+        const isActive = now < expiresIn;
+
+        if (isActive) {
+            dispatch(chatActions.setSessionActive(groupId, itemData.item.id, expiresIn - now, expiresIn))
+        }
         return (
 
             <TouchableOpacity onPress={() => (props.navigation.navigate('ShoppingSession', {
@@ -66,8 +78,9 @@ export default function ShoppingSessionsListScreen(props) {
 
 
                         <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.label}> BDT</Text>
-                            <Text> {itemData.item.totalSpent}</Text>
+                            {/* <Text style={styles.label}> BDT</Text>
+                            <Text> {itemData.item.totalSpent}</Text> */}
+                            {isActive ? <Text>Active</Text> : null}
                             <Text style={styles.date}> {itemData.item.date}</Text>
                         </View>
 

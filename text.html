@@ -1,0 +1,85 @@
+
+<!-- test-io-client.html -->
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<h2>Socket.io Test</h2>
+
+<div id="output"></div>
+
+<input id="uploadfile" type="file" name="photo" accept="image/*"/>
+<script>
+
+    function init()
+    {
+        output = document.getElementById("output");
+        testSocket();
+    }
+
+	var socket;
+    function testSocket()
+    {
+		//SOCKET CODE
+
+		// first connect
+        socket = io.connect('http://127.0.0.1:3000/group-chat');
+		// join group first
+		socket.emit('join', '{"groupId": "742348e6-08ce-4e97-99ba-0361e28fc3aa"}');
+
+		//add event listener to listen on messages, 
+		//second parameter is function that will be called when event triggered
+		socket.on('sendMessageGroup', onMessage);
+		//event listener for status
+		socket.on('status', stat);
+		
+
+		function stat(data){
+			//log status
+			console.log(data);
+
+			// code to send a message to the group
+		//	socket.emit('sendMessageGroup', '{"groupId": "742348e6-08ce-4e97-99ba-0361e28fc3aa", "text":"hi"}');
+		}
+
+		//outputting message on screen
+        function onMessage(data)
+        {
+			data = data.text;
+            writeToScreen('<span style="color: blue;">RESPONSE: ' + data+'</span>');
+            //socket.close();
+        }
+
+
+        function writeToScreen(message)
+        {
+            var pre = document.createElement("p");
+            pre.style.wordWrap = "break-word";
+            pre.innerHTML = message;
+            output.appendChild(pre);
+        }
+    }
+
+    window.addEventListener("load", init, false);
+
+	$('#uploadfile').bind('change', function(e){
+		console.log('HERE')
+		var data = e.originalEvent.target.files[0];
+		console.log(data);
+		readThenSendFile(data);      
+	});
+
+	
+	function readThenSendFile(data){
+
+		var reader = new FileReader();
+		reader.onload = function(evt){
+			//code to send photo
+			var msg ={};
+			msg.groupId = '742348e6-08ce-4e97-99ba-0361e28fc3aa';
+			msg.photo = evt.target.result;
+			msg = JSON.stringify(msg);
+			socket.emit('sendMessageGroup', msg);
+		};
+		reader.readAsDataURL(data);
+	}
+
+	</script>
