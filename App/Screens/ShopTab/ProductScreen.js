@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Dimensions, Image, Alert, ActivityIndicator, FlatList, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Dimensions, Image, Alert, ActivityIndicator, FlatList, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import Modal from 'react-native-modal';
 
 // import {Image} from "react-native-expo-image-cache";
@@ -454,20 +454,39 @@ export default function ProductScreen(props) {
 
                 <View style={styles.reviewTitleContainer}>
                     <Text style={styles.heading}>Reviews ({product.ratingCount})</Text>
-                    <TouchableOpacity onPress={() => {
-                        if (loggedIn) {
-                            setIsReviewModalVisible(true)
-                        }
-                        else {
-                            props.navigation.navigate('Login')
-                        }
-
-
-                    }}>
-                        <Text style={styles.addReview}>{reviews.some(review => review.reviewerId === userId) ? "EDIT REVIEW" : "+ ADD REVIEW"}</Text>
-                    </TouchableOpacity>
 
                 </View>
+
+                <View style={styles.addReviewHeading}>
+
+                    <TouchableStars rating={rating} setRating={setRating} size={40} />
+
+
+                    <TouchableOpacity
+                        style={styles.addReviewButtonContainer}
+                        onPress={() => {
+                            if (!loggedIn) {
+                                props.navigation.navigate('Login')
+                            }
+                            else {
+                                addReview(rating, reviewText)
+                            }
+
+                        }}
+                    >
+                        <Text style={styles.addReview}>{reviews.some(review => review.reviewerId === userId) ? "EDIT REVIEW" : "+ ADD REVIEW"}</Text>
+
+
+                    </TouchableOpacity>
+                </View>
+
+
+
+                <KeyboardAvoidingView>
+                    <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
+                        onChangeText={(value) => (setReviewText(value))} />
+                </KeyboardAvoidingView>
+
             </View>
         )
     // , [product, colors, selectedColor, selectedSize, loggedIn, reviews])
@@ -514,23 +533,45 @@ export default function ProductScreen(props) {
                 <SmallPopup setMessage={setPopupMessage} message={popupMessage} />
                 <Modal
                     isVisible={reviewModalVisible}
-                    onBackdropPress={() => (setIsReviewModalVisible(false))}
-                    onBackButtonPress={() => (setIsReviewModalVisible(false))}
-                    swipeDirection={["up", "down"]}
+                    onBackdropPress={() => {
+                        setIsReviewModalVisible(false)
+                        console.log('done')
+                    }}
+                    onBackButtonPress={() => {
+                        setIsReviewModalVisible(false)
+
+                    }
+                    }
+                    // customBackdrop={
+                    //     <TouchableWithoutFeedback onPress={() => {
+                    //         setIsReviewModalVisible(false)
+                    //         console.log('done')
+                    //     }}
+                    //     style={{flex: 1}}
+                    //     >
+                    //         <View style={{ flex: 1, backgroundColor: 'purple' }} />
+                    //     </TouchableWithoutFeedback>
+                    // }
+                    avoidKeyboard={true}
+                    hasBackdrop={true}
+                    backdropOpacity={0.8}
+                    hideModalContentWhileAnimating={true}
+
+                    swipeDirection={["down"]}
                     swipeThreshold={100}
                     onSwipeComplete={() => (setIsReviewModalVisible(false))}
                     scrollOffset={50}
                     scrollOffsetMax={500}
 
                 >
-                    <KeyboardAvoidingView
+                    <View
                     // behavior={Platform.OS == "ios" ? "padding" : "height"}
                     >
 
 
                         <View style={styles.addReviewContainer}>
 
-                            <View style={styles.reviewModalTopHandle} />
+                            {/* <View style={styles.reviewModalTopHandle} /> */}
 
                             {/* <View style={styles.titleContainer}>
                                 <Text style={styles.title}>ADD REVIEW</Text>
@@ -541,6 +582,7 @@ export default function ProductScreen(props) {
                             <View style={styles.starsContainer}>
                                 <TouchableStars rating={rating} setRating={setRating} size={35} />
                             </View>
+
                             <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
                                 onChangeText={(value) => (setReviewText(value))} />
                             <View style={styles.addReviewButtonContainer}>
@@ -553,7 +595,7 @@ export default function ProductScreen(props) {
                             </View>
 
                         </View>
-                    </KeyboardAvoidingView>
+                    </View>
 
                 </Modal>
                 <FlatList ListHeaderComponent={productPage} data={reviews} renderItem={renderReview} />
@@ -646,6 +688,11 @@ const styles = StyleSheet.create({
         elevation: 100
 
     },
+    addReviewHeading: {
+        flexDirection: 'row',
+        padding: 10,
+        alignItems: 'center'
+    },
     reviewTitleContainer: {
         flexDirection: 'row',
         padding: 10,
@@ -653,15 +700,7 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-between'
     },
-    addReview: {
-        color: 'grey',
-        fontWeight: '700',
-        fontSize: 12,
-        flex: 1,
-        width: 100,
-        textAlign: 'right'
-
-    },
+    
     reviewerName: {
         fontWeight: '600',
         color: 'grey',
@@ -679,37 +718,41 @@ const styles = StyleSheet.create({
     },
     addReviewContainer: {
         height: Dimensions.get('window').height * 0.8,
-        maxHeight: 400,
-        width: Dimensions.get('window').width * 0.95,
+        maxHeight: 500,
+        width: Dimensions.get('window').width,
         alignSelf: 'center',
         backgroundColor: 'white',
-        marginTop: Dimensions.get('window').height / 1.8,
-        borderRadius: 20,
+        marginTop: Dimensions.get('window').height,
+        borderRadius: 10,
         padding: 10
 
     },
     addReviewButtonContainer: {
-        backgroundColor: Colors.primaryColor,
-        width: '100%',
-        height: 40,
-        alignItems: 'center',
-        justifyContent: 'center',
+        // backgroundColor: Colors.primaryColor,
+        // width: '100%',
+        // height: 40,
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // borderRadius: 30
+        flex: 1,
+
 
 
     },
     addReviewInput: {
-        backgroundColor: 'lightgrey',
+        // backgroundColor: 'lightgrey',
         height: 100,
-        borderWidth: 1,
-        borderRadius: 10,
-        marginBottom: 20,
-        padding: 10
+        borderWidth: 0.5,
+        borderRadius: 2,
+        margin: 10,
+        padding: 10,
+
     },
     cartText: {
         color: 'white',
         fontWeight: '700',
         fontSize: 15,
-        flex: 1,
+        // flex: 1,
         textAlignVertical: 'center'
 
     },
@@ -762,11 +805,12 @@ const styles = StyleSheet.create({
         marginBottom: 5
 
     },
-    starsContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 20
-    },
+    // starsContainer: {
+    //     // alignItems: 'flex-start',
+    //     // justifyContent: 'center',
+    //     // margin: 20,
+
+    // },
     title: {
         alignSelf: 'center',
         fontSize: 20,

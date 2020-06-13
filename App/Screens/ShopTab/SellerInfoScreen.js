@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useLayoutEffect, useCallback, useState } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, ScrollView, SectionList, Dimensions, TouchableOpacity } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, ScrollView, SectionList, Dimensions, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 
 
 import Modal from 'react-native-modal';
@@ -17,6 +17,7 @@ import RatingStars from '../../components/RatingStars';
 import * as shopsActions from '../../store/actions/shops'
 import { Ionicons } from '@expo/vector-icons';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
+import TouchableStars from '../../components/TouchableStars'
 
 
 
@@ -61,13 +62,13 @@ export default function SellerInfoScreen(props) {
     const loadShopReviews = useCallback(async () => {
         try {
             await dispatch(shopsActions.fetchShopReviews(shopId))
-            
+
         }
         catch (err) {
             console.log(err)
         }
 
-        
+
     })
 
     const addShopReview = useCallback(async (rating, review) => {
@@ -117,31 +118,8 @@ export default function SellerInfoScreen(props) {
 
     }
 
-
-    return (
-        <View style={styles.screen}>
-
-            <Modal
-                isVisible={reviewModalVisible}
-                onBackdropPress={() => (setIsReviewModalVisible(false))}
-            >
-                <View style={styles.addReviewContainer}>
-                    <TextInput placeholder="Rating" keyboardType="decimal-pad" style={styles.addRatingInput}
-                        onChangeText={(value) => (setRating(value))} />
-                    <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
-                        onChangeText={(value) => (setReviewText(value))} />
-                    <View style={styles.addReviewButtonContainer}>
-                        <Button title="Add Review" onPress={() => {
-                            //dispatch addreview action
-                            addShopReview(rating, reviewText)
-                            //setIsReviewModalVisible(false);
-                        }} />
-                    </View>
-
-                </View>
-
-            </Modal>
-
+    const shopDetailsPage = (
+        <View>
             <View>
                 <Text style={styles.title}>Contact Us </Text>
                 <Text>{shopDetails.contact}</Text>
@@ -155,23 +133,50 @@ export default function SellerInfoScreen(props) {
 
             <View style={styles.reviewTitleContainer}>
                 <Text style={styles.heading}>Reviews (1)</Text>
-                <TouchableOpacity onPress={() => {
-                    if (loggedIn) {
-                        setIsReviewModalVisible(true)
-                    }
-                    else {
-                        props.navigation.navigate('Login')
-                    }
-
-
-                }}>
-                    <Text style={styles.addReview}>{shopReviews.some(review => review.reviewerId === userId) ? "EDIT REVIEW" : "+ ADD REVIEW"}</Text>
-                </TouchableOpacity>
 
             </View>
 
+            <View style={styles.addReviewHeading}>
 
-            <FlatList data={shopReviews} renderItem={renderReviews} />
+                <TouchableStars rating={rating} setRating={setRating} size={40} />
+
+
+                <TouchableOpacity
+                    style={styles.addReviewButtonContainer}
+                    onPress={() => {
+                        if (!loggedIn) {
+                            props.navigation.navigate('Login')
+                        }
+                        else {
+                            addShopReview(rating, reviewText)
+                        }
+
+                    }}
+                >
+                    <Text style={styles.addReview}>+ ADD REVIEW</Text>
+
+
+                </TouchableOpacity>
+            </View>
+
+
+
+            <KeyboardAvoidingView>
+                <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
+                    onChangeText={(value) => (setReviewText(value))} />
+            </KeyboardAvoidingView>
+        </View>
+    )
+
+
+    return (
+        <View style={styles.screen}>
+
+
+
+
+
+            <FlatList ListHeaderComponent={shopDetailsPage} data={shopReviews} renderItem={renderReviews} />
 
         </View>
 
@@ -220,7 +225,10 @@ const styles = StyleSheet.create({
     addReview: {
         color: 'grey',
         fontWeight: '700',
-        fontSize: 12
+        fontSize: 15,
+
+        textAlign: 'right'
+
     },
     reviewTitleContainer: {
         flexDirection: 'row',
@@ -250,16 +258,33 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     addReviewButtonContainer: {
+        // backgroundColor: Colors.primaryColor,
+        // width: '100%',
+        // height: 40,
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // borderRadius: 30
+        flex: 1,
+
+
 
     },
     addReviewInput: {
-        marginTop: 20,
-        margin: 20,
-        backgroundColor: 'lightgrey',
-        height: '50%'
+        // backgroundColor: 'lightgrey',
+        height: 100,
+        borderWidth: 0.5,
+        borderRadius: 2,
+        margin: 10,
+        padding: 10,
+
     },
     addRatingInput: {
         margin: 20
 
-    }
+    },
+    addReviewHeading: {
+        flexDirection: 'row',
+        padding: 10,
+        alignItems: 'center',
+    },
 })
