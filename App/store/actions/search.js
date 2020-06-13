@@ -4,6 +4,7 @@ export const SEARCH_PEOPLE = 'SEARCH_PEOPLE'
 export const SEARCH_SHOPS = 'SEARCH_SHOPS'
 export const SEARCH_PRODUCTS = 'SEARCH_PRODUCTS'
 export const SEARCH_CATEGORIES = 'SEARCH_CATEGORIES'
+import * as popupActions from './Popup'
 
 
 export const searchAllUsernames = (username, iter = 0) => {

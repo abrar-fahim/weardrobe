@@ -186,11 +186,13 @@ function ShopScreen({ navigation }) {
     const render3by3GridItem = (itemData) => {
         return (
             <View style={styles.bigGridItem}>
-                <TouchableOpacity onPress={() => {
-                    navigation.navigate('Product', {
-                        productId: itemData.item.id
-                    })
-                }}>
+                <TouchableOpacity
+                    style={styles.bigGridTouch}
+                    onPress={() => {
+                        navigation.navigate('Product', {
+                            productId: itemData.item.id
+                        })
+                    }}>
 
                     <Image source={itemData.item.image} style={styles.bigGridImage} resizeMode="cover" />
                     <Text style={styles.bigGridLabel}>{itemData.item.name}</Text>
@@ -439,7 +441,8 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 500,
         backgroundColor: Colors.accentColor,
-        padding: 15
+        padding: 15,
+        marginVertical: 40
 
     },
     bigGridRow: {
@@ -449,6 +452,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
 
+    },
+    bigGridTouch: {
+        margin: 0,
+        padding: 0
     },
     bigGridImage: {
         height: Dimensions.get('window').width / 4,
@@ -460,11 +467,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontWeight: '500',
         marginTop: 10,
-        maxWidth: Dimensions.get('window').width / 4
+        flex: 1,
+        
+        maxHeight: 50
     },
     bigGridItem: {
+        flex: 1,
         margin: 10,
-        alignItems: 'center'
+        alignItems: 'center',
+        
     },
     centered: {
         flex: 1,

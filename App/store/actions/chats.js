@@ -9,6 +9,7 @@ export const GET_GROUP_PEOPLE = 'GET_GROUP_PEOPLE';
 
 export const SET_SESSION_ACTIVE = 'SET_SESSION_ACTIVE';
 export const UPDATE_SESSION_TIMER = 'UPDATE_SESSION_TIMER';
+import * as popupActions from './Popup'
 
 let socket = null;
 
@@ -28,30 +29,39 @@ export const getGroups = (iter = 0) => {
         });
 
         if (!response.ok) {
-            throw new Error('somethings wrong');
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
         }
 
         const resData = await response.json();  //converts response string to js object/array
 
         // console.log(resData);
-        const groups = [];
 
-        for (const key in resData) {
-            groups.push({
-                id: resData[key].GROUP_ID,
-                createdById: resData[key].CREATED_BY_UID,
-                name: resData[key].GROUP_NAME,
-                startedAt: resData[key].STARTED_AT,
-                score: resData[key].SCORE,
-                participantId: resData[key].PARTICIPANT_UID,
-                // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
+        if (Object.keys(resData)[0] !== 'ERROR') {
+            const groups = [];
+
+            for (const key in resData) {
+                groups.push({
+                    id: resData[key].GROUP_ID,
+                    createdById: resData[key].CREATED_BY_UID,
+                    name: resData[key].GROUP_NAME,
+                    startedAt: resData[key].STARTED_AT,
+                    score: resData[key].SCORE,
+                    participantId: resData[key].PARTICIPANT_UID,
+                    // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
+                })
+            }
+
+            dispatch({
+                type: GET_GROUPS,
+                groups: groups
             })
         }
 
-        dispatch({
-            type: GET_GROUPS,
-            groups: groups
-        })
+        else {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
+        }
+
+
 
 
     }
@@ -68,32 +78,39 @@ export const getChats = (groupId, iter = 0) => {
         });
 
         if (!response.ok) {
-            throw new Error('somethings wrong');
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
         }
 
         const resData = await response.json();  //converts response string to js object/array
 
-        // console.log(resData);
-        const chats = [];
+        if (Object.keys(resData)[0] !== 'ERROR') {
+            const chats = [];
 
-        for (const key in resData) {
-            chats.push({
-                id: resData[key].SENDER_UID + resData[key].SENT_AT,
-                senderId: resData[key].SENDER_UID,
-                groupId: resData[key].GROUP_ID,
-                text: resData[key].TEXT,
-                photo: { uri: `${HOST}/img/temp/` + resData[key].PHOTO },
-                time: resData[key].SENT_AT,
-                // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
+            for (const key in resData) {
+                chats.push({
+                    id: resData[key].SENDER_UID + resData[key].SENT_AT,
+                    senderId: resData[key].SENDER_UID,
+                    groupId: resData[key].GROUP_ID,
+                    text: resData[key].TEXT,
+                    photo: { uri: `${HOST}/img/temp/` + resData[key].PHOTO },
+                    time: resData[key].SENT_AT,
+                    // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
+                })
+            }
+
+            // chats.reverse()
+
+            dispatch({
+                type: GET_CHATS,
+                chats: chats
             })
         }
+        else {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
+        }
 
-        // chats.reverse()
+        // console.log(resData);
 
-        dispatch({
-            type: GET_CHATS,
-            chats: chats
-        })
 
 
     }
@@ -110,30 +127,36 @@ export const getShoppingSessions = (groupId) => {
         });
 
         if (!response.ok) {
-            throw new Error('somethings wrong');
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
         }
 
         const resData = await response.json();  //converts response string to js object/array
 
         // console.log(resData);
-        const sessions = [];
+        if (Object.keys(resData)[0] !== 'ERROR') {
+            const sessions = [];
 
-        for (const key in resData) {
-            sessions.push({
-                id: resData[key].SESSION_ID,
-                name: resData[key].SESSION_NAME,
-                date: resData[key].DATE_CREATED,
-                duration: resData[key].DURATION,      //assuming duration is in min
-                isExpired: resData[key].IS_EXPIRED,
-                discount: resData[key].DISCOUNT,
-                minCost: resData[key].MIN_COST,
+            for (const key in resData) {
+                sessions.push({
+                    id: resData[key].SESSION_ID,
+                    name: resData[key].SESSION_NAME,
+                    date: resData[key].DATE_CREATED,
+                    duration: resData[key].DURATION,      //assuming duration is in min
+                    isExpired: resData[key].IS_EXPIRED,
+                    discount: resData[key].DISCOUNT,
+                    minCost: resData[key].MIN_COST,
+                })
+            }
+
+            dispatch({
+                type: GET_SHOPPING_SESSIONS,
+                sessions: sessions
             })
-        }
 
-        dispatch({
-            type: GET_SHOPPING_SESSIONS,
-            sessions: sessions
-        })
+        }
+        else {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
+        }
 
 
     }
@@ -150,30 +173,36 @@ export const getSessionCart = (sessionId) => {
         });
 
         if (!response.ok) {
-            throw new Error('somethings wrong');
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
         }
 
         const resData = await response.json();  //converts response string to js object/array
 
         // console.log(resData);
-        const cartItems = [];
+        if (Object.keys(resData)[0] !== 'ERROR') {
+            const cartItems = [];
 
-        for (const key in resData) {
-            cartItems.push({
-                id: resData[key].SESSION_ID,
-                productId: resData[key].PRODUCT_ID,
-                color: resData[key].COLOR,
-                size: resData[key].SIZE,
-                quantity: resData[key].QUANTITY,
-                data: resData[key].DATE,
-                customerId: resData[key].CUSTOMER_ID,
+            for (const key in resData) {
+                cartItems.push({
+                    id: resData[key].SESSION_ID,
+                    productId: resData[key].PRODUCT_ID,
+                    color: resData[key].COLOR,
+                    size: resData[key].SIZE,
+                    quantity: resData[key].QUANTITY,
+                    data: resData[key].DATE,
+                    customerId: resData[key].CUSTOMER_ID,
+                })
+            }
+
+            dispatch({
+                type: GET_SESSION_CART,
+                cartItems: cartItems
             })
         }
+        else {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
+        }
 
-        dispatch({
-            type: GET_SESSION_CART,
-            cartItems: cartItems
-        })
 
 
     }
@@ -227,7 +256,7 @@ export const startSession = (groupId, sessionName) => {
         });
 
         if (!response.ok) {
-            throw new Error('somethings wrong');
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
         }
 
         const resData = await response.json();  //converts response string to js object/array
@@ -248,7 +277,7 @@ export const startSession = (groupId, sessionName) => {
 
         }
         else {
-
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
         }
 
     }
@@ -265,28 +294,34 @@ export const getGroupPeople = (groupId) => {
         });
 
         if (!response.ok) {
-            throw new Error('somethings wrong');
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
         }
 
         const resData = await response.json();  //converts response string to js object/array
 
         // console.log(resData);
-        const people = [];
+        if (Object.keys(resData)[0] !== 'ERROR') {
+            const people = [];
 
-        for (const key in resData) {
-            people.push({
-                id: resData[key].PARTICIPANT_UID,
-                firstName: resData[key].FIRST_NAME,
-                lastName: resData[key].LAST_NAME,
-                profilePic: { uri: `${HOST}/img/temp/` + resData[key].PROFILE_PIC },
-                username: resData[key].USERNAME,
+            for (const key in resData) {
+                people.push({
+                    id: resData[key].PARTICIPANT_UID,
+                    firstName: resData[key].FIRST_NAME,
+                    lastName: resData[key].LAST_NAME,
+                    profilePic: { uri: `${HOST}/img/temp/` + resData[key].PROFILE_PIC },
+                    username: resData[key].USERNAME,
+                })
+            }
+
+            dispatch({
+                type: GET_GROUP_PEOPLE,
+                groupPeople: people
             })
         }
+        else {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
+        }
 
-        dispatch({
-            type: GET_GROUP_PEOPLE,
-            groupPeople: people
-        })
 
 
     }
@@ -306,18 +341,20 @@ export const createGroup = (participants) => {
         });
 
         if (!response.ok) {
-            throw new Error('somethings wrong');
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
         }
 
         const resData = await response.json();  //converts response string to js object/array
 
         console.log(resData);
 
+
         if (Object.keys(resData)[0] === 'SUCCESS') {
 
 
         }
         else {
+            dispatch(popupActions.setMessage('Couldn\'t create group', true))
 
         }
         // const cartItems = [];

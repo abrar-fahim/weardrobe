@@ -27,6 +27,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as authActions from '../store/actions/auth'
 import * as socialActions from '../store/actions/chats'
 
+import SmallPopup from '../components/SmallPopup'
+
 export default function HomeScreen(props) {
 
     const dispatch = useDispatch();
@@ -38,6 +40,9 @@ export default function HomeScreen(props) {
 
     const timeLeft = useSelector(state => state.social.timeLeft);
     const expiresIn = useSelector(state => state.social.expiresIn);
+
+    const popupMessage = useSelector(state => state.popup.message);
+    const popupIsError = useSelector(state => state.popup.isError);
 
 
 
@@ -83,52 +88,55 @@ export default function HomeScreen(props) {
     const Tab = Platform.OS === 'android' ? createMaterialBottomTabNavigator() : createBottomTabNavigator();
     //const Tab = createMaterialTopTabNavigator();
     return (
-        <Tab.Navigator
-            iconName='camera'
-            tabBarOptions={{ activeTintColor: Colors.tabBarActiveTintColor }}
-            screenOptions={
-                ({ route }) => ({
-                    tabBarIcon: ({ focused, color, size }) => {
-                        let iconName = 'ios-star';
+        <>
+            <SmallPopup message={popupMessage} isError={popupIsError}/>
+            <Tab.Navigator
+                iconName='camera'
+                tabBarOptions={{ activeTintColor: Colors.tabBarActiveTintColor }}
+                screenOptions={
+                    ({ route }) => ({
+                        tabBarIcon: ({ focused, color, size }) => {
+                            let iconName = 'ios-star';
 
-                        if (route.name === 'Magazine') {
-                            iconName = 'wallpaper';
-                        }
-                        else if (route.name === 'Studio') {
-                            iconName = 'camera';
-                        }
-                        else if (route.name === 'Shop') {
-                            iconName = 'shop';
-                        }
+                            if (route.name === 'Magazine') {
+                                iconName = 'wallpaper';
+                            }
+                            else if (route.name === 'Studio') {
+                                iconName = 'camera';
+                            }
+                            else if (route.name === 'Shop') {
+                                iconName = 'shop';
+                            }
 
-                        else if (route.name === 'Chat') {
-                            iconName = 'chat';
-                        }
-                        else if (route.name === 'Weardrobe') {
-                            iconName = 'face';
-                        }
-                        else if (route.name === 'Notifications') {
-                            iconName = 'notifications';
-                        }
-                        else {
-                            iconName = 'ios-star';
-                        }
+                            else if (route.name === 'Chat') {
+                                iconName = 'chat';
+                            }
+                            else if (route.name === 'Weardrobe') {
+                                iconName = 'face';
+                            }
+                            else if (route.name === 'Notifications') {
+                                iconName = 'notifications';
+                            }
+                            else {
+                                iconName = 'ios-star';
+                            }
 
-                        return <MaterialIcons name={iconName} size={25} color={color} />;
-                    },
-                    tabBarColor: Colors.tabBarColor
+                            return <MaterialIcons name={iconName} size={25} color={color} />;
+                        },
+                        tabBarColor: Colors.tabBarColor
 
 
-                })
+                    })
 
-            }
-        >
-            <Tab.Screen name="Magazine" component={MagazineStackScreen} />
-            <Tab.Screen name="Studio" component={StudioStackScreen} />
-            <Tab.Screen name="Shop" component={ShopStackScreen} />
-            <Tab.Screen name="Chat" component={ChatStackScreen} />
-            <Tab.Screen name="Weardrobe" component={ProfileStackScreen} />
-            <Tab.Screen name="Notifications" component={NotificationsStackScreen} />
-        </Tab.Navigator>
+                }
+            >
+                <Tab.Screen name="Magazine" component={MagazineStackScreen} />
+                <Tab.Screen name="Studio" component={StudioStackScreen} />
+                <Tab.Screen name="Shop" component={ShopStackScreen} />
+                <Tab.Screen name="Chat" component={ChatStackScreen} />
+                <Tab.Screen name="Weardrobe" component={ProfileStackScreen} />
+                <Tab.Screen name="Notifications" component={NotificationsStackScreen} />
+            </Tab.Navigator>
+        </>
     );
 }

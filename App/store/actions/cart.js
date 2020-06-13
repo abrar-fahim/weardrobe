@@ -3,6 +3,7 @@ export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 export const GET_CART_ITEMS = 'GET_CART_ITEMS';
 export const UPDATE_CART = 'UPDATE_CART'
 import HOST from "../../components/host";
+import * as popupActions from './Popup'
 
 export const addToCart = (productId, color, size, quantity) => {
     return async (dispatch) => {
@@ -41,10 +42,7 @@ export const addToCart = (productId, color, size, quantity) => {
                 })
             }
             else {
-                dispatch({
-                    type: ADD_TO_CART,
-                    message: 'Failed to add to cart'
-                })
+                dispatch(popupActions.setMessage('Failed to add to cart', true))
             }
 
         }
@@ -55,7 +53,7 @@ export const addToCart = (productId, color, size, quantity) => {
 
 export const removeFromCart = (productId, color, size) => {
 
-   return async (dispatch) => {
+    return async (dispatch) => {
         const response = await fetch(`${HOST}/delete/cart`, {
             method: 'POST',
             headers: {
@@ -69,7 +67,8 @@ export const removeFromCart = (productId, color, size) => {
         });
 
         if (!response.ok) {
-            throw new Error('somethings wrong');
+
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
         }
 
         const resData = await response.json();  //converts response string to js object/array
@@ -91,10 +90,7 @@ export const removeFromCart = (productId, color, size) => {
                 })
             }
             else {
-                dispatch({
-                    type: REMOVE_FROM_CART,
-                    message: 'Failed to remove from cart'
-                })
+                dispatch(popupActions.setMessage("Couldn't remove from cart", true))
             }
 
         }
@@ -106,55 +102,55 @@ export const removeFromCart = (productId, color, size) => {
 export const updateCart = (productId, color, size, quantity) => {
 
     return async (dispatch) => {
-         const response = await fetch(`${HOST}/update/cart`, {
-             method: 'POST',
-             headers: {
-                 'Content-Type': 'application/json'
-             },
-             body: JSON.stringify({
-                 productId: productId,
-                 color: color,
-                 size: size,
-                 quantity: quantity
-             })
-         });
- 
-         if (!response.ok) {
-             throw new Error('somethings wrong');
-         }
- 
-         const resData = await response.json();  //converts response string to js object/array
- 
-         console.log(resData);
+        const response = await fetch(`${HOST}/update/cart`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                productId: productId,
+                color: color,
+                size: size,
+                quantity: quantity
+            })
+        });
 
-         dispatch(fetchCartItems())
-         
- 
-         if (Object.keys(resData)[0] === 'SUCCESS') {
-             dispatch({
-                 type: UPDATE_CART,
-                 message: 'Removed from cart!'
-             })
-         }
-         else if (Object.keys(resData)[0] === 'ERROR') {
-             if (resData.ERROR === 'UNAUTHORIZED') {
-                 dispatch({
-                     type: UPDATE_CART,
-                     message: 'Log in first!'
-                 })
-             }
-             else {
-                 dispatch({
-                     type: UPDATE_CART,
-                     message: 'Failed to remove from cart'
-                 })
-             }
- 
-         }
- 
- 
-     }
- }
+        if (!response.ok) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
+        }
+
+        const resData = await response.json();  //converts response string to js object/array
+
+        console.log(resData);
+
+        dispatch(fetchCartItems())
+
+
+        if (Object.keys(resData)[0] === 'SUCCESS') {
+            dispatch({
+                type: UPDATE_CART,
+                message: 'Removed from cart!'
+            })
+        }
+        else if (Object.keys(resData)[0] === 'ERROR') {
+            if (resData.ERROR === 'UNAUTHORIZED') {
+                dispatch({
+                    type: UPDATE_CART,
+                    message: 'Log in first!'
+                })
+            }
+            else {
+                dispatch({
+                    type: UPDATE_CART,
+                    message: 'Failed to remove from cart'
+                })
+            }
+
+        }
+
+
+    }
+}
 
 export const fetchCartItems = () => {
 
@@ -167,40 +163,48 @@ export const fetchCartItems = () => {
             })
 
             const resData = await response.json();
-            const cartItems = [];
+
+            if (Object.keys(resData)[0] !== 'ERROR') {
+                const cartItems = [];
 
 
-            for (const key in resData) {
-                cartItems.push(
-                    {
-                        id: resData[key].PRODUCT_ID + resData[key].COLOR + resData[key].SIZE,
-                        productId: resData[key].PRODUCT_ID,
-                        name: resData[key].PRODUCT_NAME,
-                        shopname: 'YELLOW',
-                        picture: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL},
-                        price: resData[key].PRICE,
-                        discount: resData[key].DISCOUNT,
-                        color: resData[key].COLOR,
-                        quantity: resData[key].QUANTITY,
-                        data: resData[key].DATE,
-                        size: resData[key].SIZE
+                for (const key in resData) {
+                    cartItems.push(
+                        {
+                            id: resData[key].PRODUCT_ID + resData[key].COLOR + resData[key].SIZE,
+                            productId: resData[key].PRODUCT_ID,
+                            name: resData[key].PRODUCT_NAME,
+                            shopname: 'YELLOW',
+                            picture: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL },
+                            price: resData[key].PRICE,
+                            discount: resData[key].DISCOUNT,
+                            color: resData[key].COLOR,
+                            quantity: resData[key].QUANTITY,
+                            data: resData[key].DATE,
+                            size: resData[key].SIZE
 
 
-                    }
-                )
+                        }
+                    )
+                }
+
+                // console.log('in action');
+                // console.log(cartItems)
+
+                dispatch({
+                    type: GET_CART_ITEMS,
+                    items: cartItems
+                })
             }
 
-            // console.log('in action');
-            // console.log(cartItems)
+            else {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
+            }
 
-            dispatch({
-                type: GET_CART_ITEMS,
-                items: cartItems
-            })
 
 
         } catch (err) {
-            throw new Error(err.message)
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
         }
     }
 

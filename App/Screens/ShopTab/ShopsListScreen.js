@@ -82,7 +82,7 @@ export function ShopsListScreen(props) {
     const renderGridItem = (itemData) => {
         return (
             <View style={styles.listItem}>
-                <Text>{itemData.item.name}</Text>
+                <Text style={styles.name}>{itemData.item.name}</Text>
                 <TouchableOpacity onPress={() => (props.navigation.navigate("Seller", {
                     shopId: itemData.item.id
 
@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
     listItem: {
         margin: 15,
         width: '90%',
-        marginVertical: 5,
         height: 120
 
     },
@@ -123,6 +122,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         marginBottom: 36
+    },
+    name: {
+        fontWeight: '700',
+        fontSize: 15,
+        margin: 5
     }
 })
 

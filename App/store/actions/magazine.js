@@ -13,6 +13,7 @@ export const GET_USER_BLOG_REACTS = 'GET_USER_BLOG_REACTS';
 export const GET_USER_BLOG_COMMENTS = 'GET_USER_BLOG_COMMENTS';
 
 import * as profileActions from './profile'
+import * as popupActions from './Popup'
 
 export const fetchShopPosts = () => {
     return async (dispatch) => {
@@ -26,7 +27,7 @@ export const fetchShopPosts = () => {
             });
 
             if (!response.ok) {
-                throw new Error('wrong!!');
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
             }
 
             const resData = await response.json();
@@ -65,6 +66,7 @@ export const fetchShopPosts = () => {
             }
 
             else {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error(resData.ERROR)
             }
 
@@ -72,6 +74,7 @@ export const fetchShopPosts = () => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -91,6 +94,7 @@ export const fetchFriendsPosts = () => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -127,6 +131,7 @@ export const fetchFriendsPosts = () => {
             }
 
             else {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error(resData.ERROR)
             }
 
@@ -134,6 +139,7 @@ export const fetchFriendsPosts = () => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -154,6 +160,7 @@ export const fetchShopPostComments = (postId, iter) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -185,6 +192,7 @@ export const fetchShopPostComments = (postId, iter) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -204,6 +212,7 @@ export const fetchShopPostReacts = (postId) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -235,6 +244,7 @@ export const fetchShopPostReacts = (postId) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -258,6 +268,7 @@ export const reactUserPost = (postId) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -277,6 +288,7 @@ export const reactUserPost = (postId) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -301,6 +313,7 @@ export const unReactUserPost = (postId) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -320,6 +333,7 @@ export const unReactUserPost = (postId) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -346,6 +360,7 @@ export const reactShopPost = (postId) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -368,6 +383,7 @@ export const reactShopPost = (postId) => {
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             throw new Error(err)
         }
 
@@ -389,6 +405,7 @@ export const unReactShopPost = (postId) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -408,6 +425,7 @@ export const unReactShopPost = (postId) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -434,6 +452,7 @@ export const commentShopPost = (postId, comment) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -453,6 +472,7 @@ export const commentShopPost = (postId, comment) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -478,6 +498,7 @@ export const deleteCommentShopPost = (commentId, postId) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -497,6 +518,7 @@ export const deleteCommentShopPost = (commentId, postId) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -524,6 +546,7 @@ export const commentUserPost = (postId, comment) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -543,6 +566,7 @@ export const commentUserPost = (postId, comment) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -568,6 +592,7 @@ export const deleteCommentUserPost = (commentId, postId) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -587,6 +612,7 @@ export const deleteCommentUserPost = (commentId, postId) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -609,7 +635,9 @@ export const fetchUserPostComments = (postId) => {
                 }
             });
 
+
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -634,6 +662,7 @@ export const fetchUserPostComments = (postId) => {
             }
 
             else {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error(resData.ERROR)
             }
 
@@ -641,6 +670,7 @@ export const fetchUserPostComments = (postId) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -660,6 +690,7 @@ export const fetchUserPostReacts = (postId) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -684,6 +715,7 @@ export const fetchUserPostReacts = (postId) => {
             }
 
             else {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error(resData.ERROR)
             }
 
@@ -691,6 +723,7 @@ export const fetchUserPostReacts = (postId) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -711,6 +744,7 @@ export const fetchUserBlogComments = (blogId, iter = 0) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -736,6 +770,7 @@ export const fetchUserBlogComments = (blogId, iter = 0) => {
             }
 
             else {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error(resData.ERROR)
             }
 
@@ -743,6 +778,7 @@ export const fetchUserBlogComments = (blogId, iter = 0) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -762,6 +798,7 @@ export const fetchUserBlogReacts = (blogId) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -793,6 +830,7 @@ export const fetchUserBlogReacts = (blogId) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -816,6 +854,7 @@ export const reactUserBlog = (blogId) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -835,6 +874,7 @@ export const reactUserBlog = (blogId) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -859,6 +899,7 @@ export const unReactUserBlog = (blogId) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -878,6 +919,7 @@ export const unReactUserBlog = (blogId) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -904,6 +946,7 @@ export const commentUserBlog = (blogId, comment) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -923,6 +966,7 @@ export const commentUserBlog = (blogId, comment) => {
 
         }
         catch (err) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -947,6 +991,7 @@ export const deleteCommentUserBlog = (commentId) => {
             });
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('wrong!!');
             }
 
@@ -959,6 +1004,7 @@ export const deleteCommentUserBlog = (commentId) => {
             }
 
             else {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error(resData.ERROR)
             }
 
@@ -996,6 +1042,7 @@ export const createUserPost = (formData) => {
 
 
             if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error('response not ok');
             }
 
@@ -1010,6 +1057,7 @@ export const createUserPost = (formData) => {
             }
 
             else {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error(resData.ERROR)
             }
 

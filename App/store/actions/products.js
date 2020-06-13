@@ -7,6 +7,7 @@ export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const GET_PRODUCTS_FN = 'GET_PRODUCTS_FN'
 export const GET_SHOP_FEED = 'GET_SHOP_FEED';
 import HOST from "../../components/host";
+import * as popupActions from './Popup'
 
 export const fetchProducts = () => {
     return async (dispatch) => {

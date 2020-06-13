@@ -120,16 +120,22 @@ export default function SellerInfoScreen(props) {
 
     const shopDetailsPage = (
         <View>
-            <View>
+            <View style={styles.infoContainer}>
                 <Text style={styles.title}>Contact Us </Text>
                 <Text>{shopDetails.contact}</Text>
                 <Text>{shopDetails.email}</Text>
+
+
+            </View>
+            
+            <View style={styles.infoContainer}>
+                <Text style={styles.title}>About Us</Text>
+                <Text>{shopDetails.description}</Text>
             </View>
 
 
-            <Text style={styles.title}>About Us</Text>
 
-            <Text>{shopDetails.description}</Text>
+
 
             <View style={styles.reviewTitleContainer}>
                 <Text style={styles.heading}>Reviews (1)</Text>
@@ -193,13 +199,11 @@ const styles = StyleSheet.create({
         color: 'grey'
     },
 
-    descriptionContainer: {
-        padding: 10,
+    infoContainer: {
+        margin: 10,
         //marginVertical: 20,
-
-
-
     },
+
 
     ratingsContainer: {
         padding: 20,

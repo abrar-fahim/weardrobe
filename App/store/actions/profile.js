@@ -16,6 +16,7 @@ export const GET_BLOGS = 'GET_BLOGS';
 
 export const GET_PROFILE = 'GET_PROFILE';
 export const GET_MY_PROFILE = 'GET_MY_PROFILE';
+import * as popupActions from './Popup'
 
 
 

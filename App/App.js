@@ -31,6 +31,7 @@ import profileReducer from './store/reducers/profile';
 import magazineReducer from './store/reducers/magazine';
 import socialReducer from './store/reducers/chats';
 import searchReducer from './store/reducers/search';
+import popupReducer from './store/reducers/Popup';
 
 
 const rootReducer = combineReducers({
@@ -42,7 +43,8 @@ const rootReducer = combineReducers({
   profile: profileReducer,
   magazine: magazineReducer,
   social: socialReducer,
-  search: searchReducer
+  search: searchReducer,
+  popup: popupReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))

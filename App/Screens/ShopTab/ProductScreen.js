@@ -23,6 +23,7 @@ import * as productActions from '../../store/actions/products'
 import * as wishlistActions from '../../store/actions/wishlist'
 
 import * as cartActions from '../../store/actions/cart'
+import * as popupActions from '../../store/actions/Popup'
 
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import SmallPopup from '../../components/SmallPopup';
@@ -193,16 +194,19 @@ export default function ProductScreen(props) {
                     console.log(colors.length)
                     if (colors.length !== 0 && selectedColor === null) {
 
-                        throw new Error('select color pless')
+                        // throw new Error('select color pless')
+                        dispatch(popupActions.setMessage('select color pless'))
 
                     }
                     else if (sizes.length !== 0 && selectedSize === null) {
-                        throw new Error('select size pless')
+                        // throw new Error('select size pless')
+                        dispatch(popupActions.setMessage('select color pless'))
 
                     }
                     else {
                         await dispatch(cartActions.addToCart(productId, color, size, quantity))
-                        setPopupMessage("added to cart!")
+                        // setPopupMessage("added to cart!")
+                        dispatch(popupActions.setMessage('select color pless'))
                         // setAddCartModalVisible(true)
                         //setAddCartMessage(cartMessage);
                         // window.setTimeout(() => (setAddCartModalVisible(false)), 2500)
@@ -530,7 +534,7 @@ export default function ProductScreen(props) {
         return (
             <View>
 
-                <SmallPopup setMessage={setPopupMessage} message={popupMessage} />
+                {/* <SmallPopup setMessage={setPopupMessage} message={popupMessage} /> */}
                 <Modal
                     isVisible={reviewModalVisible}
                     onBackdropPress={() => {
@@ -693,6 +697,14 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: 'center'
     },
+    addReview: {
+        color: 'grey',
+        fontWeight: '700',
+        fontSize: 15,
+
+        textAlign: 'right'
+
+    },
     reviewTitleContainer: {
         flexDirection: 'row',
         padding: 10,
@@ -700,7 +712,7 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-between'
     },
-    
+
     reviewerName: {
         fontWeight: '600',
         color: 'grey',
@@ -752,7 +764,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: '700',
         fontSize: 15,
-        // flex: 1,
+        flex: 1,
         textAlignVertical: 'center'
 
     },

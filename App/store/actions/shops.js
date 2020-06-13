@@ -8,6 +8,7 @@ export const GET_SHOP_REVIEWS = 'GET_SHOP_REVIEWS';
 export const ADD_SHOP_REVIEW = 'ADD_SHOP_REVIEW';
 export const GET_SHOP_CATEGORIES = 'GET_SHOP_CATEGORIES';
 import HOST from "../../components/host";
+import * as popupActions from './Popup'
 
 export const getShops = () => {
     return async (dispatch) => {

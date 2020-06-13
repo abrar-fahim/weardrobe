@@ -2,6 +2,7 @@ export const ADD_TO_WISHLIST = 'ADD_TO_WISHLIST';
 export const REMOVE_FROM_WISHLIST = 'REMOVE_FROM_WISHLIST';
 export const GET_WISHLIST_ITEMS = 'GET_WISHLIST_ITEMS';
 import HOST from "../../components/host";
+import * as popupActions from './Popup'
 
 export const addToWishlist = productId => {
     return async (dispatch) => {

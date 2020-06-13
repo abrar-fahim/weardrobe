@@ -2,13 +2,20 @@ import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions, Alert } from 'react-native';
 import Modal from 'react-native-modal';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import * as popupActions from '../store/actions/Popup'
 
 const SmallPopup = (props) => {
     //props = message, setMessage
+    const dispatch = useDispatch()
+
+    const message = useSelector(state => state.popup.message);
+    const isError = useSelector(state => state.popup.isError);
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            props.setMessage("");
+            dispatch(popupActions.setMessage('', false))
         }, 2000)
 
         return () => clearTimeout(timer)
@@ -21,10 +28,10 @@ const SmallPopup = (props) => {
             animationOut="bounceOutUp"
             hasBackdrop={false}
             coverScreen={false}
-            isVisible={props.message === "" ? false : true}
+            isVisible={message === "" ? false : true}
         >
             <View style={styles.popup}>
-                <Text>{props.message}</Text>
+                <Text>{message}</Text>
             </View>
 
 
@@ -47,7 +54,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowOffset: {
             height: 2
-        }
+        },
+        marginTop: 20
 
     }
 })
