@@ -1,10 +1,10 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useLayoutEffect, useCallback, useDebugValue } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS, ScrollView, Dimensions, ActivityIndicator } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS, ScrollView, Dimensions, ActivityIndicator, TouchableOpacity } from 'react-native';
 
 import PRODUCTS from '../../dummy-data/Products'
 
-import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import DrawerStack from './DrawerStack';
 import ProductList from '../../components/ProductList';
 import ScreenStyle from '../../Styles/ScreenStyle'
@@ -346,10 +346,10 @@ function ShopScreen({ navigation }) {
                 onRefresh={loadFeed}
                 refreshing={isRefreshing}
                 ListFooterComponent={
-                    <>
+                    <View>
                         <Text style={styles.title}>All Products</Text>
                         <ProductList navigation={navigation} data={allProducts} showShopName={true} />
-                    </>
+                    </View>
 
                 }
             />

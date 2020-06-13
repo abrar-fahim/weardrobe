@@ -1,17 +1,9 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS, TouchableOpacity } from 'react-native';
 
 
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
-import { SearchBar, Overlay } from 'react-native-elements';
-import { Drawer } from 'react-native-paper';
 import RatingStars from './RatingStars';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../Styles/Colors';
@@ -27,8 +19,10 @@ export default function ProductList(props) {
 
 
 
-    const renderGridItem = (itemData) => {
+    const renderGridItem = useCallback((itemData) => {
         let price;
+
+
 
         if (itemData.item.discount > 0) {
             const oldPrice = itemData.item.price;
@@ -48,6 +42,7 @@ export default function ProductList(props) {
                 </View>
             )
         }
+        // console.log(itemData.item.thumbnail)
         return (
             <View style={styles.gridItem}>
                 <TouchableOpacity onPress={() => (
@@ -56,10 +51,10 @@ export default function ProductList(props) {
                     })
                 )}>
 
-                    <Image source={itemData.item.thumbnail} style={{ height: 150, width: 150, justifyContent: 'center', alignItems: 'center' }} />
+                    <Image source={itemData.item.thumbnail} style={styles.image} resizeMethod="resize" />
                     <Text style={styles.itemName}> {itemData.item.name}</Text>
-                    {props.showShopName? <Text style={styles.sellerName}> {"From " + itemData.item.shopName} </Text>: null}
-                    
+                    {props.showShopName ? <Text style={styles.sellerName}> {"From " + itemData.item.shopName} </Text> : null}
+
 
 
                     <RatingStars rating={itemData.item.rating} />
@@ -69,7 +64,7 @@ export default function ProductList(props) {
             </View>
         )
 
-    }
+    }, [])
 
     // if (props.data.length === 0) {
     //     return (
@@ -83,8 +78,13 @@ export default function ProductList(props) {
     return (
         <View style={styles.screen}>
 
-            <FlatList ListHeaderComponent={props.ListHeaderComponent}
-                data={props.data} renderItem={renderGridItem} numColumns={2} onRefresh={props.onRefresh} refreshing={props.refreshing}
+            <FlatList
+                // ListHeaderComponent={props.ListHeaderComponent}
+                data={props.data}
+                renderItem={renderGridItem}
+                numColumns={2}
+                onRefresh={props.onRefresh}
+                refreshing={props.refreshing}
                 ListEmptyComponent={(
                     <View>
                         <Text> no products yet!</Text>
@@ -116,6 +116,12 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: '300',
         color: 'grey'
+    },
+    image: {
+        height: 150,
+        width: 150,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     price: {
         fontSize: 18,
