@@ -1,4 +1,13 @@
-import { GET_GROUPS, GET_CHATS, GET_SHOPPING_SESSIONS, GET_SESSION_CART, GET_GROUP_PEOPLE, SET_SESSION_ACTIVE, UPDATE_SESSION_TIMER } from '../actions/chats'
+import {
+    GET_GROUPS,
+    GET_CHATS,
+    GET_SHOPPING_SESSIONS,
+    GET_SESSION_CART,
+    GET_GROUP_PEOPLE,
+    SET_SESSION_ACTIVE,
+    UPDATE_SESSION_TIMER,
+    ADD_CHAT
+} from '../actions/chats'
 
 const initialState = {
     groups: [],
@@ -59,6 +68,14 @@ export default function socialReducer(state = initialState, action) {
                 ...state,
                 timeLeft: action.timeLeft
             }
+
+        case ADD_CHAT:
+            return {
+                ...state,
+                chats: [...state.chats, action.text]
+            }
+
+
     }
 
     return state

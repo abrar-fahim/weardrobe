@@ -325,7 +325,9 @@ export default function ProductScreen(props) {
         const heartIcon = inWishlist ? "md-heart" : "md-heart-empty";
         props.navigation.setOptions({
             headerRight: () => (
-                <GenericHeaderButton iconName={heartIcon}
+                <GenericHeaderButton 
+                title="heart"
+                iconName={heartIcon}
                     onPress={() => {
                         if (!loggedIn) {
                             //setInWishlist(false);

@@ -1,6 +1,8 @@
 import 'react-native-gesture-handler';
+
 import React, { useEffect, useLayoutEffect, useCallback, useState } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView, SectionList, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView, SectionList, ActivityIndicator, TouchableOpacity, FlatList, Dimensions } from 'react-native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,46 +22,20 @@ import Colors from '../../Styles/Colors';
 import HOST from "../../components/host";
 import * as productsActions from '../../store/actions/products'
 import LoadingScreen from '../../components/LoadingScreen'
+// import { createAppContainer, FlatList } from 'react-navigation';
 
 
 
-export default function SellerScreen(props) {
-    const shopId = props.route.params?.shopId ?? 'default'
 
-    const loggedIn = useSelector(state => state.auth.userId, (left, right) => (left.auth.userId === right.auth.userId)) === null ? false : true
-
-
+const SellerShopScreen = (props) => {
     const dispatch = useDispatch();
-
-
+    const categories = useSelector(state => state.shops.categories)
     const products = useSelector(state => state.shops.shopProducts)
     const shopDetails = useSelector(state => state.shops.shopDetails)
-    // const myShops = useSelector(state => state.shops.myShops)
-    const categories = useSelector(state => state.shops.categories)
 
-    const [isLoading, setIsLoading] = useState(true);
-
-    const followShop = useCallback(async (shopId) => {
-        try {
-            await dispatch(shopsActions.followShop(shopId))
-            await dispatch(shopsActions.fetchShopDetails(shopId))
-        }
-        catch (err) {
-            console.log(err);
-
-        }
-    }, [])
-
-    const unFollowShop = useCallback(async (shopId) => {
-        try {
-            await dispatch(shopsActions.unFollowShop(shopId))
-            await dispatch(shopsActions.fetchShopDetails(shopId))
-        }
-        catch (err) {
-            console.log(err);
-
-        }
-    }, [])
+    let categoriesViews = [];
+    // console.log(categories)
+    let i = 2;
 
 
     const setProductsFn = useCallback(async (categoryId) => {
@@ -70,74 +46,6 @@ export default function SellerScreen(props) {
             console.log(err)
         }
     }, [])
-
-
-    const loadShopProducts = useCallback(async (shopId) => {
-        try {
-            setIsLoading(true)
-            await dispatch(shopsActions.fetchShopProducts(shopId))
-            await dispatch(shopsActions.fetchShopDetails(shopId))
-            // await dispatch(shopsActions.fetchMyShops())
-            await dispatch(shopsActions.fetchShopCategories(shopId))
-            setIsLoading(false)
-        }
-        catch (err) {
-            setIsLoading(false)
-            console.log(err)
-        }
-    }, [])
-
-
-    useEffect(() => {
-
-        loadShopProducts(shopId)
-    }, [])
-
-
-    useLayoutEffect(() => {
-
-        const liked = shopDetails?.isFavorite === 1
-
-        const heartIcon = liked ? "md-heart" : "md-heart-empty"
-
-        props.navigation.setOptions({
-            headerTitle: shopDetails === null ? "" : shopDetails.name,
-            headerRight: () => (
-                <View style={styles.headerButtons}>
-                    <GenericHeaderButton iconName="md-information-circle-outline" onPress={() => {
-                        props.navigation.navigate('SellerInfo', {
-                            shopDetails: shopDetails
-                        })
-
-                    }} />
-                    <GenericHeaderButton iconName={heartIcon} onPress={() => {
-                        if (!loggedIn) {
-
-                            props.navigation.navigate('Login');
-                        }
-                        else {
-                            if (liked === false) {
-                                followShop(shopId)
-                            }
-                            else {
-                                unFollowShop(shopId)
-                            }
-                        }
-
-
-                    }} />
-                </View>
-            )
-        })
-    }, [shopDetails, loggedIn])
-
-
-
-    if (isLoading) {
-        return (
-            <LoadingScreen />
-        )
-    }
 
     const renderCategory = (itemData) => {
 
@@ -154,7 +62,10 @@ export default function SellerScreen(props) {
                         </TouchableOpacity>
                     </View>
 
-                    <FlatList horizontal={true} data={itemData.item.inventory} renderItem={renderProduct} />
+                    <FlatList
+                        // listKey="d"
+
+                        horizontal={true} data={itemData.item.inventory} renderItem={renderProduct} />
                 </View>
             )
         }
@@ -206,9 +117,7 @@ export default function SellerScreen(props) {
         )
     }
 
-    let categoriesViews = [];
-    // console.log(categories)
-    let i = 2;
+
 
     while (i < categories.length) {
 
@@ -217,17 +126,23 @@ export default function SellerScreen(props) {
             const category1 = categories[i].id
             const category2 = categories[i + 1].id
             categoriesViews.push(
-                <View>
-                    <TouchableOpacity style={styles.smallCategory} onPress={() => {
-                        setProductsFn(category1)
-                        props.navigation.navigate('ProductList')
-                    }}>
+                <View
+                    key={i.toString()}
+                >
+                    <TouchableOpacity
+                        style={styles.smallCategory}
+                        onPress={() => {
+                            setProductsFn(category1)
+                            props.navigation.navigate('ProductList')
+                        }}>
                         <Text style={styles.smallCategoryName}>{categories[i].name}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.smallCategory} onPress={() => {
-                        setProductsFn(category2)
-                        props.navigation.navigate('ProductList')
-                    }}>
+                    <TouchableOpacity
+                        style={styles.smallCategory}
+                        onPress={() => {
+                            setProductsFn(category2)
+                            props.navigation.navigate('ProductList')
+                        }}>
                         <Text style={styles.smallCategoryName}>{categories[i + 1].name}</Text>
                     </TouchableOpacity>
                 </View>
@@ -239,7 +154,9 @@ export default function SellerScreen(props) {
         else {
             const category1 = categories[i].id
             categoriesViews.push(
-                <View>
+                <View
+                    key={i.toString()}
+                >
                     <TouchableOpacity style={styles.smallCategory} onPress={() => {
                         setProductsFn(category1)
                         props.navigation.navigate('ProductList')
@@ -255,52 +172,44 @@ export default function SellerScreen(props) {
         }
 
     }
-
     return (
-        <View style={ScreenStyle}>
 
+        <ProductList
+            // listKey="a"
+            bounces={false}
 
-            <ProductList ListHeaderComponent={
+            ListHeaderComponent={
                 <View>
-                    <View style={{
-                        alignItems: 'center'
-                    }}>
-                        <Image source={shopDetails.logo} style={{ height: 200, width: '99%' }} />
-                    </View>
 
-                    <View style={styles.ratingsContainer}>
-                        <RatingStars rating={shopDetails.rating} size={25} />
-
-                    </View>
-
-                    <View style={styles.descriptionContainer}>
-                        <Text style={styles.description}>{shopDetails.description}</Text>
-                    </View>
                     <View style={styles.categoriesContainer}>
                         <Text style={styles.title}>Categories</Text>
 
-                        <FlatList data={categories} renderItem={renderCategory} ListFooterComponent={(
-                            <>
-                                <View style={styles.categoryNameContainer}>
-                                    <Text>Browse All Categories</Text>
-                                    <TouchableOpacity onPress={() => {
-                                        props.navigation.navigate('Categories', {
-                                            shopId: shopDetails.id
-                                        })
-                                    }}>
-                                        <Text>View All</Text>
-                                    </TouchableOpacity>
+                        <FlatList
+                            // listKey="d"
+                            data={categories}
+                            renderItem={renderCategory}
+                            ListFooterComponent={(
+                                <View>
+                                    <View style={styles.categoryNameContainer}>
+                                        <Text>Browse All Categories</Text>
+                                        <TouchableOpacity onPress={() => {
+                                            props.navigation.navigate('Categories', {
+                                                shopId: shopDetails.id
+                                            })
+                                        }}>
+                                            <Text>View All</Text>
+                                        </TouchableOpacity>
+
+                                    </View>
+
+                                    <ScrollView horizontal={true}>
+
+                                        {categoriesViews}
+                                    </ScrollView>
 
                                 </View>
 
-                                <ScrollView horizontal={true}>
-
-                                    {categoriesViews}
-                                </ScrollView>
-
-                            </>
-
-                        )} />
+                            )} />
 
                         < Text style={styles.categoryName}>All Products</Text>
                     </View>
@@ -311,22 +220,320 @@ export default function SellerScreen(props) {
 
 
             }
-                showShopName={false}
-                data={products} navigation={props.navigation} />
+            showShopName={false}
+            data={products} navigation={props.navigation} />
 
-            {/* <SectionList 
-                sections={[
-                    {data: PRODUCTS, key: '1', renderItem: renderProductGridItem}
 
+    )
+}
+
+
+
+
+
+const SellerPostsScreen = (props) => {
+    const dispatch = useDispatch();
+    return <Text>hello</Text>
+}
+
+
+
+export default function SellerScreen(props) {
+    const shopId = props.route.params?.shopId ?? 'default'
+
+    const loggedIn = useSelector(state => state.auth.userId, (left, right) => (left.auth.userId === right.auth.userId)) === null ? false : true
+
+
+    const dispatch = useDispatch();
+
+
+
+    const shopDetails = useSelector(state => state.shops.shopDetails)
+    // const myShops = useSelector(state => state.shops.myShops)
+
+    const [isLoading, setIsLoading] = useState(true);
+
+    const followShop = useCallback(async (shopId) => {
+        try {
+            await dispatch(shopsActions.followShop(shopId))
+            await dispatch(shopsActions.fetchShopDetails(shopId))
+        }
+        catch (err) {
+            console.log(err);
+
+        }
+    }, [])
+
+    const unFollowShop = useCallback(async (shopId) => {
+        try {
+            await dispatch(shopsActions.unFollowShop(shopId))
+            await dispatch(shopsActions.fetchShopDetails(shopId))
+        }
+        catch (err) {
+            console.log(err);
+
+        }
+    }, [])
+
+
+
+
+    const loadShopProducts = useCallback(async (shopId) => {
+        try {
+            setIsLoading(true)
+            await dispatch(shopsActions.fetchShopProducts(shopId))
+            await dispatch(shopsActions.fetchShopDetails(shopId))
+            // await dispatch(shopsActions.fetchMyShops())
+            await dispatch(shopsActions.fetchShopCategories(shopId))
+            setIsLoading(false)
+        }
+        catch (err) {
+            setIsLoading(false)
+            console.log(err)
+        }
+    }, [])
+
+
+    useEffect(() => {
+        loadShopProducts(shopId)
+    }, [])
+
+
+    useLayoutEffect(() => {
+
+        const liked = shopDetails?.isFavorite === 1
+
+        const heartIcon = liked ? "md-heart" : "md-heart-empty"
+
+        props.navigation.setOptions({
+            headerTitle: shopDetails === null ? "" : shopDetails.name,
+            headerRight: () => (
+                <View style={styles.headerButtons}>
+                    <GenericHeaderButton
+                        title="info"
+                        iconName="md-information-circle-outline"
+                        onPress={() => {
+                            props.navigation.navigate('SellerInfo', {
+                                shopDetails: shopDetails
+                            })
+
+                        }} />
+                    <GenericHeaderButton
+                        title="heart"
+                        iconName={heartIcon}
+                        onPress={() => {
+                            if (!loggedIn) {
+
+                                props.navigation.navigate('Login');
+                            }
+                            else {
+                                if (liked === false) {
+                                    followShop(shopId)
+                                }
+                                else {
+                                    unFollowShop(shopId)
+                                }
+                            }
+
+
+                        }} />
+                </View>
+            )
+        })
+    }, [shopDetails, loggedIn])
+
+
+
+    if (isLoading) {
+        return (
+            <LoadingScreen />
+        )
+    }
+
+
+
+
+
+    // const TopTab = createMaterialTopTabNavigator();
+
+    return (
+        <View style={ScreenStyle}>
+
+            <FlatList
+                
+                ListHeaderComponent={
+                    <>
+                        <View style={{
+                            alignItems: 'center'
+                        }}>
+                            <Image source={shopDetails.logo} style={{ height: 200, width: '99%' }} />
+                        </View>
+
+                        <View style={styles.ratingsContainer}>
+                            <RatingStars rating={shopDetails.rating} size={25} />
+
+                        </View>
+
+                        <View style={styles.descriptionContainer}>
+                            <Text style={styles.title}>Description</Text>
+                            <Text style={styles.description}>{shopDetails.description}</Text>
+
+
+                        </View>
+                    </>
+                }
+                data={[
+                    {
+                        id: '2',
+                        view: <>
+
+                            <View style={styles.topTab}>
+                                <Text >1</Text>
+                                <Text>2</Text>
+                            </View>
+
+
+
+
+                            {/* <TopTab.Navigator
+                            tabBarOptions={{
+                                indicatorStyle: {
+                                    backgroundColor: Colors.tabBarActiveTintColor
+                                }
+                            }}
+                        >
+
+
+                            <TopTab.Screen
+                                name="SellerShop"
+                                component={SellerShopScreen}
+                                initialParams={{ shopId: shopId }}
+
+
+                            />
+                            <TopTab.Screen
+                                name="SellerPosts"
+                                component={SellerShopScreen2}
+                                initialParams={{ shopId: shopId }}
+                            />
+
+                        </TopTab.Navigator> */}
+                        </>
+
+
+                    },
+                    {
+                        id: '3',
+                        view: (
+                            <FlatList
+                                data={[
+                                    { id: '1', component: SellerShopScreen },
+                                    { id: '2', component: SellerPostsScreen },
+                                ]}
+                                horizontal={true}
+                                pagingEnabled={true}
+                                initialNumToRender={2}
+                                bounces={false}
+                                renderItem={({ item }) => (
+                                    <View style={styles.screen}>
+                                        <item.component />
+                                    </View>
+
+                                )}
+
+
+                            />
+
+                        )
+                    }
                 ]}
+                stickyHeaderIndices={[1]}
+
+                renderItem={({ item }) => (
+                    item.view
+
+                )}
+            />
+
+
+            {/* <SectionList
+                // initialNumToRender={3}
+
+                keyExtractor={({ item, index }) => index}
+                stickySectionHeadersEnabled={true}
+                invertStickyHeaders={false}
+                nestedScrollEnabled={true}
+
+
+
+
+                sections={
+                    [{
+                        title: 'top',
+                        renderItem: ({ item }) => {
+                            return item;
+
+                        },
+                        data: [(
+                            <>
+                                <View style={{
+                                    alignItems: 'center'
+                                }}>
+                                    <Image source={shopDetails.logo} style={{ height: 200, width: '99%' }} />
+                                </View>
+
+                                <View style={styles.ratingsContainer}>
+                                    <RatingStars rating={shopDetails.rating} size={25} />
+
+                                </View>
+
+                                <View style={styles.descriptionContainer}>
+                                    <Text style={styles.title}>Description</Text>
+                                    <Text style={styles.description}>{shopDetails.description}</Text>
+
+
+                                </View>
+                            </>
+                        )]
+                    },
+                    {
+                        title: 'header',
+                        data: [(
+                            <TopTab.Navigator
+                                tabBarOptions={{
+                                    indicatorStyle: {
+                                        backgroundColor: Colors.tabBarActiveTintColor
+                                    }
+                                }}
+                            >
+
+
+                                <TopTab.Screen
+                                    name="SellerShop"
+                                    component={SellerShopScreen}
+                                    initialParams={{ shopId: shopId }}
+                                    
+
+                                />
+                                <TopTab.Screen
+                                    name="SellerPosts"
+                                    component={SellerPostsScreen}
+                                    initialParams={{ shopId: shopId }}
+                                />
+
+                            </TopTab.Navigator>
+                        )]
+                    }]
+                }
+
+                renderItem={({ item, index }) => null}
+                renderSectionHeader={({ section: { title, data } }) => {
+                    if (title === 'header') {
+                        return data
+                    }
+                }}
+
             /> */}
-
-
-
-
-
-
-
 
         </View>
 
@@ -334,6 +541,10 @@ export default function SellerScreen(props) {
 }
 
 const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        width: Dimensions.get('window').width
+    },
     description: {
         fontWeight: '400',
         color: 'grey'
@@ -346,6 +557,15 @@ const styles = StyleSheet.create({
 
 
     },
+
+    topTab: {
+        height: 50,
+        color: 'white',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+
 
     ratingsContainer: {
         padding: 20,
@@ -365,8 +585,10 @@ const styles = StyleSheet.create({
 
     },
     categoryName: {
-        fontSize: 20,
-        color: Colors.primaryColor
+        fontSize: 22,
+        color: Colors.primaryColor,
+        fontWeight: '400',
+        flex: 1
     },
     categoriesContainer: {
         margin: 20

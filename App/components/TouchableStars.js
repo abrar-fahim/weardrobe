@@ -32,20 +32,22 @@ export default function TouchableStars(props) {
     for (i = 0; i < props.rating; i++) {
         const n = i + 1;
         stars.push(
-            {
-                id: n.toString(),
-
-                item: (
-                    <TouchableWithoutFeedback onPressIn={() => (props.setRating(n))}
-                        onPressOut={() => {}}
 
 
-                    >
-                        <Ionicons name="md-star" size={props.size} />
-                    </TouchableWithoutFeedback>
 
-                )
-            }
+            (
+                <TouchableWithoutFeedback
+                    key={n.toString()}
+                    onPressIn={() => (props.setRating(n))}
+                    onPressOut={() => { }}
+
+
+                >
+                    <Ionicons name="md-star" size={props.size} />
+                </TouchableWithoutFeedback>
+
+            )
+
 
         )
     }
@@ -55,15 +57,17 @@ export default function TouchableStars(props) {
     for (; i < 5; i++) {
         const n = i + 1;
         stars.push(
-            {
-                id: n.toString(),
-                item: (
-                    <TouchableWithoutFeedback onPressIn={() => (props.setRating(n))}
-                    >
-                        <Ionicons name="md-star-outline" size={props.size} />
-                    </TouchableWithoutFeedback>
-                )
-            }
+
+
+            (
+                <TouchableWithoutFeedback
+                    key={n.toString()}
+                    onPressIn={() => (props.setRating(n))}
+                >
+                    <Ionicons name="md-star-outline" size={props.size} />
+                </TouchableWithoutFeedback>
+            )
+
 
         )
     }
@@ -72,7 +76,7 @@ export default function TouchableStars(props) {
 
     return (
         <View style={{ flexDirection: 'row' }}>
-            {stars.map(item => item.item)}
+            {stars}
 
         </View>
 

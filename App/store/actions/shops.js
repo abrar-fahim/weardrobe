@@ -312,6 +312,7 @@ export const fetchShopReviews = (shopId) => {
 
             for (const key in resData) {
                 shopReviews.push({
+                    id: key,
                     shopId: resData[key].SHOP_ID,
                     reviewerId: resData[key].REVIEWER_ID,
                     rating: resData[key].RATING,

@@ -9,6 +9,10 @@ export const GET_GROUP_PEOPLE = 'GET_GROUP_PEOPLE';
 
 export const SET_SESSION_ACTIVE = 'SET_SESSION_ACTIVE';
 export const UPDATE_SESSION_TIMER = 'UPDATE_SESSION_TIMER';
+
+export const ADD_CHAT = 'ADD_CHAT';
+
+
 import * as popupActions from './Popup'
 
 let socket = null;
@@ -391,8 +395,14 @@ export const connectToGroup = (groupId) => {
 
         socket.emit('join', `{"groupId": "${groupId}"}`);
 
-        socket.on('sendMessageGroup', () => {
+        socket.on('sendMessageGroup', ({text}) => {
             dispatch(getChats(groupId))
+            // console.log(text)
+            // dispatch({
+            //     type: ADD_CHAT,
+            //     text: text
+
+            // })
         });
 
 

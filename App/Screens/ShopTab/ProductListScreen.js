@@ -48,7 +48,7 @@ export default function ProductListScreen(props) {
         catch (err) {
             //console.log('error heter')
             setErrorMessage('Couldnt get products')
-            setIsModalVisible(true);
+            // setIsModalVisible(true);
         }
         // setIsRefreshing(false);
         return () => mounted = false;

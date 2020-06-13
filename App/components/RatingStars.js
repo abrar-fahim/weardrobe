@@ -28,20 +28,20 @@ export default function RatingStars(props) {
 
     for (let i = 0; i < ratingFloor; i++) {
         stars.push(
-            {
-                id: '1',
-                item: <Ionicons name="md-star" size={props.size} />
-            }
+
+
+            <Ionicons key={i.toString() + 'c'} name="md-star" size={props.size} />
+
 
         )
     }
 
     if (props.rating > ratingFloor) {
         stars.push(
-            {
-                id: '2',
-                item: <Ionicons name="md-star-half" size={props.size} />
-            }
+
+
+            <Ionicons key={i.toString() + 'b'} name="md-star-half" size={props.size} />
+
 
         )
     }
@@ -50,19 +50,18 @@ export default function RatingStars(props) {
 
     for (let i = 0; i < starOutlines; i++) {
         stars.push(
-            {
-                id: '3',
-                item: <Ionicons name="md-star-outline" size={props.size} />
-            }
+
+
+            <Ionicons key={i.toString() + 'a'} name="md-star-outline" size={props.size} />
+
 
         )
     }
 
 
-
     return (
         <View style={{ flexDirection: 'row' }}>
-            {stars.map(item => item.item)}
+            {stars}
 
         </View>
 

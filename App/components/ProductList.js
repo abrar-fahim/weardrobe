@@ -79,7 +79,10 @@ export default function ProductList(props) {
         <View style={styles.screen}>
 
             <FlatList
-                // ListHeaderComponent={props.ListHeaderComponent}
+                // listKey={props.listKey}
+                bounces={props.bounces}
+
+                ListHeaderComponent={props.ListHeaderComponent}
                 data={props.data}
                 renderItem={renderGridItem}
                 numColumns={2}

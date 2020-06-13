@@ -22,6 +22,7 @@ export default function GenericHeaderButton(props) {
     return (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
             <Item
+                key={props.title}
 
                 title={props.title}
                 iconName={props.iconName}
