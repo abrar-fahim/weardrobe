@@ -1,4 +1,7 @@
-import { GET_SHOPS, GET_SHOP_PRODUCTS, GET_SHOP_DETAILS, FOLLOW_SHOP, GET_MY_SHOPS, GET_SHOP_REVIEWS, GET_SHOP_CATEGORIES } from "../actions/shops";
+import {
+    GET_SHOPS, GET_SHOP_PRODUCTS, GET_SHOP_DETAILS, FOLLOW_SHOP, GET_MY_SHOPS, GET_SHOP_REVIEWS, GET_SHOP_CATEGORIES,
+    GET_SELLER_POSTS
+} from "../actions/shops";
 
 const initialState = {
     shops: [],
@@ -7,7 +10,8 @@ const initialState = {
     myShops: [],
     message: null,
     shopReviews: [],
-    categories: []
+    categories: [],
+    posts: []
 }
 
 
@@ -51,11 +55,17 @@ export default function shopsReducer(state = initialState, action) {
                 shopReviews: action.shopReviews
             }
 
-            case GET_SHOP_CATEGORIES: 
+        case GET_SHOP_CATEGORIES:
             return {
-                ...state, 
+                ...state,
                 categories: action.categories
             }
+        case GET_SELLER_POSTS:
+            return {
+                ...state,
+                posts: action.posts
+            }
+
 
 
     }

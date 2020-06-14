@@ -7,8 +7,14 @@ export const UNFOLLOW_SHOP = 'UNFOLLOW_SHOP';
 export const GET_SHOP_REVIEWS = 'GET_SHOP_REVIEWS';
 export const ADD_SHOP_REVIEW = 'ADD_SHOP_REVIEW';
 export const GET_SHOP_CATEGORIES = 'GET_SHOP_CATEGORIES';
+
+export const GET_SELLER_POSTS = 'GET_SELLER_POSTS';
+
+
 import HOST from "../../components/host";
 import * as popupActions from './Popup'
+
+
 
 export const getShops = () => {
     return async (dispatch) => {
@@ -442,5 +448,51 @@ export const fetchShopCategories = (shopId) => {
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
             throw new Error(err)
         }
+    }
+}
+export const getSellerPosts = (shopId) => {
+    return async (dispatch) => {
+        const response = await fetch(`${HOST}/get/shop/${shopId}/posts/0`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+        });
+
+        if (!response.ok) {
+            throw new Error('somethings wrong');
+        }
+
+        const resData = await response.json();  //converts response string to js object/array
+
+        console.log(resData);
+        const posts = [];
+
+        for (const key in resData) {
+            const processedPhotos = resData[key].PHOTO.map((photo, index) => ({
+                id: index.toString(),
+                postId: photo.POST_ID,
+                image: { uri: `${HOST}/img/temp/` + photo.IMAGE_URL }
+            }))
+            posts.push({
+                id: resData[key].POST_ID,
+                shopId: resData[key].SHOP_ID,
+                text: resData[key].TEXT,
+                date: resData[key].POST_DATE,
+                productId: resData[key].PRODUCT_ID,
+                numComments: resData[key].COMMENT,
+                numReacts: resData[key].REACT,
+                hasReacted: resData[key].HAS_REACTED,
+                images: processedPhotos
+            })
+        }
+
+        dispatch({
+            type: GET_SELLER_POSTS,
+            posts: posts
+        })
+
+
     }
 }

@@ -237,6 +237,7 @@ export function MagazineScreen(props) {
     useEffect(() => {
         loadPosts();
     }, [myShops])
+    
     const renderImages = (itemData) => {
 
 
