@@ -80,7 +80,8 @@ export const fetchProductDetails = (productId) => {
                 colors: resData.COLORS,
                 photos: resData.PHOTOS,
                 ratingCount: resData.RATING_COUNT,
-                isFavorite: resData.IS_FAVOURITE
+                isFavorite: resData.IS_FAVOURITE,
+                hasReviewed: resData.HAS_REVIEWED
 
             }
             // console.log('acrtion product: ' + product)
@@ -219,6 +220,7 @@ export const fetchCategories = () => {
                 categories.push({
                     id: resData[key].CATEGORY_ID,
                     name: resData[key].CATEGORY_NAME,
+                    thumbnail: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL }
                 })
             }
             // console.log(loadedProducts);

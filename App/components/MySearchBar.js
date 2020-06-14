@@ -21,6 +21,7 @@ const MySearchBar = (props) => {
 
                 {...props}
                 style={styles.searchBar}
+                autoCorrect={false}
 
 
             />

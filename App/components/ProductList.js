@@ -56,8 +56,15 @@ export default function ProductList(props) {
                     {props.showShopName ? <Text style={styles.sellerName}> {"From " + itemData.item.shopName} </Text> : null}
 
 
+                    {itemData.item.rating !== null ?
+                        <View style={styles.ratingContainer}>
+                            <RatingStars rating={itemData.item.rating} />
+                            <Text style={styles.ratingCount}> ({itemData.item.ratingCount} )</Text>
+                        </View> : null
+                    }
 
-                    <RatingStars rating={itemData.item.rating} />
+
+
                     {price}
 
                 </TouchableOpacity>
@@ -125,6 +132,12 @@ const styles = StyleSheet.create({
         width: 150,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    ratingContainer: {
+        flexDirection: 'row'
+    },
+    ratingCount: {
+        fontSize: 10
     },
     price: {
         fontSize: 18,

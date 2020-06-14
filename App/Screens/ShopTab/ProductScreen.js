@@ -325,9 +325,9 @@ export default function ProductScreen(props) {
         const heartIcon = inWishlist ? "md-heart" : "md-heart-empty";
         props.navigation.setOptions({
             headerRight: () => (
-                <GenericHeaderButton 
-                title="heart"
-                iconName={heartIcon}
+                <GenericHeaderButton
+                    title="heart"
+                    iconName={heartIcon}
                     onPress={() => {
                         if (!loggedIn) {
                             //setInWishlist(false);
@@ -463,35 +463,41 @@ export default function ProductScreen(props) {
 
                 </View>
 
-                <View style={styles.addReviewHeading}>
+                {product.hasReviewed === 0 ?
+                    <>
+                        <View style={styles.addReviewHeading}>
 
-                    <TouchableStars rating={rating} setRating={setRating} size={40} />
-
-
-                    <TouchableOpacity
-                        style={styles.addReviewButtonContainer}
-                        onPress={() => {
-                            if (!loggedIn) {
-                                props.navigation.navigate('Login')
-                            }
-                            else {
-                                addReview(rating, reviewText)
-                            }
-
-                        }}
-                    >
-                        <Text style={styles.addReview}>{reviews.some(review => review.reviewerId === userId) ? "EDIT REVIEW" : "+ ADD REVIEW"}</Text>
+                            <TouchableStars rating={rating} setRating={setRating} size={40} />
 
 
-                    </TouchableOpacity>
-                </View>
+                            <TouchableOpacity
+                                style={styles.addReviewButtonContainer}
+                                onPress={() => {
+                                    if (!loggedIn) {
+                                        props.navigation.navigate('Login')
+                                    }
+                                    else {
+                                        addReview(rating, reviewText)
+                                    }
+
+                                }}
+                            >
+                                <Text style={styles.addReview}>+ ADD REVIEW</Text>
+
+
+                            </TouchableOpacity>
+                        </View>
 
 
 
-                <KeyboardAvoidingView>
-                    <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
-                        onChangeText={(value) => (setReviewText(value))} />
-                </KeyboardAvoidingView>
+                        <KeyboardAvoidingView>
+                            <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
+                                onChangeText={(value) => (setReviewText(value))} />
+                        </KeyboardAvoidingView>
+                    </> : null
+                }
+
+
 
             </View>
         )

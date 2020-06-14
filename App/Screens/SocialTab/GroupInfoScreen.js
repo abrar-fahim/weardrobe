@@ -31,6 +31,16 @@ export default function GroupInfoScreen(props) {
 
     }, [])
 
+    const deleteGroup = useCallback(async () => {
+        try {
+            await dispatch(chatActions.deleteGroup(groupId))
+        }
+        catch (err) {
+            console.log(err)
+        }
+
+    }, [groupId])
+
     useEffect(() => {
         getGroupPeople();
     }, [])
@@ -50,6 +60,14 @@ export default function GroupInfoScreen(props) {
             <FlatList
                 data={people}
                 renderItem={renderPerson}
+                ListFooterComponent={
+                    <Button title="Delete group" onPress={() => {
+                        deleteGroup()
+                        props.navigation.navigate('Groups', {
+                            hello: true
+                        })
+                    }} />
+                }
 
             />
 

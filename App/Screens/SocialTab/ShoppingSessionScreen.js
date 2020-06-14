@@ -22,6 +22,8 @@ export default function CartScreen(props) {
     const sessionId = props.route.params?.sessionId
 
     const sessionCart = useSelector(state => state.social.sessionCart)
+    const userId = useSelector(state => state.auth.userId)
+
 
     const dispatch = useDispatch()
 
@@ -43,19 +45,19 @@ export default function CartScreen(props) {
         return (
 
             <View style={styles.cartEntry}>
-                <Image style={{ ...styles.picture, alignSelf: 3 > 5 ? 'flex-end' : 'flex-start' }} source={require('../../assets/Images/pic1.jpeg')} />
+                <Image style={{ ...styles.picture, alignSelf: userId === itemData.item.customerId ? 'flex-end' : 'flex-start' }} source={itemData.item.profilePic} />
                 <View style={styles.cartRow}>
 
 
                     <View style={styles.cartItem}>
 
                         <TouchableOpacity onPress={() => (props.navigation.navigate("Product", {
-                            productId: itemData.item.id,
+                            productId: itemData.item.productId,
                         }))}>
                             <Image source={itemData.item.picture} style={styles.productPicture} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => (props.navigation.navigate("Product", {
-                            productId: itemData.item.id,
+                            productId: itemData.item.productId,
                         }))}>
                             <View>
                                 <Text style={{ fontSize: 17, fontWeight: '400' }}> {itemData.item.name}</Text>

@@ -10,6 +10,7 @@ import GROUPS from '../../dummy-data/Groups'
 
 import * as chatActions from '../../store/actions/chats'
 import { useSelector, useDispatch } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function GroupListScreen(props) {
 
@@ -25,13 +26,15 @@ export default function GroupListScreen(props) {
             console.log(err)
         }
 
-    }, [])
+    })
 
     useEffect(() => {
         LoadGroups();
     }, [])
+    
 
     function renderItems(itemData) {
+        
         return (
 
             <TouchableOpacity onPress={() => props.navigation.navigate('GroupTab',
@@ -42,8 +45,13 @@ export default function GroupListScreen(props) {
                 <View style={styles.groupContainer}>
 
                     <View style={styles.picName}>
-                        <Image source={itemData.item.picture} style={styles.image} />
-                        <Text style={styles.groupName}>{itemData.item.name}</Text>
+                        {itemData.item.picture !== null && itemData.item.picture !== undefined  ? <Image source={itemData.item.picture} style={styles.image} /> :
+                            <Ionicons name="md-people" size={30} color="grey" />
+                        }
+
+
+                        <Text style={styles.groupName}>{itemData.item.name !== null ? itemData.item.name : itemData.item.participants}</Text>
+
 
                         <View style={styles.timeContainer}>
                             <Text style={styles.time}> 5:55 pm</Text>

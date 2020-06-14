@@ -88,7 +88,7 @@ export function CategoriesScreen(props) {
                     setProductsFn(itemData.item.id)
                     props.navigation.navigate('ProductList')
                 }}>
-                    <Image style={styles.imageStyle} source={itemData.item.picture} />
+                    <Image style={styles.imageStyle} source={itemData.item.thumbnail} />
                     <Text style={styles.textStyle}>{itemData.item.name}</Text>
 
                 </TouchableOpacity>

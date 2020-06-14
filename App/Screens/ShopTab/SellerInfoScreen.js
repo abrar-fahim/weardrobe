@@ -127,7 +127,7 @@ export default function SellerInfoScreen(props) {
 
 
             </View>
-            
+
             <View style={styles.infoContainer}>
                 <Text style={styles.title}>About Us</Text>
                 <Text>{shopDetails.description}</Text>
@@ -138,39 +138,45 @@ export default function SellerInfoScreen(props) {
 
 
             <View style={styles.reviewTitleContainer}>
-                <Text style={styles.heading}>Reviews (1)</Text>
+    <Text style={styles.heading}>Reviews ({shopDetails.ratingCount})</Text>
 
             </View>
 
-            <View style={styles.addReviewHeading}>
+            {shopDetails.hasReviewed == 0 ?
+                <>
+                    <View style={styles.addReviewHeading}>
 
-                <TouchableStars rating={rating} setRating={setRating} size={40} />
-
-
-                <TouchableOpacity
-                    style={styles.addReviewButtonContainer}
-                    onPress={() => {
-                        if (!loggedIn) {
-                            props.navigation.navigate('Login')
-                        }
-                        else {
-                            addShopReview(rating, reviewText)
-                        }
-
-                    }}
-                >
-                    <Text style={styles.addReview}>+ ADD REVIEW</Text>
+                        <TouchableStars rating={rating} setRating={setRating} size={40} />
 
 
-                </TouchableOpacity>
-            </View>
+                        <TouchableOpacity
+                            style={styles.addReviewButtonContainer}
+                            onPress={() => {
+                                if (!loggedIn) {
+                                    props.navigation.navigate('Login')
+                                }
+                                else {
+                                    addShopReview(rating, reviewText)
+                                }
+
+                            }}
+                        >
+                            <Text style={styles.addReview}>+ ADD REVIEW</Text>
+
+
+                        </TouchableOpacity>
+                    </View>
 
 
 
-            <KeyboardAvoidingView>
-                <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
-                    onChangeText={(value) => (setReviewText(value))} />
-            </KeyboardAvoidingView>
+                    <KeyboardAvoidingView>
+                        <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
+                            onChangeText={(value) => (setReviewText(value))} />
+                    </KeyboardAvoidingView>
+                </> : null
+            }
+
+
         </View>
     )
 

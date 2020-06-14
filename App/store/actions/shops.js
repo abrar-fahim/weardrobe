@@ -125,7 +125,9 @@ export const fetchShopDetails = (shopId) => {
                 category: resData.SHOP_CATEGORY,
                 rating: resData.SHOP_RATING,
                 logo: { uri: `${HOST}/img/temp/` + resData.LOGO_URL },
-                isFavorite: resData.IS_FAVOURITE
+                isFavorite: resData.IS_FAVOURITE,
+                hasReviewed: resData.HAS_REVIEWED,
+                ratingCount: resData.RATING_COUNT
 
 
             }

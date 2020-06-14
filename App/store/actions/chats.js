@@ -51,6 +51,7 @@ export const getGroups = (iter = 0) => {
                     startedAt: resData[key].STARTED_AT,
                     score: resData[key].SCORE,
                     participantId: resData[key].PARTICIPANT_UID,
+                    participants: resData[key].PARTICIPANTS
                     // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
                 })
             }
@@ -120,9 +121,9 @@ export const getChats = (groupId, iter = 0) => {
     }
 }
 
-export const getShoppingSessions = (groupId) => {
+export const getShoppingSessions = (groupId, iter = 0) => {
     return async (dispatch) => {
-        const response = await fetch(`${HOST}/get/session/${groupId}/`, {
+        const response = await fetch(`${HOST}/get/session/${groupId}/${iter}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -167,45 +168,59 @@ export const getShoppingSessions = (groupId) => {
 }
 
 export const getSessionCart = (sessionId) => {
+
+
     return async (dispatch) => {
-        const response = await fetch(`${HOST}/get/session/cart/${sessionId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
 
-        });
+        try {
+            const response = await fetch(`${HOST}/get/session-cart/${sessionId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
 
-        if (!response.ok) {
-            dispatch(popupActions.setMessage('Something Went Wrong', true))
-        }
+            });
 
-        const resData = await response.json();  //converts response string to js object/array
-
-        // console.log(resData);
-        if (Object.keys(resData)[0] !== 'ERROR') {
-            const cartItems = [];
-
-            for (const key in resData) {
-                cartItems.push({
-                    id: resData[key].SESSION_ID,
-                    productId: resData[key].PRODUCT_ID,
-                    color: resData[key].COLOR,
-                    size: resData[key].SIZE,
-                    quantity: resData[key].QUANTITY,
-                    data: resData[key].DATE,
-                    customerId: resData[key].CUSTOMER_ID,
-                })
+            if (!response.ok) {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
             }
 
-            dispatch({
-                type: GET_SESSION_CART,
-                cartItems: cartItems
-            })
+            const resData = await response.json();  //converts response string to js object/array
+
+            // console.log(resData);
+            if (Object.keys(resData)[0] !== 'ERROR') {
+                const cartItems = [];
+
+                for (const key in resData) {
+                    cartItems.push({
+                        id: resData[key].PRODUCT_ID + resData[key].CUSTOMER_ID,
+                        productId: resData[key].PRODUCT_ID,
+                        color: resData[key].COLOR,
+                        size: resData[key].SIZE,
+                        quantity: resData[key].QUANTITY,
+                        data: resData[key].DATE,
+                        customerId: resData[key].CUSTOMER_ID,
+                        username: resData[key].USERNAME,
+                        profilePic: { uri: `${HOST}/img/temp/` + resData[key].PROFILE_PIC },
+                        price: resData[key].PRICE,
+                    })
+                }
+
+                dispatch({
+                    type: GET_SESSION_CART,
+                    cartItems: cartItems
+                })
+            }
+            else {
+                dispatch(popupActions.setMessage('Something Went Wrong', true))
+            }
         }
-        else {
-            dispatch(popupActions.setMessage('Something Went Wrong', true))
+
+        catch (err) {
+            console.log(err)
         }
+
+
 
 
 
@@ -383,6 +398,58 @@ export const createGroup = (participants) => {
 
     }
 }
+export const deleteGroup = (groupId) => {
+    return async (dispatch) => {
+        const response = await fetch(`${HOST}/delete-group`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                groupId: groupId
+            })
+
+        });
+
+        if (!response.ok) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
+        }
+
+        const resData = await response.json();  //converts response string to js object/array
+
+        console.log(resData);
+
+
+        if (Object.keys(resData)[0] === 'SUCCESS') {
+
+
+        }
+        else {
+            dispatch(popupActions.setMessage('Couldn\'t delete group', true))
+
+        }
+        // const cartItems = [];
+
+        // for (const key in resData) {
+        //     cartItems.push({
+        //         id: resData[key].SESSION_ID,
+        //         productId: resData[key].PRODUCT_ID,
+        //         color: resData[key].COLOR,
+        //         size: resData[key].SIZE,
+        //         quantity: resData[key].QUANTITY,
+        //         data: resData[key].DATE,
+        //         customerId: resData[key].CUSTOMER_ID,
+        //     })
+        // }
+
+        // dispatch({
+        //     type: GET_SESSION_CART,
+        //     cartItems: cartItems
+        // })
+
+
+    }
+}
 
 export const connectToGroup = (groupId) => {
 
@@ -395,7 +462,8 @@ export const connectToGroup = (groupId) => {
 
         socket.emit('join', `{"groupId": "${groupId}"}`);
 
-        socket.on('sendMessageGroup', ({text}) => {
+        socket.on('sendMessageGroup', (chat) => {
+            // console.log(chat)
             dispatch(getChats(groupId))
             // console.log(text)
             // dispatch({

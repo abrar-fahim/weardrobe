@@ -26,6 +26,9 @@ export default function RatingStars(props) {
 
     const ratingFloor = Math.floor(props.rating);
 
+    if(props.rating === null) {
+        return null
+    }
     for (let i = 0; i < ratingFloor; i++) {
         stars.push(
 

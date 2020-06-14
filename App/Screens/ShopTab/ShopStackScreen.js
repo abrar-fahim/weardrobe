@@ -85,8 +85,7 @@ export default function ShopStackScreen({ navigation }) {
                 }}
             />
             <ShopStack.Screen name="Favorites" component={FavoritesScreen} />
-            <ShopStack.Screen name="Product" component={ProductScreen}
-            />
+            <ShopStack.Screen name="Product" component={ProductScreen}/>
             <ShopStack.Screen name="GroupShopping" component={GroupShoppingScreen} />
             <ShopStack.Screen name="Seller" component={SellerScreen} />
 

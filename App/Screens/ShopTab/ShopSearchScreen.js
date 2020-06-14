@@ -42,6 +42,7 @@ export default function ShopSearchScreen(props) {
                 onChangeText={searchAllShops}
                 navigation={props.navigation}
                 showBackButton={true}
+                
             />
 
 

@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import * as magazineActions from '../../store/actions/magazine'
 import LoadingScreen from '../../components/LoadingScreen'
+import SellerScreen from '../ShopTab/SellerScreen';
 
 
 
@@ -326,7 +327,9 @@ export function MagazineScreen(props) {
         return (
             <View style={styles.gridItem} >
                 <View style={styles.nameDP}>
-                    <TouchableOpacity onPress={() => props.navigation.navigate('OthersProfile')}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('Seller', {
+                        shopId: itemData.item.shopId
+                    })}>
                         <View style={styles.nameDP2}>
                             <View style={styles.DP}>
                                 <Image style={styles.DPImage} source={itemData.item.logo} />
@@ -615,6 +618,7 @@ export default function MagazineStackScreen({ navigation }) {
             }} />
             <MagazineStack.Screen name="NewPost3" component={NewPostScreen3} />
             <MagazineStack.Screen name="NewPostTag" component={NewPostTagScreen} />
+            <MagazineStack.Screen name="Seller" component={SellerScreen} />
             <MagazineStack.Screen name="OthersProfile" component={ProfileStackScreen} options={{
                 headerShown: false
             }} />
