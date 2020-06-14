@@ -30,10 +30,18 @@ import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommun
 
 
 const SellerShopScreen = (props) => {
+
+    const shopId = props.shopId
     const dispatch = useDispatch();
     const categories = useSelector(state => state.shops.categories)
     const products = useSelector(state => state.shops.shopProducts)
     const shopDetails = useSelector(state => state.shops.shopDetails)
+
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [iter, setIter] = useState(0);
+
+    const [iterLoading, setIterLoading] = useState(false)
 
     let categoriesViews = [];
     // console.log(categories)
@@ -42,12 +50,51 @@ const SellerShopScreen = (props) => {
 
     const setProductsFn = useCallback(async (categoryId) => {
         try {
-            await dispatch(productsActions.getProductsFn(() => (productsActions.fetchProductsByCategory(categoryId))))
+            await dispatch(productsActions.getProductsFn((iter = 0) => (productsActions.fetchProductsByCategory(categoryId, iter))))
         }
         catch (err) {
             console.log(err)
         }
     }, [])
+
+    const loadShopProducts = useCallback(async () => {
+        try {
+            setIsLoading(true)
+            await dispatch(shopsActions.fetchShopProducts(shopId))
+            await dispatch(shopsActions.fetchShopCategories(shopId))
+            setIter(0)
+            setIsLoading(false)
+        }
+        catch (err) {
+            setIsLoading(false)
+            console.log(err)
+        }
+    }, [shopId])
+
+
+
+
+    useEffect(() => {
+        loadShopProducts()
+    }, [])
+
+    const loadMoreShopProducts = useCallback(async () => {
+
+        try {
+            if (!iterLoading) {
+                setIterLoading(true)
+                await dispatch(shopsActions.fetchShopProducts(shopId, iter))
+                setIter(iter => iter + 1)
+                setIterLoading(false)
+            }
+
+        }
+        catch (err) {
+
+            console.log(err)
+        }
+        setIterLoading(false)
+    }, [iterLoading, iter, shopId])
 
     const renderCategory = (itemData) => {
 
@@ -67,7 +114,11 @@ const SellerShopScreen = (props) => {
                     <FlatList
                         // listKey="d"
 
-                        horizontal={true} data={itemData.item.inventory} renderItem={renderProduct} />
+                        horizontal={true}
+                        data={itemData.item.inventory}
+                        renderItem={renderProduct}
+                        onEndReached={loadMoreShopProducts}
+                    />
                 </View>
             )
         }
@@ -173,6 +224,12 @@ const SellerShopScreen = (props) => {
 
         }
 
+    }
+
+    if (isLoading) {
+        return (
+            <LoadingScreen />
+        )
     }
     return (
 
@@ -541,15 +598,19 @@ export default function SellerScreen(props) {
 
     const dispatch = useDispatch();
 
+
+    const [isLoading, setIsLoading] = useState(true);
     const horizontalPageRef = useRef(null)
     const topBarAnim = useRef(new Animated.Value(0)).current;
+
+
 
 
 
     const shopDetails = useSelector(state => state.shops.shopDetails)
     // const myShops = useSelector(state => state.shops.myShops)
 
-    const [isLoading, setIsLoading] = useState(true);
+
 
     const followShop = useCallback(async (shopId) => {
         try {
@@ -573,16 +634,14 @@ export default function SellerScreen(props) {
         }
     }, [])
 
-
-
-
-    const loadShopProducts = useCallback(async (shopId) => {
+    const loadShopDetails = useCallback(async () => {
         try {
             setIsLoading(true)
-            await dispatch(shopsActions.fetchShopProducts(shopId))
+
             await dispatch(shopsActions.fetchShopDetails(shopId))
-            // await dispatch(shopsActions.fetchMyShops())
-            await dispatch(shopsActions.fetchShopCategories(shopId))
+
+
+
             setIsLoading(false)
         }
         catch (err) {
@@ -592,9 +651,12 @@ export default function SellerScreen(props) {
     }, [])
 
 
+
+
     useEffect(() => {
-        loadShopProducts(shopId)
+        loadShopDetails()
     }, [])
+
 
 
     useLayoutEffect(() => {
@@ -751,7 +813,11 @@ export default function SellerScreen(props) {
                                 bounces={false}
                                 renderItem={({ item }) => (
                                     <View style={styles.screen}>
-                                        <item.component navigation={props.navigation} shopId={shopId} />
+                                        <item.component
+                                            navigation={props.navigation}
+
+                                            shopId={shopId}
+                                        />
                                     </View>
 
                                 )}

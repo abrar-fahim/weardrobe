@@ -23,37 +23,50 @@ export default function ProductListScreen(props) {
 
     const [isRefreshing, setIsRefreshing] = useState(false);
     // const [isModalVisible, setIsModalVisible] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('')
+
     const [isLoading, setIsLoading] = useState(true);
 
     const products = useSelector(state => state.products.products)
     const getProductsFn = useSelector(state => state.products.getProductsFn)
 
-    //const errorMessage = useSelector(state => state.products.errorMessage)
+    const [iter, setIter] = useState(0);
+
+    const [iterLoading, setIterLoading] = useState(false)
 
     const dispatch = useDispatch();
 
     const loadProducts = useCallback(async () => {
-
-        let mounted = true;
-        // setIsRefreshing(true);
         try {
             setIsLoading(true);
-            if (mounted) {
-                await dispatch(getProductsFn());
-            }
+
+            await dispatch(getProductsFn(0));
+            setIter(0)
+
             setIsLoading(false)
 
         }
         catch (err) {
-            //console.log('error heter')
-            setErrorMessage('Couldnt get products')
-            // setIsModalVisible(true);
         }
-        // setIsRefreshing(false);
-        return () => mounted = false;
+
 
     }, [isLoading])
+
+    const loadMoreProducts = useCallback(async () => {
+        // console.log(iterLoading)
+        try {
+            if (!iterLoading) {
+                setIterLoading(true);
+                await dispatch(getProductsFn(iter));
+                setIter(iter => iter + 1)
+                setIterLoading(false)
+            }
+        }
+        catch (err) {
+
+        }
+        setIterLoading(false)
+    }, [iter, iterLoading])
+
 
     useEffect(() => {
         loadProducts();
@@ -70,10 +83,19 @@ export default function ProductListScreen(props) {
 
     return (
         <>
-            <SmallPopup setMessage={setErrorMessage} message={errorMessage} />
+
             <View>
-                <ProductList showShopName={showShopName} navigation={props.navigation} data={products}
-                    onRefresh={loadProducts} refreshing={isRefreshing} />
+                <ProductList
+                    showShopName={showShopName}
+                    navigation={props.navigation}
+                    data={products}
+                    onRefresh={loadProducts}
+                    refreshing={isRefreshing}
+                    onEndReached={() => {
+
+                        loadMoreProducts()
+                    }}
+                />
             </View>
         </>
 

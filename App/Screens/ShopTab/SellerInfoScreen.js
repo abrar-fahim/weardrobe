@@ -50,6 +50,10 @@ export default function SellerInfoScreen(props) {
 
     const shopReviews = useSelector(state => state.shops.shopReviews)
 
+    const [iter, setIter] = useState(0);
+
+    const [iterLoading, setIterLoading] = useState(false)
+
     // const loadShopDetails = useCallback(async (shopId) => {
     //     try {
     //         await dispatch(shopsActions.())
@@ -62,6 +66,7 @@ export default function SellerInfoScreen(props) {
     const loadShopReviews = useCallback(async () => {
         try {
             await dispatch(shopsActions.fetchShopReviews(shopId))
+            setIter(0);
 
         }
         catch (err) {
@@ -69,7 +74,27 @@ export default function SellerInfoScreen(props) {
         }
 
 
-    })
+    }, [shopId])
+
+    const loadMoreShopReviews = useCallback(async () => {
+        try {
+            if (!iterLoading) {
+                setIterLoading(true);
+                await dispatch(shopsActions.fetchShopReviews(shopId, iter))
+                setIter(iter => iter + 1)
+                setIterLoading(false);
+            }
+
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+
+        setIterLoading(false)
+
+
+    }, [iter, shopId, iterLoading])
 
     const addShopReview = useCallback(async (rating, review) => {
         try {
@@ -138,7 +163,7 @@ export default function SellerInfoScreen(props) {
 
 
             <View style={styles.reviewTitleContainer}>
-    <Text style={styles.heading}>Reviews ({shopDetails.ratingCount})</Text>
+                <Text style={styles.heading}>Reviews ({shopDetails.ratingCount})</Text>
 
             </View>
 
@@ -188,7 +213,12 @@ export default function SellerInfoScreen(props) {
 
 
 
-            <FlatList ListHeaderComponent={shopDetailsPage} data={shopReviews} renderItem={renderReviews} />
+            <FlatList
+                ListHeaderComponent={shopDetailsPage}
+                data={shopReviews}
+                renderItem={renderReviews}
+                onEndReached={loadMoreShopReviews}
+            />
 
         </View>
 

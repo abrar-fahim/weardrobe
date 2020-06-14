@@ -12,6 +12,7 @@ import Colors from '../../Styles/Colors';
 import { useDispatch, useSelector } from 'react-redux';
 import * as productsActions from '../../store/actions/products'
 import ShoppingSessionTimer from '../../components/ShoppingSessionTimer';
+import { set } from 'react-native-reanimated';
 
 
 
@@ -104,6 +105,8 @@ function ShopScreen({ navigation }) {
     const [isRefreshing, setIsRefreshing] = useState(false)
 
 
+
+
     const dispatch = useDispatch();
     const allProducts = useSelector(
         state => state.products.products
@@ -112,6 +115,10 @@ function ShopScreen({ navigation }) {
     const feed = useSelector(state => state.products.feed);
     const activeSessionId = useSelector(state => state.social.activeSessionId);
     const sessionGroupId = useSelector(state => state.social.sessionGroupId);
+
+    const [iterLoading, setIsIterLoading] = useState(false)
+
+    const [iter, setIter] = useState(0);
 
 
     const loadFeed = useCallback(async () => {
@@ -131,7 +138,7 @@ function ShopScreen({ navigation }) {
 
     const setProductFn = useCallback(async (fn) => {
         try {
-            dispatch(productsActions.getProductsFn(fn))
+            await dispatch(productsActions.getProductsFn(fn))
         }
         catch (err) {
 
@@ -140,17 +147,45 @@ function ShopScreen({ navigation }) {
 
     const loadAllProducts = useCallback(async () => {
         try {
-            dispatch(productsActions.fetchProducts())
+            await dispatch(productsActions.fetchProducts())
+            setIter(0)
         }
         catch (err) {
             console.log(err)
         }
     })
 
+    const loadMoreProducts = useCallback(async () => {
+
+        if (!iterLoading) {
+            try {
+
+
+                setIsIterLoading(true);
+                console.log('size' + allProducts.length)
+                console.log('iter: ' + iter)
+                await dispatch(productsActions.fetchProducts(iter))
+
+
+                setIter(iter => iter + 1)
+                setIsIterLoading(false)
+            }
+
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+        setIsIterLoading(false)
+
+
+    }, [iter, iterLoading])
+
 
 
     useEffect(() => {
         loadFeed()
+        loadAllProducts()
     }, [])
 
 
@@ -344,13 +379,18 @@ function ShopScreen({ navigation }) {
 
             <FlatList
                 data={feed} renderItem={renderShopFeedItems}
-                onEndReached={loadAllProducts}
+                // onEndReached={loadAllProducts}
                 onRefresh={loadFeed}
                 refreshing={isRefreshing}
                 ListFooterComponent={
                     <View>
                         <Text style={styles.title}>All Products</Text>
-                        <ProductList navigation={navigation} data={allProducts} showShopName={true} />
+                        <ProductList
+                            onEndReached={loadMoreProducts}
+                            navigation={navigation}
+                            data={allProducts}
+                            showShopName={true}
+                        />
                     </View>
 
                 }
@@ -468,14 +508,14 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         marginTop: 10,
         flex: 1,
-        
+
         maxHeight: 50
     },
     bigGridItem: {
         flex: 1,
         margin: 10,
         alignItems: 'center',
-        
+
     },
     centered: {
         flex: 1,

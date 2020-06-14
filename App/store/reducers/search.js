@@ -11,10 +11,22 @@ export default function searchReducer(state = initialState, action) {
 
     switch (action.type) {
         case SEARCH_PEOPLE:
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    people: action.results
+                }
+            }
+
+            if (action.results.length === 0) {
+                return state;
+            }
+
             return {
                 ...state,
-                people: action.results
+                people: state.people.concat(action.results)
             }
+
 
         case SEARCH_SHOPS:
             return {

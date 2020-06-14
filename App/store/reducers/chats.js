@@ -26,9 +26,20 @@ export default function socialReducer(state = initialState, action) {
 
     switch (action.type) {
         case GET_GROUPS:
+
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    groups: action.groups
+                }
+            }
+            if (action.groups.length === 0) {
+                return state;
+            }
+
             return {
                 ...state,
-                groups: action.groups
+                groups: state.groups.concat(action.groups)
             }
 
         case GET_CHATS:

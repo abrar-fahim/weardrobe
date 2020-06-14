@@ -49,27 +49,51 @@ function AllShopsScreen(props) {
 
     const shops = useSelector(state => state.shops.shops)
 
+    const [iter, setIter] = useState(0);
+
+    const [iterLoading, setIterLoading] = useState(false)
+
 
     const dispatch = useDispatch();
 
     const loadShops = useCallback(async () => {
         try {
-            await dispatch(shopsActions.getShops())
+            await dispatch(shopsActions.getShops(0))
+            setIter(0)
         }
         catch (err) {
             console.log(err)
         }
 
 
-    }, [dispatch])
+    }, [])
+
+    const loadMoreShops = useCallback(async () => {
+        try {
+            if (!iterLoading) {
+                setIterLoading(true)
+                await dispatch(shopsActions.getShops(iter))
+                setIter(iter => iter + 1)
+                setIterLoading(false)
+            }
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+
+        setIterLoading(false)
+
+
+    }, [iter, iterLoading])
 
     useEffect(() => {
         loadShops();
 
-    }, [dispatch])
+    }, [])
 
     return (
-        <ShopsListScreen navigation={props.navigation} sellers={shops} />
+        <ShopsListScreen navigation={props.navigation} sellers={shops} onEndReached={loadMoreShops} />
     )
 }
 
@@ -98,7 +122,12 @@ export function ShopsListScreen(props) {
     return (
         <View style={ScreenStyle}>
 
-            <FlatList  data={props.sellers} renderItem={renderGridItem} numColumns={1} {...props} />
+            <FlatList
+                data={props.sellers}
+                renderItem={renderGridItem}
+                numColumns={1}
+                {...props}
+            />
 
         </View>
     );

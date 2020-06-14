@@ -19,17 +19,43 @@ export default function shopsReducer(state = initialState, action) {
     // console.log(action.type)
     switch (action.type) {
         case GET_SHOPS:
+
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    shops: action.shops
+                }
+            }
+
+            if (action.shops.length === 0) {
+                return state;
+
+            }
+
             return {
                 ...state,
-                shops: action.shops
+                shops: state.shops.concat(action.shops)
             }
+
 
         case GET_SHOP_PRODUCTS:
 
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    shopProducts: action.products
+                };
+            }
+
+            if (action.products.length === 0) {
+                return state;
+            }
+
             return {
                 ...state,
-                shopProducts: action.products
-            };
+                shopProducts: state.shopProducts.concat(action.products)
+            }
+
 
         case GET_SHOP_DETAILS:
             return {
@@ -61,10 +87,23 @@ export default function shopsReducer(state = initialState, action) {
                 categories: action.categories
             }
         case GET_SELLER_POSTS:
+
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    posts: action.posts
+                }
+            }
+
+            if (action.posts.length === 0) {
+                return state;
+            }
+
             return {
                 ...state,
-                posts: action.posts
+                posts: state.posts.concat(action.posts)
             }
+
 
 
 

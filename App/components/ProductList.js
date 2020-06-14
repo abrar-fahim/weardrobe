@@ -87,6 +87,7 @@ export default function ProductList(props) {
 
             <FlatList
                 // listKey={props.listKey}
+                {...props}
                 bounces={props.bounces}
 
                 ListHeaderComponent={props.ListHeaderComponent}

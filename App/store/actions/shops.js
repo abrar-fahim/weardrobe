@@ -16,9 +16,9 @@ import * as popupActions from './Popup'
 
 
 
-export const getShops = () => {
+export const getShops = (iter = 0) => {
     return async (dispatch) => {
-        const response = await fetch(`${HOST}/get/allshops/0`, {
+        const response = await fetch(`${HOST}/get/allshops/${iter}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ export const getShops = () => {
 
         const resData = await response.json();  //converts response string to js object/array
 
-        console.log(resData);
+        // console.log(resData);
         const shops = [];
 
         for (const key in resData) {
@@ -46,7 +46,8 @@ export const getShops = () => {
 
         dispatch({
             type: GET_SHOPS,
-            shops: shops
+            shops: shops,
+            iter: iter
         })
 
 
@@ -54,10 +55,10 @@ export const getShops = () => {
 }
 
 
-export const fetchShopProducts = (shopId) => {
+export const fetchShopProducts = (shopId, iter = 0) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${HOST}/get/shop/${shopId}/products/0`, {
+            const response = await fetch(`${HOST}/get/shop/${shopId}/products/${iter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -84,7 +85,7 @@ export const fetchShopProducts = (shopId) => {
                 })
             }
             // console.log(loadedProducts);
-            dispatch({ type: GET_SHOP_PRODUCTS, products: loadedProducts })
+            dispatch({ type: GET_SHOP_PRODUCTS, products: loadedProducts, iter: iter })
 
         }
         catch (err) {
@@ -300,10 +301,10 @@ export const unFollowShop = (shopId) => {
     }
 }
 
-export const fetchShopReviews = (shopId) => {
+export const fetchShopReviews = (shopId, iter = 0) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${HOST}/get/shop/${shopId}/reviews/0`, {
+            const response = await fetch(`${HOST}/get/shop/${shopId}/reviews/${iter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -452,9 +453,9 @@ export const fetchShopCategories = (shopId) => {
         }
     }
 }
-export const getSellerPosts = (shopId) => {
+export const getSellerPosts = (shopId, iter = 0) => {
     return async (dispatch) => {
-        const response = await fetch(`${HOST}/get/shop/${shopId}/posts/0`, {
+        const response = await fetch(`${HOST}/get/shop/${shopId}/posts/${iter}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -468,7 +469,7 @@ export const getSellerPosts = (shopId) => {
 
         const resData = await response.json();  //converts response string to js object/array
 
-        console.log(resData);
+        // console.log(resData);
         const posts = [];
 
         for (const key in resData) {
@@ -492,7 +493,8 @@ export const getSellerPosts = (shopId) => {
 
         dispatch({
             type: GET_SELLER_POSTS,
-            posts: posts
+            posts: posts,
+            iter: iter
         })
 
 

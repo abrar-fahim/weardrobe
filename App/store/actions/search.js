@@ -42,7 +42,8 @@ export const searchAllUsernames = (username, iter = 0) => {
 
             dispatch({
                 type: SEARCH_PEOPLE,
-                results: results
+                results: results,
+                iter: iter
             })
         }
 

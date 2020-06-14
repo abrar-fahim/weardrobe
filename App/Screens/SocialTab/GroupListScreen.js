@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -16,11 +16,18 @@ export default function GroupListScreen(props) {
 
     const groups = useSelector(state => state.social.groups)
 
+
+    const [iter, setIter] = useState(0);
+
+    const [iterLoading, setIterLoading] = useState(false)
+
+
     const dispatch = useDispatch()
 
     const LoadGroups = useCallback(async () => {
         try {
-            await dispatch(chatActions.getGroups())
+            await dispatch(chatActions.getGroups(0))
+            setIter(0)
         }
         catch (err) {
             console.log(err)
@@ -28,13 +35,30 @@ export default function GroupListScreen(props) {
 
     })
 
+    const LoadMoreGroups = useCallback(async () => {
+        try {
+            if (!iterLoading) {
+                setIterLoading(true);
+                await dispatch(chatActions.getGroups(iter))
+                setIter(iter => iter + 1)
+                setIterLoading(false);
+            }
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+        setIterLoading(false);
+
+    }, [iter, iterLoading])
+
     useEffect(() => {
         LoadGroups();
     }, [])
-    
+
 
     function renderItems(itemData) {
-        
+
         return (
 
             <TouchableOpacity onPress={() => props.navigation.navigate('GroupTab',
@@ -45,7 +69,7 @@ export default function GroupListScreen(props) {
                 <View style={styles.groupContainer}>
 
                     <View style={styles.picName}>
-                        {itemData.item.picture !== null && itemData.item.picture !== undefined  ? <Image source={itemData.item.picture} style={styles.image} /> :
+                        {itemData.item.picture !== null && itemData.item.picture !== undefined ? <Image source={itemData.item.picture} style={styles.image} /> :
                             <Ionicons name="md-people" size={30} color="grey" />
                         }
 
@@ -79,6 +103,10 @@ export default function GroupListScreen(props) {
                     <View>
                         <Text>No chats yet!</Text>
                     </View>
+                }
+                onEndReached={
+                    LoadMoreGroups
+
                 }
             />
         </View>

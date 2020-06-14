@@ -58,7 +58,8 @@ export const getGroups = (iter = 0) => {
 
             dispatch({
                 type: GET_GROUPS,
-                groups: groups
+                groups: groups,
+                iter: iter
             })
         }
 

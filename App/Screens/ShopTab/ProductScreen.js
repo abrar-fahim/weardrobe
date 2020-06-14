@@ -71,6 +71,11 @@ export default function ProductScreen(props) {
     const [isLoading, setIsLoading] = useState(true);
 
 
+    const [iter, setIter] = useState(0);
+
+    const [iterLoading, setIterLoading] = useState(false)
+
+
 
 
     const loadProductDetails = useCallback(async () => {
@@ -92,6 +97,30 @@ export default function ProductScreen(props) {
         }
 
     }, [])
+
+    const loadMoreReviews = useCallback(async () => {
+
+        try {
+
+            if (!iterLoading) {
+                setIterLoading(true)
+
+                await dispatch(productActions.fetchProductReviews(productId, iter))
+                setIter(iter => iter + 1)
+                setIterLoading(false)
+
+            }
+
+
+
+
+        } catch (err) {
+            console.log(err)
+        }
+        setIterLoading(false)
+
+
+    }, [iterLoading, iter])
 
 
 
@@ -610,7 +639,13 @@ export default function ProductScreen(props) {
                     </View>
 
                 </Modal>
-                <FlatList ListHeaderComponent={productPage} data={reviews} renderItem={renderReview} />
+                <FlatList
+                    ListHeaderComponent={productPage}
+                    data={reviews}
+                    renderItem={renderReview}
+                    onEndReached={loadMoreReviews}
+
+                />
 
 
 

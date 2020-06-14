@@ -28,10 +28,23 @@ export default function productsReducer(state = initialState, action) {
 
         case SET_PRODUCTS_LIST:
 
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    products: action.products
+                };
+            }
+
+            if (action.products.length === 0) {
+                return state;
+            }
+
             return {
                 ...state,
-                products: action.products
-            };
+                products: state.products.concat(action.products)
+            }
+
+
 
         case GET_PRODUCT_DETAILS:
 
@@ -47,10 +60,24 @@ export default function productsReducer(state = initialState, action) {
             }
 
         case GET_PRODUCT_REVIEWS:
+
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    productReviews: action.productReviews
+                }
+            }
+
+            if (action.productReviews.length === 0) {
+                return state
+            }
+
             return {
                 ...state,
-                productReviews: action.productReviews
+                productReviews: state.productReviews.concat(action.productReviews)
+
             }
+
 
         case GET_CATEGORIES:
             return {

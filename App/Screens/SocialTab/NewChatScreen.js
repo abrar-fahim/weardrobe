@@ -30,6 +30,13 @@ export default function NewChatScreen(props) {
 
     const dispatch = useDispatch();
 
+    const [username, setUsername] = useState('')
+
+    const [iter, setIter] = useState(0);
+
+    const [iterLoading, setIterLoading] = useState(false)
+
+
 
 
     const searchResults = useSelector(state => state.search.people)
@@ -46,13 +53,29 @@ export default function NewChatScreen(props) {
 
     const searchAllUsernames = useCallback(async (username) => {
         try {
-            await dispatch(searchActions.searchAllUsernames(username))
+            await dispatch(searchActions.searchAllUsernames(username, 0))
         }
         catch (err) {
             console.log(err)
         }
 
     })
+    const loadMoreUsernames = useCallback(async () => {
+        try {
+            if (!iterLoading) {
+                setIterLoading(true)
+                await dispatch(searchActions.searchAllUsernames(username, iter))
+                setIter(iter => iter + 1)
+                setIterLoading(false)
+            }
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+        setIterLoading(false)
+
+    }, [username, iterLoading, iter])
 
     const createGroup = useCallback(async () => {
         try {
@@ -119,7 +142,12 @@ export default function NewChatScreen(props) {
 
             <MySearchBar
                 placeholder="Search for people..."
-                onChangeText={searchAllUsernames}
+                onChangeText={(text) => {
+                    setUsername(text);
+                    searchAllUsernames(text)
+
+                }
+                }
                 navigation={props.navigation}
                 showBackButton={false}
             />
@@ -142,11 +170,15 @@ export default function NewChatScreen(props) {
                 platform={Platform.OS}
                 // onChangeText={searchAllUsernames} 
                 /> */}
-            <FlatList data={
-                searchResults.length === 0 ?
-                    (selected.length === 0 ? myFollowers : selected)
-                    : searchResults
-            } renderItem={renderItems} />
+            <FlatList
+                data={
+                    searchResults.length === 0 ?
+                        (selected.length === 0 ? myFollowers : selected)
+                        : searchResults
+                } renderItem={renderItems}
+                onEndReached={loadMoreUsernames}
+
+            />
 
 
         </View>

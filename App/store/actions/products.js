@@ -9,10 +9,10 @@ export const GET_SHOP_FEED = 'GET_SHOP_FEED';
 import HOST from "../../components/host";
 import * as popupActions from './Popup'
 
-export const fetchProducts = () => {
+export const fetchProducts = (iter = 0) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${HOST}/get/allproducts/0`, {
+            const response = await fetch(`${HOST}/get/allproducts/${iter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export const fetchProducts = () => {
             }
             // console.log(loadedProducts);
             dispatch(
-                { type: SET_PRODUCTS_LIST, products: loadedProducts }
+                { type: SET_PRODUCTS_LIST, products: loadedProducts, iter: iter }
             )
 
         }
@@ -96,11 +96,11 @@ export const fetchProductDetails = (productId) => {
     }
 }
 
-export const fetchProductReviews = (productId) => {
+export const fetchProductReviews = (productId, iter = 0) => {
     return async (dispatch) => {
 
         try {
-            const response = await fetch(`${HOST}/get/product/${productId}/reviews/0`, {
+            const response = await fetch(`${HOST}/get/product/${productId}/reviews/${iter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -129,7 +129,11 @@ export const fetchProductReviews = (productId) => {
             // console.log('acrtion product: ' + product)
 
 
-            dispatch({ type: GET_PRODUCT_REVIEWS, productReviews: productReviews })
+            dispatch({
+                type: GET_PRODUCT_REVIEWS,
+                productReviews: productReviews,
+                iter: iter
+            })
         }
         catch (err) {
             throw err;
@@ -236,10 +240,10 @@ export const fetchCategories = () => {
     }
 }
 
-export const fetchProductsByCategory = (categoryId) => {
+export const fetchProductsByCategory = (categoryId, iter = 0) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${HOST}/get/category/${categoryId}/products/0`, {
+            const response = await fetch(`${HOST}/get/category/${categoryId}/products/${iter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -266,7 +270,7 @@ export const fetchProductsByCategory = (categoryId) => {
                 })
             }
             // console.log(loadedProducts);
-            dispatch({ type: SET_PRODUCTS_LIST, products: loadedProducts })
+            dispatch({ type: SET_PRODUCTS_LIST, products: loadedProducts, iter: iter })
 
         }
         catch (err) {
