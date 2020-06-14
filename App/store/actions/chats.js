@@ -73,6 +73,8 @@ export const getGroups = (iter = 0) => {
 }
 
 export const getChats = (groupId, iter = 0) => {
+
+    //here iter means after which chat i wanna get chats, so just send length of chat array in store
     return async (dispatch) => {
         const response = await fetch(`${HOST}/get/group/${groupId}/chat/${iter}`, {
             method: 'GET',
@@ -107,7 +109,8 @@ export const getChats = (groupId, iter = 0) => {
 
             dispatch({
                 type: GET_CHATS,
-                chats: chats
+                chats: chats,
+                iter: iter
             })
         }
         else {

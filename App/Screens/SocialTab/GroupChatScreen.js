@@ -10,6 +10,7 @@ import { MaterialIcons, SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 
 
 import * as chatActions from '../../store/actions/chats'
+import * as popupActions from '../../store/actions/Popup'
 import { useSelector, useDispatch } from 'react-redux';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 
@@ -91,11 +92,29 @@ export function GroupChatScreen(props) {
     const chatListRef = useRef(null)
     const textInputRef = useRef(null)
 
+    const [iter, setIter] = useState(0);
+
+    const getChats = useCallback(async () => {
+        try {
+            await dispatch(chatActions.getChats(groupId, iter))
+            setIter(chats.length)
+            // dispatch(popupActions.setMessage('hello' + chats.length))
+
+
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+
+    }, [groupId, iter])
+
     const loadChats = useCallback(async () => {
         try {
             await dispatch(chatActions.getChats(groupId, 0))
             await dispatch(chatActions.getGroupPeople(groupId))
             await dispatch(chatActions.connectToGroup(groupId))
+            setIter(chats.length)
 
         }
         catch (err) {
@@ -123,11 +142,6 @@ export function GroupChatScreen(props) {
             dispatch(chatActions.disconnectFromGroup(groupId))
         }
     }, [])
-
-    useEffect(() => {
-        //  chatListRef.current.scrollToIndex({animated: true, index: 1, viewPosition: 0.5})
-    }, [chats])
-
 
 
 
@@ -191,6 +205,11 @@ export function GroupChatScreen(props) {
                 renderItem={renderItems}
                 ref={chatListRef}
                 inverted={true}
+                onEndReached={() => {
+                    getChats()
+                }}
+
+
 
 
             />

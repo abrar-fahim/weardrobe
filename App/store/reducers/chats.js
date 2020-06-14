@@ -32,10 +32,25 @@ export default function socialReducer(state = initialState, action) {
             }
 
         case GET_CHATS:
-            return {
-                ...state,
-                chats: action.chats
+
+            if (action.chats === []) {
+                return state
             }
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    chats: action.chats
+                }
+            }
+
+            else {
+                return {
+                    ...state,
+                    chats: state.chats.concat(action.chats)
+                }
+            }
+
+
 
         case GET_SHOPPING_SESSIONS:
             return {

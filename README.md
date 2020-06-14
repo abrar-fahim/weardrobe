@@ -13,6 +13,7 @@ Add web and other folders to keep seperate components organized
 - [ ] clicking on picture in chats/product page leads to zoomable pic page
 - [ ] add pop up warnings before deleting posts, blogs, groups
 - [ ] integrate dp in get followers/ following of self and others profiles
+- [ ] clicking on dp in chat screen leads to user profile
 
 Known Bugs
 - [ ] deleting group and then navigating to group list page still shows deleted group
