@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 
-import React, { useEffect, useLayoutEffect, useCallback, useState } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView, SectionList, ActivityIndicator, TouchableOpacity, FlatList, Dimensions } from 'react-native';
+import React, { useEffect, useLayoutEffect, useCallback, useState, useRef } from 'react';
+import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView, SectionList, ActivityIndicator, TouchableOpacity, FlatList, Dimensions, Animated } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 
@@ -246,6 +246,9 @@ export default function SellerScreen(props) {
 
     const dispatch = useDispatch();
 
+    const horizontalPageRef = useRef(null)
+    const topBarAnim = useRef(new Animated.Value(0)).current;
+
 
 
     const shopDetails = useSelector(state => state.shops.shopDetails)
@@ -344,6 +347,13 @@ export default function SellerScreen(props) {
 
 
 
+    const scrollVal = topBarAnim.interpolate({
+        inputRange: [0, Dimensions.get('window').width],
+        outputRange: [0, Dimensions.get('window').width / 2],
+        extrapolate: 'clamp'
+
+    })
+
     if (isLoading) {
         return (
             <LoadingScreen />
@@ -355,12 +365,13 @@ export default function SellerScreen(props) {
 
 
     // const TopTab = createMaterialTopTabNavigator();
+    // console.log(topBarAnim._value)
 
     return (
         <View style={ScreenStyle}>
 
             <FlatList
-                
+
                 ListHeaderComponent={
                     <>
                         <View style={{
@@ -388,8 +399,39 @@ export default function SellerScreen(props) {
                         view: <>
 
                             <View style={styles.topTab}>
-                                <Text >1</Text>
-                                <Text>2</Text>
+                                <TouchableOpacity
+                                    style={styles.topTabTouch}
+                                    onPress={() => {
+                                        horizontalPageRef.current.scrollToIndex({
+                                            Animated: true,
+                                            index: 0,
+                                        })
+                                    }}
+                                >
+                                    <Text style={styles.topTabText} >1</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    style={styles.topTabTouch}
+                                    onPress={() => {
+                                        horizontalPageRef.current.scrollToIndex({
+                                            Animated: true,
+                                            index: 1,
+                                        })
+                                    }}
+                                >
+                                    <Text style={styles.topTabText}>2</Text>
+                                </TouchableOpacity>
+
+
+                            </View>
+                            <View style={styles.barInactiveIndicator}>
+                                <Animated.View style={[styles.barActiveIndicator, {
+                                    left: scrollVal
+                                }]
+
+                                } />
+
                             </View>
 
 
@@ -433,10 +475,22 @@ export default function SellerScreen(props) {
                                 horizontal={true}
                                 pagingEnabled={true}
                                 initialNumToRender={2}
+                                persistentScrollbar={true}
+                                ref={horizontalPageRef}
+                                // scrollBarThumbImage={require('../../assets/Images/bubbleMe.png')}
+
+                                showsHorizontalScrollIndicator={false}
+                                scrollEventThrottle={10}
+                                onScroll={Animated.event(
+                                    [{ nativeEvent: { contentOffset: { x: topBarAnim } } }]
+                                )}
+
+
+
                                 bounces={false}
                                 renderItem={({ item }) => (
                                     <View style={styles.screen}>
-                                        <item.component />
+                                        <item.component navigation={props.navigation} />
                                     </View>
 
                                 )}
@@ -560,11 +614,48 @@ const styles = StyleSheet.create({
 
     topTab: {
         height: 50,
-        color: 'white',
+        backgroundColor: 'white',
         width: '100%',
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        shadowOffset: {
+            height: 3,
+        },
+        shadowOpacity: 0.2,
+        elevation: 10
+
     },
+    topTabText: {
+        
+        textAlign: 'center',
+        fontSize: 15,
+        color: 'black'
+
+    },
+    topTabTouch: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center'
+    },
+
+    barInactiveIndicator: {
+        width: Dimensions.get('window').width / 2,
+        backgroundColor: Colors.screenBackgroundColor,
+        height: 3
+
+    },
+    barActiveIndicator: {
+        width: Dimensions.get('window').width / 2,
+        backgroundColor: Colors.primaryColor,
+        height: 3,
+        position: 'absolute',
+        top: 0,
+        left: 0
+
+    },
+
 
 
     ratingsContainer: {
