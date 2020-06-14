@@ -33,7 +33,7 @@ export default function socialReducer(state = initialState, action) {
 
         case GET_CHATS:
 
-            if (action.chats === []) {
+            if (action.chats.length === 0) {
                 return state
             }
             if (action.iter === 0) {
@@ -43,11 +43,15 @@ export default function socialReducer(state = initialState, action) {
                 }
             }
 
-            else {
+            if (action.iter === state.chats.length) {
                 return {
                     ...state,
                     chats: state.chats.concat(action.chats)
                 }
+            }
+
+            else {
+                return state
             }
 
 
@@ -87,7 +91,7 @@ export default function socialReducer(state = initialState, action) {
         case ADD_CHAT:
             return {
                 ...state,
-                chats: [...state.chats, action.text]
+                chats: [action.chat, ...state.chats]
             }
 
 

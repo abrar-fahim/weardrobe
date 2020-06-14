@@ -92,12 +92,13 @@ export function GroupChatScreen(props) {
     const chatListRef = useRef(null)
     const textInputRef = useRef(null)
 
-    const [iter, setIter] = useState(0);
+    // const [iter, setIter] = useState(0);
 
     const getChats = useCallback(async () => {
         try {
-            await dispatch(chatActions.getChats(groupId, iter))
-            setIter(chats.length)
+            console.log(chats.length)
+            await dispatch(chatActions.getChats(groupId,  chats.length))
+            // setIter(chats.length)
             // dispatch(popupActions.setMessage('hello' + chats.length))
 
 
@@ -107,14 +108,14 @@ export function GroupChatScreen(props) {
             console.log(err)
         }
 
-    }, [groupId, iter])
+    }, [groupId, chats])
 
     const loadChats = useCallback(async () => {
         try {
             await dispatch(chatActions.getChats(groupId, 0))
             await dispatch(chatActions.getGroupPeople(groupId))
             await dispatch(chatActions.connectToGroup(groupId))
-            setIter(chats.length)
+            // setIter(chats.length)
 
         }
         catch (err) {

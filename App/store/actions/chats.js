@@ -95,7 +95,7 @@ export const getChats = (groupId, iter = 0) => {
 
             for (const key in resData) {
                 chats.push({
-                    id: resData[key].SENDER_UID + resData[key].SENT_AT,
+                    id: resData[key].SENDER_UID + resData[key].SENT_AT + key,
                     senderId: resData[key].SENDER_UID,
                     groupId: resData[key].GROUP_ID,
                     text: resData[key].TEXT,
@@ -462,13 +462,21 @@ export const connectToGroup = (groupId) => {
 
         socket.on('sendMessageGroup', (chat) => {
             console.log(chat)
-            dispatch(getChats(groupId))
+            // dispatch(getChats(groupId))
             // console.log(text)
-            // dispatch({
-            //     type: ADD_CHAT,
-            //     text: text
+            dispatch({
+                type: ADD_CHAT,
+                chat: {
+                    id: chat.SENDER_UID + chat.SENT_AT + Date.now(),
+                    senderId: chat.SENDER_UID,
+                    groupId: chat.GROUP_ID,
+                    text: chat.TEXT,
+                    photo: { uri: `${HOST}/img/temp/` + chat.PHOTO },
+                    time: chat.SENT_AT,
+                }
 
-            // })
+
+            })
         });
 
 
