@@ -35,15 +35,42 @@ export function CategoriesSearchScreen(props) {
 
     const categories = useSelector(state => state.search.categories)
 
+    const [name, setName] = useState('')
+
+    const [iter, setIter] = useState(0);
+
+    const [iterLoading, setIterLoading] = useState(false)
+
     const searchCategories = useCallback(async (name) => {
         try {
-            await dispatch(searchActions.searchCategories(name))
+            await dispatch(searchActions.searchCategories(name, 0))
+            setIter(0)
         }
         catch (err) {
             console.log(err)
         }
 
     })
+
+    const laodMoreCategories = useCallback(async () => {
+        console.log(name)
+        try {
+            if (!iterLoading) {
+                setIterLoading(true)
+                await dispatch(searchActions.searchCategories(name, iter))
+                setIter(iter => iter + 1)
+                setIterLoading(false)
+            }
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+        setIterLoading(false)
+
+    }, [name, iter, iterLoading])
+
+
 
     const setProductsFn = useCallback(async (categoryId) => {
         try {
@@ -77,7 +104,10 @@ export function CategoriesSearchScreen(props) {
 
             <MySearchBar
                 placeholder="Search for categories..."
-                onChangeText={searchCategories}
+                onChangeText={(text) => {
+                    setName(text)
+                    searchCategories(text)
+                }}
                 navigation={props.navigation}
                 showBackButton={true}
             />
@@ -87,8 +117,9 @@ export function CategoriesSearchScreen(props) {
                 renderItem={renderItems}
                 numColumns={2}
                 ListEmptyComponent={
-                <Text>No categories found!</Text>
+                    <Text>No categories found!</Text>
                 }
+                onEndReached={laodMoreCategories}
 
             />
 

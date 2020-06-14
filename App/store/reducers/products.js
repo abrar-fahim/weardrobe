@@ -80,9 +80,22 @@ export default function productsReducer(state = initialState, action) {
 
 
         case GET_CATEGORIES:
+
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    categories: action.categories
+                }
+            }
+
+            if (action.categories.length === 0) {
+                return state
+            }
+
             return {
                 ...state,
-                categories: action.categories
+                categories: state.categories.concat(action.categories)
+
             }
 
         case GET_PRODUCTS_FN:

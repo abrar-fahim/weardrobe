@@ -26,33 +26,65 @@ export default function ShopSearchScreen(props) {
     const dispatch = useDispatch();
     const shops = useSelector(state => state.search.shops)
 
+    const [name, setName] = useState('')
+
+    const [iter, setIter] = useState(0);
+
+    const [iterLoading, setIterLoading] = useState(false)
+
     const searchAllShops = useCallback(async (name) => {
         try {
-            await dispatch(searchActions.searchAllShops(name))
+            await dispatch(searchActions.searchAllShops(name, 0))
+            setIter(0)
         }
         catch (err) {
             console.log(err)
         }
 
     })
+
+    const loadMoreShops = useCallback(async () => {
+        try {
+
+            if (!iterLoading) {
+                setIterLoading(true);
+                await dispatch(searchActions.searchAllShops(name, iter))
+                setIter(iter => iter + 1)
+                setIterLoading(false);
+            }
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+        setIterLoading(false);
+
+    }, [name, iterLoading, iter])
     return (
         <View style={{ flexDirection: 'column', marginTop: 30, ...ScreenStyle }}>
             <MySearchBar
                 placeholder="Search for Shops..."
-                onChangeText={searchAllShops}
+                onChangeText={(text) => {
+                    setName(text)
+                    searchAllShops(text)
+                }}
                 navigation={props.navigation}
                 showBackButton={true}
-                
+
             />
 
 
 
             <View style={styles.productsContainer}>
-                <ShopsListScreen navigation={props.navigation} sellers={shops} ListEmptyComponent={
-                    <View>
-                        <Text>no shops found!</Text>
-                    </View>
-                } />
+                <ShopsListScreen
+                    onEndReached={loadMoreShops}
+                    navigation={props.navigation}
+                    sellers={shops}
+                    ListEmptyComponent={
+                        <View>
+                            <Text>no shops found!</Text>
+                        </View>
+                    } />
             </View>
         </View>
     )

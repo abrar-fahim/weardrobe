@@ -29,22 +29,60 @@ export default function searchReducer(state = initialState, action) {
 
 
         case SEARCH_SHOPS:
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    shops: action.results
+                }
+            }
+
+            if (action.results.length === 0) {
+                return state;
+            }
+
             return {
                 ...state,
-                shops: action.results
+                shops: state.shops.concat(action.results)
             }
+
 
         case SEARCH_PRODUCTS:
-            return {
-                ...state,
-                products: action.results
+
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    products: action.results
+                }
             }
 
-        case SEARCH_CATEGORIES:
+            if (action.results.length === 0) {
+                return state;
+            }
+
             return {
                 ...state,
-                categories: action.results
+                products: state.products.concat(action.results)
             }
+
+
+        case SEARCH_CATEGORIES:
+
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    categories: action.results
+                }
+            }
+
+            if (action.results.length === 0) {
+                return state;
+            }
+
+            return {
+                ...state,
+                categories: state.categories.concat(action.results)
+            }
+
 
 
 

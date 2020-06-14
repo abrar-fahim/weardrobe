@@ -193,9 +193,9 @@ export const followShop = (shopId) => {
     }
 }
 
-export const fetchMyShops = () => {
+export const fetchMyShops = (iter = 0) => {
     return async (dispatch) => {
-        const response = await fetch(`${HOST}/get/myshoplist/0`, {
+        const response = await fetch(`${HOST}/get/myshoplist/${iter}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -209,7 +209,7 @@ export const fetchMyShops = () => {
 
         const resData = await response.json();  //converts response string to js object/array
 
-        console.log(resData);
+        // console.log(resData);
 
         const myShops = []
 
@@ -224,7 +224,8 @@ export const fetchMyShops = () => {
 
         dispatch({
             type: GET_MY_SHOPS,
-            myShops: myShops
+            myShops: myShops,
+            iter: iter
         })
 
         // if (Object.keys(resData)[0] === 'SUCCESS') {
@@ -397,10 +398,10 @@ export const addReview = (shopId, rating, review) => {
     }
 }
 
-export const fetchShopCategories = (shopId) => {
+export const fetchShopCategories = (shopId, iter = 0) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${HOST}/get/category/list-by-shops/${shopId}/0`, {
+            const response = await fetch(`${HOST}/get/category/list-by-shops/${shopId}/${iter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -419,10 +420,8 @@ export const fetchShopCategories = (shopId) => {
 
             for (const key in resData) {
 
-                console.log('before')
-                let inventory = resData[key].INVENTORY
-                console.log('aftet')
 
+                let inventory = resData[key].INVENTORY
 
                 for (const id in inventory) {
                     inventory[id] = {
@@ -442,7 +441,7 @@ export const fetchShopCategories = (shopId) => {
                 })
             }
             // console.log(loadedProducts);
-            await dispatch({ type: GET_SHOP_CATEGORIES, categories: categories })
+            await dispatch({ type: GET_SHOP_CATEGORIES, categories: categories, iter: iter })
 
         }
         catch (err) {

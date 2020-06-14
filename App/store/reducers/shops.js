@@ -70,9 +70,20 @@ export default function shopsReducer(state = initialState, action) {
             }
 
         case GET_MY_SHOPS:
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    myShops: action.myShops
+                }
+            }
+
+            if (action.myShops.length === 0) {
+                return state;
+            }
+
             return {
                 ...state,
-                myShops: action.myShops
+                myShops: state.myShops.concat(action.myShops)
             }
 
         case GET_SHOP_REVIEWS:
@@ -82,10 +93,23 @@ export default function shopsReducer(state = initialState, action) {
             }
 
         case GET_SHOP_CATEGORIES:
+
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    categories: action.categories
+                }
+            }
+
+            if (action.categories.length === 0) {
+                return state;
+            }
+
             return {
                 ...state,
-                categories: action.categories
+                categories: state.categories.concat(action.categories)
             }
+
         case GET_SELLER_POSTS:
 
             if (action.iter === 0) {

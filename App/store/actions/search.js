@@ -178,7 +178,8 @@ export const searchAllShops = (name, iter = 0) => {
 
             dispatch({
                 type: SEARCH_SHOPS,
-                results: results
+                results: results,
+                iter: iter
             })
         }
         // console.log(resData);
@@ -220,7 +221,8 @@ export const searchCategories = (name, iter = 0) => {
 
             dispatch({
                 type: SEARCH_CATEGORIES,
-                results: results
+                results: results,
+                iter:iter
             })
 
         }
@@ -268,7 +270,8 @@ export const searchAllProducts = (name, iter = 0) => {
 
             dispatch({
                 type: SEARCH_PRODUCTS,
-                results: results
+                results: results,
+                iter: iter
             })
         }
 

@@ -202,10 +202,10 @@ export const addReview = (productId, rating, review) => {
 }
 
 
-export const fetchCategories = () => {
+export const fetchCategories = (iter = 0) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${HOST}/get/category/list/0`, {
+            const response = await fetch(`${HOST}/get/category/list/${iter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -228,7 +228,7 @@ export const fetchCategories = () => {
                 })
             }
             // console.log(loadedProducts);
-            dispatch({ type: GET_CATEGORIES, categories: categories })
+            dispatch({ type: GET_CATEGORIES, categories: categories, iter: iter })
 
         }
         catch (err) {

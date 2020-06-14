@@ -45,6 +45,11 @@ export function CategoriesScreen(props) {
 
     const categories = props.route.params?.shopId ? useSelector(state => state.shops.categories) : useSelector(state => state.products.categories)
 
+    const [iter, setIter] = useState(0);
+
+    const [iterLoading, setIterLoading] = useState(false)
+
+
     const laodCategories = useCallback(async () => {
 
         try {
@@ -55,13 +60,43 @@ export function CategoriesScreen(props) {
             else {
                 await dispatch(productsActions.fetchCategories())
             }
+            setIter(0)
 
 
         }
         catch (err) {
             console.log(err)
         }
-    }, [dispatch])
+    }, [])
+
+    const laodMoreCategories = useCallback(async () => {
+
+        try {
+
+            if (!iterLoading) {
+                setIterLoading(true);
+                if (props.route.params?.shopId) {
+
+                    await dispatch(shopActions.fetchShopCategories(props.route.params?.shopId, iter))
+                }
+                else {
+                    await dispatch(productsActions.fetchCategories(iter))
+                }
+
+                setIter(iter => iter + 1)
+
+                setIterLoading(false)
+
+            }
+
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+        setIterLoading(false)
+
+    }, [iterLoading, iter])
 
 
 
@@ -101,7 +136,12 @@ export function CategoriesScreen(props) {
     return (
         <View style={ScreenStyle}>
 
-            <FlatList data={categories} renderItem={renderItems} numColumns={2} />
+            <FlatList
+                data={categories}
+                renderItem={renderItems}
+                numColumns={2}
+                onEndReached={laodMoreCategories}
+            />
 
         </View>
     )
