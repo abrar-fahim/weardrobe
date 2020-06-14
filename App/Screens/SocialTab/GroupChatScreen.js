@@ -35,7 +35,7 @@ export default function GroupTabScreen(props) {
                         <GenericHeaderButton
                             title="NewShoppingSession"
                             iconName="md-add"
-                            
+
                             onPress={
                                 () => props.navigation.navigate('NewShoppingSession',
                                     {
@@ -80,6 +80,7 @@ export function GroupChatScreen(props) {
     const groupId = props.route.params?.groupId
 
     const chats = useSelector(state => state.social.chats);
+    const participants = useSelector(state => state.social.groupPeople);
 
     const userId = useSelector(state => state.auth.userId);
 
@@ -93,7 +94,9 @@ export function GroupChatScreen(props) {
     const loadChats = useCallback(async () => {
         try {
             await dispatch(chatActions.getChats(groupId, 0))
+            await dispatch(chatActions.getGroupPeople(groupId))
             await dispatch(chatActions.connectToGroup(groupId))
+
         }
         catch (err) {
             console.log(err)
@@ -130,12 +133,18 @@ export function GroupChatScreen(props) {
 
 
 
+
+
     function renderItems(itemData) {
+
+        const dp = participants.filter((person) => person.id === itemData.item.senderId)[0].profilePic
+        const username = participants.filter((person) => person.id === itemData.item.senderId)[0].username
         if (itemData.item.senderId === userId) {
             return (
                 <View style={styles.chat}>
 
-                    <Image style={styles.pictureMe} source={require('../../assets/Images/pic1.jpeg')} />
+                    <Image style={styles.pictureMe} source={dp} />
+                    <Text style={styles.usernameMe}>{username}</Text>
                     {itemData.item.text === null ? <Image source={itemData.item.photo} style={styles.photoMe} /> :
                         <View style={styles.msgBubbleMe}>
 
@@ -150,10 +159,13 @@ export function GroupChatScreen(props) {
             )
         }
 
+        // console.log(participants)
+
 
         return (
             <View style={styles.chat}>
-                <Image style={styles.picture} source={require('../../assets/Images/pic1.jpeg')} />
+                <Image style={styles.picture} source={dp} />
+                <Text style={styles.username}>{username}</Text>
                 {itemData.item.text === null ? <Image source={itemData.item.photo} style={styles.photo} /> :
                     <View style={styles.msgBubble}>
 
@@ -238,6 +250,14 @@ const styles = StyleSheet.create({
         height: 30,
         width: 30,
         borderRadius: 15
+    },
+    username: {
+        alignSelf: 'flex-start'
+
+    },
+    usernameMe: {
+
+        alignSelf: 'flex-end'
     },
 
     msgBubble: {

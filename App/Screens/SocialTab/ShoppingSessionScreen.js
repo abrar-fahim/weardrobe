@@ -46,6 +46,8 @@ export default function CartScreen(props) {
 
             <View style={styles.cartEntry}>
                 <Image style={{ ...styles.picture, alignSelf: userId === itemData.item.customerId ? 'flex-end' : 'flex-start' }} source={itemData.item.profilePic} />
+
+                <Text style={{ ...styles.username, alignSelf: userId === itemData.item.customerId ? 'flex-end' : 'flex-start' }} source={itemData.item.profilePic} >{itemData.item.username}</Text>
                 <View style={styles.cartRow}>
 
 

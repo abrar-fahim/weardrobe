@@ -113,11 +113,6 @@ export const getChats = (groupId, iter = 0) => {
         else {
             dispatch(popupActions.setMessage('Something Went Wrong', true))
         }
-
-        // console.log(resData);
-
-
-
     }
 }
 

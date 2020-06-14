@@ -11,6 +11,8 @@ Add web and other folders to keep seperate components organized
 - [ ] add iters to everything
 - [ ] optimize chats
 - [ ] clicking on picture in chats/product page leads to zoomable pic page
+- [ ] add pop up warnings before deleting posts, blogs, groups
+- [ ] integrate dp in get followers/ following of self and others profiles
 
 Known Bugs
 - [ ] deleting group and then navigating to group list page still shows deleted group
