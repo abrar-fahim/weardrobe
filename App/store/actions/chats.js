@@ -458,7 +458,7 @@ export const connectToGroup = (groupId) => {
         socket.emit('join', `{"groupId": "${groupId}"}`);
 
         socket.on('sendMessageGroup', (chat) => {
-            // console.log(chat)
+            console.log(chat)
             dispatch(getChats(groupId))
             // console.log(text)
             // dispatch({

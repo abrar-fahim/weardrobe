@@ -137,8 +137,8 @@ export function GroupChatScreen(props) {
 
     function renderItems(itemData) {
 
-        const dp = participants.filter((person) => person.id === itemData.item.senderId)[0].profilePic
-        const username = participants.filter((person) => person.id === itemData.item.senderId)[0].username
+        const dp = participants !== undefined ? participants?.filter((person) => person.id === itemData.item.senderId)[0]?.profilePic : null
+        const username = participants !== undefined ? participants?.filter((person) => person.id === itemData.item.senderId)[0]?.username : null
         if (itemData.item.senderId === userId) {
             return (
                 <View style={styles.chat}>
