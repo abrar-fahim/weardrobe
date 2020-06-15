@@ -14,21 +14,19 @@ import UIButtonTextStyle from '../../Styles/UIButtonTextStyle';
 
 
 
-
-
-import UIButton from '../../components/UIButton'
-
 import * as cartActions from '../../store/actions/cart'
 import AuthRequiredScreen from '../AuthRequiredScreen';
 
 import CheckLoggedIn from '../../components/CheckLoggedIn'
-import { sub } from 'react-native-reanimated';
 
 
 
 export default function CartScreen(props) {
 
-    const loggedIn = CheckLoggedIn();
+    const loggedIn = useSelector(state => (state.auth.userId == null ? false : true));
+
+    const userId = useSelector(state => state.auth.userId)
+    console.log(userId)
 
 
     const cartItems = useSelector(state => state.cart.items)
@@ -66,117 +64,127 @@ export default function CartScreen(props) {
             console.log(err.message)
         }
         //setIsLoading(false);
-    }, [dispatch, removeFromCart, updateCart])
-
-
-
-    // useEffect(() => {
-    //     loadCartItems()
-    // }, [])
+    })
 
 
 
 
     useEffect(() => {
-        const willFocusSub = props.navigation.addListener(
-            'focus',
-            loadCartItems
-        );
+        loadCartItems();
+    }, []);
 
-        return willFocusSub;
-    }, [loadCartItems]);
-
-    //console.log(cartItems)
 
 
 
     const renderItems = (itemData) => {
         return (
+            <View style={styles.cartItem}>
 
-            <View style={styles.cartItemContainer}>
+                <View style={styles.seller}>
 
+                    <Text style={styles.sellerName}>Seller: {itemData.item.shopName}</Text>
 
-                <View style={styles.cartItem}>
+                </View>
 
-                    <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
-                        productId: itemData.item.productId
-                    }))}>
-                        <Image source={itemData.item.picture} style={{ height: 70, width: 70, borderRadius: 35 }} />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
-                        productId: itemData.item.productId
-                    }))}>
-                        <View>
-                            <Text style={styles.itemName}> {itemData.item.name}</Text>
-                            {/* <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.name}</Text> */}
-                            <View style={styles.sizeColorContainer}>
-                                {itemData.item.color === null ? null : <FontAwesome name="circle" color={itemData.item.color} size={25} />}
-
-                                {itemData.item.size === null ? null : <View style={styles.sizeContainer}>
-                                    {/* <FontAwesome name="circle" color="grey" size={25} /> */}
-                                    {/* <View style={styles.sizeTextContainer}> */}
-                                    <Text style={styles.sizeText}>{itemData.item.size?.toUpperCase()}</Text>
-                                    {/* </View> */}
-
-                                </View>}
+                <View style={styles.product}>
+                    <View style={styles.picSizeColor}>
 
 
+                        <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
+                            productId: itemData.item.productId
+                        }))}>
+                            <Image source={itemData.item.picture} style={styles.picture} />
+                        </TouchableOpacity>
+
+                        <View style={styles.sizeColorContainer}>
+                            {itemData.item.color === null ? null : <FontAwesome name="circle" color={itemData.item.color} size={25} />}
+
+                            {itemData.item.size === null ? null : <View style={styles.sizeContainer}>
+                                {/* <FontAwesome name="circle" color="grey" size={25} /> */}
+                                {/* <View style={styles.sizeTextContainer}> */}
+                                <Text style={styles.sizeText}>{itemData.item.size?.toUpperCase()}</Text>
+                                {/* </View> */}
+
+                            </View>}
+                        </View>
+
+
+                    </View>
+
+                    <View style={styles.namePriceQuantity}>
+                        <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
+                            productId: itemData.item.productId
+                        }))}>
+                            <View>
+                                <Text style={styles.itemName}> {itemData.item.name}</Text>
+                                {/* <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.name}</Text> */}
+
+
+                            </View>
+                        </TouchableOpacity>
+
+                        <View style={styles.priceContainer}>
+                            <Text> {itemData.item.price}x{itemData.item.quantity} </Text>
+
+                            <Text style={styles.priceText}>BDT {itemData.item.quantity * itemData.item.price}</Text>
+                        </View>
+
+                        <View style={styles.descriptionQuantity}>
+                            <Text style={styles.description}>Free Shipping</Text>
+
+                            <View style={styles.quantity}>
+
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        updateCart(itemData.item.productId, itemData.item.color, itemData.item.size, itemData.item.quantity - 1)
+                                    }}
+                                >
+                                    <AntDesign name="minuscircle" size={25} color='grey' />
+                                </TouchableOpacity>
+
+                                <Text>{itemData.item.quantity}</Text>
+
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        updateCart(itemData.item.productId, itemData.item.color, itemData.item.size, itemData.item.quantity + 1)
+                                    }}>
+                                    <AntDesign name="pluscircle" size={25} color='grey' />
+                                </TouchableOpacity>
 
 
 
                             </View>
 
-                        </View>
-                    </TouchableOpacity>
 
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, }}>
-
-                        <Text>{itemData.item.quantity}</Text>
-
-                        <View style={{ justifyContent: 'space-evenly', height: '99%' }}>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    updateCart(itemData.item.productId, itemData.item.color, itemData.item.size, itemData.item.quantity + 1)
-                                }}>
-                                <AntDesign name="pluscircle" size={35} color='grey' />
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                onPress={() => {
-                                    updateCart(itemData.item.productId, itemData.item.color, itemData.item.size, itemData.item.quantity - 1)
-                                }}
-                            >
-                                <AntDesign name="minuscircle" size={35} color='grey' />
-                            </TouchableOpacity>
 
 
 
                         </View>
+
+
+                        <TouchableOpacity onPress={() => {
+                            removeFromCart(itemData.item.productId, itemData.item.color, itemData.item.size)
+                        }}>
+                            <View style={styles.cartX}>
+                                <Text style={styles.x}>REMOVE</Text>
+                            </View>
+                        </TouchableOpacity>
+
+
+
                     </View>
-
-
-                    <View style={styles.priceContainer}>
-                        <Text> {itemData.item.price}x{itemData.item.quantity} </Text>
-
-                        <Text style={styles.priceText}>BDT {itemData.item.quantity * itemData.item.price}</Text>
-                    </View>
-
 
                 </View>
 
 
-                <TouchableOpacity onPress={() => {
-                    removeFromCart(itemData.item.productId, itemData.item.color, itemData.item.size)
-                }}>
-                    <View style={{ justifyContent: 'center', marginRight: 0, alignItems: 'center' }}>
-                        <Text>X</Text>
-                    </View>
-                </TouchableOpacity>
-
-
             </View>
+
+
+
+
+
+
         )
     }
     let sum = 0;
@@ -233,7 +241,7 @@ export default function CartScreen(props) {
                         </View>
 
                         <View style={styles.summaryTotalRow}>
-                            <Text style={styles.totalText}>Total Payable</Text>
+                            <Text style={styles.totalTextTitle}>Total Payable</Text>
                             <Text style={styles.totalText}>BDT {sum + vat + 60}</Text>
 
 
@@ -277,30 +285,60 @@ export default function CartScreen(props) {
 const styles = StyleSheet.create(
     {
 
+
+
         list: {
             marginBottom: 20
 
         },
-
-        cartItemContainer: {
-            flexDirection: 'row',
-            flex: 1,
-            padding: 5,
-            height: 150,
-            alignItems: 'center'
-        },
         cartItem: {
-            marginRight: 10,
-            justifyContent: 'space-between',
-            flexDirection: 'row',
+            margin: 10,
+            flexDirection: 'column',
             alignItems: 'center',
             backgroundColor: '#eae9e9',
             flex: 1,
-            height: 120,
-            width: 400,
-            marginLeft: 1,
+            height: 200,
             padding: 8
         },
+
+        seller: {
+            flex: 1,
+            width: '100%',
+            alignItems: 'flex-start',
+            paddingHorizontal: 5,
+            borderBottomWidth: 0.5,
+            marginBottom: 5
+
+        },
+        sellerName: {
+            width: 100,
+            textAlign: 'left',
+            fontSize: 14,
+            fontWeight: '600'
+        },
+        product: {
+            flexDirection: 'row',
+            flex: 4
+
+        },
+
+        picSizeColor: {
+            flex: 1
+        },
+        picture: {
+            height: 100,
+            width: 100,
+
+
+        },
+
+        namePriceQuantity: {
+            flex: 3,
+            paddingHorizontal: 10
+        },
+
+
+
 
         itemName: {
             fontSize: 17,
@@ -321,27 +359,57 @@ const styles = StyleSheet.create(
         },
         sizeText: {
 
-            fontWeight: '600'
+            fontWeight: '700'
         },
-        sizeTextContainer: {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
+        // sizeTextContainer: {
+        //     position: 'absolute',
+        //     top: 0,
+        //     left: 0,
+        //     right: 0,
+        //     bottom: 0,
+        //     justifyContent: 'center',
+        //     alignItems: 'center',
+        // },
         priceContainer: {
-            alignItems: 'flex-end',
-            alignSelf: 'flex-end',
+            alignItems: 'flex-start',
+            alignSelf: 'flex-start',
 
         },
         priceText: {
             fontSize: 18,
             fontWeight: '700',
             minWidth: 100,
+            width: '100%',
         },
+        descriptionQuantity: {
+            flexDirection: 'row',
+            flex: 1,
+        },
+        description: {
+            flex: 2,
+        },
+        quantity: {
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between'
+
+        },
+        cartX: {
+            justifyContent: 'center',
+            marginRight: 10,
+            alignItems: 'center',
+            alignSelf: 'flex-end',
+            width: 100,
+            borderWidth: 1.5,
+            height: 30
+        },
+        x: {
+            fontSize: 13,
+            fontWeight: '700',
+            width: 100,
+            textAlign: 'center'
+        },
+
         buttonContainer: {
             backgroundColor: Colors.buttonColor,
             height: 50,
@@ -383,7 +451,17 @@ const styles = StyleSheet.create(
             fontWeight: '700',
             color: 'black',
             fontSize: 20,
-            marginTop: 10
+            marginTop: 10,
+            flex: 1,
+            textAlign: 'right'
+        },
+        totalTextTitle: {
+            fontWeight: '700',
+            color: 'black',
+            fontSize: 20,
+            marginTop: 10,
+            flex: 1,
+            textAlign: 'left'
         }
 
 

@@ -8,7 +8,7 @@ import CachedImage from '../../components/CachedImage'
 
 
 import PRODUCTS from '../../dummy-data/Products'
-import { } from 'react-native-gesture-handler'; //FlatList import was here
+
 
 import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import ScreenStyle from '../../Styles/ScreenStyle';
@@ -229,13 +229,13 @@ export default function ProductScreen(props) {
                     }
                     else if (sizes.length !== 0 && selectedSize === null) {
                         // throw new Error('select size pless')
-                        dispatch(popupActions.setMessage('select color pless'))
+                        dispatch(popupActions.setMessage('select size pless'))
 
                     }
                     else {
                         await dispatch(cartActions.addToCart(productId, color, size, quantity))
                         // setPopupMessage("added to cart!")
-                        dispatch(popupActions.setMessage('select color pless'))
+                        dispatch(popupActions.setMessage('Added To Cart!'))
                         // setAddCartModalVisible(true)
                         //setAddCartMessage(cartMessage);
                         // window.setTimeout(() => (setAddCartModalVisible(false)), 2500)

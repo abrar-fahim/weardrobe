@@ -75,7 +75,9 @@ export const login = (email, password) => {
                 body: JSON.stringify(
                     {
                         username: email,
-                        password: password
+                        password: password,
+                        token: 'ExponentPushToken[L6WstfH3Da3JZfUu0Wf0-p]',
+
                     }
                 )
             }
@@ -158,7 +160,7 @@ export const getUserId = () => {
             }
         })
 
-        console.log('yaay')
+        // console.log('yaay')
         const resData = await response.json();  //converts 
         console.log(resData)
 
@@ -168,7 +170,7 @@ export const getUserId = () => {
 
             console.log("got user id from authreq: " + userId)
 
-            dispatch({
+            await dispatch({
                 type: LOGIN,
                 userId: userId
             })

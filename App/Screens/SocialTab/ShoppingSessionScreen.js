@@ -1,13 +1,13 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import ScreenStyle from '../../Styles/ScreenStyle'
 import CARTITEMS from '../../dummy-data/CartItems'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { Ionicons, Entypo, AntDesign, SimpleLineIcons } from '@expo/vector-icons';
+import { Ionicons, Entypo, AntDesign, SimpleLineIcons, FontAwesome } from '@expo/vector-icons';
 
 import UIButton from '../../components/UIButton'
 
@@ -45,60 +45,123 @@ export default function CartScreen(props) {
         return (
 
             <View style={styles.cartEntry}>
-                <Image style={{ ...styles.picture, alignSelf: userId === itemData.item.customerId ? 'flex-end' : 'flex-start' }} source={itemData.item.profilePic} />
+
+                <Image style={{ ...styles.profilePic, alignSelf: userId === itemData.item.customerId ? 'flex-end' : 'flex-start' }} source={itemData.item.profilePic} />
 
                 <Text style={{ ...styles.username, alignSelf: userId === itemData.item.customerId ? 'flex-end' : 'flex-start' }} source={itemData.item.profilePic} >{itemData.item.username}</Text>
-                <View style={styles.cartRow}>
+                <View style={styles.cartItem}>
 
+                    <View style={styles.seller}>
 
-                    <View style={styles.cartItem}>
-
-                        <TouchableOpacity onPress={() => (props.navigation.navigate("Product", {
-                            productId: itemData.item.productId,
-                        }))}>
-                            <Image source={itemData.item.picture} style={styles.productPicture} />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => (props.navigation.navigate("Product", {
-                            productId: itemData.item.productId,
-                        }))}>
-                            <View>
-                                <Text style={{ fontSize: 17, fontWeight: '400' }}> {itemData.item.name}</Text>
-                                {/* <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.id}</Text> */}
-                            </View>
-                        </TouchableOpacity>
-
-
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', width: 70, alignItems: 'center' }}>
-                            <Text style={styles.quantity}> Qty: </Text>
-                            <Text>{itemData.item.quantity}</Text>
-
-                        </View>
-                        <View style={styles.colorSize}>
-                            <Text>{itemData.item.color}</Text>
-                            <Text>{itemData.item.size}</Text>
-                        </View>
-
-
-                        <View style={{ justifyContent: 'center', height: 50, marginTop: 37 }}>
-
-                            <Text > {"BDT " + itemData.item.price} </Text>
-                            <Text style={styles.itemStatus}> Added to Cart</Text>
-
-                        </View>
-
+                        <Text style={styles.sellerName}>Seller: {itemData.item.shopName}</Text>
 
                     </View>
 
-                    <TouchableOpacity onPress={() => (props.navigation.navigate('GroupChat'))}>
-                        <SimpleLineIcons name="bubble" size={20} color="grey" />
-                    </TouchableOpacity>
+                    <View style={styles.product}>
+                        <View style={styles.picSizeColor}>
+
+
+                            <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
+                                productId: itemData.item.productId
+                            }))}>
+                                <Image source={itemData.item.thumbnail} style={styles.picture} />
+                            </TouchableOpacity>
+
+                            <View style={styles.sizeColorContainer}>
+                                {itemData.item.color === null ? null : <FontAwesome name="circle" color={itemData.item.color} size={25} />}
+
+                                {itemData.item.size === null ? null : <View style={styles.sizeContainer}>
+                                    {/* <FontAwesome name="circle" color="grey" size={25} /> */}
+                                    {/* <View style={styles.sizeTextContainer}> */}
+                                    <Text style={styles.sizeText}>{itemData.item.size?.toUpperCase()}</Text>
+                                    {/* </View> */}
+
+                                </View>}
+                            </View>
+
+
+                        </View>
+
+                        <View style={styles.namePriceQuantity}>
+                            <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
+                                productId: itemData.item.productId
+                            }))}>
+                                <View>
+                                    <Text style={styles.itemName}> {itemData.item.name}</Text>
+                                    {/* <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.name}</Text> */}
+
+
+                                </View>
+                            </TouchableOpacity>
+
+                            <View style={styles.priceContainer}>
+                                <Text> {itemData.item.price}x{itemData.item.quantity} </Text>
+
+                                <Text style={styles.priceText}>BDT {itemData.item.quantity * itemData.item.price}</Text>
+                            </View>
+
+                            <View style={styles.descriptionQuantity}>
+                                <Text style={styles.description}>Free Shipping</Text>
+
+                                <View style={styles.quantity}>
+
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                           
+                                        }}
+                                    >
+                                        <AntDesign name="minuscircle" size={25} color='grey' />
+                                    </TouchableOpacity>
+
+                                    <Text>{itemData.item.quantity}</Text>
+
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            
+                                        }}>
+                                        <AntDesign name="pluscircle" size={25} color='grey' />
+                                    </TouchableOpacity>
 
 
 
+                                </View>
+
+
+
+
+
+
+                            </View>
+                            <View style={styles.buttons}>
+
+                                <TouchableOpacity onPress={() => (props.navigation.navigate('GroupChat'))}>
+                                    <View style={styles.cartX}>
+                                        <Text style={styles.x}>TALK ABOUT</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity onPress={() => {
+                                    
+                                }}>
+                                    <View style={styles.cartX}>
+                                        <Text style={styles.x}>REMOVE</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+
+
+                            </View>
+
+                        </View>
+
+                    </View>
 
 
                 </View>
             </View>
+
+
+
         )
     }
     return (
@@ -119,49 +182,143 @@ export default function CartScreen(props) {
 
 const styles = StyleSheet.create(
     {
-        cartItem: {
-            marginRight: 10,
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: '#eae9e9',
-            flex: 1,
-            height: 100,
-            width: 400,
-            marginLeft: 1,
-            padding: 10
-        },
-        cartRow: {
-            flexDirection: 'row',
-            flex: 1,
-            justifyContent: 'flex-start',
-            padding: 10,
-            height: 120,
-            alignItems: 'center'
-        },
         cartEntry: {
             marginHorizontal: 10,
             marginVertical: 10
         },
-        productPicture: {
-            backgroundColor: 'purple',
-            height: 70,
-            width: 70,
-            borderRadius: 35
-        },
-        picture: {
+
+        profilePic: {
             height: 30,
             width: 30,
-            borderRadius: 15,
-        },
-        quantity: {
-            fontSize: 12,
-            fontWeight: '300',
-            color: 'grey'
-        },
-        colorSize: {
+            borderRadius: 15
 
         },
+
+        cartItem: {
+            margin: 10,
+            flexDirection: 'column',
+            alignItems: 'center',
+            backgroundColor: '#eae9e9',
+            flex: 1,
+            height: 200,
+            padding: 8
+        },
+
+        seller: {
+            flex: 1,
+            width: '100%',
+            alignItems: 'flex-start',
+            paddingHorizontal: 5,
+            borderBottomWidth: 0.5,
+            marginBottom: 5
+
+        },
+        sellerName: {
+            width: 100,
+            textAlign: 'left',
+            fontSize: 14,
+            fontWeight: '600'
+        },
+        product: {
+            flexDirection: 'row',
+            flex: 4
+
+        },
+
+        picSizeColor: {
+            flex: 1
+        },
+        picture: {
+            height: 100,
+            width: 100,
+
+
+        },
+
+        namePriceQuantity: {
+            flex: 3,
+            paddingHorizontal: 10
+        },
+
+
+
+
+        itemName: {
+            fontSize: 17,
+            fontWeight: '700',
+            maxWidth: Dimensions.get('window').width / 3,
+            height: 40
+        },
+        sizeColorContainer: {
+            flexDirection: 'row',
+            marginTop: 5,
+            width: 100,
+            justifyContent: 'space-evenly',
+            marginLeft: 5
+        },
+        sizeContainer: {
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        sizeText: {
+
+            fontWeight: '700'
+        },
+        // sizeTextContainer: {
+        //     position: 'absolute',
+        //     top: 0,
+        //     left: 0,
+        //     right: 0,
+        //     bottom: 0,
+        //     justifyContent: 'center',
+        //     alignItems: 'center',
+        // },
+        priceContainer: {
+            alignItems: 'flex-start',
+            alignSelf: 'flex-start',
+
+        },
+        priceText: {
+            fontSize: 18,
+            fontWeight: '700',
+            minWidth: 100,
+            width: '100%',
+        },
+        descriptionQuantity: {
+            flexDirection: 'row',
+            flex: 1,
+        },
+        description: {
+            flex: 2,
+        },
+        quantity: {
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between'
+
+        },
+        buttons: {
+            flexDirection: 'row',
+            flex: 1,
+            justifyContent: 'flex-end',
+        },
+        cartX: {
+            justifyContent: 'center',
+            marginRight: 10,
+            alignItems: 'center',
+            alignSelf: 'flex-end',
+            width: 100,
+            borderWidth: 1.5,
+            height: 30
+        },
+        x: {
+            fontSize: 13,
+            fontWeight: '700',
+            width: 100,
+            textAlign: 'center'
+        },
+
+
         itemStatus: {
             fontWeight: '200',
             marginTop: 20

@@ -92,12 +92,14 @@ export function GroupChatScreen(props) {
     const chatListRef = useRef(null)
     const textInputRef = useRef(null)
 
+    const [sending, setSending] = useState(false)
+
     // const [iter, setIter] = useState(0);
 
     const getChats = useCallback(async () => {
         try {
             console.log(chats.length)
-            await dispatch(chatActions.getChats(groupId,  chats.length))
+            await dispatch(chatActions.getChats(groupId, chats.length))
             // setIter(chats.length)
             // dispatch(popupActions.setMessage('hello' + chats.length))
 
@@ -126,14 +128,20 @@ export function GroupChatScreen(props) {
 
     const sendChat = useCallback(async (text) => {
         try {
-            await dispatch(chatActions.sendChat(groupId, text))
+            if (!sending) {
+                setSending(true)
+                await dispatch(chatActions.sendChat(groupId, text))
+                setSending(false)
+            }
+
 
         }
         catch (err) {
             console.log(err)
         }
+        setSending(false)
 
-    })
+    }, [sending, groupId])
 
     useEffect(() => {
         loadChats()
@@ -143,6 +151,14 @@ export function GroupChatScreen(props) {
             dispatch(chatActions.disconnectFromGroup(groupId))
         }
     }, [])
+
+    useEffect(() => {
+
+        if (sending) {
+            dispatch(popupActions.setMessage('sending...', false))
+        }
+
+    }, [sending])
 
 
 

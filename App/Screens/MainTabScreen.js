@@ -58,16 +58,21 @@ export default function HomeScreen(props) {
             console.log(err)
         }
         //setIsLoading(false);
-    }, [dispatch])
+    }, [])
 
-    // useEffect(() => {
-    //     const willFocusSub = props.navigation.addListener(
-    //         'focus',
-    //         loadUserId
-    //     );
+    useEffect(() => {
+        const willFocusSub = props.navigation.addListener(
+            'focus', () => {
 
-    //     return willFocusSub;
-    // }, [loadUserId]);
+                if (userId === null) {
+                    loadUserId()
+                }
+            }
+
+        );
+
+        return willFocusSub;
+    }, [loadUserId]);
 
     useEffect(() => {
 
@@ -80,16 +85,16 @@ export default function HomeScreen(props) {
 
     }, [expiresIn]);
 
-    useEffect(() => {
-        loadUserId()
-    }, [])
+    // useEffect(() => {
+    //     loadUserId()
+    // }, [])
 
 
     const Tab = Platform.OS === 'android' ? createMaterialBottomTabNavigator() : createBottomTabNavigator();
     //const Tab = createMaterialTopTabNavigator();
     return (
         <>
-            <SmallPopup message={popupMessage} isError={popupIsError}/>
+            <SmallPopup message={popupMessage} isError={popupIsError} />
             <Tab.Navigator
                 iconName='camera'
                 tabBarOptions={{ activeTintColor: Colors.tabBarActiveTintColor }}

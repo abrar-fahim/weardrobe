@@ -14,6 +14,11 @@ Add web and other folders to keep seperate components organized
 - [ ] integrate dp in get followers/ following of self and others profiles
 - [ ] clicking on dp in chat screen leads to user profile
 - [ ] think about adding iter to get cart and get wishlist
+- [ ] reduce font size of product list dynamically when price is too large to show
+- [ ] emojis dont work in chat
+- [ ] improve cart ui
+- [ ] update cart when deleting cart item
+
 
 Known Bugs
 - [ ] deleting group and then navigating to group list page still shows deleted 

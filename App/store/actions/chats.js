@@ -195,6 +195,10 @@ export const getSessionCart = (sessionId) => {
                         id: resData[key].PRODUCT_ID + resData[key].CUSTOMER_ID,
                         productId: resData[key].PRODUCT_ID,
                         color: resData[key].COLOR,
+                        username: resData[key].USERNAME,
+                        thumbnail: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL },
+                        productName: resData[key].PRODUCT_NAME,
+                        shopName: resData[key].SHOP_NAME,
                         size: resData[key].SIZE,
                         quantity: resData[key].QUANTITY,
                         data: resData[key].DATE,
@@ -457,7 +461,7 @@ export const connectToGroup = (groupId) => {
 
         console.log('connecting')
 
-        socket = io('http://192.168.0.20:3000/group-chat')
+        socket = io(`${HOST}/group-chat`)
 
         socket.emit('join', `{"groupId": "${groupId}"}`);
 
@@ -471,7 +475,7 @@ export const connectToGroup = (groupId) => {
                     id: chat.SENDER_UID + chat.SENT_AT + Date.now(),
                     senderId: chat.SENDER_UID,
                     groupId: chat.GROUP_ID,
-                    text: chat.TEXT,
+                    text: chat.TEXT === undefined ? null : chat.TEXT,
                     photo: { uri: `${HOST}/img/temp/` + chat.PHOTO },
                     time: chat.SENT_AT,
                 }

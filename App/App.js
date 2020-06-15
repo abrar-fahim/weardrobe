@@ -1,9 +1,8 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider, useSelector } from 'react-redux'
 import ReduxThunk from 'redux-thunk'
@@ -15,12 +14,8 @@ import CheckoutScreen from './Screens/ShopTab/CheckoutScreen'
 import LoginScreen from './Screens/ProfileTab/LoginScreen'
 import SignupScreen from './Screens/ProfileTab/SignupScreen'
 
-
-import { navigationRef, isMountedRef } from './RootNavigation'
-import * as RootNavigation from './RootNavigation'
-
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo'
+import { AppLoading, Notifications } from 'expo'
 import productsReducer from './store/reducers/products';
 
 import authReducer from './store/reducers/auth'
@@ -73,8 +68,58 @@ export default function App({ navigation }) {
   //     />
   //   )
   // }
-
   //return <HomeNavigator />;
+
+
+
+  const notification = async () => {
+
+    const token = await Notifications.getExpoPushTokenAsync();
+
+    console.log(token)
+
+    try {
+
+      const response = await fetch('https://exp.host/--/api/v2/push/send', {
+
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'accept-encoding': 'gzip, deflate',
+          'host': 'exp.host'
+        },
+        body: JSON.stringify({
+          to: token,
+          title: 'New Notification',
+          body: 'The notification worked!',
+          priority: "high",
+          sound: "default",
+          channelId: "default",
+        }),
+      })
+
+      const resData = await response.json();
+
+      console.log(resData)
+
+    }
+
+    catch (err) {
+      console.log(err)
+    }
+
+
+
+
+  }
+
+  useEffect(() => {
+    notification()
+
+
+  }, [])
+
 
 
   return (

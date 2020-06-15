@@ -74,20 +74,16 @@ export const removeFromCart = (productId, color, size) => {
         const resData = await response.json();  //converts response string to js object/array
 
         console.log(resData);
-        dispatch(fetchCartItems())
+        
 
         if (Object.keys(resData)[0] === 'SUCCESS') {
-            dispatch({
-                type: REMOVE_FROM_CART,
-                message: 'Removed from cart!'
-            })
+
+            dispatch(popupActions.setMessage('Removed from cart', false))
+            dispatch(fetchCartItems())
         }
         else if (Object.keys(resData)[0] === 'ERROR') {
             if (resData.ERROR === 'UNAUTHORIZED') {
-                dispatch({
-                    type: REMOVE_FROM_CART,
-                    message: 'Log in first!'
-                })
+                dispatch(popupActions.setMessage('Login first', true))
             }
             else {
                 dispatch(popupActions.setMessage("Couldn't remove from cart", true))
@@ -109,8 +105,8 @@ export const updateCart = (productId, color, size, quantity) => {
             },
             body: JSON.stringify({
                 productId: productId,
-                color: color,
-                size: size,
+                color: color === null ? '' : color,
+                size: size === null ? '': size,
                 quantity: quantity
             })
         });
@@ -174,7 +170,7 @@ export const fetchCartItems = () => {
                             id: resData[key].PRODUCT_ID + resData[key].COLOR + resData[key].SIZE,
                             productId: resData[key].PRODUCT_ID,
                             name: resData[key].PRODUCT_NAME,
-                            shopname: 'YELLOW',
+                            shopName: resData[key].SHOP_NAME,
                             picture: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL },
                             price: resData[key].PRICE,
                             discount: resData[key].DISCOUNT,

@@ -143,7 +143,8 @@ const styles = StyleSheet.create({
     price: {
         fontSize: 18,
         color: 'black',
-        fontWeight: '600'
+        fontWeight: '600',
+        
 
     },
     oldPrice: {

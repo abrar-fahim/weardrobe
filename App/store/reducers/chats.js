@@ -43,16 +43,17 @@ export default function socialReducer(state = initialState, action) {
             }
 
         case GET_CHATS:
-
-            if (action.chats.length === 0) {
-                return state
-            }
             if (action.iter === 0) {
                 return {
                     ...state,
                     chats: action.chats
                 }
             }
+
+            if (action.chats.length === 0) {
+                return state
+            }
+
 
             if (action.iter === state.chats.length) {
                 return {
