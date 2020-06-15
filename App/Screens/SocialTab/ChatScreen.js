@@ -38,6 +38,7 @@ import * as chatActions from '../../store/actions/chats'
 import { useSelector, useDispatch } from 'react-redux';
 import PictureUploadScreen from './PictureUploadScreen';
 import ProductScreen from '../ShopTab/ProductScreen';
+import TestScreen from '../ShopTab/TestScreen';
 
 
 
@@ -105,7 +106,7 @@ export default function ChatStackScreen({ navigation }) {
 
                     }} />
 
-                    <ChatStack.Screen name="NewChat" component={NewChatScreen} options={{
+                    <ChatStack.Screen name="NewChat" component={TestScreen} options={{
 
                     }} />
                     <ChatStack.Screen name="PeopleSearch" component={PeopleSearchScreen} />

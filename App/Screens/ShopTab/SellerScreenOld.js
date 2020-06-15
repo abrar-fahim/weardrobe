@@ -31,7 +31,7 @@ import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommun
 
 const SellerShopScreen = (props) => {
 
-    const shopId = props.route.params?.shopId
+    const shopId = props.shopId
     const dispatch = useDispatch();
     const categories = useSelector(state => state.shops.categories)
     const products = useSelector(state => state.shops.shopProducts)
@@ -237,29 +237,8 @@ const SellerShopScreen = (props) => {
             // listKey="a"
             bounces={false}
 
-
             ListHeaderComponent={
                 <View>
-
-
-                    <View style={{
-                        alignItems: 'center'
-                    }}>
-                        <Image source={shopDetails?.logo} style={{ height: 200, width: '99%' }} />
-                    </View>
-
-                    <View style={styles.ratingsContainer}>
-                        <RatingStars rating={shopDetails?.rating} size={25} />
-
-                    </View>
-
-                    <View style={styles.descriptionContainer}>
-                        <Text style={styles.title}>Description</Text>
-                        <Text style={styles.description}>{shopDetails?.description}</Text>
-
-
-                    </View>
-
 
                     <View style={styles.categoriesContainer}>
                         <Text style={styles.title}>Categories</Text>
@@ -315,15 +294,12 @@ const SellerPostsScreen = (props) => {
 
     const userId = useSelector(state => state.auth.userId)
 
-    const shopId = props.route.params?.shopId
+    const shopId = props.shopId
 
     const shopPosts = useSelector(state => state.shops.posts)
 
     const shopPostComments = useSelector(state => state.magazine.shopPostComments);
     const shopPostReacts = useSelector(state => state.magazine.shopPostReacts);
-    const shopDetails = useSelector(state => state.shops.shopDetails);
-
-
 
     const [showComments, setShowComments] = useState(false)
 
@@ -595,7 +571,6 @@ const SellerPostsScreen = (props) => {
 
 
             <FlatList
-
                 listKey="b"
                 extraData={change}
                 bounces={false}
@@ -740,33 +715,126 @@ export default function SellerScreen(props) {
         return (
             <LoadingScreen />
         )
-
     }
-
-    const TopTab = createMaterialTopTabNavigator()
     return (
         <View style={ScreenStyle}>
 
-            <TopTab.Navigator
-                tabBarOptions={{
-                    indicatorStyle: {
-                        backgroundColor: Colors.tabBarActiveTintColor
+            <FlatList
+
+                ListHeaderComponent={
+                    <>
+                        <View style={{
+                            alignItems: 'center'
+                        }}>
+                            <Image source={shopDetails.logo} style={{ height: 200, width: '99%' }} />
+                        </View>
+
+                        <View style={styles.ratingsContainer}>
+                            <RatingStars rating={shopDetails.rating} size={25} />
+
+                        </View>
+
+                        <View style={styles.descriptionContainer}>
+                            <Text style={styles.title}>Description</Text>
+                            <Text style={styles.description}>{shopDetails.description}</Text>
+
+
+                        </View>
+                    </>
+                }
+                data={[
+                    {
+                        id: '2',
+                        view: <>
+
+                            <View style={styles.topTab}>
+                                <TouchableOpacity
+                                    style={styles.topTabTouch}
+                                    onPress={() => {
+                                        horizontalPageRef.current.scrollToIndex({
+                                            Animated: true,
+                                            index: 0,
+                                        })
+                                    }}
+                                >
+                                    <Text style={styles.topTabText} >1</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    style={styles.topTabTouch}
+                                    onPress={() => {
+                                        horizontalPageRef.current.scrollToIndex({
+                                            Animated: true,
+                                            index: 1,
+                                        })
+                                    }}
+                                >
+                                    <Text style={styles.topTabText}>2</Text>
+                                </TouchableOpacity>
+
+
+                            </View>
+                            <View style={styles.barInactiveIndicator}>
+                                <Animated.View style={[styles.barActiveIndicator, {
+                                    left: scrollVal
+                                }]
+
+                                } />
+
+                            </View>
+
+                        </>
+
+
+                    },
+                    {
+                        id: '3',
+                        view: (
+                            <FlatList
+                                data={[
+                                    { id: '1', component: SellerShopScreen },
+                                    { id: '2', component: SellerPostsScreen },
+                                ]}
+                                horizontal={true}
+                                pagingEnabled={true}
+                                initialNumToRender={2}
+                                persistentScrollbar={true}
+                                ref={horizontalPageRef}
+                                // scrollBarThumbImage={require('../../assets/Images/bubbleMe.png')}
+
+                                showsHorizontalScrollIndicator={false}
+                                scrollEventThrottle={10}
+                                onScroll={Animated.event(
+                                    [{ nativeEvent: { contentOffset: { x: topBarAnim } } }]
+                                )}
+
+
+
+                                bounces={false}
+                                renderItem={({ item }) => (
+                                    <View style={styles.screen}>
+                                        <item.component
+                                            navigation={props.navigation}
+
+                                            shopId={shopId}
+                                        />
+                                    </View>
+
+                                )}
+
+                            />
+
+                        )
                     }
-                }}
-            >
-                <TopTab.Screen
-                    name="Shop"
-                    component={SellerShopScreen}
-                    initialParams={{ shopId: shopId }}
-                />
-                <TopTab.Screen
-                    name="Posts"
-                    component={SellerPostsScreen}
-                    initialParams={{ shopId: shopId }}
-                />
-            </TopTab.Navigator>
+                ]}
+                stickyHeaderIndices={[1]}
 
+                renderItem={({ item }) => (
+                    item.view
 
+                )}
+   
+            />
 
         </View>
 

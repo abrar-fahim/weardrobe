@@ -43,7 +43,7 @@ export default function RatingStars(props) {
         stars.push(
 
 
-            <Ionicons key={i.toString() + 'b'} name="md-star-half" size={props.size} />
+            <Ionicons key={'10' + 'b'} name="md-star-half" size={props.size} />
 
 
         )
