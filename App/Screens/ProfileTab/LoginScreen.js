@@ -14,6 +14,10 @@ import ScreenStyle from '../../Styles/ScreenStyle'
 import UIButton from '../../components/UIButton';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
+import { AppLoading, Notifications } from 'expo'
+
 import * as authActions from '../../store/actions/auth'
 
 
@@ -64,6 +68,96 @@ export default function LoginScreen({ navigation }) {
 
   const dispatch = useDispatch();
 
+  // const [token, setToken] = useState('');
+
+  let token = ''
+
+
+  const registerForPushNotificationsAsync = async () => {
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      const gotToken = await Notifications.getExpoPushTokenAsync();
+      // console.log(gotToken)
+
+      token = gotToken
+      
+      // console.log(token)
+      // const token = await Notifications.getExpoPushTokenAsync();
+      // console.log(token);
+
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+
+    if (Platform.OS === 'android') {
+      Notifications.createChannelAndroidAsync('default', {
+        name: 'default',
+        sound: true,
+        priority: 'max',
+        vibrate: [0, 250, 250, 250],
+      });
+    }
+  };
+
+
+  const notification = async () => {
+
+    await registerForPushNotificationsAsync()
+
+
+
+    // try {
+
+    //   const response = await fetch('https://exp.host/--/api/v2/push/send', {
+
+    //     method: 'POST',
+    //     headers: {
+    //       Accept: 'application/json',
+    //       'Content-Type': 'application/json',
+    //       'accept-encoding': 'gzip, deflate',
+    //       'host': 'exp.host'
+    //     },
+    //     body: JSON.stringify({
+    //       to: token,
+    //       title: 'New Notification',
+    //       body: 'The notification worked!',
+    //       priority: "high",
+    //       sound: "default",
+    //       channelId: "default",
+    //       data: { data: 'data goes here' },
+    //       _displayInForeground: true
+    //     }),
+    //   })
+
+    //   const resData = await response.json();
+
+    //   console.log(resData)
+
+    // }
+
+    // catch (err) {
+    //   console.log(err)
+    // }
+
+
+
+
+  }
+
+  // useEffect(() => {
+  //   registerForPushNotificationsAsync()
+
+
+  // }, [])
   const [formState, dispatchFormState] = useReducer(
     formReducer, {
     inputValues: {
@@ -75,7 +169,9 @@ export default function LoginScreen({ navigation }) {
 
   const loginHandler = async () => {
     try {
-      await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password))
+      await registerForPushNotificationsAsync()
+      // console.log(token)
+      await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password, token))
       // navigation.setParams( {
       //   prevScreen: 'login'
       // })
@@ -83,8 +179,9 @@ export default function LoginScreen({ navigation }) {
 
     } catch (err) {
       //navigation.popToTop();
-      throw new Error(err.message);
-      
+      // throw new Error(err.message);
+      console.log(err)
+
     }
   }
 

@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,6 +13,7 @@ import SHOPPINGSESSIONS from '../../dummy-data/ShoppingSessions'
 
 import * as chatActions from '../../store/actions/chats'
 import { useSelector, useDispatch } from 'react-redux';
+import LoadingScreen from '../../components/LoadingScreen';
 
 
 
@@ -24,9 +25,15 @@ export default function ShoppingSessionsListScreen(props) {
 
     const dispatch = useDispatch()
 
+    const [isLoading, setIsLoading] = useState(true)
+
     const loadSessions = useCallback(async () => {
         try {
+
+            setIsLoading(true);
             await dispatch(chatActions.getShoppingSessions(groupId))
+
+            setIsLoading(false)
         }
         catch (err) {
             console.log(err)
@@ -99,9 +106,17 @@ export default function ShoppingSessionsListScreen(props) {
         )
     }
 
+
+    if (isLoading) {
+        return <LoadingScreen />
+    }
     return (
         <View style={ScreenStyle}>
-            <FlatList data={sessions} renderItem={renderItems} />
+            <FlatList
+                data={sessions}
+                renderItem={renderItems}
+                ListEmptyComponent={<Text>no sessions yet</Text>}
+            />
         </View>
     )
 }

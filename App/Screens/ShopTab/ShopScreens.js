@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as productsActions from '../../store/actions/products'
 import ShoppingSessionTimer from '../../components/ShoppingSessionTimer';
 import { set } from 'react-native-reanimated';
+import LoadingScreen from '../../components/LoadingScreen';
 
 
 
@@ -133,6 +134,7 @@ function ShopScreen({ navigation }) {
         catch (err) {
             console.log(err);
         }
+        setIsLoading(false)
     })
 
 
@@ -147,12 +149,15 @@ function ShopScreen({ navigation }) {
 
     const loadAllProducts = useCallback(async () => {
         try {
+            setIsLoading(true);
             await dispatch(productsActions.fetchProducts())
+            setIsLoading(false)
             setIter(0)
         }
         catch (err) {
             console.log(err)
         }
+        setIsLoading(false)
     })
 
     const loadMoreProducts = useCallback(async () => {
@@ -365,11 +370,7 @@ function ShopScreen({ navigation }) {
 
 
     if (isLoading) {
-        return (
-            <View style={styles.centered}>
-                <ActivityIndicator size="large" />
-            </View>
-        )
+        return <LoadingScreen />
     }
 
     return (

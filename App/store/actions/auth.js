@@ -56,13 +56,18 @@ export const signup = ({ firstName, lastName, username, email, phone, birthday, 
     }
 }
 
-export const login = (email, password) => {
+export const login = (email, password, token) => {
 
 
 
 
     return async (dispatch) => {
 
+
+        console.log('hjello')
+        console.log(token)
+
+        console.log('hi')
 
         const response = await fetch(`${HOST}/login-customer`,
             {
@@ -76,7 +81,7 @@ export const login = (email, password) => {
                     {
                         username: email,
                         password: password,
-                        token: 'ExponentPushToken[L6WstfH3Da3JZfUu0Wf0-p]',
+                        notificationToken: token,
 
                     }
                 )

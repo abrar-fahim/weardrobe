@@ -192,7 +192,7 @@ export const getSessionCart = (sessionId) => {
 
                 for (const key in resData) {
                     cartItems.push({
-                        id: resData[key].PRODUCT_ID + resData[key].CUSTOMER_ID,
+                        id: resData[key].PRODUCT_ID + resData[key].CUSTOMER_ID + resData[key].SIZE + resData[key].COLOR,
                         productId: resData[key].PRODUCT_ID,
                         color: resData[key].COLOR,
                         username: resData[key].USERNAME,

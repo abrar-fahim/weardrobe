@@ -11,6 +11,7 @@ import UIButton from '../../components/UIButton';
 
 import * as chatActions from '../../store/actions/chats'
 import { useSelector, useDispatch } from 'react-redux';
+import LoadingScreen from '../../components/LoadingScreen';
 
 
 export default function GroupInfoScreen(props) {
@@ -21,13 +22,19 @@ export default function GroupInfoScreen(props) {
 
     const people = useSelector(state => state.social.groupPeople)
 
+    const [isLoading, setIsLoading] = useState(true)
+
     const getGroupPeople = useCallback(async () => {
         try {
+
+            setIsLoading(true)
             await dispatch(chatActions.getGroupPeople(groupId))
+            setIsLoading(false)
         }
         catch (err) {
             console.log(err)
         }
+        setIsLoading(false)
 
     }, [])
 
@@ -53,6 +60,10 @@ export default function GroupInfoScreen(props) {
 
             </View>
         )
+    }
+
+    if (isLoading) {
+        return <LoadingScreen />
     }
 
     return (

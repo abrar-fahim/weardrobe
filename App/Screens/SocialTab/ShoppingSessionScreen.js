@@ -14,6 +14,7 @@ import UIButton from '../../components/UIButton'
 import * as chatActions from '../../store/actions/chats'
 import { useSelector, useDispatch } from 'react-redux';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
+import LoadingScreen from '../../components/LoadingScreen';
 
 
 
@@ -24,12 +25,17 @@ export default function CartScreen(props) {
     const sessionCart = useSelector(state => state.social.sessionCart)
     const userId = useSelector(state => state.auth.userId)
 
+    const [isLoading, setIsLoading] = useState(true)
+
 
     const dispatch = useDispatch()
 
     const loadSessionCart = useCallback(async () => {
         try {
+
+            setIsLoading(true)
             await dispatch(chatActions.getSessionCart(sessionId))
+            setIsLoading(false)
         }
         catch (err) {
             console.log(err)
@@ -87,7 +93,7 @@ export default function CartScreen(props) {
                                 productId: itemData.item.productId
                             }))}>
                                 <View>
-                                    <Text style={styles.itemName}> {itemData.item.name}</Text>
+                                    <Text style={styles.itemName}> {itemData.item.productName}</Text>
                                     {/* <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.name}</Text> */}
 
 
@@ -107,7 +113,7 @@ export default function CartScreen(props) {
 
                                     <TouchableOpacity
                                         onPress={() => {
-                                           
+
                                         }}
                                     >
                                         <AntDesign name="minuscircle" size={25} color='grey' />
@@ -117,7 +123,7 @@ export default function CartScreen(props) {
 
                                     <TouchableOpacity
                                         onPress={() => {
-                                            
+
                                         }}>
                                         <AntDesign name="pluscircle" size={25} color='grey' />
                                     </TouchableOpacity>
@@ -141,7 +147,7 @@ export default function CartScreen(props) {
                                 </TouchableOpacity>
 
                                 <TouchableOpacity onPress={() => {
-                                    
+
                                 }}>
                                     <View style={styles.cartX}>
                                         <Text style={styles.x}>REMOVE</Text>
@@ -163,6 +169,10 @@ export default function CartScreen(props) {
 
 
         )
+    }
+
+    if (isLoading) {
+        return <LoadingScreen />
     }
     return (
         <View style={ScreenStyle}>

@@ -49,13 +49,18 @@ export function CategoriesScreen(props) {
 
     const [iterLoading, setIterLoading] = useState(false)
 
+    const [isLoading, setIsLoading] = useState(true)
+
 
     const laodCategories = useCallback(async () => {
 
         try {
             if (props.route.params?.shopId) {
+                setIsLoading(true)
 
                 await dispatch(shopActions.fetchShopCategories(props.route.params?.shopId))
+
+                setIsLoading(false)
             }
             else {
                 await dispatch(productsActions.fetchCategories())
@@ -67,6 +72,8 @@ export function CategoriesScreen(props) {
         catch (err) {
             console.log(err)
         }
+
+        setIsLoading(false)
     }, [])
 
     const laodMoreCategories = useCallback(async () => {

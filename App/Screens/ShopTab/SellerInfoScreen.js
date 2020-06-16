@@ -18,6 +18,7 @@ import * as shopsActions from '../../store/actions/shops'
 import { Ionicons } from '@expo/vector-icons';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import TouchableStars from '../../components/TouchableStars'
+import LoadingScreen from '../../components/LoadingScreen';
 
 
 
@@ -25,6 +26,8 @@ export default function SellerInfoScreen(props) {
     //const shopId = props.route.params?.shopId ?? 'default'
 
     const loggedIn = useSelector(state => state.auth.userId, (left, right) => (left.auth.userId === right.auth.userId)) === null ? false : true
+
+    
 
 
     useLayoutEffect(() => {
@@ -54,6 +57,8 @@ export default function SellerInfoScreen(props) {
 
     const [iterLoading, setIterLoading] = useState(false)
 
+    const [isLoading, setIsLoading] = useState(true)
+
     // const loadShopDetails = useCallback(async (shopId) => {
     //     try {
     //         await dispatch(shopsActions.())
@@ -65,13 +70,17 @@ export default function SellerInfoScreen(props) {
 
     const loadShopReviews = useCallback(async () => {
         try {
+
+            setIsLoading(true)
             await dispatch(shopsActions.fetchShopReviews(shopId))
+            setIsLoading(false)
             setIter(0);
 
         }
         catch (err) {
             console.log(err)
         }
+        setIsLoading(false)
 
 
     }, [shopId])
@@ -206,6 +215,10 @@ export default function SellerInfoScreen(props) {
     )
 
 
+
+    if(isLoading) {
+        return <LoadingScreen />
+    }
     return (
         <View style={styles.screen}>
 

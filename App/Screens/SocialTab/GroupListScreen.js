@@ -11,6 +11,7 @@ import GROUPS from '../../dummy-data/Groups'
 import * as chatActions from '../../store/actions/chats'
 import { useSelector, useDispatch } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
+import LoadingScreen from '../../components/LoadingScreen';
 
 export default function GroupListScreen(props) {
 
@@ -21,12 +22,16 @@ export default function GroupListScreen(props) {
 
     const [iterLoading, setIterLoading] = useState(false)
 
+    const [isLoading, setIsLoading] = useState(true)
+
 
     const dispatch = useDispatch()
 
     const LoadGroups = useCallback(async () => {
         try {
+            setIsLoading(true)
             await dispatch(chatActions.getGroups(0))
+            setIsLoading(false)
             setIter(0)
         }
         catch (err) {
@@ -53,8 +58,17 @@ export default function GroupListScreen(props) {
     }, [iter, iterLoading])
 
     useEffect(() => {
-        LoadGroups();
-    }, [])
+        const willFocusSub = props.navigation.addListener(
+            'focus', () => {
+
+                LoadGroups()
+            }
+
+        );
+
+        return willFocusSub;
+    }, [LoadGroups]);
+
 
 
     function renderItems(itemData) {
@@ -93,6 +107,11 @@ export default function GroupListScreen(props) {
 
 
         )
+    }
+
+    if (isLoading) {
+        return <LoadingScreen />
+
     }
     return (
         <View style={ScreenStyle}>

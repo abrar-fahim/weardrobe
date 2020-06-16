@@ -19,6 +19,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import GenericHeaderButton from '../../components/GenericHeaderButton';
 import { Ionicons } from '@expo/vector-icons';
 import MySearchBar from '../../components/MySearchBar';
+import LoadingScreen from '../../components/LoadingScreen';
 
 
 export default function ShopSearchScreen(props) {
@@ -32,14 +33,19 @@ export default function ShopSearchScreen(props) {
 
     const [iterLoading, setIterLoading] = useState(false)
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const searchAllShops = useCallback(async (name) => {
         try {
+            setIsLoading(true)
             await dispatch(searchActions.searchAllShops(name, 0))
+            setIsLoading(false)
             setIter(0)
         }
         catch (err) {
             console.log(err)
         }
+        setIsLoading(false)
 
     })
 
@@ -60,6 +66,9 @@ export default function ShopSearchScreen(props) {
         setIterLoading(false);
 
     }, [name, iterLoading, iter])
+
+
+    
     return (
         <View style={{ flexDirection: 'column', marginTop: 30, ...ScreenStyle }}>
             <MySearchBar
@@ -72,6 +81,8 @@ export default function ShopSearchScreen(props) {
                 showBackButton={true}
 
             />
+
+            
 
 
 

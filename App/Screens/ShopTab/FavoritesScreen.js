@@ -17,6 +17,7 @@ import * as wishlistActions from '../../store/actions/wishlist'
 import AuthRequiredScreen from '../AuthRequiredScreen'
 
 import checkLoggedIn from '../../components/CheckLoggedIn'
+import LoadingScreen from '../../components/LoadingScreen';
 
 export default function FavoritesStack( {navigation} ) {
     return (
@@ -27,6 +28,7 @@ export default function FavoritesStack( {navigation} ) {
 
  function FavoritesScreen(props) {
     const [isRefreshing, setIsRefreshing] = useState(false);
+    const [isLoading, setIsLoading] = useState(true)
 
     const items = useSelector(state => state.wishlist.items)
 
@@ -38,12 +40,15 @@ export default function FavoritesStack( {navigation} ) {
     const loadItems = useCallback(async () => {
         setIsRefreshing(true);
         try {
+            setIsLoading(true)
             await dispatch(wishlistActions.fetchItems());
+            setIsLoading(false)
         }
         catch (err) {
             console.log(err.message)
         }
         setIsRefreshing(false);
+        setIsLoading(false)
     }, [dispatch, setIsRefreshing])
 
     // useEffect(() => {
@@ -64,6 +69,10 @@ export default function FavoritesStack( {navigation} ) {
         return (
             <AuthRequiredScreen navigation={props.navigation}/>
         )
+    }
+
+    if(isLoading) {
+        return <LoadingScreen />
     }
 
     if(items.length === 0) {

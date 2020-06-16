@@ -118,6 +118,7 @@ const SellerShopScreen = (props) => {
                         data={itemData.item.inventory}
                         renderItem={renderProduct}
                         onEndReached={loadMoreShopProducts}
+
                     />
                 </View>
             )
@@ -289,7 +290,11 @@ const SellerShopScreen = (props) => {
 
                                 </View>
 
-                            )} />
+                            )}
+                            ListEmptyComponent={
+                                <Text>no categories yet</Text>
+                            }
+                        />
 
                         < Text style={styles.categoryName}>All Products</Text>
                     </View>
@@ -340,6 +345,11 @@ const SellerPostsScreen = (props) => {
         shopPostComments: 1
     })
 
+    const [iter, setIter] = useState(0);
+
+    const [iterLoading, setIterLoading] = useState(false)
+
+
     const dispatch = useDispatch();
 
     const loadPosts = useCallback(async () => {
@@ -354,6 +364,27 @@ const SellerPostsScreen = (props) => {
             console.log(err)
         }
     }, [])
+
+    const loadMorePosts = useCallback(async () => {
+        try {
+            if (!iterLoading) {
+                setIterLoading(true);
+                await dispatch(shopsActions.getSellerPosts(shopId, iter))
+                setIter(iter => iter + 1)
+                setIterLoading(false);
+
+            }
+
+
+
+
+        }
+        catch (err) {
+
+            console.log(err)
+        }
+        setIterLoading(false);
+    }, [iterLoading, iter])
 
     const loadShopPostComments = useCallback(async (postId, iter) => {
         try {
@@ -606,6 +637,10 @@ const SellerPostsScreen = (props) => {
                 }}
                 data={shopPosts}
                 renderItem={renderFeedItem}
+                onEndReached={loadMorePosts}
+                ListEmptyComponent={
+                    <Text>no posts yet</Text>
+                }
 
             />
 

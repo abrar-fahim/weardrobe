@@ -9,6 +9,9 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
 import { SearchBar } from 'react-native-elements';
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
+import { AppLoading, Notifications } from 'expo'
 
 import ProfileStackScreen from './ProfileTab/ProfileScreen';
 import ShopStackScreen from './ShopTab/ShopStackScreen'
@@ -60,6 +63,8 @@ export default function HomeScreen(props) {
         //setIsLoading(false);
     }, [])
 
+   
+
     useEffect(() => {
         const willFocusSub = props.navigation.addListener(
             'focus', () => {
@@ -73,6 +78,8 @@ export default function HomeScreen(props) {
 
         return willFocusSub;
     }, [loadUserId]);
+
+
 
     useEffect(() => {
 

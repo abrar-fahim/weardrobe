@@ -13,6 +13,7 @@ import * as chatActions from '../../store/actions/chats'
 import * as popupActions from '../../store/actions/Popup'
 import { useSelector, useDispatch } from 'react-redux';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
+import LoadingScreen from '../../components/LoadingScreen';
 
 export default function GroupTabScreen(props) {
     const groupId = props.route.params?.groupId
@@ -94,12 +95,15 @@ export function GroupChatScreen(props) {
 
     const [sending, setSending] = useState(false)
 
+    const [isLoading, setIsLoading] = useState(true)
+
     // const [iter, setIter] = useState(0);
 
     const getChats = useCallback(async () => {
         try {
-            console.log(chats.length)
+            
             await dispatch(chatActions.getChats(groupId, chats.length))
+            
             // setIter(chats.length)
             // dispatch(popupActions.setMessage('hello' + chats.length))
 
@@ -114,15 +118,18 @@ export function GroupChatScreen(props) {
 
     const loadChats = useCallback(async () => {
         try {
+            setIsLoading(true)
             await dispatch(chatActions.getChats(groupId, 0))
             await dispatch(chatActions.getGroupPeople(groupId))
             await dispatch(chatActions.connectToGroup(groupId))
             // setIter(chats.length)
+            setIsLoading(false)
 
         }
         catch (err) {
             console.log(err)
         }
+        setIsLoading(false)
 
     }, [])
 
@@ -213,6 +220,10 @@ export function GroupChatScreen(props) {
         )
 
 
+    }
+
+    if(isLoading) {
+        return <LoadingScreen />
     }
     return (
         <View style={ScreenStyle}>

@@ -18,6 +18,7 @@ Add web and other folders to keep seperate components organized
 - [ ] emojis dont work in chat
 - [ ] improve cart ui
 - [ ] update cart when deleting cart item
+- [ ] figure out a way to implement both isLoading and isrefreshing
 
 
 Known Bugs

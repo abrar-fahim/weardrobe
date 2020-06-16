@@ -106,7 +106,7 @@ export default function ChatStackScreen({ navigation }) {
 
                     }} />
 
-                    <ChatStack.Screen name="NewChat" component={TestScreen} options={{
+                    <ChatStack.Screen name="NewChat" component={NewChatScreen} options={{
 
                     }} />
                     <ChatStack.Screen name="PeopleSearch" component={PeopleSearchScreen} />

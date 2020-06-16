@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -17,7 +17,7 @@ import UIButtonTextStyle from '../../Styles/UIButtonTextStyle';
 import * as cartActions from '../../store/actions/cart'
 import AuthRequiredScreen from '../AuthRequiredScreen';
 
-import CheckLoggedIn from '../../components/CheckLoggedIn'
+import LoadingScreen from '../../components/LoadingScreen'
 
 
 
@@ -30,6 +30,8 @@ export default function CartScreen(props) {
 
 
     const cartItems = useSelector(state => state.cart.items)
+
+    const [isLoading, setIsLoading] = useState(true)
 
 
     const dispatch = useDispatch();
@@ -59,7 +61,9 @@ export default function CartScreen(props) {
     const loadCartItems = useCallback(async () => {
         //setIsLoading(true);
         try {
+            setIsLoading(true)
             await dispatch(cartActions.fetchCartItems())
+            setIsLoading(false)
         } catch (err) {
             console.log(err.message)
         }
@@ -211,6 +215,12 @@ export default function CartScreen(props) {
             </View>
         )
     }
+
+    if(isLoading) {
+        return <LoadingScreen />
+    }
+
+
 
 
 

@@ -28,6 +28,7 @@ import { ShopsListScreen } from './ShopsListScreen';
 import AuthRequiredScreen from '../AuthRequiredScreen'
 
 import * as ShopActions from '../../store/actions/shops'
+import LoadingScreen from '../../components/LoadingScreen';
 
 
 export default function MyShopsStack({ navigation }) {
@@ -48,16 +49,22 @@ function MyShopsScreen({ navigation }) {
 
     const [iterLoading, setIterLoading] = useState(false)
 
+    const [isLoading, setIsLoading] = useState(true)
+
     const dispatch = useDispatch()
 
     const LoadMyShops = useCallback(async () => {
         try {
+            setIsLoading(true)
             await dispatch(ShopActions.fetchMyShops(0))
+            setIsLoading(false)
             setIter(0)
         }
         catch (err) {
             console.log(err)
         }
+
+        setIsLoading(false)
 
     }, [])
 
@@ -91,11 +98,15 @@ function MyShopsScreen({ navigation }) {
     }
 
 
+    if(isLoading) {
+        return <LoadingScreen />
+    }
     return (
         <ShopsListScreen
             navigation={navigation}
             sellers={myShops}
-            onEndReached={LoadMyShops}
+            onEndReached={LoadMoreShops}
+            ListEmptyComponent={<Text>no favorite shops</Text>}
         />
     );
 

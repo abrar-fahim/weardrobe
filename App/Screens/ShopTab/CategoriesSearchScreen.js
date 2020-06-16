@@ -28,6 +28,7 @@ import * as productsActions from '../../store/actions/products'
 import * as shopActions from '../../store/actions/shops'
 import * as searchActions from '../../store/actions/search'
 import MySearchBar from '../../components/MySearchBar';
+import LoadingScreen from '../../components/LoadingScreen';
 
 export function CategoriesSearchScreen(props) {
 
@@ -41,14 +42,18 @@ export function CategoriesSearchScreen(props) {
 
     const [iterLoading, setIterLoading] = useState(false)
 
+
     const searchCategories = useCallback(async (name) => {
         try {
+
             await dispatch(searchActions.searchCategories(name, 0))
+
             setIter(0)
         }
         catch (err) {
             console.log(err)
         }
+
 
     })
 
@@ -99,6 +104,8 @@ export function CategoriesSearchScreen(props) {
         )
 
     }
+
+
     return (
         <View style={styles.screen}>
 

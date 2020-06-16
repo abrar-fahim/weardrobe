@@ -18,6 +18,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import GenericHeaderButton from '../../components/GenericHeaderButton';
 import { Ionicons } from '@expo/vector-icons';
 import MySearchBar from '../../components/MySearchBar';
+import LoadingScreen from '../../components/LoadingScreen';
 
 
 export default function SearchScreen(props) {
@@ -31,14 +32,22 @@ export default function SearchScreen(props) {
 
     const [iterLoading, setIterLoading] = useState(false)
 
+    
+
     const searchAllProducts = useCallback(async (name) => {
         try {
+
+            
+
             await dispatch(searchActions.searchAllProducts(name, 0))
+            
             setIter(0)
         }
         catch (err) {
             console.log(err)
         }
+
+        
 
     })
 
@@ -59,6 +68,7 @@ export default function SearchScreen(props) {
 
         setIterLoading(false);
     }, [name, iter, iterLoading])
+
 
 
     return (
