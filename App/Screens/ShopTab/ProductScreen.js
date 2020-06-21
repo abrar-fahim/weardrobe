@@ -188,7 +188,7 @@ export default function ProductScreen(props) {
             else {
                 setSizes(sizes)
             }
-            if (gotColors[0] === undefined) setColors([])
+            if (gotColors[0] === undefined || gotColors[0] === "") setColors([])
             else {
                 setColors(gotColors);
             }
@@ -434,7 +434,7 @@ export default function ProductScreen(props) {
                 </View>
 
 
-                {colors[0] === null | colors[0] === undefined ? null :
+                {colors[0] === null || colors[0] === undefined ? null :
 
                     <View style={styles.colorContainer}>
                         <Text style={styles.text}> COLOR </Text>
@@ -443,7 +443,7 @@ export default function ProductScreen(props) {
 
                     </View>
                 }
-                {sizes[0].size === null | sizes[0].size === undefined ? null :
+                {sizes[0]?.size === null || sizes[0]?.size === undefined || sizes[0]?.size === "" ? null :
                     <View style={styles.sizeContainer}>
                         <Text style={styles.text}> SIZE </Text>
                         <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes.map(size => size.size)} size={45} />
@@ -455,7 +455,7 @@ export default function ProductScreen(props) {
 
                 }} >
 
-                    <View style={{ ...styles.cartButtonContainer}}>
+                    <View style={{ ...styles.cartButtonContainer }}>
 
                         <Text style={styles.cartText}>+ ADD TO CART</Text>
                         <Text style={styles.priceText}>{"BDT " + product.price}</Text>

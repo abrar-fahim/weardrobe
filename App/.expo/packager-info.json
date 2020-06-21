@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 4312,
+  "expoServerNgrokUrl": "https://e9-7ys.abrarfahim.app.exp.direct",
+  "packagerNgrokUrl": "https://packager.e9-7ys.abrarfahim.app.exp.direct",
+  "ngrokPid": 5715,
   "webpackServerPort": null
 }
