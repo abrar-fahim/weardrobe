@@ -498,7 +498,7 @@ export const sendChat = (groupId, text) => {
 
     return async (dispatch) => {
 
-        socket?.emit('sendMessageGroup', `{"groupId": "${groupId}", "text":"${text}"}`);
+        await socket?.emit('sendMessageGroup', `{"groupId": "${groupId}", "text":"${text}"}`);
 
         socket?.emit('status');
 

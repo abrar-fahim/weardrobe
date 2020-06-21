@@ -82,7 +82,7 @@ export default function CartScreen(props) {
 
     const renderItems = (itemData) => {
         return (
-            <View style={styles.cartItem}>
+            <View style={{ ...styles.cartItem, opacity: itemData.item.inventoryQuantity > 0 ? 1 : 0.5 }}>
 
                 <View style={styles.seller}>
 
@@ -97,13 +97,15 @@ export default function CartScreen(props) {
                         <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
                             productId: itemData.item.productId
                         }))}>
-                            <Image source={itemData.item.picture} style={styles.picture} />
+                            <Image source={itemData.item.picture} style={styles.picture}
+                                resizeMode='contain'
+                            />
                         </TouchableOpacity>
 
                         <View style={styles.sizeColorContainer}>
-                            {itemData.item.color === null ? null : <FontAwesome name="circle" color={itemData.item.color} size={25} />}
+                            {itemData.item.color === "" ? null : <FontAwesome name="circle" color={itemData.item.color} size={25} />}
 
-                            {itemData.item.size === null ? null : <View style={styles.sizeContainer}>
+                            {itemData.item.size === "" ? null : <View style={styles.sizeContainer}>
                                 {/* <FontAwesome name="circle" color="grey" size={25} /> */}
                                 {/* <View style={styles.sizeTextContainer}> */}
                                 <Text style={styles.sizeText}>{itemData.item.size?.toUpperCase()}</Text>
@@ -140,7 +142,8 @@ export default function CartScreen(props) {
 
                                 <TouchableOpacity
                                     onPress={() => {
-                                        updateCart(itemData.item.productId, itemData.item.color, itemData.item.size, itemData.item.quantity - 1)
+                                        itemData.item.inventoryQuantity > 0 ?
+                                            updateCart(itemData.item.productId, itemData.item.color, itemData.item.size, itemData.item.quantity - 1) : null
                                     }}
                                 >
                                     <AntDesign name="minuscircle" size={25} color='grey' />
@@ -150,7 +153,8 @@ export default function CartScreen(props) {
 
                                 <TouchableOpacity
                                     onPress={() => {
-                                        updateCart(itemData.item.productId, itemData.item.color, itemData.item.size, itemData.item.quantity + 1)
+                                        itemData.item.inventoryQuantity > 0 ?
+                                            updateCart(itemData.item.productId, itemData.item.color, itemData.item.size, itemData.item.quantity + 1) : null
                                     }}>
                                     <AntDesign name="pluscircle" size={25} color='grey' />
                                 </TouchableOpacity>
@@ -216,7 +220,7 @@ export default function CartScreen(props) {
         )
     }
 
-    if(isLoading) {
+    if (isLoading) {
         return <LoadingScreen />
     }
 
@@ -308,7 +312,8 @@ const styles = StyleSheet.create(
             backgroundColor: '#eae9e9',
             flex: 1,
             height: 200,
-            padding: 8
+            padding: 8,
+
         },
 
         seller: {
@@ -333,11 +338,14 @@ const styles = StyleSheet.create(
         },
 
         picSizeColor: {
-            flex: 1
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center'
         },
         picture: {
-            height: 100,
-            width: 100,
+            height: 90,
+            width: 90,
+            alignSelf: 'center'
 
 
         },
@@ -353,7 +361,7 @@ const styles = StyleSheet.create(
         itemName: {
             fontSize: 17,
             fontWeight: '700',
-            maxWidth: Dimensions.get('window').width / 3,
+
             height: 40
         },
         sizeColorContainer: {

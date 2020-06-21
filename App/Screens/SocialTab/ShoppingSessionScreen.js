@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -12,15 +12,19 @@ import { Ionicons, Entypo, AntDesign, SimpleLineIcons, FontAwesome } from '@expo
 import UIButton from '../../components/UIButton'
 
 import * as chatActions from '../../store/actions/chats'
+import * as cartActions from '../../store/actions/cart'
 import { useSelector, useDispatch } from 'react-redux';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import LoadingScreen from '../../components/LoadingScreen';
+import ShoppingSessionTimer from '../../components/ShoppingSessionTimer';
 
 
 
-export default function CartScreen(props) {
+export default function ShoppingSessionScreen(props) {
 
     const sessionId = props.route.params?.sessionId
+
+    const activeSessionId = useSelector(state => state.social.activeSessionId)
 
     const sessionCart = useSelector(state => state.social.sessionCart)
     const userId = useSelector(state => state.auth.userId)
@@ -41,11 +45,46 @@ export default function CartScreen(props) {
             console.log(err)
         }
 
-    }, [])
+    }, [sessionId])
+
+    const removeFromCart = useCallback(async (productId, color, size) => {
+        try {
+            await dispatch(cartActions.removeFromCart(productId, color, size))
+        }
+        catch (err) {
+            console.log(err)
+        }
+
+    }, [dispatch])
+
+
+
+    const updateCart = useCallback(async (productId, color, size, quantity) => {
+
+        try {
+            await dispatch(cartActions.updateCart(productId, color, size, quantity))
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }, [dispatch])
 
     useEffect(() => {
-        loadSessionCart()
-    }, [])
+        const willFocusSub = props.navigation.addListener(
+            'focus', () => {
+
+                loadSessionCart()
+            }
+
+        );
+
+        return willFocusSub;
+    }, [loadSessionCart]);
+
+    // useEffect(() => {
+
+    //     loadSessionCart()
+    // }, [])
 
     const renderItems = (itemData) => {
         return (
@@ -55,7 +94,7 @@ export default function CartScreen(props) {
                 <Image style={{ ...styles.profilePic, alignSelf: userId === itemData.item.customerId ? 'flex-end' : 'flex-start' }} source={itemData.item.profilePic} />
 
                 <Text style={{ ...styles.username, alignSelf: userId === itemData.item.customerId ? 'flex-end' : 'flex-start' }} source={itemData.item.profilePic} >{itemData.item.username}</Text>
-                <View style={styles.cartItem}>
+                <View style={{ ...styles.cartItem, opacity: itemData.item.inventoryQuantity > 0 ? 1 : 0.5 }}>
 
                     <View style={styles.seller}>
 
@@ -70,7 +109,9 @@ export default function CartScreen(props) {
                             <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
                                 productId: itemData.item.productId
                             }))}>
-                                <Image source={itemData.item.thumbnail} style={styles.picture} />
+                                <Image source={itemData.item.thumbnail} style={styles.picture}
+                                    resizeMode='contain'
+                                />
                             </TouchableOpacity>
 
                             <View style={styles.sizeColorContainer}>
@@ -111,22 +152,28 @@ export default function CartScreen(props) {
 
                                 <View style={styles.quantity}>
 
-                                    <TouchableOpacity
+                                    {userId !== itemData.item.customerId ? <Text>Qty: </Text> : null}
+
+                                    {userId === itemData.item.customerId ? <TouchableOpacity
                                         onPress={() => {
 
                                         }}
                                     >
                                         <AntDesign name="minuscircle" size={25} color='grey' />
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> : null}
+
+
 
                                     <Text>{itemData.item.quantity}</Text>
 
-                                    <TouchableOpacity
+                                    {userId === itemData.item.customerId ? <TouchableOpacity
                                         onPress={() => {
 
                                         }}>
                                         <AntDesign name="pluscircle" size={25} color='grey' />
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> : null}
+
+
 
 
 
@@ -146,13 +193,16 @@ export default function CartScreen(props) {
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity onPress={() => {
+                                {userId === itemData.item.customerId ? <TouchableOpacity onPress={() => {
+                                    removeFromCart(itemData.item.productId, itemData.item.color, itemData.item.size)
 
                                 }}>
                                     <View style={styles.cartX}>
                                         <Text style={styles.x}>REMOVE</Text>
                                     </View>
-                                </TouchableOpacity>
+                                </TouchableOpacity> : null}
+
+
 
 
 
@@ -176,6 +226,9 @@ export default function CartScreen(props) {
     }
     return (
         <View style={ScreenStyle}>
+
+            {sessionId === activeSessionId ? <ShoppingSessionTimer /> : null}
+
             <FlatList
                 data={sessionCart}
                 renderItem={renderItems}
@@ -236,11 +289,17 @@ const styles = StyleSheet.create(
         },
 
         picSizeColor: {
-            flex: 1
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center'
         },
         picture: {
             height: 100,
             width: 100,
+            alignItems: 'center',
+            justifyContent: 'center',
+            alignSelf: 'center'
+
 
 
         },
@@ -310,7 +369,7 @@ const styles = StyleSheet.create(
         buttons: {
             flexDirection: 'row',
             flex: 1,
-            justifyContent: 'flex-end',
+            justifyContent: 'flex-end'
         },
         cartX: {
             justifyContent: 'center',

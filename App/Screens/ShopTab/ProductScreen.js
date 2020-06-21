@@ -67,6 +67,7 @@ export default function ProductScreen(props) {
     const [colors, setColors] = useState([]);
     const [sizes, setSizes] = useState([]);
 
+
     const [popupMessage, setPopupMessage] = useState("");
     const [isLoading, setIsLoading] = useState(true);
 
@@ -161,9 +162,12 @@ export default function ProductScreen(props) {
 
 
             const sizes = inventory.map(item => {
-                if (item.QUANTITY > 0) {
-                    return item.SIZE
+
+                return {
+                    size: item.SIZE,
+                    quantity: item.QUANTITY
                 }
+
             })
 
 
@@ -178,7 +182,7 @@ export default function ProductScreen(props) {
 
             // setSelectedColor(gotColors[0]);
             setColorImages(finalColorImages);
-            if (sizes[0] === null || sizes[0] === "") {
+            if (sizes[0].size === null || sizes[0].size === "") {
                 setSizes([])
             }
             else {
@@ -439,10 +443,10 @@ export default function ProductScreen(props) {
 
                     </View>
                 }
-                {sizes[0] === null | sizes[0] === undefined ? null :
+                {sizes[0].size === null | sizes[0].size === undefined ? null :
                     <View style={styles.sizeContainer}>
                         <Text style={styles.text}> SIZE </Text>
-                        <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes} size={45} />
+                        <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes.map(size => size.size)} size={45} />
                     </View>
                 }
                 <TouchableOpacity onPress={() => {
@@ -451,7 +455,7 @@ export default function ProductScreen(props) {
 
                 }} >
 
-                    <View style={styles.cartButtonContainer}>
+                    <View style={{ ...styles.cartButtonContainer}}>
 
                         <Text style={styles.cartText}>+ ADD TO CART</Text>
                         <Text style={styles.priceText}>{"BDT " + product.price}</Text>

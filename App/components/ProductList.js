@@ -44,12 +44,14 @@ export default function ProductList(props) {
         }
         // console.log(itemData.item.thumbnail)
         return (
-            <View style={styles.gridItem}>
+            <View style={{ ...styles.gridItem, opacity: itemData.item.inventoryQuantity > 0 ? 1 : 0.5 }}>
                 <TouchableOpacity onPress={() => (
                     props.navigation.navigate("Product", {
-                        productId: itemData.item.id
+                        productId: itemData.item.id,
+                        inventoryQuantity: itemData.item.inventoryQuantity
                     })
                 )}>
+                    {/* <Text>{itemData.item.inventoryQuantity}</Text> */}
 
                     <Image source={itemData.item.thumbnail} style={styles.image} resizeMethod="resize" />
                     <Text style={styles.itemName}> {itemData.item.name}</Text>
@@ -144,7 +146,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'black',
         fontWeight: '600',
-        
+
 
     },
     oldPrice: {

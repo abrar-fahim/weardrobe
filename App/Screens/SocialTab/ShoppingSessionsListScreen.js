@@ -27,6 +27,7 @@ export default function ShoppingSessionsListScreen(props) {
 
     const [isLoading, setIsLoading] = useState(true)
 
+
     const loadSessions = useCallback(async () => {
         try {
 
@@ -39,11 +40,19 @@ export default function ShoppingSessionsListScreen(props) {
             console.log(err)
         }
 
-    }, [])
+    }, [groupId])
 
     useEffect(() => {
         loadSessions()
     }, [])
+
+
+    const timeLeft = useSelector(state => state.social.timeLeft);
+
+
+    // const timeLeft = 40000;
+
+
 
     const renderItems = (itemData) => {
 
@@ -55,9 +64,22 @@ export default function ShoppingSessionsListScreen(props) {
 
         const isActive = now < expiresIn;
 
-        if (isActive) {
-            dispatch(chatActions.setSessionActive(groupId, itemData.item.id, expiresIn - now, expiresIn))
-        }
+
+
+
+        const sec = Math.floor(timeLeft / 1000);
+        const displaySec = sec % 60;
+        const min = sec / 60;
+        const displayMin = Math.floor(min % 60);
+        const hours = Math.floor(min / 60);
+
+
+
+        //this is just temporary, this dispatch action lets app state know that a session is ongoing,
+        //thisll be usually dispatched via clicking on notification
+        // if (isActive) {
+        //     dispatch(chatActions.setSessionActive(groupId, itemData.item.id, expiresIn - now, expiresIn))
+        // }
         return (
 
             <TouchableOpacity onPress={() => (props.navigation.navigate('ShoppingSession', {
@@ -82,18 +104,13 @@ export default function ShoppingSessionsListScreen(props) {
                         </View>
 
 
-
-
                         <View style={{ flexDirection: 'row' }}>
                             {/* <Text style={styles.label}> BDT</Text>
                             <Text> {itemData.item.totalSpent}</Text> */}
-                            {isActive ? <Text>Active</Text> : null}
+                            {isActive ? <Text>Active      </Text> : null}
+                            {isActive ? <Text>Ends in {hours}: {displayMin}: {displaySec}</Text> : null}
                             <Text style={styles.date}> {itemData.item.date}</Text>
                         </View>
-
-
-
-
 
                     </View>
 
@@ -113,6 +130,7 @@ export default function ShoppingSessionsListScreen(props) {
     return (
         <View style={ScreenStyle}>
             <FlatList
+                extraData={timeLeft}
                 data={sessions}
                 renderItem={renderItems}
                 ListEmptyComponent={<Text>no sessions yet</Text>}

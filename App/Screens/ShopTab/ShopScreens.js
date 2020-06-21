@@ -197,17 +197,23 @@ function ShopScreen({ navigation }) {
 
     function renderTopScroller(itemData) {
         return (
-            <TouchableOpacity onPress={() => {
-                setProductFn(productsActions.fetchProducts)
-                navigation.navigate('ProductList', {
-                    showShopName: true
-                })
+            <View>
+                <TouchableOpacity onPress={() => {
+                    setProductFn(productsActions.fetchProducts)
+                    navigation.navigate('ProductList', {
+                        showShopName: true
+                    })
 
-            }}>
-                <View>
-                    <Image style={styles.scrollerImage} source={itemData.item.image} />
-                </View>
-            </TouchableOpacity>
+                }}>
+
+                    <Image
+                        style={styles.scrollerImage}
+                        source={itemData.item.image}
+                        resizeMode="cover"
+                    />
+
+                </TouchableOpacity>
+            </View >
         )
     }
 
@@ -246,7 +252,10 @@ function ShopScreen({ navigation }) {
         if (itemData.item.type === 1) {
             //scrollable horizontal banners
             return (
-                <FlatList style={styles.scoller} data={itemData.item.banners} horizontal={true} pagingEnabled={true} renderItem={renderTopScroller} />
+                <View style={styles.scrollerImageContainer}>
+                    <FlatList style={styles.scoller} data={itemData.item.banners} horizontal={true} pagingEnabled={true} renderItem={renderTopScroller} />
+                </View>
+
             )
 
         }
@@ -255,11 +264,13 @@ function ShopScreen({ navigation }) {
             //horizontal banner
 
             return (
-                <TouchableOpacity onPress={() => (navigation.navigate('ProductList'))}>
-                    <View style={styles.banner}>
+                <View style={styles.banner}>
+                    <TouchableOpacity onPress={() => (navigation.navigate('ProductList'))}>
+
                         <Image source={itemData.item.banners[0].image} style={styles.featuredImage} />
-                    </View>
-                </TouchableOpacity>
+
+                    </TouchableOpacity>
+                </View>
 
             )
 
@@ -295,6 +306,7 @@ function ShopScreen({ navigation }) {
 
 
         if (itemData.item.type === 5) {
+            //3by3 grid
 
             return (
                 <>
@@ -374,7 +386,7 @@ function ShopScreen({ navigation }) {
     }
 
     return (
-        <View style={ScreenStyle}>
+        <View style={styles.screen}>
             <ShoppingSessionTimer />
 
 
@@ -395,6 +407,7 @@ function ShopScreen({ navigation }) {
                     </View>
 
                 }
+                style={styles.list}
             />
         </View>
     );
@@ -411,7 +424,13 @@ export default function ShopStack(props) {
 
 const styles = StyleSheet.create({
     screen: {
-        flex: 1  //ensures that this view takes all space it can get
+        flex: 1, //ensures that this view takes all space it can get,
+        backgroundColor: Colors.screenBackgroundColor,
+        alignItems: 'center',
+        maxWidth: Dimensions.get('window').width
+    },
+    list: {
+        maxWidth: Dimensions.get('window').width
     },
 
     gridItem: {
@@ -428,22 +447,38 @@ const styles = StyleSheet.create({
     scroller: {
         backgroundColor: Colors.screenBackgroundColor
     },
+    scrollerImageContainer: {
+
+        width: Dimensions.get('window').width,
+        maxWidth: 600,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 300
+
+    },
     scrollerImage: {
-        height: 200,
-        width: Dimensions.get('window').width
+
+        width: Dimensions.get('window').width,
+        maxWidth: 600,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 300
+
     },
     productGridContainer: {
         flexDirection: 'column',
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        maxWidth: Dimensions.get('window').width
     },
     smallGridItem: {
         margin: 20,
     },
     productGridImage: {
         height: 100,
-        width: Dimensions.get('window').width / 3,
+        width: Dimensions.get('window').width / 2.5,
+
         resizeMode: 'contain',
     },
     productGridTitle: {
@@ -454,7 +489,8 @@ const styles = StyleSheet.create({
     },
     banner: {
         height: 200,
-        width: '100%',
+        width: Dimensions.get('window').width,
+
     },
     featuredImage: {
         height: '100%',
@@ -471,7 +507,9 @@ const styles = StyleSheet.create({
     },
     tile: {
         width: '100%',
-        height: Dimensions.get('window').width
+        height: Dimensions.get('window').width,
+        maxWidth: 600,
+        maxHeight: 600
     },
     tileImage: {
         height: '100%',
@@ -480,10 +518,12 @@ const styles = StyleSheet.create({
     },
     bigGrid: {
         width: '100%',
-        height: 500,
+        maxWidth: 600,
+        // height: 500,
         backgroundColor: Colors.accentColor,
-        padding: 15,
-        marginVertical: 40
+        padding: 5,
+        alignItems: 'center',
+        justifyContent: 'space-between'
 
     },
     bigGridRow: {
@@ -501,7 +541,9 @@ const styles = StyleSheet.create({
     bigGridImage: {
         height: Dimensions.get('window').width / 4,
         width: Dimensions.get('window').width / 4,
-        borderRadius: Dimensions.get('window').width / 8
+        borderRadius: Dimensions.get('window').width / 8,
+        maxHeight: 150,
+        maxWidth: 150,
 
     },
     bigGridLabel: {
@@ -509,11 +551,12 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         marginTop: 10,
         flex: 1,
-
         maxHeight: 50
     },
     bigGridItem: {
-        flex: 1,
+
+        
+        width: Dimensions.get('window').width / 4,
         margin: 10,
         alignItems: 'center',
 

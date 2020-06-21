@@ -69,9 +69,13 @@ export default function GroupInfoScreen(props) {
     return (
         <View style={{ ...ScreenStyle, ...styles.screen }}>
             <FlatList
+                ListHeaderComponent={
+                    <Text style={styles.heading}>Participants</Text>
+                }
                 data={people}
                 renderItem={renderPerson}
                 ListFooterComponent={
+
                     <Button title="Delete group" onPress={() => {
                         deleteGroup()
                         props.navigation.navigate('Groups', {
@@ -90,16 +94,16 @@ export default function GroupInfoScreen(props) {
 }
 
 const styles = StyleSheet.create({
-    textInput: {
-        backgroundColor: '#eae9e9',
-        height: 50,
-        width: '90%',
-        alignSelf: 'center',
-        marginBottom: 50
+    heading: {
+        flexDirection: 'row',
+        fontSize: 20,
+        fontWeight: '700',
+        flex: 1,
+        
     },
     screen: {
-        justifyContent: 'center',
-        alignItems: 'center'
+        flex: 1,
+        padding: 10
     },
     person: {
         flexDirection: 'row',

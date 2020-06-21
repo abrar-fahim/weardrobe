@@ -16,9 +16,12 @@ import * as searchActions from '../../store/actions/search'
 
 import { useSelector, useDispatch } from 'react-redux';
 import GenericHeaderButton from '../../components/GenericHeaderButton';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, FontAwesome, Feather } from '@expo/vector-icons';
 
 import MySearchBar from '../../components/MySearchBar'
+import Colors from '../../Styles/Colors';
+
+import * as popupActions from '../../store/actions/Popup'
 
 
 export default function NewChatScreen(props) {
@@ -97,10 +100,18 @@ export default function NewChatScreen(props) {
         props.navigation.setOptions(
             {
                 headerRight: () => (
-                    <Button title="done" onPress={() => {
-                        createGroup();
-                        props.navigation.goBack()
-                    }} />
+
+                    <GenericHeaderButton title="create-group" iconName="md-checkmark" onPress={() => {
+                        if (selected.length === 0) {
+                            dispatch(popupActions.setMessage('Choose atleast one person', true))
+                        }
+                        else {
+                            createGroup()
+                            props.navigation.goBack();
+                        }
+                    }
+                    } />
+
                 )
             }
         )
@@ -116,13 +127,31 @@ export default function NewChatScreen(props) {
                 <Text style={styles.name} >{itemData.item.firstName}</Text>
 
                 <View style={styles.checkBoxContainer}>
-                    <CheckBox
-                        checked={selected.some(person => person.id === itemData.item.id)}
-                        onPress={() => {
 
-                            selected.some(person => person.id === itemData.item.id) ? setSelected(selected.filter(person => person.id !== itemData.item.id)) : setSelected(state => [...state, itemData.item])
+                    {selected.some(person => person.id === itemData.item.id) ?
+                        <Ionicons
+                            name="md-checkmark-circle"
+                            size={28}
+                            onPress={() => {
+                                setSelected(selected.filter(person => person.id !== itemData.item.id))
+                            }}
+                            color={Colors.primaryColor}
+                        /> :
+                        <Feather
+                            name="circle"
+                            size={25}
+                            onPress={() => {
+                                setSelected(state => [...state, itemData.item])
+                            }}
+                            color={Colors.primaryColor}
+                        />}
+
+                    {/* <CheckBox
+                        // checked=
+                        onPress={() => {
+                            selected.some(person => person.id === itemData.item.id) ?  : 
                         }}
-                    />
+                    /> */}
                 </View>
 
 
@@ -204,7 +233,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#eae9e9',
         width: '90%',
         margin: 10,
-        padding: 5
+        padding: 10,
+        height: 70
     },
     image: {
         height: 30,

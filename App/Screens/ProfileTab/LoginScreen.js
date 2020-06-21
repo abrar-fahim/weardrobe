@@ -170,7 +170,7 @@ export default function LoginScreen({ navigation }) {
   const loginHandler = async () => {
     try {
       await registerForPushNotificationsAsync()
-      // console.log(token)
+    
       await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password, token))
       // navigation.setParams( {
       //   prevScreen: 'login'

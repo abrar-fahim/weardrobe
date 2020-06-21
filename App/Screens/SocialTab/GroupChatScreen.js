@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useCallback, useLayoutEffect, useState, useRef } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, TouchableOpacity, Animated } from 'react-native';
+import React, { useEffect, useCallback, useLayoutEffect, useState, useRef, } from 'react';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, TouchableOpacity, Animated, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ShoppingSessionsListScreen from './ShoppingSessionsListScreen';
 import ScreenStyle from '../../Styles/ScreenStyle';
@@ -14,6 +14,7 @@ import * as popupActions from '../../store/actions/Popup'
 import { useSelector, useDispatch } from 'react-redux';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import LoadingScreen from '../../components/LoadingScreen';
+import ShoppingSessionTimer from '../../components/ShoppingSessionTimer';
 
 export default function GroupTabScreen(props) {
     const groupId = props.route.params?.groupId
@@ -81,6 +82,8 @@ export function GroupChatScreen(props) {
 
     const groupId = props.route.params?.groupId
 
+    const sessionGroupId = useSelector(state => state.social.sessionGroupId)
+
     const chats = useSelector(state => state.social.chats);
     const participants = useSelector(state => state.social.groupPeople);
 
@@ -101,9 +104,9 @@ export function GroupChatScreen(props) {
 
     const getChats = useCallback(async () => {
         try {
-            
+
             await dispatch(chatActions.getChats(groupId, chats.length))
-            
+
             // setIter(chats.length)
             // dispatch(popupActions.setMessage('hello' + chats.length))
 
@@ -131,9 +134,10 @@ export function GroupChatScreen(props) {
         }
         setIsLoading(false)
 
-    }, [])
+    }, [groupId])
 
     const sendChat = useCallback(async (text) => {
+        console.log('sendchat')
         try {
             if (!sending) {
                 setSending(true)
@@ -151,8 +155,20 @@ export function GroupChatScreen(props) {
     }, [sending, groupId])
 
     useEffect(() => {
+        // const willFocusSub = props.navigation.addListener(
+        //     'focus', () => {
+
+        //         loadChats()
+        //     }
+
+        // );
+
+        // return willFocusSub;
+
         loadChats()
-        // chatListRef.current.scrollToIndex({animated: false, index: chats.length - 1, viewPosition: 1})
+    }, []);
+
+    useEffect(() => {
 
         return () => {
             dispatch(chatActions.disconnectFromGroup(groupId))
@@ -222,11 +238,17 @@ export function GroupChatScreen(props) {
 
     }
 
-    if(isLoading) {
+    if (isLoading) {
         return <LoadingScreen />
     }
     return (
-        <View style={ScreenStyle}>
+        <View
+            // behavior={Platform.OS == "ios" ? "padding" : "height"}
+            // contentContainerStyle={styles.screen}
+            style={styles.screen}
+        >
+            {groupId === sessionGroupId ? <ShoppingSessionTimer /> : null}
+
 
             <FlatList
                 data={chats}
@@ -242,7 +264,11 @@ export function GroupChatScreen(props) {
 
             />
 
-            <View style={styles.sendMsgContainer}>
+            <View
+                // behavior='position'
+
+                style={styles.sendMsgContainer}
+            >
                 <TouchableOpacity onPress={() => {
                     props.navigation.navigate('PictureUpload', {
                         groupId: groupId
@@ -286,6 +312,13 @@ export function GroupChatScreen(props) {
 }
 
 const styles = StyleSheet.create({
+    screen: {
+        backgroundColor: Colors.screenBackgroundColor,
+        flex: 1,
+        justifyContent: 'flex-end'
+
+
+    },
     headerButtons: {
         flexDirection: 'row'
     },

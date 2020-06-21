@@ -74,7 +74,7 @@ export const removeFromCart = (productId, color, size) => {
         const resData = await response.json();  //converts response string to js object/array
 
         console.log(resData);
-        
+
 
         if (Object.keys(resData)[0] === 'SUCCESS') {
 
@@ -106,7 +106,7 @@ export const updateCart = (productId, color, size, quantity) => {
             body: JSON.stringify({
                 productId: productId,
                 color: color === null ? '' : color,
-                size: size === null ? '': size,
+                size: size === null ? '' : size,
                 quantity: quantity
             })
         });
@@ -174,10 +174,11 @@ export const fetchCartItems = () => {
                             picture: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL },
                             price: resData[key].PRICE,
                             discount: resData[key].DISCOUNT,
-                            color: resData[key].COLOR,
+                            color:  resData[key].COLOR.toLowerCase(),
                             quantity: resData[key].QUANTITY,
                             data: resData[key].DATE,
-                            size: resData[key].SIZE
+                            size: resData[key].SIZE,
+                            inventoryQuantity: resData[key].INVENTORY_QUANTITY
 
 
                         }

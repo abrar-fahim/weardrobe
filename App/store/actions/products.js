@@ -36,7 +36,8 @@ export const fetchProducts = (iter = 0) => {
                     price: resData[key].PRICE,
                     rating: resData[key].PRODUCT_RATING,
                     discount: resData[key].DISCOUNT,
-                    thumbnail: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL }
+                    thumbnail: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL },
+                    inventoryQuantity: resData[key].INVENTORY_QUANTITY
 
                 })
             }
