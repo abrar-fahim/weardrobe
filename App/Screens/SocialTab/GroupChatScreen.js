@@ -82,6 +82,8 @@ export function GroupChatScreen(props) {
 
     const groupId = props.route.params?.groupId
 
+    // console.log('id: ' + productId);
+
     const sessionGroupId = useSelector(state => state.social.sessionGroupId)
 
     const chats = useSelector(state => state.social.chats);
@@ -100,7 +102,11 @@ export function GroupChatScreen(props) {
 
     const [isLoading, setIsLoading] = useState(true)
 
+    const [productId, setProductId] = useState(props.route.params?.productId)
+
     // const [iter, setIter] = useState(0);
+
+
 
     const getChats = useCallback(async () => {
         try {
@@ -154,6 +160,24 @@ export function GroupChatScreen(props) {
 
     }, [sending, groupId])
 
+    const sendProduct = useCallback(async (productId) => {
+        console.log('send product')
+        try {
+            if (!sending) {
+                setSending(true)
+                await dispatch(chatActions.sendProduct(groupId, productId))
+                setSending(false)
+            }
+
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+        setSending(false)
+
+    }, [sending, groupId])
+
     useEffect(() => {
         // const willFocusSub = props.navigation.addListener(
         //     'focus', () => {
@@ -166,14 +190,12 @@ export function GroupChatScreen(props) {
         // return willFocusSub;
 
         loadChats()
-    }, []);
-
-    useEffect(() => {
-
         return () => {
             dispatch(chatActions.disconnectFromGroup(groupId))
         }
-    }, [])
+    }, []);
+
+
 
     useEffect(() => {
 
@@ -183,11 +205,9 @@ export function GroupChatScreen(props) {
 
     }, [sending])
 
-
-
-
-
-
+    useEffect(() => {
+        setProductId(props.route.params?.productId)
+    }, [props])
 
     function renderItems(itemData) {
 
@@ -258,11 +278,13 @@ export function GroupChatScreen(props) {
                 onEndReached={() => {
                     getChats()
                 }}
-
-
-
-
             />
+            {productId ?
+                <View style={styles.shareBar}>
+
+
+                </View> : null}
+
 
             <View
                 // behavior='position'
@@ -285,20 +307,41 @@ export function GroupChatScreen(props) {
                     onChangeText={setMessage}
                     onSubmitEditing={() => {
 
-                        message !== '' ? sendChat(message) : null
-                        // chatListRef.current.scrollToEnd()
-                        setMessage('')
-                        textInputRef.current.clear()
+
+
+                        if (productId) {
+                            sendProduct(productId)
+                            setMessage('')
+                            textInputRef.current.clear()
+                            setProductId(null)
+                        }
+                        else {
+                            message !== '' ? sendChat(message) : null
+                            // chatListRef.current.scrollToEnd()
+                            setMessage('')
+                            textInputRef.current.clear()
+                        }
+
+
 
                     }}
                 />
-                {message !== '' && message !== null ?
+                {(message !== '' && message !== null) || productId ?
                     <TouchableOpacity
                         style={styles.sendButton}
                         onPress={() => {
-                            sendChat(message)
-                            setMessage('')
-                            textInputRef.current.clear()
+                            if (productId) {
+                                sendProduct(productId)
+                                setMessage('')
+                                textInputRef.current.clear()
+                                setProductId(null)
+                            }
+                            else {
+                                sendChat(message)
+                                setMessage('')
+                                textInputRef.current.clear()
+                            }
+
                         }}>
                         <Ionicons name="md-send" size={30} color="grey" />
                     </TouchableOpacity> : null}
@@ -416,13 +459,13 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         alignSelf: 'flex-end'
     },
-    sendMsg: {
+    shareBar: {
+        width: '100%',
         height: 50,
-        borderColor: 'black',
         backgroundColor: 'white',
-        paddingLeft: 10,
-        flex: 1,
-        marginLeft: 5
+        borderBottomWidth: 0.5,
+        borderBottomColor: 'grey'
+
     },
     sendMsgContainer: {
         flexDirection: 'row',
@@ -433,6 +476,15 @@ const styles = StyleSheet.create({
         paddingRight: 5,
         height: 70,
     },
+    sendMsg: {
+        height: 50,
+        borderColor: 'black',
+        backgroundColor: 'white',
+        paddingLeft: 10,
+        flex: 1,
+        marginLeft: 5
+    },
+
     sendButton: {
     }
 

@@ -48,7 +48,8 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "socket.io-client": "^2.3.0",
-    "tough-cookie": "^4.0.0"
+    "tough-cookie": "^4.0.0",
+    "@react-native-community/datetimepicker": "2.2.2"
   },
   "devDependencies": {
     "babel-preset-expo": "^8.1.0",

@@ -23,6 +23,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as magazineActions from '../../store/actions/magazine'
 import LoadingScreen from '../../components/LoadingScreen'
 import SellerScreen from '../ShopTab/SellerScreen';
+import CheckLoggedIn from '../../components/CheckLoggedIn';
+import AuthRequiredScreen from '../AuthRequiredScreen';
 
 
 
@@ -33,6 +35,8 @@ export function MagazineScreen(props) {
     const dispatch = useDispatch();
 
     const userId = useSelector(state => state.auth.userId)
+
+    const loggedIn = CheckLoggedIn();
 
     const shopPosts = useSelector(state => state.magazine.shopPosts)
     const friendPosts = useSelector(state => state.magazine.friendPosts)
@@ -238,7 +242,7 @@ export function MagazineScreen(props) {
     useEffect(() => {
         loadPosts();
     }, [myShops])
-    
+
     const renderImages = (itemData) => {
 
 
@@ -571,9 +575,19 @@ export function MagazineScreen(props) {
     })
 
 
+    if (!loggedIn) {
+        return (
+            <AuthRequiredScreen />
+        )
+    }
+
     if (isLoading) {
         return <LoadingScreen />
     }
+
+
+
+
     return (
         <View style={ScreenStyle}>
 
@@ -589,6 +603,11 @@ export function MagazineScreen(props) {
                 }}
                 data={[{ id: '1' }].concat(shopPosts)}
                 renderItem={renderFeedItem}
+                ListEmptyComponent={
+                    <View>
+                        <Text>no posts yet</Text>
+                    </View>
+                }
 
             />
 

@@ -6,16 +6,18 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import ScreenStyle from '../../Styles/ScreenStyle'
 import UIButton from '../../components/UIButton';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as authActions from '../../store/actions/auth'
+import Colors from '../../Styles/Colors';
 
 
 export default function SignupScreen({ navigation }) {
-  const [value, setValue] = useState(0);
+  const [touched, setTouched] = useState(false);
 
   const [inputs, setInputs] = useState({
     firstName: '',
@@ -23,26 +25,77 @@ export default function SignupScreen({ navigation }) {
     username: '',
     email: '',
     phone: '',
-    birthday: '',
+    birthday: {
+      dd: '',
+      mm: '',
+      yyyy: ''
+    },
     password: '',
+    confirmPassword: ''
   })
 
+  // const [showDatePicker, setShowDatePicker] = useState(false);
+
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    //validation checks run every time inputs changes and if form is touched
+
+    if (touched) {
+      if (Object.values(inputs).some(field =>
+        field === '' || field?.dd === '' || field?.mm === '' || field?.yyyy === ''
+
+      )) {
+        setError('Fill up all fields')
+      }
+      else if (inputs.password !== inputs.confirmPassword) {
+        setError("Passwords don't match")
+      }
+
+      else {
+        setError('')
+      }
+
+
+
+      // if (!passwordsMatch) {
+      //   setError('Passwords dont match');
+      // }
+    }
+
+
+  }, [inputs, touched])
 
 
   const signUp = useCallback(async () => {
     try {
-      if (passwordsMatch) {
-        await dispatch(authActions.signup(inputs))
-        navigation.navigate('Shop')
+      if (!Object.values(inputs).some(field => field === '')) {
+        //all fields filled
+        if (inputs.confirmPassword === inputs.password) {
+          const processedInputs = {
+            ...inputs,
+            birthday: `${inputs.birthday.yyyy}-${inputs.birthday.mm}-${inputs.birthday.dd}`
+          };
+
+          // console.log(passwordsMatch)
+          await dispatch(authActions.signup(processedInputs))
+          navigation.navigate('Shop')
+        }
+      }
+      else {
+        setError('Fill up all fields')
       }
 
     }
     catch (err) {
-      console.log(err)
+      if (err.message.startsWith('Incorrect date value')) {
+        setError('Invalid Birthday')
+      }
     }
-  })
-  const [passwordsMatch, setPasswordsMatch] = useState(true)
+  }, [inputs])
+
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [error, setError] = useState('');
   //  console.log(inputs)
   return (
     <View style={{
@@ -58,7 +111,12 @@ export default function SignupScreen({ navigation }) {
         <View style={styles.iconContainer}>
           <Feather name="user" size={20} color="grey" />
         </View>
-        <TextInput placeholder="First Name" style={styles.inputStyle} onChangeText={(text) => setInputs((state) => ({ ...state, firstName: text }))} />
+        <TextInput placeholder="First Name" style={styles.inputStyle}
+          onChangeText={(text) => {
+            if (!touched) setTouched(true)
+            setInputs((state) => ({ ...state, firstName: text }))
+          }}
+        />
 
       </View>
 
@@ -66,7 +124,10 @@ export default function SignupScreen({ navigation }) {
         <View style={styles.iconContainer}>
           <Feather name="user" size={20} color="grey" />
         </View>
-        <TextInput placeholder="Last Name" style={styles.inputStyle} onChangeText={(text) => setInputs((state) => ({ ...state, lastName: text }))} />
+        <TextInput placeholder="Last Name" style={styles.inputStyle} onChangeText={(text) => {
+          if (!touched) setTouched(true)
+          setInputs((state) => ({ ...state, lastName: text }))
+        }} />
 
       </View>
 
@@ -78,7 +139,11 @@ export default function SignupScreen({ navigation }) {
           secureTextEntry={false}
           placeholder="Email"
           style={styles.inputStyle}
-          onChangeText={(text) => setInputs((state) => ({ ...state, email: text }))}
+          onChangeText={(text) => {
+            if (!touched) setTouched(true)
+            setInputs((state) => ({ ...state, email: text }))
+          }
+          }
           keyboardType="email-address"
         />
       </View>
@@ -90,7 +155,10 @@ export default function SignupScreen({ navigation }) {
           secureTextEntry={false}
           placeholder="User Name"
           style={styles.inputStyle}
-          onChangeText={(text) => setInputs((state) => ({ ...state, username: text }))}
+          onChangeText={(text) => {
+            if (!touched) setTouched(true)
+            setInputs((state) => ({ ...state, username: text }))
+          }}
           keyboardType="email-address"
         />
       </View>
@@ -104,7 +172,10 @@ export default function SignupScreen({ navigation }) {
           placeholder="Phone"
           style={styles.inputStyle}
           keyboardType="decimal-pad"
-          onChangeText={(text) => setInputs((state) => ({ ...state, phone: text }))}
+          onChangeText={(text) => {
+            if (!touched) setTouched(true)
+            setInputs((state) => ({ ...state, phone: text }))
+          }}
         />
       </View>
 
@@ -112,11 +183,80 @@ export default function SignupScreen({ navigation }) {
         <View style={styles.iconContainer}>
           <MaterialIcons name="cake" size={20} color="grey" />
         </View>
+        {/* <Button title="pickdate" onPress={() => { setShowDatePicker(true) }} /> */}
+        {/* {showDatePicker ?
+          <DateTimePicker
+
+            onChange={(event, date) => {
+              setInputs((state) => ({ ...state, birthday: date }))
+              console.log(event)
+
+              if (event.type == 'set' || event.type == 'dismissed') {
+                console.log('jhere')
+                setShowDatePicker(false)
+              }
+
+              console.log(showDatePicker)
+
+
+            }}
+            value={Date.now()}
+          /> : null
+        } */}
+
+
         <TextInput
           secureTextEntry={false}
-          placeholder="Birthday"
+          placeholder="dd"
+          keyboardType="decimal-pad"
+          maxLength={2}
           style={styles.inputStyle}
-          onChangeText={(text) => setInputs((state) => ({ ...state, birthday: text }))}
+          onChangeText={(text) => {
+            if (!touched) setTouched(true)
+            setInputs((state) => ({
+              ...state, birthday: {
+                ...state.birthday,
+                dd: text
+              }
+            }))
+          }
+          }
+        />
+
+        <TextInput
+          maxLength={2}
+          secureTextEntry={false}
+          placeholder="mm"
+          keyboardType="decimal-pad"
+          style={styles.inputStyle}
+          onChangeText={(text) => {
+            if (!touched) setTouched(true)
+            setInputs((state) => ({
+              ...state, birthday: {
+                ...state.birthday,
+                mm: text
+              }
+            }))
+          }
+          }
+        />
+
+        <TextInput
+          maxLength={4}
+          keyboardType="decimal-pad"
+          secureTextEntry={false}
+          placeholder="yyyy"
+          style={styles.inputStyle}
+          onChangeText={(text) => {
+            if (!touched) setTouched(true)
+            setInputs((state) => ({
+              ...state, birthday: {
+                ...state.birthday,
+                yyyy: text
+              }
+            }))
+          }
+          }
         />
       </View>
 
@@ -128,7 +268,10 @@ export default function SignupScreen({ navigation }) {
           secureTextEntry={true}
           placeholder="Password"
           style={styles.inputStyle}
-          onChangeText={(text) => setInputs((state) => ({ ...state, password: text }))}
+          onChangeText={(text) => {
+            if (!touched) setTouched(true)
+            setInputs((state) => ({ ...state, password: text }))
+          }}
         />
 
 
@@ -136,7 +279,7 @@ export default function SignupScreen({ navigation }) {
 
       <View style={styles.inputContainer}>
         <View style={styles.iconContainer}>
-          <Ionicons name="md-lock" size={20} color="rey" />
+          <Ionicons name="md-lock" size={20} color="black" />
         </View>
         <TextInput
           secureTextEntry={true}
@@ -144,21 +287,41 @@ export default function SignupScreen({ navigation }) {
           style={styles.inputStyle}
           onChangeText={(text) => {
             //console.log(text)
-            if (inputs.password !== text) {
+            if (!touched) setTouched(true)
+            setInputs((state) => ({ ...state, confirmPassword: text }))
+            // if (inputs.password !== text) {
 
-              console.log(inputs)
-              setPasswordsMatch(false);
-            }
-            else {
+            //   console.log(inputs)
+            //   setPasswordsMatch(false);
+            // }
+            // else {
 
-              setPasswordsMatch(true)
-            }
+            //   setPasswordsMatch(true)
+            // }
           }}
 
         />
-        <View style={styles.errorContainer}>
-          <Text style={styles.error}>{passwordsMatch ? null : "Passwords don't match"}</Text>
-        </View>
+        {/* <View style={styles.errorContainer}> */}
+        {/* <Text style={styles.error}>{inputs.password == ? null : "Passwords don't match"}</Text> */}
+        {/* </View> */}
+
+      </View>
+
+      <View style={styles.errorContainer}>
+        <Text style={styles.error}>{error}</Text>
+
+
+      </View>
+
+
+
+      <View style={styles.button}>
+        <TouchableOpacity onPress={signUp} style={styles.buttonTouch}>
+          <Text style={styles.buttonText}>
+            Create Account
+          </Text>
+
+        </TouchableOpacity>
 
       </View>
 
@@ -168,15 +331,9 @@ export default function SignupScreen({ navigation }) {
 
 
 
-      <View style={styles.buttons}>
-        <UIButton text="Create Account" height={40} width={300} onPress={signUp} />
 
 
-      </View>
-
-
-
-    </View>
+    </View >
   );
 }
 
@@ -187,6 +344,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 20
 
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: '700',
+    alignSelf: 'flex-start',
+    marginBottom: 25,
+    width: '100%'
   },
   inputContainer: {
     flexDirection: 'row',
@@ -201,14 +365,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
 
   },
-  buttons: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 50,
-    width: "100%",
-    height: 65,
-  },
+
   iconContainer: {
     width: 25,
     alignItems: 'center'
@@ -225,17 +382,38 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '300'
   },
-  title: {
-    fontSize: 30,
-    fontWeight: '700',
-    alignSelf: 'flex-start',
-    marginBottom: 25
-  },
+
   error: {
     color: 'red',
     fontSize: 12
   },
   errorContainer: {
+    flexDirection: 'column',
 
+
+  },
+
+  button: {
+    backgroundColor: Colors.primaryColor,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+    width: "100%",
+    height: 50,
+
+  },
+  buttonTouch: {
+
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center'
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 15,
+    fontWeight: '600',
+    width: '100%',
+    textAlign: 'center',
   }
 });

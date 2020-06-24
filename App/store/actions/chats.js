@@ -494,8 +494,6 @@ export const connectToGroup = (groupId) => {
 export const sendChat = (groupId, text) => {
 
 
-
-
     return async (dispatch) => {
 
         await socket?.emit('sendMessageGroup', `{"groupId": "${groupId}", "text":"${text}"}`);
@@ -504,6 +502,19 @@ export const sendChat = (groupId, text) => {
 
     }
 }
+
+export const sendProduct = (groupId, productId) => {
+
+
+    return async (dispatch) => {
+
+        await socket?.emit('sendMessageGroup', `{"groupId": "${groupId}", "productId":"${productId}"}`);
+
+        socket?.emit('status');
+
+    }
+}
+
 
 export const disconnectFromGroup = (groupId) => {
 
@@ -517,52 +528,52 @@ export const disconnectFromGroup = (groupId) => {
     }
 }
 
-export const sendPhoto = (groupId, formData) => {
-    return async (dispatch) => {
-        const response = await fetch(`${HOST}/group/send-photo`, {
-            method: 'POST',
-            body: formData
-        });
+// export const sendPhoto = (groupId, formData) => {
+//     return async (dispatch) => {
+//         const response = await fetch(`${HOST}/group/send-photo`, {
+//             method: 'POST',
+//             body: formData
+//         });
 
-        if (!response.ok) {
-            throw new Error('somethings wrong');
-        }
+//         if (!response.ok) {
+//             throw new Error('somethings wrong');
+//         }
 
-        const resData = await response.json();  //converts response string to js object/array
+//         const resData = await response.json();  //converts response string to js object/array
 
-        console.log(resData);
+//         console.log(resData);
 
-        if (Object.keys(resData)[0] === 'SUCCESS') {
+//         if (Object.keys(resData)[0] === 'SUCCESS') {
 
-            await dispatch(sendChat(groupId, ''));
-
-
-        }
-        else {
-
-        }
-        // const cartItems = [];
-
-        // for (const key in resData) {
-        //     cartItems.push({
-        //         id: resData[key].SESSION_ID,
-        //         productId: resData[key].PRODUCT_ID,
-        //         color: resData[key].COLOR,
-        //         size: resData[key].SIZE,
-        //         quantity: resData[key].QUANTITY,
-        //         data: resData[key].DATE,
-        //         customerId: resData[key].CUSTOMER_ID,
-        //     })
-        // }
-
-        // dispatch({
-        //     type: GET_SESSION_CART,
-        //     cartItems: cartItems
-        // })
+//             await dispatch(sendChat(groupId, ''));
 
 
-    }
-}
+//         }
+//         else {
+
+//         }
+//         // const cartItems = [];
+
+//         // for (const key in resData) {
+//         //     cartItems.push({
+//         //         id: resData[key].SESSION_ID,
+//         //         productId: resData[key].PRODUCT_ID,
+//         //         color: resData[key].COLOR,
+//         //         size: resData[key].SIZE,
+//         //         quantity: resData[key].QUANTITY,
+//         //         data: resData[key].DATE,
+//         //         customerId: resData[key].CUSTOMER_ID,
+//         //     })
+//         // }
+
+//         // dispatch({
+//         //     type: GET_SESSION_CART,
+//         //     cartItems: cartItems
+//         // })
+
+
+//     }
+// }
 
 export const sendPhotoFile = (groupId, image) => {
 
@@ -599,30 +610,30 @@ export const sendPhotoFile = (groupId, image) => {
     }
 }
 
-export const sendPhotoFile2 = (formData) => {
+// export const sendPhotoFile2 = (formData) => {
 
-    return async (dispatch) => {
+//     return async (dispatch) => {
 
-        // var reader = new FileReader();
-        // reader.onload = function (evt) {
-        //     //code to send photo
-        //     var msg = {};
-        //     msg.groupId = groupId;
-        //     msg.photo = evt.target.result;
-        //     msg = JSON.stringify(msg);
-        //     socket.emit('sendMessageGroup', msg);
-        // };
-        // let pic = await fetch(image.uri);
-        // pic = await pic.blob()
-        // reader.readAsDataURL(pic);
+//         // var reader = new FileReader();
+//         // reader.onload = function (evt) {
+//         //     //code to send photo
+//         //     var msg = {};
+//         //     msg.groupId = groupId;
+//         //     msg.photo = evt.target.result;
+//         //     msg = JSON.stringify(msg);
+//         //     socket.emit('sendMessageGroup', msg);
+//         // };
+//         // let pic = await fetch(image.uri);
+//         // pic = await pic.blob()
+//         // reader.readAsDataURL(pic);
 
-        socket.emit('sendMessageGroup', JSON.stringify(formData))
-        // socket?.emit('status');
+//         socket.emit('sendMessageGroup', JSON.stringify(formData))
+//         // socket?.emit('status');
 
 
 
-    }
-}
+//     }
+// }
 
 
 

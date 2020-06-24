@@ -29,17 +29,19 @@ export const addToCart = (productId, color, size, quantity) => {
         console.log(resData);
 
         if (Object.keys(resData)[0] === 'SUCCESS') {
-            dispatch({
-                type: ADD_TO_CART,
-                message: 'Added to cart!'
-            })
+            // dispatch({
+            //     type: ADD_TO_CART,
+            //     message: 'Added to cart!'
+            // })
+            dispatch(popupActions.setMessage('Added To Cart!'))
         }
         else if (Object.keys(resData)[0] === 'ERROR') {
+            // throw new Error(resData.ERROR);
             if (resData.ERROR === 'UNAUTHORIZED') {
-                dispatch({
-                    type: ADD_TO_CART,
-                    message: 'Log in first!'
-                })
+                // dispatch({
+                //     type: ADD_TO_CART,
+                //     message: 'Log in first!'
+                // })
             }
             else {
                 dispatch(popupActions.setMessage('Failed to add to cart', true))
@@ -174,7 +176,7 @@ export const fetchCartItems = () => {
                             picture: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL },
                             price: resData[key].PRICE,
                             discount: resData[key].DISCOUNT,
-                            color:  resData[key].COLOR.toLowerCase(),
+                            color: resData[key].COLOR.toLowerCase(),
                             quantity: resData[key].QUANTITY,
                             data: resData[key].DATE,
                             size: resData[key].SIZE,

@@ -1,6 +1,10 @@
 const Colors = {
   primaryColor: '#420000',
-  accentColor: '#f6f6f6',
+  accentColor: '#d4d7dd',
+  foregroundColor: '#eae9e9',
+  backgroundColor: '#f6f6f6',
+
+  
   textColor: 'black',
   anotherColor: '#d4d7dd',
   screenBackgroundColor: '#f6f6f6',

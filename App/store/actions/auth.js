@@ -50,7 +50,7 @@ export const signup = ({ firstName, lastName, username, email, phone, birthday, 
 
         }
         else {
-            console.log('erroring')
+
             throw new Error(resData.ERROR)
         }
     }

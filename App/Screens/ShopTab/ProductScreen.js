@@ -239,7 +239,7 @@ export default function ProductScreen(props) {
                     else {
                         await dispatch(cartActions.addToCart(productId, color, size, quantity))
                         // setPopupMessage("added to cart!")
-                        dispatch(popupActions.setMessage('Added To Cart!'))
+
                         // setAddCartModalVisible(true)
                         //setAddCartMessage(cartMessage);
                         // window.setTimeout(() => (setAddCartModalVisible(false)), 2500)
@@ -321,6 +321,7 @@ export default function ProductScreen(props) {
 
                     await dispatch(productActions.addReview(productId, rating, review))
                     setIsReviewModalVisible(false);
+                    product.hasReviewed = 1
                     // setAddReviewPopupVisible(true);
 
                     //setAddCartMessage(cartMessage);
@@ -476,9 +477,21 @@ export default function ProductScreen(props) {
                     }}> {product.description} </Text>
                 </View>
 
-                <View style={{ justifyContent: 'flex-start', padding: 10, marginRight: 10, flexDirection: 'row' }}>
+                <View style={styles.ratingShare}>
                     <RatingStars rating={product.rating} size={30} />
-                    <Ionicons color={Colors.buttonColor} name="ios-share-alt" size={40} style={{ marginLeft: Dimensions.get('window').width / 1.9 }} />
+                    {/* <Ionicons color={Colors.buttonColor} name="ios-share-alt" size={40}/> */}
+
+                    <TouchableOpacity style={styles.share}>
+                        {/* <View > */}
+
+
+                        <Text style={styles.shareText}>SHARE</Text>
+
+
+                        {/* </View> */}
+                    </TouchableOpacity>
+
+
                 </View>
 
                 {/* <View style={styles.qa}>
@@ -576,7 +589,7 @@ export default function ProductScreen(props) {
             <View>
 
                 {/* <SmallPopup setMessage={setPopupMessage} message={popupMessage} /> */}
-                <Modal
+                {/* <Modal
                     isVisible={reviewModalVisible}
                     onBackdropPress={() => {
                         setIsReviewModalVisible(false)
@@ -587,16 +600,7 @@ export default function ProductScreen(props) {
 
                     }
                     }
-                    // customBackdrop={
-                    //     <TouchableWithoutFeedback onPress={() => {
-                    //         setIsReviewModalVisible(false)
-                    //         console.log('done')
-                    //     }}
-                    //     style={{flex: 1}}
-                    //     >
-                    //         <View style={{ flex: 1, backgroundColor: 'purple' }} />
-                    //     </TouchableWithoutFeedback>
-                    // }
+                    
                     avoidKeyboard={true}
                     hasBackdrop={true}
                     backdropOpacity={0.8}
@@ -610,18 +614,13 @@ export default function ProductScreen(props) {
 
                 >
                     <View
-                    // behavior={Platform.OS == "ios" ? "padding" : "height"}
+                   
                     >
 
 
                         <View style={styles.addReviewContainer}>
 
-                            {/* <View style={styles.reviewModalTopHandle} /> */}
-
-                            {/* <View style={styles.titleContainer}>
-                                <Text style={styles.title}>ADD REVIEW</Text>
-    
-                            </View> */}
+                          
 
 
                             <View style={styles.starsContainer}>
@@ -642,7 +641,7 @@ export default function ProductScreen(props) {
                         </View>
                     </View>
 
-                </Modal>
+                </Modal> */}
                 <FlatList
                     ListHeaderComponent={productPage}
                     data={reviews}
@@ -705,6 +704,12 @@ const styles = StyleSheet.create({
         margin: 10
 
     },
+    ratingShare: {
+        justifyContent: 'space-between',
+        padding: 10,
+        marginRight: 10,
+        flexDirection: 'row'
+    },
     reviews: {
         width: '100%',
         margin: 10
@@ -716,8 +721,21 @@ const styles = StyleSheet.create({
         flex: 1,
         width: 200,
     },
-    shareButton: {
-        alignItems: 'flex-end'
+    share: {
+        borderWidth: 2,
+        borderColor: 'black',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 70,
+        height: 30
+    },
+    shareText: {
+        fontSize: 13,
+        fontWeight: '700',
+        width: 100,
+        textAlign: 'center',
+        color: 'black'
+
 
     },
     centered: {

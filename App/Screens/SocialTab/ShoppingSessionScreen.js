@@ -187,7 +187,9 @@ export default function ShoppingSessionScreen(props) {
                             </View>
                             <View style={styles.buttons}>
 
-                                <TouchableOpacity onPress={() => (props.navigation.navigate('GroupChat'))}>
+                                <TouchableOpacity onPress={() => (props.navigation.navigate('GroupChat', {
+                                    productId: itemData.item.productId
+                                }))}>
                                     <View style={styles.cartX}>
                                         <Text style={styles.x}>TALK ABOUT</Text>
                                     </View>

@@ -186,24 +186,31 @@ import DpUploadScreen from './DpUploadScreen';
 //this is both my profile and others profile
 
 export function ProfileScreen(props) {
-    const userId = useSelector(state => state.auth.userId)
-
-    const flatListRef = useRef(null);
     const profileId = props.route.params?.profileId
-    const myProfile = userId === profileId || profileId === undefined//secure this check using backend auth in production
-
-
-
-
 
     const dispatch = useDispatch();
 
+    const myProfile = userId === profileId || profileId === undefined//secure this check using backend auth in production
+
+    const userId = useSelector(state => state.auth.userId)
     const posts = useSelector(state => state.profile.posts)
     const myPosts = useSelector(state => state.profile.myPosts)
 
 
     const shopPostComments = useSelector(state => state.magazine.shopPostComments);
     const shopPostReacts = useSelector(state => state.magazine.shopPostReacts);
+
+
+    const numFollowers = myProfile ? useSelector(state => state.profile.myNumFollowers) : useSelector(state => state.profile.numFollowers)
+    const numFollowing = myProfile ? useSelector(state => state.profile.myNumFollowing) : useSelector(state => state.profile.numFollowing)
+    const numFollowingShop = myProfile ? useSelector(state => state.profile.myNumFollowingShop) : useSelector(state => state.profile.numFollowingShop)
+    const profile = myProfile ? useSelector(state => state.profile.myProfile) : useSelector(state => state.profile.otherProfile)
+
+    const flatListRef = useRef(null);
+
+
+
+
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -220,6 +227,75 @@ export function ProfileScreen(props) {
     const [iters, setIters] = useState({
         shopPostComments: 1
     })
+
+
+
+
+    const followUser = useCallback(async (userId) => {
+        try {
+            await dispatch(profileActions.followUser(userId))
+
+        }
+        catch (err) {
+
+            console.log(err);
+        }
+    })
+
+    const getFollowCounts = useCallback(async () => {
+        // const id = myProfile? userId: profileId
+        try {
+            myProfile ? await dispatch(profileActions.getMyFollowCounts(userId)) : await dispatch(profileActions.getFollowCounts(profileId))
+            // setError('')
+        }
+        catch (err) {
+            // setError(err.message)
+            console.log(err);
+        }
+    })
+
+    const getProfile = useCallback(async () => {
+        console.log('myProfile: ' + myProfile)
+        try {
+            myProfile ? await dispatch(profileActions.getMyProfile(userId, [
+                "firstName", "lastName", "email", "phoneNumber", "birthday", "profilePic", "bio", "privacyType", "points", "type"
+            ])) : await dispatch(profileActions.getProfile(profileId, [
+                "firstName", "lastName", "email", "phoneNumber", "birthday", "profilePic", "bio", "privacyType", "points", "type"
+            ]))
+
+            console.log(profile.firstName)
+
+            // setError('')
+        }
+        catch (err) {
+            // setError(err.message)
+            console.log(err);
+        }
+    }, [myProfile, profileId])
+
+
+
+    const logoutHandler = async () => {
+        try {
+            await dispatch(authActions.logout())
+        } catch (err) {
+            console.log('error while logging out')
+        }
+    }
+
+
+
+
+    useEffect(() => {
+        getFollowCounts()
+        getProfile();
+
+    }, [])
+
+    useEffect(() => {
+        myProfile ? loadMyPosts() : loadPosts(profileId);
+    }, [profileId])
+
 
     const loadMyPosts = useCallback(async () => {
         try {
@@ -372,9 +448,7 @@ export function ProfileScreen(props) {
 
 
 
-    useEffect(() => {
-        myProfile ? loadMyPosts() : loadPosts(profileId);
-    }, [profileId])
+
 
 
     const renderImages = (itemData) => {
@@ -567,6 +641,45 @@ export function ProfileScreen(props) {
         <View style={ScreenStyle}>
 
             <FlatList
+                ListHeaderComponent={
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 150 }}>
+                        <View style={{ flexDirection: 'column', marginLeft: 40, alignItems: 'center' }}>
+                            <TouchableOpacity onPress={() => {
+                                props.navigation.navigate('DpUpload')
+                            }}>
+                                <Image style={{ height: 100, width: 100 }} source={profile.profilePic} />
+                            </TouchableOpacity>
+
+
+                            <Text> {profile.firstName}    {profile.lastName}</Text>
+                            <Text> {profile.bio} </Text>
+
+                        </View>
+
+                        <View style={{ flexDirection: 'column', height: 80, marginRight: 40, justifyContent: 'center' }}>
+                            <TouchableOpacity onPress={() => props.navigation.navigate('FollowersListTab', {
+                                myProfile: myProfile,
+                                profileId: profileId
+                            })}>
+                                <Text>Followers: {numFollowers}</Text>
+                                <Text>Following: {numFollowing}</Text>
+                                <Text>Following Shops: {numFollowingShop}</Text>
+
+                            </TouchableOpacity>
+
+                            {myProfile ? null : <Button title="Send Follow Req" onPress={() => {
+                                followUser(profileId)
+                            }} />}
+                        </View>
+
+
+
+
+                        {myProfile ? <Button title="logout" onPress={logoutHandler} /> : null}
+
+                    </View>
+
+                }
                 listKey="b"
                 extraData={change}
                 ref={flatListRef}
@@ -599,83 +712,9 @@ export function ProfileTabsScreen(props) {
 
     const profileId = props.route.params?.profileId;
 
-    const myProfile = userId === profileId || profileId === undefined //secure this check using backend auth in production
-
-    const profile = myProfile ? useSelector(state => state.profile.myProfile) : useSelector(state => state.profile.otherProfile)
-
-
-    const numFollowers = myProfile ? useSelector(state => state.profile.myNumFollowers) : useSelector(state => state.profile.numFollowers)
-    const numFollowing = myProfile ? useSelector(state => state.profile.myNumFollowing) : useSelector(state => state.profile.numFollowing)
-    const numFollowingShop = myProfile ? useSelector(state => state.profile.myNumFollowingShop) : useSelector(state => state.profile.numFollowingShop)
-
-
-
-
-
-    const dispatch = useDispatch();
-
-    const followUser = useCallback(async (userId) => {
-        try {
-            await dispatch(profileActions.followUser(userId))
-
-        }
-        catch (err) {
-
-            console.log(err);
-        }
-    })
-
-    const getFollowCounts = useCallback(async () => {
-        // const id = myProfile? userId: profileId
-        try {
-            myProfile ? await dispatch(profileActions.getMyFollowCounts(userId)) : await dispatch(profileActions.getFollowCounts(profileId))
-            // setError('')
-        }
-        catch (err) {
-            // setError(err.message)
-            console.log(err);
-        }
-    })
-
-    const getProfile = useCallback(async () => {
-        console.log('myProfile: ' + myProfile)
-        try {
-            myProfile ? await dispatch(profileActions.getMyProfile(userId, [
-                "firstName", "lastName", "email", "phoneNumber", "birthday", "profilePic", "bio", "privacyType", "points", "type"
-            ])) : await dispatch(profileActions.getProfile(profileId, [
-                "firstName", "lastName", "email", "phoneNumber", "birthday", "profilePic", "bio", "privacyType", "points", "type"
-            ]))
-
-            console.log(profile.firstName)
-
-            // setError('')
-        }
-        catch (err) {
-            // setError(err.message)
-            console.log(err);
-        }
-    }, [myProfile, profileId])
-
-
-
-    const logoutHandler = async () => {
-        try {
-            await dispatch(authActions.logout())
-        } catch (err) {
-            console.log('error while logging out')
-        }
-    }
 
 
     const TopTab = createMaterialTopTabNavigator();
-
-    useEffect(() => {
-        getFollowCounts()
-        getProfile();
-
-    }, [])
-
-
 
     if (!loggedIn) {
         return (
@@ -686,42 +725,7 @@ export function ProfileTabsScreen(props) {
 
     return (
         <View style={{ ...ScreenStyle, flex: 1 }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 150 }}>
-                <View style={{ flexDirection: 'column', marginLeft: 40, alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => {
-                        props.navigation.navigate('DpUpload')
-                    }}>
-                        <Image style={{ height: 100, width: 100 }} source={profile.profilePic} />
-                    </TouchableOpacity>
 
-
-                    <Text> {profile.firstName}    {profile.lastName}</Text>
-                    <Text> {profile.bio} </Text>
-
-                </View>
-
-                <View style={{ flexDirection: 'column', height: 80, marginRight: 40, justifyContent: 'center' }}>
-                    <TouchableOpacity onPress={() => props.navigation.navigate('FollowersListTab', {
-                        myProfile: myProfile,
-                        profileId: profileId
-                    })}>
-                        <Text>Followers: {numFollowers}</Text>
-                        <Text>Following: {numFollowing}</Text>
-                        <Text>Following Shops: {numFollowingShop}</Text>
-
-                    </TouchableOpacity>
-
-                    {myProfile ? null : <Button title="Send Follow Req" onPress={() => {
-                        followUser(profileId)
-                    }} />}
-                </View>
-
-
-
-
-                {myProfile ? <Button title="logout" onPress={logoutHandler} /> : null}
-
-            </View>
             <TopTab.Navigator
                 tabBarOptions={{
                     indicatorStyle: {
