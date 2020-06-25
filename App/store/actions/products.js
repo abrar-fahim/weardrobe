@@ -97,6 +97,49 @@ export const fetchProductDetails = (productId) => {
     }
 }
 
+export const fetchProductDetailsDirect = async (productId) => {
+    // return async (dispatch) => {
+
+    try {
+        const response = await fetch(`${HOST}/get/product/${productId}/details`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (!response.ok) {
+            throw new Error('Somehthings wrong');
+        }
+        const resData = await response.json();
+
+        const product = {
+            id: resData.PRODUCT_ID,
+            name: resData.PRODUCT_NAME,
+            price: resData.PRICE,
+            description: resData.DESCRIPTION,
+            rating: resData.PRODUCT_RATING,
+            colors: resData.COLORS,
+            photos: resData.PHOTOS,
+            ratingCount: resData.RATING_COUNT,
+            isFavorite: resData.IS_FAVOURITE,
+            hasReviewed: resData.HAS_REVIEWED
+
+        }
+        // console.log('acrtion product: ' + product)
+
+        return product;
+
+
+        // dispatch({ type: GET_PRODUCT_DETAILS, product: product })
+    }
+    catch (err) {
+        throw err;
+    }
+
+    // }
+}
+
 export const fetchProductReviews = (productId, iter = 0) => {
     return async (dispatch) => {
 

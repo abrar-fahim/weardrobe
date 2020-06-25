@@ -29,6 +29,7 @@ import magazineReducer from './store/reducers/magazine';
 import socialReducer from './store/reducers/chats';
 import searchReducer from './store/reducers/search';
 import popupReducer from './store/reducers/Popup';
+import ProductScreen from './Screens/ShopTab/ProductScreen';
 
 
 const rootReducer = combineReducers({
@@ -73,7 +74,7 @@ export default function App({ navigation }) {
   //return <HomeNavigator />;
 
 
-  
+
 
 
 
@@ -91,6 +92,7 @@ export default function App({ navigation }) {
 
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Signup" component={SignupScreen} />
+          <Stack.Screen name="Product" component={ProductScreen} />
 
         </Stack.Navigator>
       </NavigationContainer>

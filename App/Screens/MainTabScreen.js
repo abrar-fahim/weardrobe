@@ -31,6 +31,7 @@ import * as authActions from '../store/actions/auth'
 import * as socialActions from '../store/actions/chats'
 
 import SmallPopup from '../components/SmallPopup'
+import ProductScreen from './ShopTab/ProductScreen';
 
 export default function HomeScreen(props) {
 
@@ -63,7 +64,7 @@ export default function HomeScreen(props) {
         //setIsLoading(false);
     }, [])
 
-   
+
 
     useEffect(() => {
         const willFocusSub = props.navigation.addListener(
@@ -148,6 +149,7 @@ export default function HomeScreen(props) {
                 <Tab.Screen name="Chat" component={ChatStackScreen} />
                 <Tab.Screen name="Weardrobe" component={ProfileStackScreen} />
                 <Tab.Screen name="Notifications" component={NotificationsStackScreen} />
+                
             </Tab.Navigator>
         </>
     );

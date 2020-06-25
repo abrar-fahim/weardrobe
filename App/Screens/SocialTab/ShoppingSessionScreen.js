@@ -107,7 +107,7 @@ export default function ShoppingSessionScreen(props) {
 
 
                             <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
-                                productId: itemData.item.productId
+                                product: itemData.item.productId
                             }))}>
                                 <Image source={itemData.item.thumbnail} style={styles.picture}
                                     resizeMode='contain'
@@ -188,7 +188,7 @@ export default function ShoppingSessionScreen(props) {
                             <View style={styles.buttons}>
 
                                 <TouchableOpacity onPress={() => (props.navigation.navigate('GroupChat', {
-                                    productId: itemData.item.productId
+                                    product: itemData.item
                                 }))}>
                                     <View style={styles.cartX}>
                                         <Text style={styles.x}>TALK ABOUT</Text>

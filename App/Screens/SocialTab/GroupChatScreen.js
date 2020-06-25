@@ -11,10 +11,12 @@ import { MaterialIcons, SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 
 import * as chatActions from '../../store/actions/chats'
 import * as popupActions from '../../store/actions/Popup'
+import * as productActions from '../../store/actions/products'
 import { useSelector, useDispatch } from 'react-redux';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import LoadingScreen from '../../components/LoadingScreen';
 import ShoppingSessionTimer from '../../components/ShoppingSessionTimer';
+import { IMG_URL } from '../../components/host';
 
 export default function GroupTabScreen(props) {
     const groupId = props.route.params?.groupId
@@ -82,8 +84,6 @@ export function GroupChatScreen(props) {
 
     const groupId = props.route.params?.groupId
 
-    // console.log('id: ' + productId);
-
     const sessionGroupId = useSelector(state => state.social.sessionGroupId)
 
     const chats = useSelector(state => state.social.chats);
@@ -102,11 +102,9 @@ export function GroupChatScreen(props) {
 
     const [isLoading, setIsLoading] = useState(true)
 
-    const [productId, setProductId] = useState(props.route.params?.productId)
+    const [product, setProduct] = useState(props.route.params?.product)
 
-    // const [iter, setIter] = useState(0);
-
-
+    // const [products, setProducts] = useState([])
 
     const getChats = useCallback(async () => {
         try {
@@ -129,11 +127,11 @@ export function GroupChatScreen(props) {
         try {
             setIsLoading(true)
             await dispatch(chatActions.getChats(groupId, 0))
+
             await dispatch(chatActions.getGroupPeople(groupId))
             await dispatch(chatActions.connectToGroup(groupId))
             // setIter(chats.length)
             setIsLoading(false)
-
         }
         catch (err) {
             console.log(err)
@@ -178,6 +176,22 @@ export function GroupChatScreen(props) {
 
     }, [sending, groupId])
 
+    const getProduct = useCallback(async (productId) => {
+        try {
+
+            await (productActions.fetchProductDetailsDirect(productId))
+
+            // setIter(chats.length)
+            // dispatch(popupActions.setMessage('hello' + chats.length))
+        }
+        catch (err) {
+            console.log(err)
+        }
+
+    }, [groupId, chats])
+
+
+
     useEffect(() => {
         // const willFocusSub = props.navigation.addListener(
         //     'focus', () => {
@@ -206,7 +220,7 @@ export function GroupChatScreen(props) {
     }, [sending])
 
     useEffect(() => {
-        setProductId(props.route.params?.productId)
+        setProduct(props.route.params?.product)
     }, [props])
 
     function renderItems(itemData) {
@@ -219,13 +233,25 @@ export function GroupChatScreen(props) {
 
                     <Image style={styles.pictureMe} source={dp} />
                     <Text style={styles.usernameMe}>{username}</Text>
-                    {itemData.item.text === null ? <Image source={itemData.item.photo} style={styles.photoMe} /> :
-                        <View style={styles.msgBubbleMe}>
+                    {itemData.item.photo ? <Image source={itemData.item.photo} style={styles.photoMe} /> : (itemData.item.product ?
+                        <TouchableOpacity onPress={() => props.navigation.navigate('Product', {
+                            productId: itemData.item.product.id
+                        })}>
+                            <View style={styles.productBubbleMe}>
+                                <Image style={styles.productPhotoMe} source={itemData.item.product.photos[0].image} />
+                                <Text>{itemData.item.product.name}</Text>
+                                <Text>BDT {itemData.item.product.price}</Text>
+
+
+                            </View>
+                        </TouchableOpacity>
+                        : <View style={styles.msgBubbleMe}>
 
                             <Text style={styles.msgTextMe}>{itemData.item.text}</Text>
 
 
-                        </View>}
+                        </View>)
+                    }
 
 
 
@@ -240,18 +266,27 @@ export function GroupChatScreen(props) {
             <View style={styles.chat}>
                 <Image style={styles.picture} source={dp} />
                 <Text style={styles.username}>{username}</Text>
-                {itemData.item.text === null ? <Image source={itemData.item.photo} style={styles.photo} /> :
-                    <View style={styles.msgBubble}>
+                {itemData.item.photo ? <Image source={itemData.item.photo} style={styles.photo} /> : (itemData.item.product ?
+                    <View style={styles.productBubble}>
+                        <Image style={styles.productPhoto} source={itemData.item.product.photos[0].image} />
+                        <Text>{itemData.item.product.name}</Text>
+                        <Text>hi</Text>
+
+
+                    </View> :
+                    < View style={styles.msgBubble}>
 
                         <Text style={styles.msgText}>{itemData.item.text}</Text>
 
 
-                    </View>}
+                    </View>
+                )
+                }
 
 
 
 
-            </View>
+            </View >
 
         )
 
@@ -261,6 +296,7 @@ export function GroupChatScreen(props) {
     if (isLoading) {
         return <LoadingScreen />
     }
+
     return (
         <View
             // behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -279,8 +315,12 @@ export function GroupChatScreen(props) {
                     getChats()
                 }}
             />
-            {productId ?
+            {product ?
                 <View style={styles.shareBar}>
+                    <Image source={product.thumbnail} style={styles.shareBarImage} />
+                    <Text>{product.productName}</Text>
+                    <Text>BDT {product.price}</Text>
+
 
 
                 </View> : null}
@@ -309,11 +349,11 @@ export function GroupChatScreen(props) {
 
 
 
-                        if (productId) {
-                            sendProduct(productId)
+                        if (product) {
+                            sendProduct(product.productId)
                             setMessage('')
                             textInputRef.current.clear()
-                            setProductId(null)
+                            setProduct(null)
                         }
                         else {
                             message !== '' ? sendChat(message) : null
@@ -326,15 +366,15 @@ export function GroupChatScreen(props) {
 
                     }}
                 />
-                {(message !== '' && message !== null) || productId ?
+                {(message !== '' && message !== null) || product ?
                     <TouchableOpacity
                         style={styles.sendButton}
                         onPress={() => {
-                            if (productId) {
-                                sendProduct(productId)
+                            if (product) {
+                                sendProduct(product.productId)
                                 setMessage('')
                                 textInputRef.current.clear()
-                                setProductId(null)
+                                setProduct(null)
                             }
                             else {
                                 sendChat(message)
@@ -381,6 +421,36 @@ const styles = StyleSheet.create({
     usernameMe: {
 
         alignSelf: 'flex-end'
+    },
+
+    productBubbleMe: {
+        flexDirection: 'column',
+        backgroundColor: Colors.accentColor,
+        alignSelf: 'flex-end',
+
+
+
+    },
+
+    productBubble: {
+        flexDirection: 'column',
+        backgroundColor: Colors.accentColor,
+        alignSelf: 'flex-start',
+        height: 100,
+    },
+    productPhotoMe: {
+
+        height: 200,
+        width: 200,
+        alignSelf: 'flex-end',
+        margin: 10,
+    },
+    productPhoto: {
+
+        height: 200,
+        width: 200,
+        alignSelf: 'flex-start',
+        margin: 10,
     },
 
     msgBubble: {
@@ -445,7 +515,8 @@ const styles = StyleSheet.create({
         height: 300,
         width: 300,
         alignSelf: 'flex-start',
-        margin: 10
+        margin: 10,
+
     },
     photoMe: {
         height: 300,
@@ -457,15 +528,21 @@ const styles = StyleSheet.create({
         height: 30,
         width: 30,
         borderRadius: 15,
-        alignSelf: 'flex-end'
+        alignSelf: 'flex-end',
+
     },
     shareBar: {
+        flexDirection: 'row',
         width: '100%',
         height: 50,
         backgroundColor: 'white',
         borderBottomWidth: 0.5,
         borderBottomColor: 'grey'
 
+    },
+    shareBarImage: {
+        height: 50,
+        width: 50
     },
     sendMsgContainer: {
         flexDirection: 'row',

@@ -1,4 +1,4 @@
-import HOST from "../../components/host";
+import HOST, { IMG_URL } from "../../components/host";
 import io from "socket.io-client"
 export const GET_GROUPS = 'GET_GROUPS';
 export const GET_CHATS = 'GET_CHATS';
@@ -14,6 +14,7 @@ export const ADD_CHAT = 'ADD_CHAT';
 
 
 import * as popupActions from './Popup'
+import * as productActions from './products'
 
 let socket = null;
 
@@ -95,15 +96,47 @@ export const getChats = (groupId, iter = 0) => {
             const chats = [];
 
             for (const key in resData) {
-                chats.push({
-                    id: resData[key].SENDER_UID + resData[key].SENT_AT + key,
-                    senderId: resData[key].SENDER_UID,
-                    groupId: resData[key].GROUP_ID,
-                    text: resData[key].TEXT,
-                    photo: { uri: `${HOST}/img/temp/` + resData[key].PHOTO },
-                    time: resData[key].SENT_AT,
-                    // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
-                })
+
+                const productId = resData[key].PRODUCT_ID;
+                if (productId && productId !== "") {
+                    let product = await productActions.fetchProductDetailsDirect(productId);
+                    product = {
+                        ...product,
+                        photos: product.photos.map(photo => ({
+                            image: { uri: IMG_URL + photo.IMAGE_URL }
+                        }))
+                    }
+                    chats.push({
+                        id: resData[key].SENDER_UID + resData[key].SENT_AT + key,
+                        senderId: resData[key].SENDER_UID,
+                        groupId: resData[key].GROUP_ID,
+                        text: resData[key].TEXT,
+                        photo: resData[key].PHOTO ? { uri: `${HOST}/img/temp/` + resData[key].PHOTO } : null,
+                        time: resData[key].SENT_AT,
+                        product: product
+                        // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
+                    })
+
+                }
+
+                else {
+                    chats.push({
+                        id: resData[key].SENDER_UID + resData[key].SENT_AT + key,
+                        senderId: resData[key].SENDER_UID,
+                        groupId: resData[key].GROUP_ID,
+                        text: resData[key].TEXT,
+                        photo: resData[key].PHOTO ? { uri: `${HOST}/img/temp/` + resData[key].PHOTO } : null,
+                        time: resData[key].SENT_AT,
+                        // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
+                    })
+                }
+
+
+
+
+                //productIds can be null, "", or valid,
+
+
             }
 
             // chats.reverse()
@@ -465,23 +498,53 @@ export const connectToGroup = (groupId) => {
 
         socket.emit('join', `{"groupId": "${groupId}"}`);
 
-        socket.on('sendMessageGroup', (chat) => {
+        socket.on('sendMessageGroup', async (chat) => {
             console.log(chat)
             // dispatch(getChats(groupId))
             // console.log(text)
-            dispatch({
-                type: ADD_CHAT,
-                chat: {
-                    id: chat.SENDER_UID + chat.SENT_AT + Date.now(),
-                    senderId: chat.SENDER_UID,
-                    groupId: chat.GROUP_ID,
-                    text: chat.TEXT === undefined ? null : chat.TEXT,
-                    photo: { uri: `${HOST}/img/temp/` + chat.PHOTO },
-                    time: chat.SENT_AT,
+            const productId = chat.PRODUCT_ID;
+            if (productId && productId !== "") {
+                let product = await productActions.fetchProductDetailsDirect(productId);
+                product = {
+                    ...product,
+                    photos: product.photos.map(photo => ({
+                        image: { uri: IMG_URL + photo.IMAGE_URL }
+                    }))
                 }
 
+                dispatch({
+                    type: ADD_CHAT,
+                    chat: {
+                        id: chat.SENDER_UID + chat.SENT_AT + Date.now(),
+                        senderId: chat.SENDER_UID,
+                        groupId: chat.GROUP_ID,
+                        text: chat.TEXT === undefined ? null : chat.TEXT,
+                        photo: chat.PHOTO ? { uri: `${HOST}/img/temp/` + chat.PHOTO } : null,
+                        time: chat.SENT_AT,
+                        product: product
 
-            })
+                    }
+
+
+                })
+            }
+            else {
+                dispatch({
+                    type: ADD_CHAT,
+                    chat: {
+                        id: chat.SENDER_UID + chat.SENT_AT + Date.now(),
+                        senderId: chat.SENDER_UID,
+                        groupId: chat.GROUP_ID,
+                        text: chat.TEXT === undefined ? null : chat.TEXT,
+                        photo: chat.PHOTO ? { uri: `${HOST}/img/temp/` + chat.PHOTO } : null,
+                        time: chat.SENT_AT,
+
+                    }
+
+
+                })
+            }
+
         });
 
 
