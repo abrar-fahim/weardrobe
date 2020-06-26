@@ -76,6 +76,8 @@ export default function ProductScreen(props) {
 
     const [iterLoading, setIterLoading] = useState(false)
 
+    const [shareVisible, setShareVisible] = useState(false);
+
 
 
 
@@ -481,7 +483,10 @@ export default function ProductScreen(props) {
                     <RatingStars rating={product.rating} size={30} />
                     {/* <Ionicons color={Colors.buttonColor} name="ios-share-alt" size={40}/> */}
 
-                    <TouchableOpacity style={styles.share}>
+                    <TouchableOpacity style={styles.share} onPress={() => {
+                        setShareVisible(true)
+
+                    }}>
                         {/* <View > */}
 
 
@@ -642,6 +647,34 @@ export default function ProductScreen(props) {
                     </View>
 
                 </Modal> */}
+
+                {shareVisible ?
+
+                    <TouchableWithoutFeedback onPress={() => { setShareVisible(false) }}>
+                        <View style={styles.modalBackdrop}>
+                            <TouchableWithoutFeedback>
+                                <View style={styles.shareModal}>
+                                    <Text style={styles.title}>Sharing Options</Text>
+
+                                    <TouchableOpacity style={styles.shareItem}>
+                                        <Text style={styles.shareText}>As Post</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity style={styles.shareItem} onPress={() => props.navigation.navigate('ShareGroup', {
+                                        productId: product.id
+                                    })}>
+                                        <Text style={styles.shareText}>As Chat</Text>
+                                    </TouchableOpacity>
+
+
+                                </View>
+                            </TouchableWithoutFeedback>
+
+                        </View>
+
+                    </TouchableWithoutFeedback>
+
+                    : null}
                 <FlatList
                     ListHeaderComponent={productPage}
                     data={reviews}
@@ -669,6 +702,41 @@ const styles = StyleSheet.create({
     screenContainer: {
         justifyContent: 'flex-end',
         marginVertical: 20
+    },
+
+    modalBackdrop: {
+        position: "absolute",
+        top: 0,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 10,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+
+
+
+
+    },
+    shareModal: {
+        flexDirection: 'column',
+        height: 200,
+        width: 200,
+        backgroundColor: 'white',
+        zIndex: 20,
+        padding: 20,
+        justifyContent: "center",
+        alignItems: 'center'
+
+    },
+    shareItem: {
+        width: '100%',
+        height: 40,
+        borderWidth: 1,
+        borderColor: 'black',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
     },
     text: {
         fontWeight: '700',
@@ -707,8 +775,7 @@ const styles = StyleSheet.create({
     ratingShare: {
         justifyContent: 'space-between',
         padding: 10,
-        marginRight: 10,
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     reviews: {
         width: '100%',

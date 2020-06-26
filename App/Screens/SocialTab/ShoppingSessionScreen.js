@@ -107,7 +107,7 @@ export default function ShoppingSessionScreen(props) {
 
 
                             <TouchableOpacity onPress={() => (props.navigation.navigate('Product', {
-                                product: itemData.item.productId
+                                productId: itemData.item.productId
                             }))}>
                                 <Image source={itemData.item.thumbnail} style={styles.picture}
                                     resizeMode='contain'

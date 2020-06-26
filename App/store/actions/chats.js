@@ -487,14 +487,19 @@ export const deleteGroup = (groupId) => {
     }
 }
 
+export const connectSocket = () => {
+    socket = io(`${HOST}/group-chat`)
+}
+
 export const connectToGroup = (groupId) => {
 
 
     return async (dispatch) => {
 
         console.log('connecting')
+        console.log(socket.id)
 
-        socket = io(`${HOST}/group-chat`)
+
 
         socket.emit('join', `{"groupId": "${groupId}"}`);
 
@@ -568,6 +573,7 @@ export const sendChat = (groupId, text) => {
 
 export const sendProduct = (groupId, productId) => {
 
+    console.log('sending product')
 
     return async (dispatch) => {
 
@@ -581,12 +587,16 @@ export const sendProduct = (groupId, productId) => {
 
 export const disconnectFromGroup = (groupId) => {
 
-    console.log('close')
+
 
 
     return async (dispatch) => {
 
-        socket?.close()
+        // socket?.close()
+        console.log('close')
+        socket.emit('disconnect');
+        socket.removeListener('sendMessageGroup')
+
 
     }
 }

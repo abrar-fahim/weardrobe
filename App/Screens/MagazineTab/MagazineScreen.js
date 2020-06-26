@@ -577,7 +577,7 @@ export function MagazineScreen(props) {
 
     if (!loggedIn) {
         return (
-            <AuthRequiredScreen />
+            <AuthRequiredScreen navigation={props.navigation} />
         )
     }
 
@@ -628,7 +628,7 @@ export default function MagazineStackScreen({ navigation }) {
 
                 headerRight: () => (< NewPostButton onPress={() => navigation.navigate('NewPostChooseLayout')} />)
             }} />
-            <MagazineStack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options={{
+            {/* <MagazineStack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options={{
 
             }} />
             <MagazineStack.Screen name="NewPost2" component={NewPostScreen2} options={{
@@ -636,7 +636,7 @@ export default function MagazineStackScreen({ navigation }) {
 
             }} />
             <MagazineStack.Screen name="NewPost3" component={NewPostScreen3} />
-            <MagazineStack.Screen name="NewPostTag" component={NewPostTagScreen} />
+            <MagazineStack.Screen name="NewPostTag" component={NewPostTagScreen} /> */}
             <MagazineStack.Screen name="Seller" component={SellerScreen} />
             <MagazineStack.Screen name="OthersProfile" component={ProfileStackScreen} options={{
                 headerShown: false
@@ -704,7 +704,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         borderLeftColor: 'black',
         fontWeight: 'bold',
-        backgroundColor: 'grey',
+
         height: 50,
         width: '100%'
     },

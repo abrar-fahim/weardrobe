@@ -30,6 +30,13 @@ import socialReducer from './store/reducers/chats';
 import searchReducer from './store/reducers/search';
 import popupReducer from './store/reducers/Popup';
 import ProductScreen from './Screens/ShopTab/ProductScreen';
+import NewPostChooseLayout from './Screens/MagazineTab/NewPostChooseLayoutScreen';
+import NewPostScreen2 from './Screens/MagazineTab/NewPostScreen2';
+import NewPostScreen3 from './Screens/MagazineTab/NewPostScreen3';
+import NewPostTagScreen from './Screens/MagazineTab/NewPostTagScreen';
+import ShareGroupScreen from './Screens/ShopTab/ShareGroupScreen';
+
+import * as chatActions from './store/actions/chats'
 
 
 const rootReducer = combineReducers({
@@ -73,6 +80,10 @@ export default function App({ navigation }) {
   // }
   //return <HomeNavigator />;
 
+  useEffect(() => {
+    chatActions.connectSocket();
+  }, [])
+
 
 
 
@@ -93,6 +104,18 @@ export default function App({ navigation }) {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Signup" component={SignupScreen} />
           <Stack.Screen name="Product" component={ProductScreen} />
+          <Stack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options={{
+
+          }} />
+          <Stack.Screen name="NewPost2" component={NewPostScreen2} options={{
+            headerRight: () => (<NewPostNextButton onPress={() => navigation.navigate('NewPost3')} />),
+
+          }} />
+          <Stack.Screen name="NewPost3" component={NewPostScreen3} />
+          <Stack.Screen name="NewPostTag" component={NewPostTagScreen} />
+          <Stack.Screen name="ShareGroup" component={ShareGroupScreen} options={{
+            title: "Select Groups"
+          }} />
 
         </Stack.Navigator>
       </NavigationContainer>
