@@ -34,6 +34,8 @@ import TouchableStars from '../../components/TouchableStars'
 
 import LoadingScreen from '../../components/LoadingScreen'
 
+import * as Sharing from 'expo-sharing';
+
 
 
 
@@ -67,8 +69,6 @@ export default function ProductScreen(props) {
     const [colors, setColors] = useState([]);
     const [sizes, setSizes] = useState([]);
 
-
-    const [popupMessage, setPopupMessage] = useState("");
     const [isLoading, setIsLoading] = useState(true);
 
 
@@ -253,7 +253,7 @@ export default function ProductScreen(props) {
 
             } catch (err) {
                 console.log(err.message)
-                setPopupMessage(err.message)
+
                 //setAddCartMessage('Failed to add to cart')
             }
 
@@ -283,7 +283,7 @@ export default function ProductScreen(props) {
 
         } catch (err) {
             console.log(err.message)
-            setPopupMessage(err.message)
+
         }
         finally {
             return () => mounted = false;
@@ -298,10 +298,10 @@ export default function ProductScreen(props) {
                 await dispatch(wishlistActions.removeFromWishlist(productId))
 
                 await dispatch(productActions.fetchProductDetails(productId))
-                // setPopupMessage("removed from wishlist!")
+
             }
         } catch (err) {
-            setPopupMessage(err.message)
+
             console.log(err.message)
         }
         finally {
@@ -593,62 +593,6 @@ export default function ProductScreen(props) {
     else {
         return (
             <View>
-
-                {/* <SmallPopup setMessage={setPopupMessage} message={popupMessage} /> */}
-                {/* <Modal
-                    isVisible={reviewModalVisible}
-                    onBackdropPress={() => {
-                        setIsReviewModalVisible(false)
-                        console.log('done')
-                    }}
-                    onBackButtonPress={() => {
-                        setIsReviewModalVisible(false)
-
-                    }
-                    }
-                    
-                    avoidKeyboard={true}
-                    hasBackdrop={true}
-                    backdropOpacity={0.8}
-                    hideModalContentWhileAnimating={true}
-
-                    swipeDirection={["down"]}
-                    swipeThreshold={100}
-                    onSwipeComplete={() => (setIsReviewModalVisible(false))}
-                    scrollOffset={50}
-                    scrollOffsetMax={500}
-
-                >
-                    <View
-                   
-                    >
-
-
-                        <View style={styles.addReviewContainer}>
-
-                          
-
-
-                            <View style={styles.starsContainer}>
-                                <TouchableStars rating={rating} setRating={setRating} size={35} />
-                            </View>
-
-                            <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
-                                onChangeText={(value) => (setReviewText(value))} />
-                            <View style={styles.addReviewButtonContainer}>
-                                <TouchableOpacity onPress={() => {
-                                    addReview(rating, reviewText)
-                                }}>
-                                    <Text style={styles.cartText}>+ ADD REVIEW</Text>
-
-                                </TouchableOpacity>
-                            </View>
-
-                        </View>
-                    </View>
-
-                </Modal> */}
-
                 {shareVisible ?
 
                     <TouchableWithoutFeedback onPress={() => { setShareVisible(false) }}>
@@ -665,6 +609,16 @@ export default function ProductScreen(props) {
                                         productId: product.id
                                     })}>
                                         <Text style={styles.shareText}>As Chat</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity style={styles.shareItem} onPress={() => {
+                                        Sharing.shareAsync('https://somerandomurl.com/productId')
+                                    }}>
+                                        <Text style={styles.shareText}>With Other apps</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity onPress={() => { setShareVisible(false) }}>
+                                        <Text style={styles.dismissText}>Dismiss</Text>
                                     </TouchableOpacity>
 
 
@@ -721,12 +675,14 @@ const styles = StyleSheet.create({
     },
     shareModal: {
         flexDirection: 'column',
-        height: 200,
+        height: 300,
         width: 200,
         backgroundColor: 'white',
         zIndex: 20,
-        padding: 20,
-        justifyContent: "center",
+        paddingHorizontal: 20,
+        paddingTop: 20,
+        paddingBottom: 10,
+        justifyContent: "flex-start",
         alignItems: 'center'
 
     },
@@ -738,6 +694,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical: 10,
+    },
+    dismissText: {
+        color: Colors.primaryColor,
+        marginTop: 30
+
     },
     text: {
         fontWeight: '700',
@@ -802,7 +763,8 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         width: 100,
         textAlign: 'center',
-        color: 'black'
+        color: 'black',
+        width: '100%'
 
 
     },

@@ -109,7 +109,7 @@ export default function ChatStackScreen({ navigation }) {
                     <ChatStack.Screen name="NewChat" component={NewChatScreen} options={{
 
                     }} />
-                    <ChatStack.Screen name="PeopleSearch" component={PeopleSearchScreen} />
+                    {/* <ChatStack.Screen name="PeopleSearch" component={PeopleSearchScreen} /> */}
                     <ChatStack.Screen name="GroupTab" component={GroupTabScreen} />
                     <ChatStack.Screen name="ShoppingSession" component={ShoppingSessionScreen} />
                     <ChatStack.Screen name="NewShoppingSession" component={NewShoppingSessionScreen} />

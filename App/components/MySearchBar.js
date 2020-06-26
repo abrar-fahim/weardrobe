@@ -3,6 +3,8 @@ import { TextInput, Button, StyleSheet, Text, View, Image, TouchableOpacity } fr
 import { Ionicons } from '@expo/vector-icons';
 
 const MySearchBar = (props) => {
+
+    //props navigation, 
     return (
         <View style={styles.searchContainer}>
             {props.showBackButton ?
@@ -37,7 +39,8 @@ const styles = StyleSheet.create({
         height: 55,
         alignItems: 'center',
         flexDirection: 'row',
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        backgroundColor: 'white'
 
     },
     searchBar: {

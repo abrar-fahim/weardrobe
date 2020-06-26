@@ -111,9 +111,10 @@ export const fetchUserPosts = (userId) => {
                         }
                     ))
                     posts.push({
+                        type: 'CUSTOMER',
                         id: resData[key].POST_ID,
                         userId: resData[key].CUSTOMER_UID,
-                        postDate: resData[key].POST_DATE,
+                        date: resData[key].POST_DATE,
                         captions: resData[key].CAPTIONS,
                         productId: resData[key].PRODUCT_ID,
                         images: processedImages,
@@ -127,7 +128,11 @@ export const fetchUserPosts = (userId) => {
                 dispatch({ type: GET_POSTS, posts: posts })
             }
 
+       
+
             else {
+                dispatch({ type: GET_POSTS, posts: [] })
+
                 throw new Error(resData.ERROR)
             }
 

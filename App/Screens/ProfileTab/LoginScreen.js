@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useReducer, useCallback } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -89,7 +89,7 @@ export default function LoginScreen({ navigation }) {
       // console.log(gotToken)
 
       token = gotToken
-      
+
       // console.log(token)
       // const token = await Notifications.getExpoPushTokenAsync();
       // console.log(token);
@@ -109,55 +109,6 @@ export default function LoginScreen({ navigation }) {
   };
 
 
-  const notification = async () => {
-
-    await registerForPushNotificationsAsync()
-
-
-
-    // try {
-
-    //   const response = await fetch('https://exp.host/--/api/v2/push/send', {
-
-    //     method: 'POST',
-    //     headers: {
-    //       Accept: 'application/json',
-    //       'Content-Type': 'application/json',
-    //       'accept-encoding': 'gzip, deflate',
-    //       'host': 'exp.host'
-    //     },
-    //     body: JSON.stringify({
-    //       to: token,
-    //       title: 'New Notification',
-    //       body: 'The notification worked!',
-    //       priority: "high",
-    //       sound: "default",
-    //       channelId: "default",
-    //       data: { data: 'data goes here' },
-    //       _displayInForeground: true
-    //     }),
-    //   })
-
-    //   const resData = await response.json();
-
-    //   console.log(resData)
-
-    // }
-
-    // catch (err) {
-    //   console.log(err)
-    // }
-
-
-
-
-  }
-
-  // useEffect(() => {
-  //   registerForPushNotificationsAsync()
-
-
-  // }, [])
   const [formState, dispatchFormState] = useReducer(
     formReducer, {
     inputValues: {
@@ -166,20 +117,61 @@ export default function LoginScreen({ navigation }) {
     }
   }
   );
+  const [errors, setErrors] = useState({
+    email: "",
+    password: ""
+  })
 
   const loginHandler = async () => {
     try {
-      await registerForPushNotificationsAsync()
-    
-      await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password, token))
-      // navigation.setParams( {
-      //   prevScreen: 'login'
-      // })
-      navigation.goBack();
+
+
+      if (formState.inputValues.email !== '' && formState.inputValues.password !== '') {
+        await registerForPushNotificationsAsync()
+
+        await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password, token))
+        // navigation.setParams( {
+        //   prevScreen: 'login'
+        // })
+        navigation.goBack();
+      }
+
+      else {
+        if (formState.inputValues.email === '') {
+          setErrors(state => ({
+            ...state,
+            email: 'Email cannot be blank'
+          }))
+        }
+
+        if (formState.inputValues.password === '') {
+          setErrors(state => ({
+            ...state,
+            password: 'Password cannot be blank'
+          }))
+        }
+      }
+
 
     } catch (err) {
       //navigation.popToTop();
       // throw new Error(err.message);
+
+      if (err.message === "EMAIL_NOT_FOUND") {
+        setErrors(state => ({
+          ...state,
+          email: 'Email not found'
+        }))
+      }
+
+      if (err.message === "INCORRECT_PASSWORD") {
+        setErrors(state => ({
+          ...state,
+          password: 'Incorrect Password'
+        }))
+      }
+
+
       console.log(err)
 
     }
@@ -202,6 +194,8 @@ export default function LoginScreen({ navigation }) {
 
 
 
+
+
   return (
     <View style={{
       ...styles.container,
@@ -218,9 +212,19 @@ export default function LoginScreen({ navigation }) {
         <TextInput
           placeholder="Enter Email"
           style={styles.inputStyle}
-          onChangeText={emailChangeHandler}
+          onChangeText={(text) => {
+            setErrors(state => ({
+              ...state,
+              email: ''
+            }))
+            emailChangeHandler(text)
+          }
+          }
 
         />
+        <View style={styles.errorContainer}>
+          <Text style={styles.error}>{errors.email}</Text>
+        </View>
       </View>
 
       <View style={styles.inputContainer}>
@@ -231,8 +235,17 @@ export default function LoginScreen({ navigation }) {
           secureTextEntry={true}
           placeholder="Enter Password"
           style={styles.inputStyle}
-          onChangeText={passwordChangeHandler}
+          onChangeText={(text) => {
+            setErrors(state => ({
+              ...state,
+              password: ''
+            }))
+            passwordChangeHandler(text)
+          }}
         />
+        <View style={styles.errorContainer}>
+          <Text style={styles.error}>{errors.password}</Text>
+        </View>
       </View>
 
 
@@ -272,10 +285,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomColor: 'grey',
     borderBottomWidth: 0.5,
+    maxWidth: Dimensions.get('window').width * 0.8
   },
 
   inputStyle: {
-    width: 300,
+    flex: 1,
     height: 40,
     paddingHorizontal: 10,
 
@@ -291,6 +305,10 @@ const styles = StyleSheet.create({
   iconContainer: {
     width: 25,
     alignItems: 'center'
+  },
+  error: {
+    color: 'red',
+    fontSize: 12
   },
   forgotPassword: {
     color: 'grey',

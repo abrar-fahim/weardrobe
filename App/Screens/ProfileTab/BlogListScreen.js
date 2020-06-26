@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -27,6 +27,8 @@ export default function BlogListScreen(props) {
 
     const blogs = useSelector(state => state.profile.blogs)
     const myBlogs = useSelector(state => state.profile.myBlogs)
+
+    const [allowed, setAllowed] = useState(true)    //use later with get user blogs 
 
 
 
@@ -64,12 +66,22 @@ export default function BlogListScreen(props) {
             <FlatList
                 data={myProfile ? myBlogs : blogs}
                 renderItem={renderItems}
-                ListEmptyComponent={() => (
-                    <View>
-                        <Text>no blogs yet!</Text>
-                    </View>
+                ListEmptyComponent={() => {
+                    if (!allowed) {
+                        return (
+                            <View>
+                                <Text>follow this user to see their posts</Text>
+                            </View>
+                        )
+                    }
+                    return (
+                        <View>
+                            <Text>no blogs yet!</Text>
+                        </View>
 
-                )}
+                    )
+
+                }}
             />
         </View>
     );

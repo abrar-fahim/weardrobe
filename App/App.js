@@ -37,6 +37,7 @@ import NewPostTagScreen from './Screens/MagazineTab/NewPostTagScreen';
 import ShareGroupScreen from './Screens/ShopTab/ShareGroupScreen';
 
 import * as chatActions from './store/actions/chats'
+import NewPostNextButton from './components/NewPostNextButton';
 
 
 const rootReducer = combineReducers({

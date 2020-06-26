@@ -10,7 +10,7 @@ import Colors from '../../Styles/Colors';
 const PostScreen = (props) => {
 
     const post = props.route.params?.post
-    const type = props.route.params?.type   //either SHOP or CUSTOMER
+    
 
     // const listImages = post.images.map((item, index) => (
     //     {
@@ -48,37 +48,11 @@ const PostScreen = (props) => {
             console.log(err)
         }
     })
-    // const loadUserPostReacts = useCallback(async (postId) => {
-    //     try {
-    //         await dispatch(magazineActions.fetchUserPostReacts(postId))
-
-    //     }
-    //     catch (err) {
-    //         console.log(err)
-    //     }
-    // })
 
 
-
-    const renderImage = (itemData) => {
-        // console.log(post.image.image)
-        return (
-
-
-
-            <Image source={itemData.item.image} style={styles.postImage}
-                resizeMode="contain" />
-
-
-
-
-
-        )
-    }
-
-    const reactShopPost = useCallback(async (postId) => {
+    const reactUserPost = useCallback(async () => {
         try {
-            await dispatch(magazineActions.reactShopPost(postId))
+            await dispatch(magazineActions.reactUserPost(post.id))
             setError('')
         }
         catch (err) {
@@ -86,9 +60,34 @@ const PostScreen = (props) => {
             console.log(err);
         }
     })
-    const unReactShopPost = useCallback(async (postId) => {
+    const unReactUserPost = useCallback(async () => {
         try {
-            await dispatch(magazineActions.unReactShopPost(postId))
+            await dispatch(magazineActions.unReactUserPost(post.id))
+            setError('')
+        }
+        catch (err) {
+            setError(err.message)
+            console.log(err);
+        }
+    })
+
+
+
+
+
+    const reactShopPost = useCallback(async () => {
+        try {
+            await dispatch(magazineActions.reactShopPost(post.id))
+            setError('')
+        }
+        catch (err) {
+            setError(err.message)
+            console.log(err);
+        }
+    })
+    const unReactShopPost = useCallback(async () => {
+        try {
+            await dispatch(magazineActions.unReactShopPost(post.id))
             setError('')
         }
         catch (err) {
@@ -100,6 +99,17 @@ const PostScreen = (props) => {
     const commentUserPost = useCallback(async (comment) => {
         try {
             await dispatch(magazineActions.commentUserPost(post.id, comment))
+            setError('')
+        }
+        catch (err) {
+            setError(err.message)
+            console.log(err);
+        }
+    })
+
+    const deleteCommentUserPost = useCallback(async (commentId) => {
+        try {
+            await dispatch(magazineActions.deleteCommentUserPost(commentId, post.id))
             setError('')
         }
         catch (err) {
@@ -120,11 +130,31 @@ const PostScreen = (props) => {
             console.log(err);
         }
     })
+    const deleteCommentShopPost = useCallback(async (commentId) => {
+        try {
+            await dispatch(magazineActions.deleteCommentShopPost(commentId, post.id))
+            setError('')
+        }
+        catch (err) {
+            setError(err.message)
+            console.log(err);
+        }
+    })
 
     useEffect(() => {
-        type === 'SHOP' ? loadShopPostComments(post.id) : loadUserPostComments(post.id);
+        post.type === 'SHOP' ? loadShopPostComments() : loadUserPostComments();
 
     }, [])
+
+    const renderImage = (itemData) => {
+        // console.log(post.image.image)
+        return (
+
+            <Image source={itemData.item.image} style={styles.postImage}
+                resizeMode="contain" />
+
+        )
+    }
 
     const renderComment = (itemData) => {
 
@@ -154,9 +184,16 @@ const PostScreen = (props) => {
                     <>
                         <View style={styles.post}>
 
-                            <TouchableOpacity onPress={() => props.navigation.navigate('Seller', {  //change this destination by checking on type 
-                                shopId: post.shopId
-                            })}>
+                            <TouchableOpacity onPress={() => {
+                                post.type === 'SHOP' ?
+                                    props.navigation.navigate('Seller', {
+                                        shopId: post.shopId
+                                    }) :
+                                    props.navigation.navigate('OthersProfile', {
+                                        profileId: post.posterId
+                                    })
+
+                            }}>
                                 <View style={styles.nameDP}>
 
                                     <Image style={styles.DPImage} source={post.logo} />
@@ -170,16 +207,16 @@ const PostScreen = (props) => {
                             </TouchableOpacity>
 
                             <FlatList data={post.images} pagingEnabled={true} horizontal={true} renderItem={renderImage} />
-                            <Text>{post.captions}</Text>
+                            <Text style={styles.caption}>{post.text}</Text>
                             <View style={styles.reactsCommentsContainer}>
                                 <TouchableOpacity style={styles.Like} onPress={async () => {
 
 
                                     if (post.hasReacted === 1) {
                                         //unlike
-                                        await unReactShopPost(post.id)
+                                        post.type === 'SHOP' ? await unReactShopPost() : await unReactUserPost()
                                         if (error === '') {
-                                            console.log(post.id)
+
 
                                             // flatListRef.current.recordInteraction()
                                             post.hasReacted = 0;
@@ -189,7 +226,7 @@ const PostScreen = (props) => {
 
                                     }
                                     else {
-                                        await reactShopPost(post.id)
+                                        post.type === 'SHOP' ? await reactShopPost() : await reactUserPost()
                                         if (error === '') {
                                             post.hasReacted = 1;
                                             post.numReacts += 1;
@@ -213,7 +250,7 @@ const PostScreen = (props) => {
                                     <Text style={styles.number}>{post.numComments}</Text>
                                 </View>
 
-                                {/* </TouchableOpacity> */}
+
 
                             </View>
 
@@ -237,7 +274,8 @@ const PostScreen = (props) => {
                     ref={textInputRef}
                     onSubmitEditing={() => {
                         if (comment !== "") {
-                            commentShopPost(comment);
+                            post.type === 'SHOP' ? commentShopPost(comment) : commentUserPost(comment)
+
                             textInputRef.current.clear();
                             setComment('');
                             setChange(state => state - 1)
@@ -249,7 +287,7 @@ const PostScreen = (props) => {
 
                 {comment !== '' ? <TouchableOpacity onPress={() => {
                     if (comment !== "") {
-                        commentShopPost(comment);
+                        post.type === 'SHOP' ? commentShopPost(comment) : commentUserPost(comment)
                         textInputRef.current.clear();
                         setComment('');
                         setChange(state => state - 1)
@@ -328,7 +366,7 @@ const styles = StyleSheet.create({
     },
     caption:
     {
-        paddingVertical: 20,
+        padding: 20,
         fontWeight: '600',
         width: '100%'
     },

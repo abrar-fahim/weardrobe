@@ -70,7 +70,7 @@ export default function HomeScreen(props) {
         const willFocusSub = props.navigation.addListener(
             'focus', () => {
 
-                if (userId === null) {
+                if (!userId) {
                     loadUserId()
                 }
             }
@@ -149,7 +149,7 @@ export default function HomeScreen(props) {
                 <Tab.Screen name="Chat" component={ChatStackScreen} />
                 <Tab.Screen name="Weardrobe" component={ProfileStackScreen} />
                 <Tab.Screen name="Notifications" component={NotificationsStackScreen} />
-                
+
             </Tab.Navigator>
         </>
     );

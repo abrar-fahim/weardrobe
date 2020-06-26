@@ -105,9 +105,6 @@ function ShopScreen({ navigation }) {
     const [isLoading, setIsLoading] = useState(true);
     const [isRefreshing, setIsRefreshing] = useState(false)
 
-
-
-
     const dispatch = useDispatch();
     const allProducts = useSelector(
         state => state.products.products
@@ -189,6 +186,7 @@ function ShopScreen({ navigation }) {
 
 
     useEffect(() => {
+        setIter(0)
         loadFeed()
         loadAllProducts()
     }, [])
@@ -396,7 +394,7 @@ function ShopScreen({ navigation }) {
                 onRefresh={loadFeed}
                 refreshing={isRefreshing}
                 ListFooterComponent={
-                    <View>
+                    <View style={styles.screen}>
                         <Text style={styles.title}>All Products</Text>
                         <ProductList
                             onEndReached={loadMoreProducts}
@@ -520,7 +518,7 @@ const styles = StyleSheet.create({
         width: '100%',
         maxWidth: 600,
         // height: 500,
-        backgroundColor: Colors.accentColor,
+        
         padding: 5,
         alignItems: 'center',
         justifyContent: 'space-between'

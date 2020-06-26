@@ -22,12 +22,15 @@ Add web and other folders to keep seperate components organized
 - [ ] resolve a couple of products in get shopping sessions to show in session name in list
 - [ ] share a product or shop in chat/post/blog
 - [ ] fix ui of ipad
+- [ ] everything with blogs
+- [ ] delete posts, delete comments
 
 
 
 Known Bugs
 - [x] deleting group and then navigating to group list page still shows deleted 
 - [ ] use keyboard avoiding view on ios in group chat screen
+- [ ] going to profile info on your own profile by tapping dp on your posts goes to other profile screen in magazione tab
 
 Testing
 - [ ] need to check iters working properly for product/shop reviews

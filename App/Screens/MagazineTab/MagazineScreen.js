@@ -26,6 +26,8 @@ import SellerScreen from '../ShopTab/SellerScreen';
 import CheckLoggedIn from '../../components/CheckLoggedIn';
 import AuthRequiredScreen from '../AuthRequiredScreen';
 import PostScreen from './PostScreen';
+import PeopleSearchScreen from './PeopleSearch';
+import FollowersListTabScreen from '../ProfileTab/FollowersListScreen';
 
 
 
@@ -37,25 +39,14 @@ export function MagazineScreen(props) {
 
     const userId = useSelector(state => state.auth.userId)
 
-    const loggedIn = CheckLoggedIn();
-
     const shopPosts = useSelector(state => state.magazine.shopPosts)
     const friendPosts = useSelector(state => state.magazine.friendPosts)
 
     const myShops = useSelector(state => state.shops.myShops)
 
-    const shopPostComments = useSelector(state => state.magazine.shopPostComments);
-    const shopPostReacts = useSelector(state => state.magazine.shopPostReacts);
-
     const [isLoading, setIsLoading] = useState(true);
 
-    const [showComments, setShowComments] = useState(false)
-
-    const [showReacts, setShowReacts] = useState(false)
-
     const [error, setError] = useState('')
-
-    const [comment, setComment] = useState('');
 
     const [change, setChange] = useState(0);    //this forces like icon to re render on each touch
 
@@ -67,7 +58,7 @@ export function MagazineScreen(props) {
         try {
             setIsLoading(true)
             await dispatch(magazineActions.fetchShopPosts())
-            await dispatch(magazineActions.fetchFriendsPosts())
+            if (userId) await dispatch(magazineActions.fetchFriendsPosts())
             setIsLoading(false)
 
         }
@@ -75,43 +66,9 @@ export function MagazineScreen(props) {
             setIsLoading(false)
             console.log(err)
         }
-    }, [])
+    }, [userId])
 
-    const loadShopPostComments = useCallback(async (postId, iter) => {
-        try {
-            await dispatch(magazineActions.fetchShopPostComments(postId, iter))
-        }
-        catch (err) {
-            console.log(err)
-        }
-    })
-    const loadUserPostComments = useCallback(async (postId, iter) => {
-        try {
-            await dispatch(magazineActions.fetchUserPostComments(postId, iter))
-        }
-        catch (err) {
-            console.log(err)
-        }
-    })
 
-    const loadShopPostReacts = useCallback(async (postId) => {
-        try {
-            await dispatch(magazineActions.fetchShopPostReacts(postId))
-
-        }
-        catch (err) {
-            console.log(err)
-        }
-    })
-    const loadUserPostReacts = useCallback(async (postId) => {
-        try {
-            await dispatch(magazineActions.fetchUserPostReacts(postId))
-
-        }
-        catch (err) {
-            console.log(err)
-        }
-    })
 
     const reactShopPost = useCallback(async (postId) => {
         try {
@@ -155,47 +112,6 @@ export function MagazineScreen(props) {
         }
     })
 
-    const commentShopPost = useCallback(async (postId, comment) => {
-        try {
-            await dispatch(magazineActions.commentShopPost(postId, comment))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-    const deleteCommentShopPost = useCallback(async (commentId, postId) => {
-        try {
-            await dispatch(magazineActions.deleteCommentShopPost(commentId, postId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-
-    const commentUserPost = useCallback(async (postId, comment) => {
-        try {
-            await dispatch(magazineActions.commentUserPost(postId, comment))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-    const deleteCommentUserPost = useCallback(async (commentId, postId) => {
-        try {
-            await dispatch(magazineActions.deleteCommentUserPost(commentId, postId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
 
     const reactUserBlog = useCallback(async (blogId) => {
         try {
@@ -242,7 +158,7 @@ export function MagazineScreen(props) {
 
     useEffect(() => {
         loadPosts();
-    }, [myShops])
+    }, [userId])
 
     const renderImages = (itemData) => {
 
@@ -255,92 +171,29 @@ export function MagazineScreen(props) {
 
     }
 
-    const renderComment = (itemData) => {
-
-        return (
-            <View style={styles.comment}>
-                <Text>{itemData.item.username}:  </Text>
-                <Text>{itemData.item.comment}</Text>
-                {itemData.item.commenterId === userId ?
-                    (
-                        <TouchableOpacity
-                            onPress={() => {
-                                deleteCommentShopPost(itemData.item.id, itemData.item.postId)
-                                setChange(state => state + 1)
-
-                            }}
-                            style={styles.commentX}
-
-                        >
-                            <Text>X</Text>
-                        </TouchableOpacity>
-                    ) : null}
-
-            </View>
-        )
-    }
-
-    const renderUserPostComment = (itemData) => {
-
-        return (
-            <View style={styles.comment}>
-                <Text>{itemData.item.username}:  </Text>
-                <Text>{itemData.item.comment}</Text>
-                {itemData.item.commenterId === userId ?
-                    (
-                        <TouchableOpacity
-                            onPress={() => {
-                                deleteCommentUserPost(itemData.item.id, itemData.item.postId)
-                                setChange(state => state + 1)
-
-                            }}
-                            style={styles.commentX}
-
-                        >
-                            <Text>X</Text>
-                        </TouchableOpacity>
-                    ) : null}
-
-            </View>
-        )
-    }
-
-    const renderReact = (itemData) => {
-        return (
-            <Text>{itemData.item.username}:   {itemData.item.type}</Text>
-        )
-    }
-
     const renderFeedItem = (itemData) => {
-        if (itemData.index === 0) {
-            return (
-                <FlatList
-                    listKey="a"
-                    extraData={change}
-                    ref={flatListRef}
-                    viewabilityConfig={{
-                        waitForInteraction: false,
-                        viewAreaCoveragePercentThreshold: 95
-                    }}
-                    data={friendPosts}
-                    renderItem={renderFriendPost}
-                />
-            )
 
-
-        }
         return (
             <View style={styles.gridItem} >
 
-                <TouchableOpacity onPress={() => props.navigation.navigate('Seller', {
-                    shopId: itemData.item.shopId
-                })}>
+                <TouchableOpacity onPress={() => {
+                    itemData.item.type === 'SHOP' ?
+                        props.navigation.navigate('Seller', {
+                            shopId: itemData.item.shopId
+                        }) :
+                        props.navigation.navigate('OthersProfile', {
+                            profileId: itemData.item.posterId
+                        })
+
+                }}
+
+                >
                     <View style={styles.nameDP}>
 
                         <Image style={styles.DPImage} source={itemData.item.logo} />
                         <View style={styles.nameContainer}>
                             <Text style={styles.Name}> {itemData.item.name} </Text>
-                            <Text style={styles.username}> {itemData.item.username} . {itemData.item.postDate} </Text>
+                            <Text style={styles.username}> {itemData.item.username} . {itemData.item.date} </Text>
                         </View>
 
 
@@ -351,7 +204,7 @@ export function MagazineScreen(props) {
                 <TouchableOpacity style={styles.Post} onPress={() => {
                     props.navigation.navigate('Post', {
                         post: itemData.item,
-                        type: 'SHOP'
+                        type: itemData.item.type
                     })
                 }}>
 
@@ -367,9 +220,9 @@ export function MagazineScreen(props) {
 
                         if (itemData.item.hasReacted === 1) {
                             //unlike
-                            await unReactShopPost(itemData.item.id)
+                            itemData.item.type === 'SHOP' ? await unReactShopPost(itemData.item.id) : await unReactUserPost(itemData.item.id)
+
                             if (error === '') {
-                                console.log(itemData.item.id)
 
                                 // flatListRef.current.recordInteraction()
                                 itemData.item.hasReacted = 0;
@@ -379,7 +232,7 @@ export function MagazineScreen(props) {
 
                         }
                         else {
-                            await reactShopPost(itemData.item.id)
+                            itemData.item.type === 'SHOP' ? await reactShopPost(itemData.item.id) : reactUserPost(itemData.item.id)
                             if (error === '') {
                                 itemData.item.hasReacted = 1;
                                 itemData.item.numReacts += 1;
@@ -392,203 +245,30 @@ export function MagazineScreen(props) {
 
 
                         {itemData.item.hasReacted === 1 ? <MaterialCommunityIcons name="heart-multiple" size={30} color='#E1306C' /> : <MaterialCommunityIcons name="heart-multiple-outline" size={30} color='black' />}
-                        {/* <TouchableOpacity onPress={() => {
-                        loadShopPostReacts(itemData.item.id);
-                        setShowReacts(state => !state)
-                        // console.log(postComments)
-                    }}> */}
+
                         <Text style={styles.number}>{itemData.item.numReacts}</Text>
-                        {/* </TouchableOpacity> */}
+
 
                     </TouchableOpacity>
 
 
 
-                    {/* <TouchableOpacity onPress={() => {
-                        loadShopPostComments(itemData.item.id, 0);
-                        setShowComments(state => !state)
-                        setIters(iters => ({
-                            ...iters,
-                            shopPostComments: 1
-                        }))
-                        console.log(iters.shopPostComments)
-                    }}> */}
+
                     <View style={styles.comment}>
                         <MaterialCommunityIcons name="comment-multiple" color="black" size={30} />
                         <Text style={styles.number}>{itemData.item.numComments}</Text>
                     </View>
 
-                    {/* </TouchableOpacity> */}
+
 
                 </View>
-
-                {/* {showReacts ? <FlatList listKey={itemData.item.id + "1"} data={shopPostReacts[0]?.postId === itemData.item.id ? shopPostReacts : []} renderItem={renderReact} /> : null} */}
-
-                {/* {showComments ? <FlatList listKey={itemData.item.id + "2"} data={shopPostComments[0]?.postId === itemData.item.id ? shopPostComments : []} renderItem={renderComment}
-                    onEndReached={() => {
-                        loadShopPostComments(itemData.item.id, iters.shopPostComments)
-                        setIters(iters => ({
-                            ...iters,
-                            shopPostComments: iters.shopPostComments + 1
-                        }))
-                    }} /> : null} */}
-
-
-
-
-
-                {/* <View style={styles.LikeComment}>
-
-
-                    <View style={styles.commentContainer}>
-                        <TextInput placeholder="Comment" style={styles.Comment} onChangeText={setComment} />
-                        <TouchableOpacity style={styles.sendComment}
-                            onPress={() => {
-                                comment !== '' ?
-                                    commentShopPost(itemData.item.id, comment) : null;
-                                setChange(state => state + 1)
-
-                            }}
-
-                        >
-                            <Ionicons name="md-send" size={30} />
-                        </TouchableOpacity>
-                    </View>
-
-
-                </View> */}
-
-
             </View>
 
         )
     }
 
-    const renderFriendPost = useCallback((itemData) => {
-        return (
-            <View style={styles.gridItem} >
-                <View style={styles.nameDP}>
-                    <TouchableOpacity onPress={() => props.navigation.navigate('OthersProfile', {
-                        profileId: itemData.item.posterId
-                    })}>
-                        <View style={styles.nameDP2}>
-                            <View style={styles.DP}>
-                                <Image style={styles.DPImage} source={itemData.item.dp} />
-                            </View>
-                            <Text style={styles.Name}> {itemData.item.username} </Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
 
-                <TouchableOpacity style={styles.Post}>
-                    <View style={styles.Post2}>
-                        <FlatList horizontal={true} pagingEnabled={true} data={itemData.item.images} renderItem={renderImages} />
-                        {/* <Image  source={require('../../assets/Images/suit.png')} style={styles.PostImage}/>  */}
-                        <Text style={styles.Caption} >   {itemData.item.text}</Text>
-                    </View>
-                </TouchableOpacity>
-
-                <View style={styles.reactsCommentsContainer}>
-                    <TouchableOpacity onPress={() => {
-                        loadUserPostReacts(itemData.item.id);
-                        setShowReacts(state => !state)
-                        // console.log(postComments)
-                    }}>
-                        <Text>{itemData.item.numReacts} Reacts</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => {
-                        loadUserPostComments(itemData.item.id, 0);
-                        setShowComments(state => !state)
-                        setIters(iters => ({
-                            ...iters,
-                            shopPostComments: 1
-                        }))
-                        console.log(iters.shopPostComments)
-                    }}>
-                        <Text>{itemData.item.numComments} Comments</Text>
-                    </TouchableOpacity>
-
-                </View>
-
-                {showReacts ? <FlatList listKey={itemData.item.id + "1"} data={shopPostReacts[0]?.postId === itemData.item.id ? shopPostReacts : []} renderItem={renderReact} /> : null}
-
-                {showComments ? <FlatList listKey={itemData.item.id + "2"} data={shopPostComments[0]?.postId === itemData.item.id ? shopPostComments : []} renderItem={renderUserPostComment}
-                    onEndReached={() => {
-                        loadUserPostComments(itemData.item.id, iters.shopPostComments)
-                        setIters(iters => ({
-                            ...iters,
-                            shopPostComments: iters.shopPostComments + 1
-                        }))
-                    }} /> : null}
-
-
-
-
-
-                <View style={styles.LikeComment}>
-                    <TouchableOpacity style={styles.Like} onPress={async () => {
-
-
-                        if (itemData.item.hasReacted === 1) {
-                            //unlike
-                            await unReactUserPost(itemData.item.id)
-                            if (error === '') {
-                                console.log(itemData.item.id)
-
-                                // flatListRef.current.recordInteraction()
-                                itemData.item.hasReacted = 0;
-                                itemData.item.numReacts -= 1;
-                                setChange(state => state - 1)
-                            }
-
-                        }
-                        else {
-                            await reactUserPost(itemData.item.id)
-                            if (error === '') {
-                                itemData.item.hasReacted = 1;
-                                itemData.item.numReacts += 1;
-                                setChange(state => state + 1)
-                            }
-
-
-                        }
-
-
-
-
-                    }}>
-
-                        {itemData.item.hasReacted === 1 ? <AntDesign name="like1" size={40} color='black' /> : <AntDesign name="like2" size={40} color='black' />}
-
-                    </TouchableOpacity>
-
-                    <View style={styles.commentContainer}>
-                        <TextInput placeholder="Comment" style={styles.Comment} onChangeText={setComment} />
-                        <TouchableOpacity style={styles.sendComment}
-                            onPress={() => {
-                                comment !== '' ?
-                                    commentUserPost(itemData.item.id, comment) : null;
-                                setChange(state => state + 1)
-
-                            }}
-
-                        >
-                            <Ionicons name="md-send" size={30} />
-                        </TouchableOpacity>
-                    </View>
-
-
-                </View>
-
-
-            </View>
-
-        )
-    })
-
-
-    if (!loggedIn) {
+    if (!userId) {
         return (
             <AuthRequiredScreen navigation={props.navigation} />
         )
@@ -607,14 +287,14 @@ export function MagazineScreen(props) {
 
 
             <FlatList
-                listKey="b"
+
                 extraData={change}
                 ref={flatListRef}
                 viewabilityConfig={{
                     waitForInteraction: false,
                     viewAreaCoveragePercentThreshold: 95
                 }}
-                data={[{ id: '1' }].concat(shopPosts)}
+                data={friendPosts.concat(shopPosts)}
                 renderItem={renderFeedItem}
                 ListEmptyComponent={
                     <View>
@@ -639,7 +319,13 @@ export default function MagazineStackScreen({ navigation }) {
         >
             <MagazineStack.Screen name="Magazine" component={MagazineScreen} options={{
 
-                headerRight: () => (< NewPostButton onPress={() => navigation.navigate('NewPostChooseLayout')} />)
+                headerRight: () => (
+                    <View style={{ flexDirection: 'row' }}>
+                        <GenericHeaderButton title="search" iconName="ios-search" onPress={() => navigation.navigate('PeopleSearch')} />
+                        < NewPostButton onPress={() => navigation.navigate('NewPostChooseLayout')} />
+                    </View>
+
+                )
             }} />
             {/* <MagazineStack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options={{
 
@@ -652,8 +338,10 @@ export default function MagazineStackScreen({ navigation }) {
             <MagazineStack.Screen name="NewPostTag" component={NewPostTagScreen} /> */}
             <MagazineStack.Screen name="Seller" component={SellerScreen} />
             <MagazineStack.Screen name="Post" component={PostScreen} />
-            <MagazineStack.Screen name="OthersProfile" component={ProfileStackScreen} options={{
-                headerShown: false
+            <MagazineStack.Screen name="PeopleSearch" component={PeopleSearchScreen} />
+            <MagazineStack.Screen name="FollowersListTab" component={FollowersListTabScreen} />
+            <MagazineStack.Screen name="OthersProfile" component={ProfileTabsScreen} options={{
+                headerShown: true
             }} />
 
         </MagazineStack.Navigator>

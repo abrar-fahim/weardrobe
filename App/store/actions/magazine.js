@@ -44,9 +44,10 @@ export const fetchShopPosts = () => {
                         }
                     ))
                     shopPosts.push({
+                        type: 'SHOP',
                         id: resData[key].POST_ID,
                         shopId: resData[key].SHOP_ID,
-                        postDate: resData[key].POST_DATE,
+                        date: resData[key].POST_DATE,
                         text: resData[key].TEXT,
                         productId: resData[key].PRODUCT_ID,
                         images: processedImages,
@@ -112,13 +113,14 @@ export const fetchFriendsPosts = () => {
                         }
                     ))
                     friendPosts.push({
+                        type: 'CUSTOMER',
                         id: resData[key].POST_ID,
                         posterId: resData[key].CUSTOMER_UID,
                         date: resData[key].POST_DATE,
                         text: resData[key].CAPTIONS,
                         productId: resData[key].PRODUCT_ID,
                         username: resData[key].USERNAME,
-                        dp: { uri: `${HOST}/img/temp/` + resData[key].PROFILE_PIC },
+                        logo: { uri: `${HOST}/img/temp/` + resData[key].PROFILE_PIC },
                         images: processedImages,
                         numComments: resData[key].COMMENT,
                         numReacts: resData[key].REACT,

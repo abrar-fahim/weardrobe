@@ -172,12 +172,18 @@ export const getUserId = () => {
 
             console.log("got user id from authreq: " + userId)
 
-            await dispatch({
+            dispatch({
                 type: LOGIN,
                 userId: userId
             })
 
 
+        }
+
+        else {
+            dispatch({
+                type: LOGOUT
+            })
         }
 
     }
