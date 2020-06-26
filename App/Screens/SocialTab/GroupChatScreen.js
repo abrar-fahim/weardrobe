@@ -343,8 +343,8 @@ export function GroupChatScreen(props) {
                     style={styles.sendMsg}
                     placeholder="Type Something"
                     ref={textInputRef}
-
-                    onChangeText={setMessage}
+                    multiline
+                    onChangeText={setMessage}                    
                     onSubmitEditing={() => {
 
 
@@ -554,7 +554,7 @@ const styles = StyleSheet.create({
         height: 70,
     },
     sendMsg: {
-        height: 50,
+        minHeight: 50,
         borderColor: 'black',
         backgroundColor: 'white',
         paddingLeft: 10,

@@ -83,7 +83,7 @@ export default function GroupListScreen(props) {
                 <View style={styles.groupContainer}>
 
                     <View style={styles.picName}>
-                        {itemData.item.picture !== null && itemData.item.picture !== undefined ? <Image source={itemData.item.picture} style={styles.image} /> :
+                        {itemData.item.logo ? < Image source={itemData.item.logo} style={styles.image} /> :
                             <Ionicons name="md-people" size={30} color="grey" />
                         }
 

@@ -45,16 +45,26 @@ export const getGroups = (iter = 0) => {
             const groups = [];
 
             for (const key in resData) {
-                groups.push({
-                    id: resData[key].GROUP_ID,
-                    createdById: resData[key].CREATED_BY_UID,
-                    name: resData[key].GROUP_NAME,
-                    startedAt: resData[key].STARTED_AT,
-                    score: resData[key].SCORE,
-                    participantId: resData[key].PARTICIPANT_UID,
-                    participants: resData[key].PARTICIPANTS
-                    // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
-                })
+                resData[key].GROUP_ID ?
+                    groups.push({
+                        id: resData[key].GROUP_ID,
+                        createdById: resData[key].CREATED_BY_UID,
+                        name: resData[key].GROUP_NAME,
+                        startedAt: resData[key].STARTED_AT,
+                        score: resData[key].SCORE,
+                        participantId: resData[key].PARTICIPANT_UID,
+                        participants: resData[key].PARTICIPANTS
+                        // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
+                    })
+                    :
+                    groups.push({
+                        id: resData[key].CHAT_ID,
+                        createdById: resData[key].CREATED_BY_UID,
+                        name: resData[key].SHOP_NAME,
+                        startedAt: resData[key].CREATED_AT,
+
+                        logo: { uri: `${IMG_URL}` + resData[key].LOGO_URL }
+                    })
             }
 
             dispatch({

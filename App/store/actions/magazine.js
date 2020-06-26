@@ -148,7 +148,7 @@ export const fetchFriendsPosts = () => {
     }
 }
 
-export const fetchShopPostComments = (postId, iter) => {
+export const fetchShopPostComments = (postId, iter = 0) => {
     return async (dispatch) => {
         try {
             const response = await fetch(`${HOST}/get/shop-post/${postId}/comments/${iter}`, {

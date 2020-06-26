@@ -480,7 +480,8 @@ export default function ProductScreen(props) {
                 </View>
 
                 <View style={styles.ratingShare}>
-                    <RatingStars rating={product.rating} size={30} />
+                    {product.rating ? <RatingStars rating={product.rating} size={30} /> : <Text style={styles.heading}>No Ratings yet</Text>}
+
                     {/* <Ionicons color={Colors.buttonColor} name="ios-share-alt" size={40}/> */}
 
                     <TouchableOpacity style={styles.share} onPress={() => {

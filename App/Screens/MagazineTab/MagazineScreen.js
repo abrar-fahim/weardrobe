@@ -25,6 +25,7 @@ import LoadingScreen from '../../components/LoadingScreen'
 import SellerScreen from '../ShopTab/SellerScreen';
 import CheckLoggedIn from '../../components/CheckLoggedIn';
 import AuthRequiredScreen from '../AuthRequiredScreen';
+import PostScreen from './PostScreen';
 
 
 
@@ -330,67 +331,37 @@ export function MagazineScreen(props) {
         }
         return (
             <View style={styles.gridItem} >
-                <View style={styles.nameDP}>
-                    <TouchableOpacity onPress={() => props.navigation.navigate('Seller', {
-                        shopId: itemData.item.shopId
-                    })}>
-                        <View style={styles.nameDP2}>
-                            <View style={styles.DP}>
-                                <Image style={styles.DPImage} source={itemData.item.logo} />
-                            </View>
-                            <Text style={styles.Name}> {itemData.item.name} </Text>
-                            <Text style={styles.Name}> {itemData.item.username} </Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
 
-                <TouchableOpacity style={styles.Post}>
-                    <View style={styles.Post2}>
-                        <FlatList horizontal={true} pagingEnabled={true} data={itemData.item.images} renderItem={renderImages} />
-                        {/* <Image  source={require('../../assets/Images/suit.png')} style={styles.PostImage}/>  */}
-                        <Text style={styles.Caption} >   {itemData.item.text}</Text>
+                <TouchableOpacity onPress={() => props.navigation.navigate('Seller', {
+                    shopId: itemData.item.shopId
+                })}>
+                    <View style={styles.nameDP}>
+
+                        <Image style={styles.DPImage} source={itemData.item.logo} />
+                        <View style={styles.nameContainer}>
+                            <Text style={styles.Name}> {itemData.item.name} </Text>
+                            <Text style={styles.username}> {itemData.item.username} . {itemData.item.postDate} </Text>
+                        </View>
+
+
                     </View>
                 </TouchableOpacity>
 
-                <View style={styles.nums}>
-                    <TouchableOpacity onPress={() => {
-                        loadShopPostReacts(itemData.item.id);
-                        setShowReacts(state => !state)
-                        // console.log(postComments)
-                    }}>
-                        <Text>{itemData.item.numReacts} Reacts</Text>
-                    </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => {
-                        loadShopPostComments(itemData.item.id, 0);
-                        setShowComments(state => !state)
-                        setIters(iters => ({
-                            ...iters,
-                            shopPostComments: 1
-                        }))
-                        console.log(iters.shopPostComments)
-                    }}>
-                        <Text>{itemData.item.numComments} Comments</Text>
-                    </TouchableOpacity>
+                <TouchableOpacity style={styles.Post} onPress={() => {
+                    props.navigation.navigate('Post', {
+                        post: itemData.item,
+                        type: 'SHOP'
+                    })
+                }}>
 
-                </View>
+                    <FlatList horizontal={true} pagingEnabled={true} data={itemData.item.images} renderItem={renderImages} />
+                    {/* <Image  source={require('../../assets/Images/suit.png')} style={styles.PostImage}/>  */}
+                    <Text style={styles.caption}>   {itemData.item.text}</Text>
 
-                {showReacts ? <FlatList listKey={itemData.item.id + "1"} data={shopPostReacts[0]?.postId === itemData.item.id ? shopPostReacts : []} renderItem={renderReact} /> : null}
+                </TouchableOpacity>
 
-                {showComments ? <FlatList listKey={itemData.item.id + "2"} data={shopPostComments[0]?.postId === itemData.item.id ? shopPostComments : []} renderItem={renderComment}
-                    onEndReached={() => {
-                        loadShopPostComments(itemData.item.id, iters.shopPostComments)
-                        setIters(iters => ({
-                            ...iters,
-                            shopPostComments: iters.shopPostComments + 1
-                        }))
-                    }} /> : null}
-
-
-
-
-
-                <View style={styles.LikeComment}>
+                <View style={styles.reactsCommentsContainer}>
                     <TouchableOpacity style={styles.Like} onPress={async () => {
 
 
@@ -417,15 +388,57 @@ export function MagazineScreen(props) {
 
 
                         }
-
-
-
-
                     }}>
 
-                        {itemData.item.hasReacted === 1 ? <AntDesign name="like1" size={40} color='black' /> : <AntDesign name="like2" size={40} color='black' />}
+
+                        {itemData.item.hasReacted === 1 ? <MaterialCommunityIcons name="heart-multiple" size={30} color='#E1306C' /> : <MaterialCommunityIcons name="heart-multiple-outline" size={30} color='black' />}
+                        {/* <TouchableOpacity onPress={() => {
+                        loadShopPostReacts(itemData.item.id);
+                        setShowReacts(state => !state)
+                        // console.log(postComments)
+                    }}> */}
+                        <Text style={styles.number}>{itemData.item.numReacts}</Text>
+                        {/* </TouchableOpacity> */}
 
                     </TouchableOpacity>
+
+
+
+                    {/* <TouchableOpacity onPress={() => {
+                        loadShopPostComments(itemData.item.id, 0);
+                        setShowComments(state => !state)
+                        setIters(iters => ({
+                            ...iters,
+                            shopPostComments: 1
+                        }))
+                        console.log(iters.shopPostComments)
+                    }}> */}
+                    <View style={styles.comment}>
+                        <MaterialCommunityIcons name="comment-multiple" color="black" size={30} />
+                        <Text style={styles.number}>{itemData.item.numComments}</Text>
+                    </View>
+
+                    {/* </TouchableOpacity> */}
+
+                </View>
+
+                {/* {showReacts ? <FlatList listKey={itemData.item.id + "1"} data={shopPostReacts[0]?.postId === itemData.item.id ? shopPostReacts : []} renderItem={renderReact} /> : null} */}
+
+                {/* {showComments ? <FlatList listKey={itemData.item.id + "2"} data={shopPostComments[0]?.postId === itemData.item.id ? shopPostComments : []} renderItem={renderComment}
+                    onEndReached={() => {
+                        loadShopPostComments(itemData.item.id, iters.shopPostComments)
+                        setIters(iters => ({
+                            ...iters,
+                            shopPostComments: iters.shopPostComments + 1
+                        }))
+                    }} /> : null} */}
+
+
+
+
+
+                {/* <View style={styles.LikeComment}>
+
 
                     <View style={styles.commentContainer}>
                         <TextInput placeholder="Comment" style={styles.Comment} onChangeText={setComment} />
@@ -443,7 +456,7 @@ export function MagazineScreen(props) {
                     </View>
 
 
-                </View>
+                </View> */}
 
 
             </View>
@@ -475,7 +488,7 @@ export function MagazineScreen(props) {
                     </View>
                 </TouchableOpacity>
 
-                <View style={styles.nums}>
+                <View style={styles.reactsCommentsContainer}>
                     <TouchableOpacity onPress={() => {
                         loadUserPostReacts(itemData.item.id);
                         setShowReacts(state => !state)
@@ -638,6 +651,7 @@ export default function MagazineStackScreen({ navigation }) {
             <MagazineStack.Screen name="NewPost3" component={NewPostScreen3} />
             <MagazineStack.Screen name="NewPostTag" component={NewPostTagScreen} /> */}
             <MagazineStack.Screen name="Seller" component={SellerScreen} />
+            <MagazineStack.Screen name="Post" component={PostScreen} />
             <MagazineStack.Screen name="OthersProfile" component={ProfileStackScreen} options={{
                 headerShown: false
             }} />
@@ -652,44 +666,49 @@ const styles = StyleSheet.create({
     gridItem: {
         flex: 1,
         padding: 10,
-        margin: 0,
+        marginVertical: 10,
         width: '100%',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        backgroundColor: 'white'
     },
     nameDP: {
-        paddingLeft: 5
-    },
-    nameDP2:
-    {
         flexDirection: 'row',
-        alignItems: 'center'
+        paddingHorizontal: 10
     },
-    DP:
-    {
-        borderRadius: 25,
-        overflow: 'hidden'
-    },
+
     DPImage:
     {
         width: 40,
-        height: 40
+        height: 40,
+        borderRadius: 20
+    },
+    nameContainer: {
+        marginLeft: 10,
+        flexDirection: "column"
+
     },
     Name:
     {
-        fontWeight: 'bold',
-        fontSize: 20
+        fontWeight: '700',
+        fontSize: 18
+    },
+    username: {
+        fontSize: 15,
+        color: 'grey'
+
     },
     Post:
     {
-        paddingTop: 10
-    },
-    Post2:
-    {
+        paddingTop: 10,
         alignItems: 'center',
         flexDirection: 'column',
         width: '100%',
         height: 400,
         borderRadius: 30,
+    },
+    Post2:
+    {
+
         // overflow: 'hidden'
     },
     postImage:
@@ -699,29 +718,40 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
         // flex: 7,
     },
-    Caption:
+    caption:
     {
-        paddingTop: 10,
-        borderLeftColor: 'black',
-        fontWeight: 'bold',
-
-        height: 50,
+        paddingVertical: 20,
+        fontWeight: '600',
         width: '100%'
     },
-    nums: {
+    reactsCommentsContainer: {
+        flexDirection: 'row',
         width: '100%',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+
+
     },
-    LikeComment:
-    {
-        paddingTop: 15,
-        flexDirection: 'row'
-    },
+    // LikeComment:
+    // {
+    //     paddingTop: 15,
+    //     flexDirection: 'row'
+    // },
     Like:
     {
         paddingRight: 15,
         paddingLeft: 10,
-        flex: 1
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    number: {
+        fontSize: 15,
+        fontWeight: '700',
+        color: 'grey',
+        marginLeft: 2
+
     },
     Comment:
     {
@@ -733,8 +763,6 @@ const styles = StyleSheet.create({
     },
     comment: {
         flexDirection: 'row',
-        height: 100,
-        margin: 10
     },
     commentX: {
         marginLeft: 30
