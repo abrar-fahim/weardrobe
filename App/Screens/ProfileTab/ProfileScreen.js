@@ -426,9 +426,9 @@ export function ProfileScreen(props) {
     const renderImages = (itemData) => {
 
         return (
-            <View style={styles.imageContainer}>
-                <Image source={itemData.item.image} style={styles.postImage} resizeMode="contain" />
-            </View>
+            // <View style={styles.imageContainer}>
+            <Image source={itemData.item.image} style={styles.postImage} resizeMode="contain" />
+            // </View>
 
         )
 
@@ -465,16 +465,20 @@ export function ProfileScreen(props) {
 
 
                 <TouchableOpacity style={styles.Post} onPress={() => {
-                    props.navigation.navigate('Post', {
-                        post: {
-                            ...itemData.item,
-                            name: profile.firstName,
-                            logo: profile.profilePic
+                    itemData.item.productId ? props.navigation.navigate('Product', {
+                        productId: itemData.item.productId
 
-                        }
-                        ,
-                        type: itemData.item.type
-                    })
+                    }) :
+                        props.navigation.navigate('Post', {
+                            post: {
+                                ...itemData.item,
+                                name: profile.firstName,
+                                logo: profile.profilePic
+
+                            }
+                            ,
+                            type: itemData.item.type
+                        })
                 }}>
 
                     <FlatList horizontal={true} pagingEnabled={true} data={itemData.item.images} renderItem={renderImages} />
@@ -522,10 +526,25 @@ export function ProfileScreen(props) {
 
 
 
-                    <View style={styles.comment}>
+                    <TouchableOpacity
+                        style={styles.comment}
+                        onPress={() => {
+                            props.navigation.navigate('Post', {
+                                post: {
+                                    ...itemData.item,
+                                    name: profile.firstName,
+                                    logo: profile.profilePic
+
+                                }
+                                ,
+                                type: itemData.item.type
+                            })
+                        }}
+
+                    >
                         <MaterialCommunityIcons name="comment-multiple" color="black" size={30} />
                         <Text style={styles.number}>{itemData.item.numComments}</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
 
@@ -612,6 +631,12 @@ export function ProfileScreen(props) {
 
 
                 }}
+
+                ListFooterComponent={
+                    <View style={styles.listFooter}>
+                    </View>
+                }
+
 
             />
 
@@ -793,7 +818,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
         width: '100%',
-        height: 400,
+        // height: 400,
         borderRadius: 30,
     },
     Caption:
@@ -809,16 +834,14 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center'
     },
-    LikeComment:
-    {
-        paddingTop: 15,
-        flexDirection: 'row'
-    },
+
     Like:
     {
         paddingRight: 15,
         paddingLeft: 10,
-        flex: 1
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     number: {
         fontSize: 15,
@@ -837,7 +860,7 @@ const styles = StyleSheet.create({
     },
     postImage:
     {
-        height: '100%',
+        height: Dimensions.get('window').width,
         width: Dimensions.get('window').width,
         alignSelf: 'center'
         // flex: 7,
@@ -872,5 +895,9 @@ const styles = StyleSheet.create({
     },
     sendComment: {
         marginLeft: 3
+    },
+    listFooter: {
+        marginBottom: 500
     }
+
 })

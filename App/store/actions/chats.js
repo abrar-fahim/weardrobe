@@ -53,8 +53,8 @@ export const getGroups = (iter = 0) => {
                         startedAt: resData[key].STARTED_AT,
                         score: resData[key].SCORE,
                         participantId: resData[key].PARTICIPANT_UID,
-                        participants: resData[key].PARTICIPANTS
-                        // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
+                        participants: resData[key].PARTICIPANTS,
+                        type: 'GROUP'
                     })
                     :
                     groups.push({
@@ -62,8 +62,8 @@ export const getGroups = (iter = 0) => {
                         createdById: resData[key].CREATED_BY_UID,
                         name: resData[key].SHOP_NAME,
                         startedAt: resData[key].CREATED_AT,
-
-                        logo: { uri: `${IMG_URL}` + resData[key].LOGO_URL }
+                        logo: { uri: `${IMG_URL}` + resData[key].LOGO_URL },
+                        type: 'SHOP'
                     })
             }
 
@@ -84,17 +84,21 @@ export const getGroups = (iter = 0) => {
     }
 }
 
-export const getChats = (groupId, iter = 0) => {
+export const getChats = (groupId, iter = 0, type = 'GROUP') => {
 
     //here iter means after which chat i wanna get chats, so just send length of chat array in store
     return async (dispatch) => {
-        const response = await fetch(`${HOST}/get/group/${groupId}/chat/${iter}`, {
+
+        const url = type === 'GROUP' ? `${HOST}/get/group/${groupId}/chat/${iter}` : `${HOST}/get/shop-chat/${groupId}/${iter}`
+
+
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
 
-        });
+        })
 
         if (!response.ok) {
             dispatch(popupActions.setMessage('Something Went Wrong', true))
@@ -107,39 +111,67 @@ export const getChats = (groupId, iter = 0) => {
 
             for (const key in resData) {
 
-                const productId = resData[key].PRODUCT_ID;
-                if (productId && productId !== "") {
-                    let product = await productActions.fetchProductDetailsDirect(productId);
-                    product = {
-                        ...product,
-                        photos: product.photos.map(photo => ({
-                            image: { uri: IMG_URL + photo.IMAGE_URL }
-                        }))
-                    }
-                    chats.push({
-                        id: resData[key].SENDER_UID + resData[key].SENT_AT + key,
-                        senderId: resData[key].SENDER_UID,
-                        groupId: resData[key].GROUP_ID,
-                        text: resData[key].TEXT,
-                        photo: resData[key].PHOTO ? { uri: `${HOST}/img/temp/` + resData[key].PHOTO } : null,
-                        time: resData[key].SENT_AT,
-                        product: product
-                        // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
-                    })
 
-                }
-
-                else {
+                const chatType = resData[key].TYPE;
+                if (chatType === 'TEXT') {
                     chats.push({
-                        id: resData[key].SENDER_UID + resData[key].SENT_AT + key,
-                        senderId: resData[key].SENDER_UID,
-                        groupId: resData[key].GROUP_ID,
-                        text: resData[key].TEXT,
-                        photo: resData[key].PHOTO ? { uri: `${HOST}/img/temp/` + resData[key].PHOTO } : null,
+                        id: type === 'GROUP' ? resData[key].SENDER_UID + resData[key].SENT_AT + key : resData[key].SENDER_ID + resData[key].SENT_AT + key,
+                        senderId: type === 'GROUP' ? resData[key].SENDER_UID : resData[key].SENDER_ID,
+                        groupId: type === 'GROUP' ? resData[key].GROUP_ID : resData[key].CHAT_ID,
+                        message: resData[key].MESSAGE,
                         time: resData[key].SENT_AT,
-                        // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
+                        type: chatType
                     })
                 }
+                else if (chatType === 'PHOTO') {
+                    chats.push({
+                        id: type === 'GROUP' ? resData[key].SENDER_UID + resData[key].SENT_AT + key : resData[key].SENDER_UID + resData[key].SENT_AT + key,
+                        senderId: type === 'GROUP' ? resData[key].SENDER_UID : resData[key].SENDER_ID,
+                        groupId: type === 'GROUP' ? resData[key].GROUP_ID : resData[key].CHAT_ID,
+                        message: { uri: `${HOST}/img/temp/` + resData[key].MESSAGE },
+                        time: resData[key].SENT_AT,
+                        type: chatType
+                    })
+                }
+
+
+
+                // const productId = resData[key].PRODUCT_ID;
+
+
+
+                // if (productId && productId !== "") {
+                //     let product = await productActions.fetchProductDetailsDirect(productId);
+                //     product = {
+                //         ...product,
+                //         photos: product.photos.map(photo => ({
+                //             image: { uri: IMG_URL + photo.IMAGE_URL }
+                //         }))
+                //     }
+                //     chats.push({
+                //         id: resData[key].SENDER_UID + resData[key].SENT_AT + key,
+                //         senderId: resData[key].SENDER_UID,
+                //         groupId: type === 'GROUP' ? resData[key].GROUP_ID : resData[key].CHAT_ID,
+                //         text: resData[key].TEXT,
+                //         photo: resData[key].PHOTO ? { uri: `${HOST}/img/temp/` + resData[key].PHOTO } : null,
+                //         time: resData[key].SENT_AT,
+                //         product: product
+                //         // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
+                //     })
+
+                // }
+
+                // else {
+                //     chats.push({
+                //         id: resData[key].SENDER_UID + resData[key].SENT_AT + key,
+                //         senderId: resData[key].SENDER_UID,
+                //         groupId: type === 'GROUP' ? resData[key].GROUP_ID : resData[key].CHAT_ID,
+                //         text: resData[key].TEXT,
+                //         photo: resData[key].PHOTO ? { uri: `${HOST}/img/temp/` + resData[key].PHOTO } : null,
+                //         time: resData[key].SENT_AT,
+                //         // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
+                //     })
+                // }
 
 
 
@@ -517,8 +549,47 @@ export const connectToGroup = (groupId) => {
             console.log(chat)
             // dispatch(getChats(groupId))
             // console.log(text)
-            const productId = chat.PRODUCT_ID;
-            if (productId && productId !== "") {
+
+
+
+            const chatType = chat.TYPE;
+
+            if (chatType === 'TEXT') {
+                dispatch({
+                    type: ADD_CHAT,
+                    chat: {
+                        id: chat.SENDER_UID + chat.SENT_AT + Date.now(),
+                        senderId: chat.SENDER_UID,
+                        groupId: chat.GROUP_ID,
+                        message: chat.MESSAGE,
+                        time: chat.SENT_AT,
+                        type: chatType
+                    }
+
+
+                })
+            }
+
+            else if (chatType === 'PHOTO') {
+
+                dispatch({
+                    type: ADD_CHAT,
+                    chat: {
+                        id: chat.SENDER_UID + chat.SENT_AT + Date.now(),
+                        senderId: chat.SENDER_UID,
+                        groupId: chat.GROUP_ID,
+                        message: { uri: `${HOST}/img/temp/` + chat.MESSAGE },
+                        time: chat.SENT_AT,
+                        type: chatType
+
+                    }
+
+
+                })
+            }
+
+            else if (chatType === 'PRODUCT') {
+                const productId = chat.MESSAGE;
                 let product = await productActions.fetchProductDetailsDirect(productId);
                 product = {
                     ...product,
@@ -526,33 +597,15 @@ export const connectToGroup = (groupId) => {
                         image: { uri: IMG_URL + photo.IMAGE_URL }
                     }))
                 }
-
                 dispatch({
                     type: ADD_CHAT,
                     chat: {
                         id: chat.SENDER_UID + chat.SENT_AT + Date.now(),
                         senderId: chat.SENDER_UID,
                         groupId: chat.GROUP_ID,
-                        text: chat.TEXT === undefined ? null : chat.TEXT,
-                        photo: chat.PHOTO ? { uri: `${HOST}/img/temp/` + chat.PHOTO } : null,
                         time: chat.SENT_AT,
-                        product: product
-
-                    }
-
-
-                })
-            }
-            else {
-                dispatch({
-                    type: ADD_CHAT,
-                    chat: {
-                        id: chat.SENDER_UID + chat.SENT_AT + Date.now(),
-                        senderId: chat.SENDER_UID,
-                        groupId: chat.GROUP_ID,
-                        text: chat.TEXT === undefined ? null : chat.TEXT,
-                        photo: chat.PHOTO ? { uri: `${HOST}/img/temp/` + chat.PHOTO } : null,
-                        time: chat.SENT_AT,
+                        message: product,
+                        type: chatType
 
                     }
 
@@ -569,12 +622,12 @@ export const connectToGroup = (groupId) => {
     }
 }
 
-export const sendChat = (groupId, text) => {
+export const sendChat = (groupId, text, type = 'GROUP') => {
 
 
     return async (dispatch) => {
 
-        await socket?.emit('sendMessageGroup', `{"groupId": "${groupId}", "text":"${text}"}`);
+        type === 'GROUP' ? await socket?.emit('sendMessageGroup', `{"groupId": "${groupId}", "message":"${text}", "type":"TEXT"}`) : await socket?.emit('sendMessageGroup', `{"chatId": "${groupId}", "message":"${text}", "type":"TEXT"}`)
 
         socket?.emit('status');
 
@@ -587,7 +640,7 @@ export const sendProduct = (groupId, productId) => {
 
     return async (dispatch) => {
 
-        await socket?.emit('sendMessageGroup', `{"groupId": "${groupId}", "productId":"${productId}"}`);
+        await socket?.emit('sendMessageGroup', `{"groupId": "${groupId}", "message":"${productId}"}, "type: "PRODUCT"`);
 
         socket?.emit('status');
 
@@ -684,7 +737,8 @@ export const sendPhotoFile = (groupId, image) => {
 
         socket.emit('sendMessageGroup', JSON.stringify({
             groupId: groupId,
-            photo: image
+            photo: image,
+            type: 'PHOTO'
         }))
         socket?.emit('status');
 

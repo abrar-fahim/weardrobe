@@ -10,7 +10,7 @@ import Colors from '../../Styles/Colors';
 const PostScreen = (props) => {
 
     const post = props.route.params?.post
-    
+
 
     // const listImages = post.images.map((item, index) => (
     //     {
@@ -19,8 +19,6 @@ const PostScreen = (props) => {
     //     }
     // ))
 
-
-    const [showReacts, setShowReacts] = useState(false)
     const dispatch = useDispatch();
     const [error, setError] = useState('')
     const [change, setChange] = useState(0);    //this forces like icon to re render on each touch
@@ -150,6 +148,7 @@ const PostScreen = (props) => {
         // console.log(post.image.image)
         return (
 
+
             <Image source={itemData.item.image} style={styles.postImage}
                 resizeMode="contain" />
 
@@ -205,8 +204,18 @@ const PostScreen = (props) => {
 
                                 </View>
                             </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    if (post.productId) props.navigation.navigate('Product', {
+                                        productId: post.productId
+                                    })
+                                }}
+                            >
+                                <FlatList data={post.images} pagingEnabled={true} horizontal={true} renderItem={renderImage} />
 
-                            <FlatList data={post.images} pagingEnabled={true} horizontal={true} renderItem={renderImage} />
+                            </TouchableOpacity>
+
+
                             <Text style={styles.caption}>{post.text}</Text>
                             <View style={styles.reactsCommentsContainer}>
                                 <TouchableOpacity style={styles.Like} onPress={async () => {

@@ -19,7 +19,17 @@ import ShoppingSessionTimer from '../../components/ShoppingSessionTimer';
 import { IMG_URL } from '../../components/host';
 
 export default function GroupTabScreen(props) {
-    const groupId = props.route.params?.groupId
+
+
+    const groupId = props.route.params?.groupId;    //groupId is either groupId or chatId depending on if its either shop or group chat
+    const type = props.route.params?.type;
+    const name = props.route.params?.name;
+    const logo = props.route.params?.logo;
+    const shopId = props.route.params?.shopId;
+
+
+
+
     const TopTab = createMaterialTopTabNavigator();
 
 
@@ -33,7 +43,7 @@ export default function GroupTabScreen(props) {
                             title="GroupInfo" iconName="md-information-circle-outline" onPress={
                                 () => props.navigation.navigate('GroupInfo',
                                     {
-                                        groupId: groupId
+                                        groupId: groupId,
                                     }
                                 )
                             } />
@@ -60,10 +70,15 @@ export default function GroupTabScreen(props) {
                 }
             }}
         >
+
             <TopTab.Screen
                 name="GroupChat"
                 component={GroupChatScreen} initialParams={{
-                    groupId: groupId
+                    groupId: groupId,
+                    type: type,
+                    name: name,
+                    logo: logo,
+                    shopId: shopId
                 }}
             />
             <TopTab.Screen
@@ -73,6 +88,7 @@ export default function GroupTabScreen(props) {
                     groupId: groupId
                 }}
             />
+
         </TopTab.Navigator>
     )
 }
@@ -82,7 +98,12 @@ export function GroupChatScreen(props) {
     //sockets here
 
 
-    const groupId = props.route.params?.groupId
+    const groupId = props.route.params?.groupId;
+    const type = props.route.params?.type;
+    const name = props.route.params?.name;
+    const logo = props.route.params?.logo;
+    const shopId = props.route.params?.shopId;
+
 
     const sessionGroupId = useSelector(state => state.social.sessionGroupId)
 
@@ -108,8 +129,9 @@ export function GroupChatScreen(props) {
 
     const getChats = useCallback(async () => {
         try {
+            console.log(chats.length)
 
-            await dispatch(chatActions.getChats(groupId, chats.length))
+            await dispatch(chatActions.getChats(groupId, chats.length, type))
 
             // setIter(chats.length)
             // dispatch(popupActions.setMessage('hello' + chats.length))
@@ -121,14 +143,15 @@ export function GroupChatScreen(props) {
             console.log(err)
         }
 
-    }, [groupId, chats])
+    }, [groupId, chats, type])
 
     const loadChats = useCallback(async () => {
         try {
             setIsLoading(true)
-            await dispatch(chatActions.getChats(groupId, 0))
+            await dispatch(chatActions.getChats(groupId, 0, type))
+            console.log('type: ' + type)
 
-            await dispatch(chatActions.getGroupPeople(groupId))
+            if (type === 'GROUP') await dispatch(chatActions.getGroupPeople(groupId))
             await dispatch(chatActions.connectToGroup(groupId))
             // setIter(chats.length)
             setIsLoading(false)
@@ -138,14 +161,14 @@ export function GroupChatScreen(props) {
         }
         setIsLoading(false)
 
-    }, [groupId])
+    }, [groupId, type])
 
     const sendChat = useCallback(async (text) => {
         console.log('sendchat')
         try {
             if (!sending) {
                 setSending(true)
-                await dispatch(chatActions.sendChat(groupId, text))
+                await dispatch(chatActions.sendChat(groupId, text, type))
                 setSending(false)
             }
 
@@ -175,20 +198,6 @@ export function GroupChatScreen(props) {
         setSending(false)
 
     }, [sending, groupId])
-
-    const getProduct = useCallback(async (productId) => {
-        try {
-
-            await (productActions.fetchProductDetailsDirect(productId))
-
-            // setIter(chats.length)
-            // dispatch(popupActions.setMessage('hello' + chats.length))
-        }
-        catch (err) {
-            console.log(err)
-        }
-
-    }, [groupId, chats])
 
 
 
@@ -225,29 +234,32 @@ export function GroupChatScreen(props) {
 
     function renderItems(itemData) {
 
-        const dp = participants !== undefined ? participants?.filter((person) => person.id === itemData.item.senderId)[0]?.profilePic : null
-        const username = participants !== undefined ? participants?.filter((person) => person.id === itemData.item.senderId)[0]?.username : null
+
+
+        const dp = type === 'GROUP' ? (participants !== undefined ? participants?.filter((person) => person.id === itemData.item.senderId)[0]?.profilePic : null) : logo;
+
+        const username = type === 'GROUP' ? (participants !== undefined ? participants?.filter((person) => person.id === itemData.item.senderId)[0]?.username : null) : name
         if (itemData.item.senderId === userId) {
             return (
                 <View style={styles.chat}>
 
                     <Image style={styles.pictureMe} source={dp} />
                     <Text style={styles.usernameMe}>{username}</Text>
-                    {itemData.item.photo ? <Image source={itemData.item.photo} style={styles.photoMe} /> : (itemData.item.product ?
+                    {itemData.item.type === 'PHOTO' ? <Image source={itemData.item.message} style={styles.photoMe} /> : (itemData.item.type === 'PRODUCT' ?
                         <TouchableOpacity onPress={() => props.navigation.navigate('Product', {
                             productId: itemData.item.product.id
                         })}>
                             <View style={styles.productBubbleMe}>
-                                <Image style={styles.productPhotoMe} source={itemData.item.product.photos[0].image} />
-                                <Text>{itemData.item.product.name}</Text>
-                                <Text>BDT {itemData.item.product.price}</Text>
+                                <Image style={styles.productPhotoMe} source={itemData.item.message.photos[0].image} />
+                                <Text>{itemData.item.message.name}</Text>
+                                <Text>BDT {itemData.item.message.price}</Text>
 
 
                             </View>
                         </TouchableOpacity>
                         : <View style={styles.msgBubbleMe}>
 
-                            <Text style={styles.msgTextMe}>{itemData.item.text}</Text>
+                            <Text style={styles.msgTextMe}>{itemData.item.message}</Text>
 
 
                         </View>)
@@ -266,17 +278,18 @@ export function GroupChatScreen(props) {
             <View style={styles.chat}>
                 <Image style={styles.picture} source={dp} />
                 <Text style={styles.username}>{username}</Text>
-                {itemData.item.photo ? <Image source={itemData.item.photo} style={styles.photo} /> : (itemData.item.product ?
+                {itemData.item.type === 'PHOTO' ? <Image source={itemData.item.message} style={styles.photo} /> : (itemData.item.type === 'PRODUCT' ?
                     <View style={styles.productBubble}>
-                        <Image style={styles.productPhoto} source={itemData.item.product.photos[0].image} />
-                        <Text>{itemData.item.product.name}</Text>
-                        <Text>hi</Text>
+                        <Image style={styles.productPhoto} source={itemData.item.message.photos[0].image} />
+                        <Text>{itemData.item.message.name}</Text>
+                        <Text>BDT {itemData.item.message.price}</Text>
+
 
 
                     </View> :
-                    < View style={styles.msgBubble}>
+                    <View style={styles.msgBubble}>
 
-                        <Text style={styles.msgText}>{itemData.item.text}</Text>
+                        <Text style={styles.msgText}>{itemData.item.message}</Text>
 
 
                     </View>
@@ -344,7 +357,7 @@ export function GroupChatScreen(props) {
                     placeholder="Type Something"
                     ref={textInputRef}
                     multiline
-                    onChangeText={setMessage}                    
+                    onChangeText={setMessage}
                     onSubmitEditing={() => {
 
 

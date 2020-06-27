@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { FEEDITEMS } from '../../dummy-data/Feed'
-import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import NewPostChooseLayout from './NewPostChooseLayoutScreen';
 import NewPostButton from '../../components/NewPostButton';
 import NewPostScreen2 from './NewPostScreen2';
@@ -174,6 +174,9 @@ export function MagazineScreen(props) {
     const renderFeedItem = (itemData) => {
 
         return (
+
+
+
             <View style={styles.gridItem} >
 
                 <TouchableOpacity onPress={() => {
@@ -186,6 +189,7 @@ export function MagazineScreen(props) {
                         })
 
                 }}
+
 
                 >
                     <View style={styles.nameDP}>
@@ -202,10 +206,19 @@ export function MagazineScreen(props) {
 
 
                 <TouchableOpacity style={styles.Post} onPress={() => {
-                    props.navigation.navigate('Post', {
-                        post: itemData.item,
-                        type: itemData.item.type
-                    })
+                    itemData.item.productId ? props.navigation.navigate('Product', {
+                        productId: itemData.item.productId
+                    }) :
+
+                        props.navigation.navigate('Post', {
+                            post: itemData.item,
+                            type: itemData.item.type
+                        })
+
+
+
+                    return null;
+
                 }}>
 
                     <FlatList horizontal={true} pagingEnabled={true} data={itemData.item.images} renderItem={renderImages} />
@@ -254,15 +267,26 @@ export function MagazineScreen(props) {
 
 
 
-                    <View style={styles.comment}>
+                    <TouchableOpacity
+                        style={styles.comment}
+                        onPress={() => {
+                            props.navigation.navigate('Post', {
+                                post: itemData.item,
+                                type: itemData.item.type
+                            })
+
+
+                        }}
+                    >
                         <MaterialCommunityIcons name="comment-multiple" color="black" size={30} />
                         <Text style={styles.number}>{itemData.item.numComments}</Text>
-                    </View>
+                    </TouchableOpacity>
 
 
 
                 </View>
             </View>
+
 
         )
     }
@@ -352,7 +376,7 @@ export default function MagazineStackScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     gridItem: {
-        flex: 1,
+        // flex: 1,
         padding: 10,
         marginVertical: 10,
         width: '100%',
@@ -391,19 +415,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
         width: '100%',
-        height: 400,
+        // height: 400,
         borderRadius: 30,
     },
-    Post2:
-    {
 
-        // overflow: 'hidden'
-    },
     postImage:
     {
-        height: '100%',
+        // maxHeight: '100%',
+        // maxWidth: Dimensions.get('window').width,
+        // alignSelf: 'center'
+        height: Dimensions.get('window').width,
         width: Dimensions.get('window').width,
-        alignSelf: 'center'
         // flex: 7,
     },
     caption:
@@ -421,11 +443,6 @@ const styles = StyleSheet.create({
 
 
     },
-    // LikeComment:
-    // {
-    //     paddingTop: 15,
-    //     flexDirection: 'row'
-    // },
     Like:
     {
         paddingRight: 15,

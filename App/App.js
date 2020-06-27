@@ -38,6 +38,7 @@ import ShareGroupScreen from './Screens/ShopTab/ShareGroupScreen';
 
 import * as chatActions from './store/actions/chats'
 import NewPostNextButton from './components/NewPostNextButton';
+import SmallPopup from './components/SmallPopup';
 
 
 const rootReducer = combineReducers({
@@ -81,6 +82,7 @@ export default function App({ navigation }) {
   // }
   //return <HomeNavigator />;
 
+
   useEffect(() => {
     chatActions.connectSocket();
   }, [])
@@ -92,8 +94,15 @@ export default function App({ navigation }) {
 
   return (
     <Provider store={store}>
+
+
+
       <NavigationContainer>
+
+
+
         <Stack.Navigator>
+
 
           <Stack.Screen name="Home" component={HomeScreen}
             options={{
@@ -120,6 +129,7 @@ export default function App({ navigation }) {
 
         </Stack.Navigator>
       </NavigationContainer>
+
     </Provider>
   );
 }

@@ -45,8 +45,7 @@ export default function HomeScreen(props) {
     const timeLeft = useSelector(state => state.social.timeLeft);
     const expiresIn = useSelector(state => state.social.expiresIn);
 
-    const popupMessage = useSelector(state => state.popup.message);
-    const popupIsError = useSelector(state => state.popup.isError);
+
 
 
 
@@ -102,7 +101,8 @@ export default function HomeScreen(props) {
     //const Tab = createMaterialTopTabNavigator();
     return (
         <>
-            <SmallPopup message={popupMessage} isError={popupIsError} />
+            <SmallPopup />
+
             <Tab.Navigator
                 iconName='camera'
                 tabBarOptions={{ activeTintColor: Colors.tabBarActiveTintColor }}

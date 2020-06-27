@@ -19,7 +19,7 @@ const SmallPopup = (props) => {
         }, 2000)
 
         return () => clearTimeout(timer)
-    }, [props.message])
+    }, [message])
     return (
         <Modal
             animationIn="bounceInDown"
@@ -29,6 +29,7 @@ const SmallPopup = (props) => {
             hasBackdrop={false}
             coverScreen={false}
             isVisible={message === "" ? false : true}
+        // isVisible={true}
         >
             <View style={styles.popup}>
                 <Text>{message}</Text>
@@ -55,7 +56,8 @@ const styles = StyleSheet.create({
         shadowOffset: {
             height: 2
         },
-        marginTop: 20
+        marginTop: 20,
+        zIndex: 10000
 
     }
 })

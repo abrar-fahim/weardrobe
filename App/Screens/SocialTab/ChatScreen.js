@@ -23,7 +23,7 @@ import GroupListScreen from './GroupListScreen';
 import PeopleSearchScreen from './PeopleSearchScreen'
 
 import SearchButton from '../../components/SearchButton'
-import GroupTabScreen from './GroupChatScreen';
+import GroupTabScreen, { GroupChatScreen } from './GroupChatScreen';
 import ShoppingSessionScreen from './ShoppingSessionScreen';
 
 
@@ -111,6 +111,7 @@ export default function ChatStackScreen({ navigation }) {
                     }} />
                     {/* <ChatStack.Screen name="PeopleSearch" component={PeopleSearchScreen} /> */}
                     <ChatStack.Screen name="GroupTab" component={GroupTabScreen} />
+                    <ChatStack.Screen name="GroupChat" component={GroupChatScreen} />
                     <ChatStack.Screen name="ShoppingSession" component={ShoppingSessionScreen} />
                     <ChatStack.Screen name="NewShoppingSession" component={NewShoppingSessionScreen} />
                     <ChatStack.Screen name="GroupInfo" component={GroupInfoScreen} />

@@ -593,6 +593,7 @@ export default function ProductScreen(props) {
     else {
         return (
             <View>
+                <SmallPopup />
                 {shareVisible ?
 
                     <TouchableWithoutFeedback onPress={() => { setShareVisible(false) }}>
@@ -601,13 +602,31 @@ export default function ProductScreen(props) {
                                 <View style={styles.shareModal}>
                                     <Text style={styles.title}>Sharing Options</Text>
 
-                                    <TouchableOpacity style={styles.shareItem}>
+                                    <TouchableOpacity style={styles.shareItem} onPress={() => {
+                                        if (!userId) {
+                                            props.navigation.navigate('Login')
+                                        }
+                                        else {
+                                            props.navigation.navigate('NewPostChooseLayout', {
+                                                product: product
+                                            })
+
+                                        }
+                                    }}>
                                         <Text style={styles.shareText}>As Post</Text>
                                     </TouchableOpacity>
 
-                                    <TouchableOpacity style={styles.shareItem} onPress={() => props.navigation.navigate('ShareGroup', {
-                                        productId: product.id
-                                    })}>
+                                    <TouchableOpacity style={styles.shareItem} onPress={() => {
+                                        if (!userId) {
+                                            props.navigation.navigate('Login')
+                                        }
+                                        else {
+                                            props.navigation.navigate('ShareGroup', {
+                                                productId: product.id
+                                            })
+                                        }
+
+                                    }}>
                                         <Text style={styles.shareText}>As Chat</Text>
                                     </TouchableOpacity>
 

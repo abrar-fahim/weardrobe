@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as magazineActions from '../../store/actions/magazine'
 
 export default function NewPostScreen2(props) {
+    const product = props.route.params?.product;
 
     const formData = new FormData();
 
@@ -61,7 +62,8 @@ export default function NewPostScreen2(props) {
                 }
 
                 props.navigation.navigate('NewPost3', {
-                    formData: formData
+                    formData: formData,
+                    product: product
                 })
             }
             } />)

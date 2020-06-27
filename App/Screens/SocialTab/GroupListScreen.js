@@ -29,6 +29,7 @@ export default function GroupListScreen(props) {
 
     const LoadGroups = useCallback(async () => {
         try {
+            console.log(iter)
             setIsLoading(true)
             await dispatch(chatActions.getGroups(0))
             setIsLoading(false)
@@ -38,7 +39,7 @@ export default function GroupListScreen(props) {
             console.log(err)
         }
 
-    })
+    }, [iter])
 
     const LoadMoreGroups = useCallback(async () => {
         try {
@@ -66,7 +67,11 @@ export default function GroupListScreen(props) {
 
         );
 
-        return willFocusSub;
+        return () => {
+            willFocusSub();
+            setIter(0)
+        }
+
     }, [LoadGroups]);
 
 
@@ -75,11 +80,28 @@ export default function GroupListScreen(props) {
 
         return (
 
-            <TouchableOpacity onPress={() => props.navigation.navigate('GroupTab',
-                {
-                    groupId: itemData.item.id
-                }
-            )}>
+            <TouchableOpacity onPress={() => {
+                itemData.item.type === 'GROUP' ?
+                    props.navigation.navigate('GroupTab',
+                        {
+                            groupId: itemData.item.id,
+                            type: itemData.item.type,
+                            logo: itemData.item.logo,
+                            name: itemData.item.name,
+                            shopId: itemData.item?.id ?? null
+
+                        }
+                    ) : props.navigation.navigate('GroupChat',
+                        {
+                            groupId: itemData.item.id,
+                            type: itemData.item.type,
+                            logo: itemData.item.logo,
+                            name: itemData.item.name,
+                            shopId: itemData.item?.id ?? null
+
+                        }
+                    )
+            }}>
                 <View style={styles.groupContainer}>
 
                     <View style={styles.picName}>

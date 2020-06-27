@@ -13,6 +13,7 @@ import * as magazineActions from '../../store/actions/magazine'
 
 export default function NewPostScreen3(props) {
     const formData = props.route.params?.formData;
+    const product = props.route.params?.product;
 
     const [caption, setCaption] = useState('');
 
@@ -56,6 +57,7 @@ export default function NewPostScreen3(props) {
                 <Button title='POST' color='black' onPress={() => {
 
                     formData.append('caption', caption)
+                    if (product) formData.append('productId', product.id)
                     createUserPost(formData)
                     props.navigation.navigate('Magazine')
                 }}></Button>

@@ -11,10 +11,13 @@ import GenericHeaderButton from '../../components/GenericHeaderButton'
 
 
 export default function NewPostChooseLayout(props) {
+    const product = props.route.params?.product;
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
-            headerRight: () => (<GenericHeaderButton title="newPost" iconName="md-create" onPress={() => props.navigation.navigate('NewPost2')} />)
+            headerRight: () => (<GenericHeaderButton title="newPost" iconName="md-create" onPress={() => props.navigation.navigate('NewPost2', {
+                product: product
+            })} />)
 
         })
     })
