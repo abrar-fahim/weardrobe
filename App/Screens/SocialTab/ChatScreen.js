@@ -39,6 +39,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PictureUploadScreen from './PictureUploadScreen';
 import ProductScreen from '../ShopTab/ProductScreen';
 import TestScreen from '../ShopTab/TestScreen';
+import { ProfileTabsScreen } from '../ProfileTab/ProfileScreen';
 
 
 
@@ -111,6 +112,7 @@ export default function ChatStackScreen({ navigation }) {
                     }} />
                     {/* <ChatStack.Screen name="PeopleSearch" component={PeopleSearchScreen} /> */}
                     <ChatStack.Screen name="GroupTab" component={GroupTabScreen} />
+                    <ChatStack.Screen name="Profile" component={ProfileTabsScreen} />
                     <ChatStack.Screen name="GroupChat" component={GroupChatScreen} />
                     <ChatStack.Screen name="ShoppingSession" component={ShoppingSessionScreen} />
                     <ChatStack.Screen name="NewShoppingSession" component={NewShoppingSessionScreen} />

@@ -6,7 +6,7 @@ Add web and other folders to keep seperate components organized
 
 
 **TODO**
-- [ ] decide on shop screen and profile screen top tab layout
+- [x] decide on shop screen and profile screen top tab layout
 - [ ] in reviews, some reviews might be too big, so maybe give snippet at first, then click to expand (not important) // just simply hide in front end and add a "see more" button to expand.
 - [ ] add iters to everything
 - [ ] clicking on picture in chats/product page leads to zoomable pic page
@@ -24,6 +24,8 @@ Add web and other folders to keep seperate components organized
 - [ ] fix ui of ipad
 - [ ] everything with blogs
 - [ ] delete posts, delete comments
+- [ ] replace touchable opacities with native feedback if android
+
 
 
 
@@ -31,6 +33,8 @@ Known Bugs
 - [x] deleting group and then navigating to group list page still shows deleted 
 - [ ] use keyboard avoiding view on ios in group chat screen
 - [ ] going to profile info on your own profile by tapping dp on your posts goes to other profile screen in magazione tab
+- [ ] fix send photos to shop chat while chatting via modal from seller screen
+- [ ] clicking on talk about in shopping session screen pushes a new chat screen to stack, it should go back to existing stack screen
 
 Testing
 - [ ] need to check iters working properly for product/shop reviews

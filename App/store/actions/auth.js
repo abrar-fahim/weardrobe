@@ -11,6 +11,7 @@ export const signup = ({ firstName, lastName, username, email, phone, birthday, 
         const response = await fetch(`${HOST}/register-customer`, {
             // credentials: 'omit',
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': "application/json"
@@ -70,6 +71,7 @@ export const login = (email, password, token) => {
             {
                 // credentials: 'omit',
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -155,6 +157,7 @@ export const getUserId = () => {
     return async dispatch => {
         const response = await fetch(`${HOST}/authrequired`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': "application/json"
@@ -192,9 +195,11 @@ export const getUserId = () => {
 export const logout = () => {
 
     return async dispatch => {
+        console.log('LOGGING OUT')
 
         const response = await fetch(`${HOST}/logout`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -213,7 +218,7 @@ export const logout = () => {
 
         })
 
-        AsyncStorage.removeItem('user-cookie');
+        // AsyncStorage.removeItem('user-cookie');
 
     }
 }

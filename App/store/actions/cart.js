@@ -9,6 +9,7 @@ export const addToCart = (productId, color, size, quantity) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/add/cart`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -58,6 +59,7 @@ export const removeFromCart = (productId, color, size) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/delete/cart`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -102,6 +104,7 @@ export const updateCart = (productId, color, size, quantity) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/update/cart`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -157,7 +160,8 @@ export const fetchCartItems = () => {
 
         try {
             const response = await fetch(`${HOST}/get/cart`, {
-                method: 'GET'
+                method: 'GET',
+                credentials: 'include',
             })
 
             const resData = await response.json();
@@ -197,6 +201,7 @@ export const fetchCartItems = () => {
             }
 
             else {
+                console.log(resData)
                 dispatch(popupActions.setMessage('Something Went Wrong', true))
             }
 

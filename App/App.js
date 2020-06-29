@@ -36,7 +36,7 @@ import NewPostScreen3 from './Screens/MagazineTab/NewPostScreen3';
 import NewPostTagScreen from './Screens/MagazineTab/NewPostTagScreen';
 import ShareGroupScreen from './Screens/ShopTab/ShareGroupScreen';
 
-import * as chatActions from './store/actions/chats'
+
 import NewPostNextButton from './components/NewPostNextButton';
 import SmallPopup from './components/SmallPopup';
 
@@ -78,14 +78,12 @@ export default function App({ navigation }) {
   //       startAsync={fetchFonts}
   //       onFinish={() => setFontLoaded(true) }
   //     />
-  //   )
+  //   
   // }
   //return <HomeNavigator />;
 
 
-  useEffect(() => {
-    chatActions.connectSocket();
-  }, [])
+  
 
 
 
@@ -94,16 +92,8 @@ export default function App({ navigation }) {
 
   return (
     <Provider store={store}>
-
-
-
       <NavigationContainer>
-
-
-
         <Stack.Navigator>
-
-
           <Stack.Screen name="Home" component={HomeScreen}
             options={{
               title: "Fash-App",

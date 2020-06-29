@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState, useRef } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -40,10 +40,18 @@ function FollowersListScreen(props) {
 
     const renderFollowers = (itemData) => {
         return (
-            <View style={styles.follower}>
-                <Text>{itemData.item.firstName}    {itemData.item.lastName}  </Text>
+            <TouchableOpacity style={styles.user} onPress={() => props.navigation.navigate('OthersProfile', {
+                profileId: itemData.item.id
+            })}>
+                <Image source={itemData.item.profilePic} style={styles.dp} />
+                <View style={styles.name}>
+                    <Text>{itemData.item.firstName}    {itemData.item.lastName}</Text>
+                    <Text>{itemData.item.username}</Text>
+                </View>
 
-            </View>
+
+
+            </TouchableOpacity>
         )
 
     }
@@ -58,8 +66,8 @@ function FollowersListScreen(props) {
     return (
 
 
-        <View>
-            <Text> Followers</Text>
+        <View style={styles.screen}>
+
             <FlatList data={followers} renderItem={renderFollowers} />
         </View>
     )
@@ -92,10 +100,18 @@ function FollowingListScreen(props) {
 
     const renderFollowers = (itemData) => {
         return (
-            <View style={styles.follower}>
-                <Text>{itemData.item.firstName}    {itemData.item.lastName}  </Text>
+            <TouchableOpacity style={styles.user} onPress={() => props.navigation.navigate('OthersProfile', {
+                profileId: itemData.item.id
+            })}>
+                <Image source={itemData.item.profilePic} style={styles.dp} />
+                <View style={styles.name}>
+                    <Text>{itemData.item.firstName}    {itemData.item.lastName}</Text>
+                    <Text>{itemData.item.username}</Text>
+                </View>
 
-            </View>
+
+
+            </TouchableOpacity>
         )
 
     }
@@ -106,8 +122,8 @@ function FollowingListScreen(props) {
         getFollowing()
     }, [])
     return (
-        <View style={ScreenStyle}>
-            <Text> Following</Text>
+        <View style={styles.screen}>
+
 
             <FlatList data={following} renderItem={renderFollowers} />
 
@@ -151,8 +167,24 @@ export default function FollowersListTabScreen(props) {
 }
 
 const styles = StyleSheet.create({
-    follower: {
+    screen: {
+        ...ScreenStyle,
+        paddingHorizontal: 10,
+        paddingVertical: 20
+    },
+    user: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+
+        height: 90,
+
+    },
+    dp: {
+        height: 50,
+        width: 50,
+        borderRadius: 25,
+        marginRight: 20
+    },
+    names: {
+        flexDirection: 'column',
     }
 })

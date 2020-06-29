@@ -8,6 +8,9 @@ export const addToWishlist = productId => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/add/wishlist`, {
             method: 'POST',
+            credentials: 'include',
+            mode: 'cors',
+
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -46,7 +49,7 @@ export const addToWishlist = productId => {
 
         }
 
-        dispatch(fetchItems());
+        // dispatch(fetchItems());
 
     }
 }
@@ -57,8 +60,11 @@ export const removeFromWishlist = productId => {
         try {
             const response = await fetch(`${HOST}/delete/wishlist`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+
+
                 },
                 body: JSON.stringify({
                     productId: productId
@@ -96,7 +102,7 @@ export const removeFromWishlist = productId => {
 
             }
 
-            dispatch(fetchItems());
+            // dispatch(fetchItems());
 
 
 
@@ -120,7 +126,8 @@ export const fetchItems = () => {
 
         try {
             const response = await fetch(`${HOST}/get/wishlist`, {
-                method: 'GET'
+                method: 'GET',
+                credentials: 'include',
             })
 
             const resData = await response.json();

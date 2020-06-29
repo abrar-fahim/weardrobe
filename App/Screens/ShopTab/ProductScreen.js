@@ -47,9 +47,10 @@ export default function ProductScreen(props) {
     const dispatch = useDispatch();
     const productId = props.route.params?.productId ?? 'default'
 
-    const loggedIn = useSelector(state => state.auth.userId, (left, right) => (left.auth.userId === right.auth.userId)) === null ? false : true
+
 
     const userId = useSelector(state => state.auth.userId);
+    const loggedIn = userId ? true : false
 
     const product = useSelector(state => state.products.productDetails);
 
@@ -82,24 +83,22 @@ export default function ProductScreen(props) {
 
 
     const loadProductDetails = useCallback(async () => {
-        let mounted = true;
-        try {
-            if (mounted) {
-                setIsLoading(true)
-                await dispatch(productActions.fetchProductReviews(productId))
-                // await dispatch(wishlistActions.fetchItems())
-                await dispatch(productActions.fetchProductDetails(productId))
-                setIsLoading(false)
 
-            }
+        try {
+
+            setIsLoading(true)
+            await dispatch(productActions.fetchProductReviews(productId))
+            // await dispatch(wishlistActions.fetchItems())
+            await dispatch(productActions.fetchProductDetails(productId))
+            setIsLoading(false)
+
+
         } catch (err) {
             console.log(err)
         }
-        finally {
-            return () => mounted = false;
-        }
 
-    }, [])
+
+    }, [productId, productActions.fetchProductReviews, productActions.fetchProductDetails])
 
     const loadMoreReviews = useCallback(async () => {
 
@@ -123,7 +122,7 @@ export default function ProductScreen(props) {
         setIterLoading(false)
 
 
-    }, [iterLoading, iter])
+    }, [productId, iterLoading, iter])
 
 
 
@@ -268,79 +267,63 @@ export default function ProductScreen(props) {
 
 
     const addToWishlist = useCallback(async () => {
-        let mounted = true;
+
         try {
-            if (mounted) {
-                await dispatch(wishlistActions.addToWishlist(productId))
 
-                await dispatch(productActions.fetchProductDetails(productId))
+            await dispatch(wishlistActions.addToWishlist(productId))
 
-
-
-                // setPopupMessage("added to wishlist!")
-
-            }
+            await dispatch(productActions.fetchProductDetails(productId))
+            // setPopupMessage("added to wishlist!")
 
         } catch (err) {
             console.log(err.message)
 
         }
-        finally {
-            return () => mounted = false;
-        }
 
-    }, [])
+
+    }, [productId])
 
     const removeFromWishlist = useCallback(async () => {
-        let mounted = true;
+
         try {
-            if (mounted) {
-                await dispatch(wishlistActions.removeFromWishlist(productId))
 
-                await dispatch(productActions.fetchProductDetails(productId))
+            await dispatch(wishlistActions.removeFromWishlist(productId))
 
-            }
+            await dispatch(productActions.fetchProductDetails(productId))
+
+
         } catch (err) {
 
             console.log(err.message)
         }
-        finally {
-            return () => mounted = false;
-        }
 
-    }, [])
+    }, [productId])
 
     const addReview = useCallback(async (rating, review) => {
-        let mounted = true;
+
 
         if (!loggedIn) {
             props.navigation.navigate('Login');
-            setIsReviewModalVisible(false);
+
         }
         else {
             try {
-                if (mounted) {
+                await dispatch(productActions.addReview(productId, rating, review))
 
-                    await dispatch(productActions.addReview(productId, rating, review))
-                    setIsReviewModalVisible(false);
-                    product.hasReviewed = 1
-                    // setAddReviewPopupVisible(true);
+                product.hasReviewed = 1
+                // setAddReviewPopupVisible(true);
 
-                    //setAddCartMessage(cartMessage);
-                }
+                //setAddCartMessage(cartMessage);
+
 
             } catch (err) {
                 console.log(err.message)
                 //setAddCartMessage('Failed to add to cart')
             }
-
-            finally {
-                return () => mounted = false;
-            }
         }
 
 
-    }, [loggedIn])
+    }, [loggedIn, productId])
 
 
     useEffect(() => {
@@ -365,20 +348,20 @@ export default function ProductScreen(props) {
                     title="heart"
                     iconName={heartIcon}
                     onPress={() => {
-                        if (!loggedIn) {
-                            //setInWishlist(false);
-                            props.navigation.navigate('Login');
+                        // if (!loggedIn) {
+                        //     //setInWishlist(false);
+                        //     props.navigation.navigate('Login');
+                        // }
+                        // else {
+                        if (inWishlist === true) {
+                            removeFromWishlist();
                         }
                         else {
-                            if (inWishlist === true) {
-                                removeFromWishlist();
-                            }
-                            else {
-                                addToWishlist();
-
-                            }
+                            addToWishlist();
 
                         }
+
+                        // }
 
                     }
 

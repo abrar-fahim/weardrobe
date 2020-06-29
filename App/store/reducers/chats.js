@@ -6,7 +6,8 @@ import {
     GET_GROUP_PEOPLE,
     SET_SESSION_ACTIVE,
     UPDATE_SESSION_TIMER,
-    ADD_CHAT
+    ADD_CHAT,
+    SET_GROUP_ID
 } from '../actions/chats'
 
 const initialState = {
@@ -18,12 +19,13 @@ const initialState = {
     sessionGroupId: null,
     activeSessionId: null,
     timeLeft: 0,
-    expiresIn: 0
+    expiresIn: 0,
+    groupId: null  //this keeps track of the groupId returned from create new shop chat or create new group chat
 }
 
 
 export default function socialReducer(state = initialState, action) {
-
+    if (action.type !== UPDATE_SESSION_TIMER) console.log(action.type)
     switch (action.type) {
         case GET_GROUPS:
 
@@ -104,6 +106,12 @@ export default function socialReducer(state = initialState, action) {
             return {
                 ...state,
                 chats: [action.chat, ...state.chats]
+            }
+
+        case SET_GROUP_ID:
+            return {
+                ...state,
+                groupId: action.groupId
             }
 
 

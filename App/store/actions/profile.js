@@ -1,4 +1,4 @@
-import HOST from '../../components/host'
+import HOST, { IMG_URL } from '../../components/host'
 export const GET_SELF_POSTS = 'GET_SELF_POSTS';
 export const GET_SELF_BLOGS = 'GET_SELF_BLOGS';
 export const GET_FOLLOW_REQUESTS = 'GET_FOLLOW_REQUESTS';
@@ -27,6 +27,7 @@ export const fetchMyPosts = () => {
         try {
             const response = await fetch(`${HOST}/get/self/posts/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -51,9 +52,12 @@ export const fetchMyPosts = () => {
                         }
                     ))
                     posts.push({
+                        type: 'CUSTOMER',
                         id: resData[key].POST_ID,
                         userId: resData[key].CUSTOMER_UID,
-                        postDate: resData[key].POST_DATE,
+                        name: resData[key].FIRST_NAME + " " + resData[key].LAST_NAME,
+                        username: resData[key].USERNAME,
+                        date: resData[key].POST_DATE,
                         text: resData[key].CAPTIONS,
                         productId: resData[key].PRODUCT_ID,
                         images: processedImages,
@@ -86,6 +90,7 @@ export const fetchUserPosts = (userId) => {
         try {
             const response = await fetch(`${HOST}/get/user/${userId}/posts/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -114,8 +119,10 @@ export const fetchUserPosts = (userId) => {
                         type: 'CUSTOMER',
                         id: resData[key].POST_ID,
                         userId: resData[key].CUSTOMER_UID,
+                        name: resData[key].FIRST_NAME + " " + resData[key].LAST_NAME,
+                        username: resData[key].USERNAME,
                         date: resData[key].POST_DATE,
-                        captions: resData[key].CAPTIONS,
+                        text: resData[key].CAPTIONS,
                         productId: resData[key].PRODUCT_ID,
                         images: processedImages,
                         numComments: resData[key].COMMENT,
@@ -128,7 +135,7 @@ export const fetchUserPosts = (userId) => {
                 dispatch({ type: GET_POSTS, posts: posts })
             }
 
-       
+
 
             else {
                 dispatch({ type: GET_POSTS, posts: [] })
@@ -153,6 +160,7 @@ export const fetchMyBlogs = () => {
         try {
             const response = await fetch(`${HOST}/get/self/blogs/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -224,6 +232,7 @@ export const createUserBlog = (formData) => {
 
             const response = await fetch(`${HOST}/upload/blog`, {
                 method: 'POST',
+                credentials: 'include',
                 body: formData,
                 //no headers here, otherwise error
 
@@ -268,6 +277,7 @@ export const deleteUserBlog = (blogId) => {
 
             const response = await fetch(`${HOST}/delete/user-blog`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -318,6 +328,7 @@ export const deleteUserPost = (postId) => {
 
             const response = await fetch(`${HOST}/delete/user-post`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -368,6 +379,58 @@ export const followUser = (userId) => {
 
             const response = await fetch(`${HOST}/follow/customer`, {
                 method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+                body: JSON.stringify({
+                    uid: userId
+                }),
+                //no headers here, otherwise error
+
+            });
+
+
+            if (!response.ok) {
+                throw new Error('response not ok');
+            }
+
+
+            const resData = await response.json();
+
+            console.log(resData);
+
+            if (Object.keys(resData)[0] === 'SUCCESS') {
+
+
+            }
+
+            else {
+                throw new Error(resData.ERROR)
+            }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+
+        //dispatch(fetchMyBlogs())
+    }
+}
+
+export const unFollowUser = (userId) => {
+    return async (dispatch) => {
+        try {
+
+            const response = await fetch(`${HOST}/unfollow/customer`, {
+                method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -420,6 +483,7 @@ export const getFollowRequests = () => {
 
             const response = await fetch(`${HOST}/get/follow-requests/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -489,6 +553,7 @@ export const acceptFollowRequest = (userId) => {
 
             const response = await fetch(`${HOST}/follow/accept`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -540,6 +605,7 @@ export const getMyFollowCounts = (userId) => {
 
             const response = await fetch(`${HOST}/get/follow-counts/${userId}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -617,10 +683,9 @@ export const getMyFollowCounts = (userId) => {
 export const getFollowCounts = (userId) => {
     return async (dispatch) => {
         try {
-
-
             const response = await fetch(`${HOST}/get/follow-counts/${userId}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -629,38 +694,15 @@ export const getFollowCounts = (userId) => {
 
             });
 
-
-
             if (!response.ok) {
                 throw new Error('response not ok');
             }
-
-
 
             const resData = await response.json();
 
             const numFollowers = resData[0].FOLLOWERS;
             const numFollowing = resData[0].FOLLOWING;
             const numFollowingShop = resData[0].FOLLOWING_SHOP;
-
-
-
-            //const followRequests = []
-
-
-            // if (Object.keys(resData)[0] === 'SUCCESS') {
-
-            // for(const key in resData) {
-            //     followRequests.push({
-            //         id: resData[key].UID,
-            //         firstName: resData[key].FIRST_NAME,
-            //         lastName: resData[key].LAST_NAME,
-            //         username: resData[key].USERNAME,
-            //     })
-            // }
-
-
-
 
 
             dispatch({
@@ -672,28 +714,51 @@ export const getFollowCounts = (userId) => {
             })
 
 
-
-
-
-            // }
-
-
-            // else {
-            //     throw new Error(resData.ERROR)
-            // }
-
-
-
         }
         catch (err) {
-            //send to custom analytics server
-            //console.log('error on action')
-            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
             throw new Error(err)
         }
-
-        //dispatch(fetchMyBlogs())
     }
+}
+
+export const getFollowCountsDirect = async (userId) => {
+
+    try {
+        const response = await fetch(`${HOST}/get/follow-counts/${userId}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': "application/json"
+            },
+
+
+        });
+
+        if (!response.ok) {
+            throw new Error('response not ok');
+        }
+
+        const resData = await response.json();
+
+        const numFollowers = resData[0].FOLLOWERS;
+        const numFollowing = resData[0].FOLLOWING;
+        const numFollowingShop = resData[0].FOLLOWING_SHOP;
+
+
+        return {
+            numFollowers: numFollowers,
+            numFollowing: numFollowing,
+            numFollowingShop: numFollowingShop
+
+        }
+
+
+    }
+    catch (err) {
+        throw new Error(err)
+    }
+
 }
 
 export const getMyFollowers = (userId = 0) => {
@@ -704,6 +769,7 @@ export const getMyFollowers = (userId = 0) => {
 
             const response = await fetch(`${HOST}/get/self-followers/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -734,6 +800,7 @@ export const getMyFollowers = (userId = 0) => {
                     firstName: resData[key].FIRST_NAME,
                     lastName: resData[key].LAST_NAME,
                     username: resData[key].USERNAME,
+                    profilePic: { uri: IMG_URL + resData[key].PROFILE_PIC },
                 })
             }
 
@@ -775,6 +842,7 @@ export const getMyFollowing = () => {
 
             const response = await fetch(`${HOST}/get/self-following-people/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -805,6 +873,8 @@ export const getMyFollowing = () => {
                     firstName: resData[key].FIRST_NAME,
                     lastName: resData[key].LAST_NAME,
                     username: resData[key].USERNAME,
+                    profilePic: { uri: IMG_URL + resData[key].PROFILE_PIC },
+
                 })
             }
 
@@ -847,6 +917,7 @@ export const getUserFollowers = (userId) => {
 
             const response = await fetch(`${HOST}/get/followers/${userId}/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -877,6 +948,7 @@ export const getUserFollowers = (userId) => {
                     firstName: resData[key].FIRST_NAME,
                     lastName: resData[key].LAST_NAME,
                     username: resData[key].USERNAME,
+                    profilePic: { uri: IMG_URL + resData[key].PROFILE_PIC },
                 })
             }
 
@@ -918,6 +990,7 @@ export const getUserFollowing = (userId) => {
 
             const response = await fetch(`${HOST}/get/following-people/${userId}/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -948,6 +1021,7 @@ export const getUserFollowing = (userId) => {
                     firstName: resData[key].FIRST_NAME,
                     lastName: resData[key].LAST_NAME,
                     username: resData[key].USERNAME,
+                    profilePic: { uri: IMG_URL + resData[key].PROFILE_PIC },
                 })
             }
 
@@ -981,16 +1055,17 @@ export const getUserFollowing = (userId) => {
     }
 }
 
-export const getProfile = (userId, params) => {
+export const getProfile = (userId, params = [
+    "firstName", "lastName", "email", "phoneNumber", "birthday", "profilePic", "bio", "privacyType", "points", "type", "username"
+]) => {
 
     //implement this later
     return async (dispatch) => {
         try {
 
-
-
             const response = await fetch(`${HOST}/user-profile`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -1024,6 +1099,7 @@ export const getProfile = (userId, params) => {
                 bio: resData.BIO,
                 privacyType: resData.PRIVACY_TYPE,
                 points: resData.POINTS,
+                username: resData.USERNAME,
                 type: resData.TYPE,
 
             }
@@ -1043,7 +1119,9 @@ export const getProfile = (userId, params) => {
     }
 }
 
-export const getMyProfile = (userId, params) => {
+export const getMyProfile = (userId, params = [
+    "firstName", "lastName", "email", "phoneNumber", "birthday", "profilePic", "bio", "privacyType", "points", "type", "username"
+]) => {
 
     //implement this later
     return async (dispatch) => {
@@ -1053,6 +1131,7 @@ export const getMyProfile = (userId, params) => {
 
             const response = await fetch(`${HOST}/user-profile`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -1086,6 +1165,7 @@ export const getMyProfile = (userId, params) => {
                 bio: resData.BIO,
                 privacyType: resData.PRIVACY_TYPE,
                 points: resData.POINTS,
+                username: resData.USERNAME,
                 type: resData.TYPE,
 
             }
@@ -1105,13 +1185,129 @@ export const getMyProfile = (userId, params) => {
     }
 }
 
+export const getProfileDirect = async (userId, params = [
+    "firstName", "lastName", "email", "phoneNumber", "birthday", "profilePic", "bio", "privacyType", "points", "type", "username"
+]) => {
+
+    try {
+
+        const response = await fetch(`${HOST}/user-profile`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': "application/json"
+            },
+            body: JSON.stringify({
+                uid: userId,
+                params: params
+            })
+
+
+        });
+
+
+
+        if (!response.ok) {
+            throw new Error('response not ok');
+        }
+
+
+
+        const resData = await response.json();
+
+
+        const profile = {
+            firstName: resData.FIRST_NAME,
+            lastName: resData.LAST_NAME,
+            email: resData.EMAIL,
+            phoneNumber: resData.PHONE_NUM,
+            birthday: resData.BIRTHDAY,
+            profilePic: { uri: `${HOST}/img/temp/` + resData.PROFILE_PIC },
+            bio: resData.BIO,
+            privacyType: resData.PRIVACY_TYPE,
+            points: resData.POINTS,
+            username: resData.USERNAME,
+            type: resData.TYPE,
+            friendship: resData.FRIENDSHIP
+
+        }
+        return profile
+
+
+    }
+    catch (err) {
+
+        throw new Error(err)
+    }
+
+    //dispatch(fetchMyBlogs())
+
+}
+
 export const uploadProfilePicture = (formData) => {
     return async (dispatch) => {
         try {
 
             const response = await fetch(`${HOST}/upload/profile-pic`, {
                 method: 'POST',
+                credentials: 'include',
                 body: formData,
+                //no headers here, otherwise error
+
+            });
+
+
+            if (!response.ok) {
+                throw new Error('response not ok');
+            }
+
+
+            const resData = await response.json();
+
+            console.log(resData);
+
+            if (Object.keys(resData)[0] === 'SUCCESS') {
+
+
+            }
+
+            else {
+                throw new Error(resData.ERROR)
+            }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+
+
+    }
+}
+
+export const updateProfile = (params) => {
+    return async (dispatch) => {
+        try {
+
+            console.log(JSON.stringify({
+                params: params
+            }))
+
+            const response = await fetch(`${HOST}/update-profile`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+                body: JSON.stringify({
+                    params: params
+                }),
                 //no headers here, otherwise error
 
             });

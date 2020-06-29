@@ -10,6 +10,8 @@ export const GET_GROUP_PEOPLE = 'GET_GROUP_PEOPLE';
 export const SET_SESSION_ACTIVE = 'SET_SESSION_ACTIVE';
 export const UPDATE_SESSION_TIMER = 'UPDATE_SESSION_TIMER';
 
+export const SET_GROUP_ID = 'SET_GROUP_ID';
+
 export const ADD_CHAT = 'ADD_CHAT';
 
 
@@ -27,6 +29,7 @@ export const getGroups = (iter = 0) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/get/groups/${iter}`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -94,6 +97,7 @@ export const getChats = (groupId, iter = 0, type = 'GROUP') => {
 
         const response = await fetch(url, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -115,8 +119,8 @@ export const getChats = (groupId, iter = 0, type = 'GROUP') => {
                 const chatType = resData[key].TYPE;
                 if (chatType === 'TEXT') {
                     chats.push({
-                        id: type === 'GROUP' ? resData[key].SENDER_UID + resData[key].SENT_AT + key : resData[key].SENDER_ID + resData[key].SENT_AT + key,
-                        senderId: type === 'GROUP' ? resData[key].SENDER_UID : resData[key].SENDER_ID,
+                        id: resData[key].SENDER_UID + resData[key].SENT_AT + key,
+                        senderId: resData[key].SENDER_UID,
                         groupId: type === 'GROUP' ? resData[key].GROUP_ID : resData[key].CHAT_ID,
                         message: resData[key].MESSAGE,
                         time: resData[key].SENT_AT,
@@ -125,12 +129,31 @@ export const getChats = (groupId, iter = 0, type = 'GROUP') => {
                 }
                 else if (chatType === 'PHOTO') {
                     chats.push({
-                        id: type === 'GROUP' ? resData[key].SENDER_UID + resData[key].SENT_AT + key : resData[key].SENDER_UID + resData[key].SENT_AT + key,
-                        senderId: type === 'GROUP' ? resData[key].SENDER_UID : resData[key].SENDER_ID,
+                        id: resData[key].SENDER_UID + resData[key].SENT_AT + key,
+                        senderId: resData[key].SENDER_UID,
                         groupId: type === 'GROUP' ? resData[key].GROUP_ID : resData[key].CHAT_ID,
                         message: { uri: `${HOST}/img/temp/` + resData[key].MESSAGE },
                         time: resData[key].SENT_AT,
                         type: chatType
+                    })
+                }
+                else if (chatType === 'PRODUCT') {
+                    const productId = resData[key].MESSAGE;
+                    let product = await productActions.fetchProductDetailsDirect(productId);
+                    product = {
+                        ...product,
+                        photos: product.photos.map(photo => ({
+                            image: { uri: IMG_URL + photo.IMAGE_URL }
+                        }))
+                    }
+                    chats.push({
+                        id: resData[key].SENDER_UID + resData[key].SENT_AT + key,
+                        senderId: resData[key].SENDER_UID,
+                        groupId: type === 'GROUP' ? resData[key].GROUP_ID : resData[key].CHAT_ID,
+                        time: resData[key].SENT_AT,
+                        message: product,
+                        type: chatType
+                        // logo: {uri: `${HOST}/img/temp/` + resData[key].LOGO_URL}
                     })
                 }
 
@@ -199,6 +222,7 @@ export const getShoppingSessions = (groupId, iter = 0) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/get/session/${groupId}/${iter}`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -249,6 +273,7 @@ export const getSessionCart = (sessionId) => {
         try {
             const response = await fetch(`${HOST}/get/session-cart/${sessionId}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -290,6 +315,7 @@ export const getSessionCart = (sessionId) => {
                 })
             }
             else {
+                console.log(resData)
                 dispatch(popupActions.setMessage('Something Went Wrong', true))
             }
         }
@@ -342,6 +368,7 @@ export const startSession = (groupId, sessionName) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/session/create`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -384,6 +411,7 @@ export const getGroupPeople = (groupId) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/get/group/${groupId}/participants`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -428,6 +456,7 @@ export const createGroup = (participants) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/create-group`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -447,6 +476,11 @@ export const createGroup = (participants) => {
 
 
         if (Object.keys(resData)[0] === 'SUCCESS') {
+
+            dispatch({
+                type: SET_GROUP_ID,
+                groupId: resData.SUCCESS
+            })
 
 
         }
@@ -476,10 +510,71 @@ export const createGroup = (participants) => {
 
     }
 }
+
+export const createShopChat = (shopId) => {
+    return async (dispatch) => {
+        const response = await fetch(`${HOST}/create-shop-chat`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                shopId: shopId
+            })
+
+        });
+
+        if (!response.ok) {
+            dispatch(popupActions.setMessage('Something Went Wrong', true))
+        }
+
+        const resData = await response.json();  //converts response string to js object/array
+
+        console.log(resData);
+
+
+        if (Object.keys(resData)[0] === 'SUCCESS') {
+            dispatch({
+                type: SET_GROUP_ID,
+                groupId: resData.SUCCESS
+            })
+
+
+
+        }
+        else {
+            dispatch(popupActions.setMessage('Couldn\'t create group', true))
+
+        }
+        // const cartItems = [];
+
+        // for (const key in resData) {
+        //     cartItems.push({
+        //         id: resData[key].SESSION_ID,
+        //         productId: resData[key].PRODUCT_ID,
+        //         color: resData[key].COLOR,
+        //         size: resData[key].SIZE,
+        //         quantity: resData[key].QUANTITY,
+        //         data: resData[key].DATE,
+        //         customerId: resData[key].CUSTOMER_ID,
+        //     })
+        // }
+
+        // dispatch({
+        //     type: GET_SESSION_CART,
+        //     cartItems: cartItems
+        // })
+
+
+    }
+}
+
 export const deleteGroup = (groupId) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/delete-group`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -533,7 +628,7 @@ export const connectSocket = () => {
     socket = io(`${HOST}/group-chat`)
 }
 
-export const connectToGroup = (groupId) => {
+export const connectToGroup = (groupId, type = 'GROUP') => {
 
 
     return async (dispatch) => {
@@ -542,10 +637,14 @@ export const connectToGroup = (groupId) => {
         console.log(socket.id)
 
 
+        console.log('groupId: ' + groupId)
 
-        socket.emit('join', `{"groupId": "${groupId}"}`);
 
-        socket.on('sendMessageGroup', async (chat) => {
+        type === 'GROUP' ? socket.emit('join', `{"groupId": "${groupId}"}`) : socket.emit('join', `{"chatId": "${groupId}"}`)
+
+        const chatEvent = type === 'GROUP' ? 'sendMessageGroup' : 'sendMessageShop';
+
+        socket.on(chatEvent, async (chat) => {
             console.log(chat)
             // dispatch(getChats(groupId))
             // console.log(text)
@@ -626,8 +725,9 @@ export const sendChat = (groupId, text, type = 'GROUP') => {
 
 
     return async (dispatch) => {
+        console.log('type: ' + type)
 
-        type === 'GROUP' ? await socket?.emit('sendMessageGroup', `{"groupId": "${groupId}", "message":"${text}", "type":"TEXT"}`) : await socket?.emit('sendMessageGroup', `{"chatId": "${groupId}", "message":"${text}", "type":"TEXT"}`)
+        type === 'GROUP' ? await socket?.emit('sendMessageGroup', `{"groupId": "${groupId}", "message":"${text}", "type":"TEXT"}`) : await socket?.emit('sendMessageShop', `{"chatId": "${groupId}", "message":"${text}", "type":"TEXT"}`)
 
         socket?.emit('status');
 
@@ -640,7 +740,7 @@ export const sendProduct = (groupId, productId) => {
 
     return async (dispatch) => {
 
-        await socket?.emit('sendMessageGroup', `{"groupId": "${groupId}", "message":"${productId}"}, "type: "PRODUCT"`);
+        await socket?.emit('sendMessageGroup', `{"groupId": "${groupId}", "message":"${productId}", "type": "PRODUCT"}`);
 
         socket?.emit('status');
 
@@ -648,7 +748,7 @@ export const sendProduct = (groupId, productId) => {
 }
 
 
-export const disconnectFromGroup = (groupId) => {
+export const disconnectFromGroup = () => {
 
 
 
@@ -657,8 +757,9 @@ export const disconnectFromGroup = (groupId) => {
 
         // socket?.close()
         console.log('close')
-        socket.emit('disconnect');
+        await socket?.emit('disconnect');
         socket.removeListener('sendMessageGroup')
+        socket.removeListener('sendMessageShop')
 
 
     }
@@ -711,7 +812,7 @@ export const disconnectFromGroup = (groupId) => {
 //     }
 // }
 
-export const sendPhotoFile = (groupId, image) => {
+export const sendPhotoFile = (groupId, image, type = 'GROUP') => {
 
     return async (dispatch) => {
 
@@ -735,11 +836,17 @@ export const sendPhotoFile = (groupId, image) => {
 
 
 
-        socket.emit('sendMessageGroup', JSON.stringify({
+        type === 'GROUP' ? socket.emit('sendMessageGroup', JSON.stringify({
             groupId: groupId,
             photo: image,
             type: 'PHOTO'
+        })) : socket.emit('sendMessageShop', JSON.stringify({
+            chatId: groupId,
+            photo: image,
+            type: 'PHOTO'
         }))
+
+
         socket?.emit('status');
 
 

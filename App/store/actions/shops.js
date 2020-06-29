@@ -20,6 +20,7 @@ export const getShops = (iter = 0) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/get/allshops/${iter}`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -60,6 +61,7 @@ export const fetchShopProducts = (shopId, iter = 0) => {
         try {
             const response = await fetch(`${HOST}/get/shop/${shopId}/products/${iter}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -102,6 +104,7 @@ export const fetchShopDetails = (shopId) => {
         try {
             const response = await fetch(`${HOST}/get/shop/${shopId}/details`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -149,6 +152,7 @@ export const followShop = (shopId) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/follow/shop`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -197,6 +201,7 @@ export const fetchMyShops = (iter = 0) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/get/myshoplist/${iter}`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -258,6 +263,7 @@ export const unFollowShop = (shopId) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/unfollow/shop`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -307,6 +313,7 @@ export const fetchShopReviews = (shopId, iter = 0) => {
         try {
             const response = await fetch(`${HOST}/get/shop/${shopId}/reviews/${iter}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -350,6 +357,7 @@ export const addReview = (shopId, rating, review) => {
         try {
             const response = await fetch(`${HOST}/review/shop`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -403,6 +411,7 @@ export const fetchShopCategories = (shopId, iter = 0) => {
         try {
             const response = await fetch(`${HOST}/get/category/list-by-shops/${shopId}/${iter}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -456,6 +465,7 @@ export const getSellerPosts = (shopId, iter = 0) => {
     return async (dispatch) => {
         const response = await fetch(`${HOST}/get/shop/${shopId}/posts/${iter}`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -478,6 +488,7 @@ export const getSellerPosts = (shopId, iter = 0) => {
                 image: { uri: `${HOST}/img/temp/` + photo.IMAGE_URL }
             }))
             posts.push({
+                type: 'SHOP',
                 id: resData[key].POST_ID,
                 shopId: resData[key].SHOP_ID,
                 text: resData[key].TEXT,

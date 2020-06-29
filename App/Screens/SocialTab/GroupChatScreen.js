@@ -12,6 +12,7 @@ import { MaterialIcons, SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 import * as chatActions from '../../store/actions/chats'
 import * as popupActions from '../../store/actions/Popup'
 import * as productActions from '../../store/actions/products'
+import * as profileActions from '../../store/actions/profile'
 import { useSelector, useDispatch } from 'react-redux';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import LoadingScreen from '../../components/LoadingScreen';
@@ -105,10 +106,13 @@ export function GroupChatScreen(props) {
     const shopId = props.route.params?.shopId;
 
 
+    const [product, setProduct] = useState(props.route.params?.product)
+
     const sessionGroupId = useSelector(state => state.social.sessionGroupId)
 
     const chats = useSelector(state => state.social.chats);
     const participants = useSelector(state => state.social.groupPeople);
+    const myProfile = useSelector(state => state.profile.myProfile);
 
     const userId = useSelector(state => state.auth.userId);
 
@@ -123,21 +127,13 @@ export function GroupChatScreen(props) {
 
     const [isLoading, setIsLoading] = useState(true)
 
-    const [product, setProduct] = useState(props.route.params?.product)
 
-    // const [products, setProducts] = useState([])
 
     const getChats = useCallback(async () => {
         try {
             console.log(chats.length)
 
             await dispatch(chatActions.getChats(groupId, chats.length, type))
-
-            // setIter(chats.length)
-            // dispatch(popupActions.setMessage('hello' + chats.length))
-
-
-
         }
         catch (err) {
             console.log(err)
@@ -151,8 +147,10 @@ export function GroupChatScreen(props) {
             await dispatch(chatActions.getChats(groupId, 0, type))
             console.log('type: ' + type)
 
-            if (type === 'GROUP') await dispatch(chatActions.getGroupPeople(groupId))
-            await dispatch(chatActions.connectToGroup(groupId))
+            if (type === 'GROUP') await dispatch(chatActions.getGroupPeople(groupId));
+            else await dispatch(profileActions.getMyProfile(userId));
+
+            await dispatch(chatActions.connectToGroup(groupId, type))
             // setIter(chats.length)
             setIsLoading(false)
         }
@@ -179,7 +177,7 @@ export function GroupChatScreen(props) {
         }
         setSending(false)
 
-    }, [sending, groupId])
+    }, [sending, groupId, type])
 
     const sendProduct = useCallback(async (productId) => {
         console.log('send product')
@@ -213,8 +211,8 @@ export function GroupChatScreen(props) {
         // return willFocusSub;
 
         loadChats()
-        return () => {
-            dispatch(chatActions.disconnectFromGroup(groupId))
+        return async () => {
+            await dispatch(chatActions.disconnectFromGroup())
         }
     }, []);
 
@@ -236,18 +234,22 @@ export function GroupChatScreen(props) {
 
 
 
-        const dp = type === 'GROUP' ? (participants !== undefined ? participants?.filter((person) => person.id === itemData.item.senderId)[0]?.profilePic : null) : logo;
+        const dp = type === 'GROUP' ? (participants !== undefined ? participants?.find((person) => person.id === itemData.item.senderId)?.profilePic : null) : (itemData.item.senderId === userId ? myProfile.profilePic : logo);
 
         const username = type === 'GROUP' ? (participants !== undefined ? participants?.filter((person) => person.id === itemData.item.senderId)[0]?.username : null) : name
         if (itemData.item.senderId === userId) {
             return (
                 <View style={styles.chat}>
 
-                    <Image style={styles.pictureMe} source={dp} />
-                    <Text style={styles.usernameMe}>{username}</Text>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('Weardrobe')}>
+                        <Image style={styles.pictureMe} source={dp} />
+                        <Text style={styles.usernameMe}>{username}</Text>
+                    </TouchableOpacity>
+
+
                     {itemData.item.type === 'PHOTO' ? <Image source={itemData.item.message} style={styles.photoMe} /> : (itemData.item.type === 'PRODUCT' ?
                         <TouchableOpacity onPress={() => props.navigation.navigate('Product', {
-                            productId: itemData.item.product.id
+                            productId: itemData.item.message.id
                         })}>
                             <View style={styles.productBubbleMe}>
                                 <Image style={styles.productPhotoMe} source={itemData.item.message.photos[0].image} />
@@ -276,8 +278,14 @@ export function GroupChatScreen(props) {
 
         return (
             <View style={styles.chat}>
-                <Image style={styles.picture} source={dp} />
-                <Text style={styles.username}>{username}</Text>
+                <TouchableOpacity onPress={() => type === 'GROUP' ? props.navigation.navigate('Profile', {
+                    profileId: itemData.item.senderId
+                }) : props.navigation.navigate('Seller', {
+                    shopId: itemData.item.senderId
+                })}>
+                    <Image style={styles.picture} source={dp} />
+                    <Text style={styles.username}>{username}</Text>
+                </TouchableOpacity>
                 {itemData.item.type === 'PHOTO' ? <Image source={itemData.item.message} style={styles.photo} /> : (itemData.item.type === 'PRODUCT' ?
                     <View style={styles.productBubble}>
                         <Image style={styles.productPhoto} source={itemData.item.message.photos[0].image} />
@@ -345,8 +353,10 @@ export function GroupChatScreen(props) {
                 style={styles.sendMsgContainer}
             >
                 <TouchableOpacity onPress={() => {
+                    // props?.setChatVisible(false) ?? null
                     props.navigation.navigate('PictureUpload', {
-                        groupId: groupId
+                        groupId: groupId,
+                        type: type
                     })
                 }}>
                     <Ionicons name="md-photos" size={30} color="grey" />

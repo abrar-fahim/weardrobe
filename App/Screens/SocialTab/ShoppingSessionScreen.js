@@ -22,7 +22,8 @@ import ShoppingSessionTimer from '../../components/ShoppingSessionTimer';
 
 export default function ShoppingSessionScreen(props) {
 
-    const sessionId = props.route.params?.sessionId
+    const sessionId = props.route.params?.sessionId;
+    const groupId = props.route.params?.groupId;
 
     const activeSessionId = useSelector(state => state.social.activeSessionId)
 
@@ -188,7 +189,10 @@ export default function ShoppingSessionScreen(props) {
                             <View style={styles.buttons}>
 
                                 <TouchableOpacity onPress={() => (props.navigation.navigate('GroupChat', {
-                                    product: itemData.item
+                                    product: itemData.item,
+                                    groupId: groupId,
+                                    type: 'GROUP'
+
                                 }))}>
                                     <View style={styles.cartX}>
                                         <Text style={styles.x}>TALK ABOUT</Text>

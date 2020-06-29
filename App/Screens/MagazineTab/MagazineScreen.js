@@ -1,12 +1,11 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState, useRef } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { FEEDITEMS } from '../../dummy-data/Feed'
-import { TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import NewPostChooseLayout from './NewPostChooseLayoutScreen';
 import NewPostButton from '../../components/NewPostButton';
 import NewPostScreen2 from './NewPostScreen2';
@@ -28,6 +27,7 @@ import AuthRequiredScreen from '../AuthRequiredScreen';
 import PostScreen from './PostScreen';
 import PeopleSearchScreen from './PeopleSearch';
 import FollowersListTabScreen from '../ProfileTab/FollowersListScreen';
+import Post from '../../components/Post';
 
 
 
@@ -70,47 +70,7 @@ export function MagazineScreen(props) {
 
 
 
-    const reactShopPost = useCallback(async (postId) => {
-        try {
-            await dispatch(magazineActions.reactShopPost(postId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-    const unReactShopPost = useCallback(async (postId) => {
-        try {
-            await dispatch(magazineActions.unReactShopPost(postId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
 
-    const reactUserPost = useCallback(async (postId) => {
-        try {
-            await dispatch(magazineActions.reactUserPost(postId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-    const unReactUserPost = useCallback(async (postId) => {
-        try {
-            await dispatch(magazineActions.unReactUserPost(postId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
 
 
     const reactUserBlog = useCallback(async (blogId) => {
@@ -160,16 +120,7 @@ export function MagazineScreen(props) {
         loadPosts();
     }, [userId])
 
-    const renderImages = (itemData) => {
 
-
-        return (
-
-            <Image source={itemData.item.image} style={styles.postImage} resizeMode="contain" />
-
-        )
-
-    }
 
     const renderFeedItem = (itemData) => {
 
@@ -177,115 +128,7 @@ export function MagazineScreen(props) {
 
 
 
-            <View style={styles.gridItem} >
-
-                <TouchableOpacity onPress={() => {
-                    itemData.item.type === 'SHOP' ?
-                        props.navigation.navigate('Seller', {
-                            shopId: itemData.item.shopId
-                        }) :
-                        props.navigation.navigate('OthersProfile', {
-                            profileId: itemData.item.posterId
-                        })
-
-                }}
-
-
-                >
-                    <View style={styles.nameDP}>
-
-                        <Image style={styles.DPImage} source={itemData.item.logo} />
-                        <View style={styles.nameContainer}>
-                            <Text style={styles.Name}> {itemData.item.name} </Text>
-                            <Text style={styles.username}> {itemData.item.username} . {itemData.item.date} </Text>
-                        </View>
-
-
-                    </View>
-                </TouchableOpacity>
-
-
-                <TouchableOpacity style={styles.Post} onPress={() => {
-                    itemData.item.productId ? props.navigation.navigate('Product', {
-                        productId: itemData.item.productId
-                    }) :
-
-                        props.navigation.navigate('Post', {
-                            post: itemData.item,
-                            type: itemData.item.type
-                        })
-
-
-
-                    return null;
-
-                }}>
-
-                    <FlatList horizontal={true} pagingEnabled={true} data={itemData.item.images} renderItem={renderImages} />
-                    {/* <Image  source={require('../../assets/Images/suit.png')} style={styles.PostImage}/>  */}
-                    <Text style={styles.caption}>   {itemData.item.text}</Text>
-
-                </TouchableOpacity>
-
-                <View style={styles.reactsCommentsContainer}>
-                    <TouchableOpacity style={styles.Like} onPress={async () => {
-
-
-                        if (itemData.item.hasReacted === 1) {
-                            //unlike
-                            itemData.item.type === 'SHOP' ? await unReactShopPost(itemData.item.id) : await unReactUserPost(itemData.item.id)
-
-                            if (error === '') {
-
-                                // flatListRef.current.recordInteraction()
-                                itemData.item.hasReacted = 0;
-                                itemData.item.numReacts -= 1;
-                                setChange(state => state - 1)
-                            }
-
-                        }
-                        else {
-                            itemData.item.type === 'SHOP' ? await reactShopPost(itemData.item.id) : reactUserPost(itemData.item.id)
-                            if (error === '') {
-                                itemData.item.hasReacted = 1;
-                                itemData.item.numReacts += 1;
-                                setChange(state => state + 1)
-                            }
-
-
-                        }
-                    }}>
-
-
-                        {itemData.item.hasReacted === 1 ? <MaterialCommunityIcons name="heart-multiple" size={30} color='#E1306C' /> : <MaterialCommunityIcons name="heart-multiple-outline" size={30} color='black' />}
-
-                        <Text style={styles.number}>{itemData.item.numReacts}</Text>
-
-
-                    </TouchableOpacity>
-
-
-
-
-                    <TouchableOpacity
-                        style={styles.comment}
-                        onPress={() => {
-                            props.navigation.navigate('Post', {
-                                post: itemData.item,
-                                type: itemData.item.type
-                            })
-
-
-                        }}
-                    >
-                        <MaterialCommunityIcons name="comment-multiple" color="black" size={30} />
-                        <Text style={styles.number}>{itemData.item.numComments}</Text>
-                    </TouchableOpacity>
-
-
-
-                </View>
-            </View>
+            <Post post={itemData.item} navigation={props.navigation} setChange={setChange} />
 
 
         )

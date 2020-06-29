@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as magazineActions from '../../store/actions/magazine'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../../Styles/Colors';
+import { set } from 'react-native-reanimated';
+import Post from '../../components/Post';
 
 const PostScreen = (props) => {
 
@@ -48,51 +50,7 @@ const PostScreen = (props) => {
     })
 
 
-    const reactUserPost = useCallback(async () => {
-        try {
-            await dispatch(magazineActions.reactUserPost(post.id))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-    const unReactUserPost = useCallback(async () => {
-        try {
-            await dispatch(magazineActions.unReactUserPost(post.id))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
 
-
-
-
-
-    const reactShopPost = useCallback(async () => {
-        try {
-            await dispatch(magazineActions.reactShopPost(post.id))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-    const unReactShopPost = useCallback(async () => {
-        try {
-            await dispatch(magazineActions.unReactShopPost(post.id))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
 
     const commentUserPost = useCallback(async (comment) => {
         try {
@@ -144,16 +102,6 @@ const PostScreen = (props) => {
 
     }, [])
 
-    const renderImage = (itemData) => {
-        // console.log(post.image.image)
-        return (
-
-
-            <Image source={itemData.item.image} style={styles.postImage}
-                resizeMode="contain" />
-
-        )
-    }
 
     const renderComment = (itemData) => {
 
@@ -181,91 +129,7 @@ const PostScreen = (props) => {
                 renderItem={renderComment}
                 ListHeaderComponent={
                     <>
-                        <View style={styles.post}>
-
-                            <TouchableOpacity onPress={() => {
-                                post.type === 'SHOP' ?
-                                    props.navigation.navigate('Seller', {
-                                        shopId: post.shopId
-                                    }) :
-                                    props.navigation.navigate('OthersProfile', {
-                                        profileId: post.posterId
-                                    })
-
-                            }}>
-                                <View style={styles.nameDP}>
-
-                                    <Image style={styles.DPImage} source={post.logo} />
-                                    <View style={styles.nameContainer}>
-                                        <Text style={styles.Name}> {post.name} </Text>
-                                        <Text style={styles.username}> {post.username} . {post.postDate} </Text>
-                                    </View>
-
-
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    if (post.productId) props.navigation.navigate('Product', {
-                                        productId: post.productId
-                                    })
-                                }}
-                            >
-                                <FlatList data={post.images} pagingEnabled={true} horizontal={true} renderItem={renderImage} />
-
-                            </TouchableOpacity>
-
-
-                            <Text style={styles.caption}>{post.text}</Text>
-                            <View style={styles.reactsCommentsContainer}>
-                                <TouchableOpacity style={styles.Like} onPress={async () => {
-
-
-                                    if (post.hasReacted === 1) {
-                                        //unlike
-                                        post.type === 'SHOP' ? await unReactShopPost() : await unReactUserPost()
-                                        if (error === '') {
-
-
-                                            // flatListRef.current.recordInteraction()
-                                            post.hasReacted = 0;
-                                            post.numReacts -= 1;
-                                            setChange(state => state - 1)
-                                        }
-
-                                    }
-                                    else {
-                                        post.type === 'SHOP' ? await reactShopPost() : await reactUserPost()
-                                        if (error === '') {
-                                            post.hasReacted = 1;
-                                            post.numReacts += 1;
-                                            setChange(state => state + 1)
-                                        }
-
-
-                                    }
-                                }}>
-
-
-                                    {post.hasReacted === 1 ? <MaterialCommunityIcons name="heart-multiple" size={30} color='#E1306C' /> : <MaterialCommunityIcons name="heart-multiple-outline" size={30} color='black' />}
-
-                                    <Text style={styles.number}>{post.numReacts}</Text>
-
-
-                                </TouchableOpacity>
-
-                                <View style={styles.commentNum}>
-                                    <MaterialCommunityIcons name="comment-multiple" color="black" size={30} />
-                                    <Text style={styles.number}>{post.numComments}</Text>
-                                </View>
-
-
-
-                            </View>
-
-
-
-                        </View>
+                        <Post post={post} navigation={props.navigation} setChange={setChange} />
                         <Text style={styles.heading}>Comments</Text>
                     </>
 

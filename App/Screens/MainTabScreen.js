@@ -28,10 +28,11 @@ import Colors from '../Styles/Colors'
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as authActions from '../store/actions/auth'
-import * as socialActions from '../store/actions/chats'
+import * as chatActions from '../store/actions/chats'
 
 import SmallPopup from '../components/SmallPopup'
 import ProductScreen from './ShopTab/ProductScreen';
+
 
 export default function HomeScreen(props) {
 
@@ -56,28 +57,32 @@ export default function HomeScreen(props) {
         //setIsLoading(true);
         try {
             await dispatch(authActions.getUserId())
+            if (userId) chatActions.connectSocket();
         } catch (err) {
-            console.log("error in trab screen: ");
+
             console.log(err)
         }
         //setIsLoading(false);
-    }, [])
+    }, [userId])
 
 
 
     useEffect(() => {
-        const willFocusSub = props.navigation.addListener(
-            'focus', () => {
+        // const willFocusSub = props.navigation.addListener(
+        //     'focus', () => {
 
-                if (!userId) {
-                    loadUserId()
-                }
-            }
+        //         if (!userId) {
+        //             loadUserId()
+        //         }
+        //     }
 
-        );
+        // );
 
-        return willFocusSub;
-    }, [loadUserId]);
+        // return willFocusSub;
+        loadUserId();
+
+        //diconnect socket here later
+    }, [userId]);
 
 
 
@@ -85,7 +90,7 @@ export default function HomeScreen(props) {
 
 
         const shoppingSessionTimer = setInterval(() => {
-            dispatch(socialActions.updateSessionTimer(expiresIn - Date.now()))
+            dispatch(chatActions.updateSessionTimer(expiresIn - Date.now()))
         }, 1000)
         return () => clearInterval(shoppingSessionTimer)
 

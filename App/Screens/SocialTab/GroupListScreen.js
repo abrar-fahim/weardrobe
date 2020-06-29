@@ -1,10 +1,9 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import ScreenStyle from '../../Styles/ScreenStyle';
 import GROUPS from '../../dummy-data/Groups'
 
@@ -140,8 +139,10 @@ export default function GroupListScreen(props) {
             <FlatList
                 data={groups}
                 renderItem={renderItems}
+                refreshing={isLoading}
+                onRefresh={LoadGroups}
                 ListEmptyComponent={
-                    <View>
+                    <View style={{ flex: 1 }}>
                         <Text>No chats yet!</Text>
                     </View>
                 }

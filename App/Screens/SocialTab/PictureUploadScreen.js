@@ -17,7 +17,8 @@ import Colors from '../../Styles/Colors';
 
 const PictureUploadScreen = (props) => {
 
-    const groupId = props.route.params?.groupId
+    const groupId = props.route.params?.groupId;
+    const type = props.route.params?.type;
 
     console.log(groupId)
 
@@ -32,7 +33,7 @@ const PictureUploadScreen = (props) => {
         try {
             // console.log(formData)
             // await dispatch(chatActions.sendPhoto(formData))
-            await dispatch(chatActions.sendPhotoFile(groupId, image.base64))
+            await dispatch(chatActions.sendPhotoFile(groupId, image.base64, type))
         }
         catch (err) {
             console.log(err)

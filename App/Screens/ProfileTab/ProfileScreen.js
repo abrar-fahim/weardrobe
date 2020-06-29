@@ -35,6 +35,7 @@ import PostScreen from '../MagazineTab/PostScreen';
 
 import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import DpUploadScreen from './DpUploadScreen';
+import Post from '../../components/Post';
 
 
 
@@ -188,23 +189,37 @@ import DpUploadScreen from './DpUploadScreen';
 export function ProfileScreen(props) {
     const profileId = props.route.params?.profileId
 
+    console.log(props.route.params)
+
     const dispatch = useDispatch();
+    const userId = useSelector(state => state.auth.userId)
 
     const myProfile = userId === profileId || profileId === undefined//secure this check using backend auth in production
 
-    const userId = useSelector(state => state.auth.userId)
+    console.log('user: ' + userId)
+    console.log('profile: ' + profileId)
+
+
+
     const posts = useSelector(state => state.profile.posts)
     const myPosts = useSelector(state => state.profile.myPosts)
 
 
-    const numFollowers = myProfile ? useSelector(state => state.profile.myNumFollowers) : useSelector(state => state.profile.numFollowers)
-    const numFollowing = myProfile ? useSelector(state => state.profile.myNumFollowing) : useSelector(state => state.profile.numFollowing)
-    const numFollowingShop = myProfile ? useSelector(state => state.profile.myNumFollowingShop) : useSelector(state => state.profile.numFollowingShop)
-    const profile = myProfile ? useSelector(state => state.profile.myProfile) : useSelector(state => state.profile.otherProfile)
+    // const numFollowers = myProfile ? useSelector(state => state.profile.myNumFollowers) : useSelector(state => state.profile.numFollowers)
+    // const numFollowing = myProfile ? useSelector(state => state.profile.myNumFollowing) : useSelector(state => state.profile.numFollowing)
+    // const numFollowingShop = myProfile ? useSelector(state => state.profile.myNumFollowingShop) : useSelector(state => state.profile.numFollowingShop)
+
+    // const profile = myProfile ? useSelector(state => state.profile.myProfile) : useSelector(state => state.profile.otherProfile)
+
+    const [profile, setProfile] = useState(null)
+
+
 
     const [isLoading, setIsLoading] = useState(true);
 
-    const [error, setError] = useState('')
+    const [followCounts, setFollowCounts] = useState(null)
+
+
 
 
     const [change, setChange] = useState(0);    //this forces like icon to re render on each touch
@@ -215,46 +230,90 @@ export function ProfileScreen(props) {
 
     const [allowed, setAllowed] = useState(true)
 
-    const followUser = useCallback(async (userId) => {
-        try {
-            await dispatch(profileActions.followUser(userId))
+    const getProfile = useCallback(async () => {
 
+        try {
+            const gotProfile = await profileActions.getProfileDirect(profileId);
+
+            setProfile(gotProfile)
         }
         catch (err) {
-
             console.log(err);
         }
-    })
+    }, [profileId])
 
     const getFollowCounts = useCallback(async () => {
         // const id = myProfile? userId: profileId
         try {
-            myProfile ? await dispatch(profileActions.getMyFollowCounts(userId)) : await dispatch(profileActions.getFollowCounts(profileId))
-            // setError('')
+            setIsLoading(true)
+            const gotFollowCounts = await profileActions.getFollowCountsDirect(profileId);
+            setFollowCounts(gotFollowCounts)
+            setIsLoading(false)
+
         }
         catch (err) {
-            // setError(err.message)
+
+            console.log(err);
+        }
+    }, [profileId])
+
+
+    const followUser = useCallback(async (userId) => {
+        try {
+            await dispatch(profileActions.followUser(userId))
+            getProfile();
+            getFollowCounts();
+
+        }
+        catch (err) {
+
             console.log(err);
         }
     })
 
-    const getProfile = useCallback(async () => {
-        console.log('myProfile: ' + myProfile)
+    const unFollowUser = useCallback(async (userId) => {
         try {
-            myProfile ? await dispatch(profileActions.getMyProfile(userId, [
-                "firstName", "lastName", "email", "phoneNumber", "birthday", "profilePic", "bio", "privacyType", "points", "type"
-            ])) : await dispatch(profileActions.getProfile(profileId, [
-                "firstName", "lastName", "email", "phoneNumber", "birthday", "profilePic", "bio", "privacyType", "points", "type"
-            ]))
+            await dispatch(profileActions.unFollowUser(userId))
+            getProfile();
+            getFollowCounts();
 
-
-            // setError('')
         }
         catch (err) {
-            // setError(err.message)
+
             console.log(err);
         }
-    }, [myProfile, profileId])
+    })
+
+    // const getFollowCounts = useCallback(async () => {
+    //     // const id = myProfile? userId: profileId
+    //     try {
+    //         myProfile ? await dispatch(profileActions.getMyFollowCounts(userId)) : await dispatch(profileActions.getFollowCounts(profileId))
+    //         // setError('')
+    //     }
+    //     catch (err) {
+    //         // setError(err.message)
+    //         console.log(err);
+    //     }
+    // }, [profileId])
+
+
+
+
+    // const getProfile = useCallback(async () => {
+    //     console.log('myProfile: ' + myProfile)
+    //     try {
+    //         myProfile ? await dispatch(profileActions.getMyProfile(userId)) : await dispatch(profileActions.getProfile(profileId))
+
+
+    //         // setError('')
+    //     }
+    //     catch (err) {
+    //         // setError(err.message)
+    //         console.log(err);
+    //     }
+    // }, [myProfile, profileId, userId])
+
+
 
 
 
@@ -299,49 +358,6 @@ export function ProfileScreen(props) {
         }
     }, [])
 
-
-    const reactUserPost = useCallback(async (postId) => {
-        try {
-            await dispatch(magazineActions.reactUserPost(postId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-    const unReactUserPost = useCallback(async (postId) => {
-        try {
-            await dispatch(magazineActions.unReactUserPost(postId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-
-
-    const reactShopPost = useCallback(async (postId) => {
-        try {
-            await dispatch(magazineActions.reactShopPost(postId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-    const unReactShopPost = useCallback(async (postId) => {
-        try {
-            await dispatch(magazineActions.unReactShopPost(postId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
     const reactUserBlog = useCallback(async (blogId) => {
         try {
             await dispatch(magazineActions.reactUserBlog(blogId))
@@ -412,144 +428,21 @@ export function ProfileScreen(props) {
         getFollowCounts()
         getProfile();
 
-    }, [userId])
+    }, [userId, profileId])
 
     useEffect(() => {
         myProfile ? loadMyPosts() : loadPosts(profileId);
     }, [profileId])
 
 
-
-
-
-
-    const renderImages = (itemData) => {
+    const renderPost = (itemData) => {
 
         return (
-            // <View style={styles.imageContainer}>
-            <Image source={itemData.item.image} style={styles.postImage} resizeMode="contain" />
-            // </View>
+
+            <Post post={itemData.item} setChange={setChange} navigation={props.navigation} logo={profile?.profilePic} />
 
         )
-
     }
-
-
-
-    const renderPost = useCallback((itemData) => {
-
-        return (
-            <View style={styles.gridItem} >
-
-                <TouchableOpacity onPress={() => {
-                    itemData.item.type === 'SHOP' ?
-                        props.navigation.navigate('Seller', {
-                            shopId: itemData.item.shopId
-                        }) : props.navigation.navigate('OthersProfile', {
-                            profileId: itemData.item.profileId
-                        })
-
-                }
-                }>
-                    <View style={styles.nameDP}>
-
-                        <Image style={styles.DPImage} source={profile.profilePic} />
-                        <View style={styles.nameContainer}>
-                            <Text style={styles.Name}> {profile.firstName} </Text>
-                            <Text style={styles.username}> {itemData.item.username} . {itemData.item.date} </Text>
-                        </View>
-
-
-                    </View>
-                </TouchableOpacity>
-
-
-                <TouchableOpacity style={styles.Post} onPress={() => {
-                    itemData.item.productId ? props.navigation.navigate('Product', {
-                        productId: itemData.item.productId
-
-                    }) :
-                        props.navigation.navigate('Post', {
-                            post: {
-                                ...itemData.item,
-                                name: profile.firstName,
-                                logo: profile.profilePic
-
-                            }
-                            ,
-                            type: itemData.item.type
-                        })
-                }}>
-
-                    <FlatList horizontal={true} pagingEnabled={true} data={itemData.item.images} renderItem={renderImages} />
-
-                    <Text style={styles.caption}>   {itemData.item.text}</Text>
-
-                </TouchableOpacity>
-
-                <View style={styles.reactsCommentsContainer}>
-                    <TouchableOpacity style={styles.Like} onPress={async () => {
-
-
-                        if (itemData.item.hasReacted === 1) {
-                            //unlike
-                            itemData.item.type === 'SHOP' ? await unReactShopPost(itemData.item.id) : await unReactUserPost(itemData.item.id)
-                            if (error === '') {
-                                console.log(itemData.item.id)
-
-                                // flatListRef.current.recordInteraction()
-                                itemData.item.hasReacted = 0;
-                                itemData.item.numReacts -= 1;
-                                setChange(state => state - 1)
-                            }
-
-                        }
-                        else {
-                            itemData.item.type === 'SHOP' ? await reactShopPost(itemData.item.id) : await reactUserPost(itemData.item.id)
-                            if (error === '') {
-                                itemData.item.hasReacted = 1;
-                                itemData.item.numReacts += 1;
-                                setChange(state => state + 1)
-                            }
-
-
-                        }
-                    }}>
-
-
-                        {itemData.item.hasReacted === 1 ? <MaterialCommunityIcons name="heart-multiple" size={30} color='#E1306C' /> : <MaterialCommunityIcons name="heart-multiple-outline" size={30} color='black' />}
-                        <Text style={styles.number}>{itemData.item.numReacts}</Text>
-
-
-                    </TouchableOpacity>
-
-
-
-
-                    <TouchableOpacity
-                        style={styles.comment}
-                        onPress={() => {
-                            props.navigation.navigate('Post', {
-                                post: {
-                                    ...itemData.item,
-                                    name: profile.firstName,
-                                    logo: profile.profilePic
-
-                                }
-                                ,
-                                type: itemData.item.type
-                            })
-                        }}
-
-                    >
-                        <MaterialCommunityIcons name="comment-multiple" color="black" size={30} />
-                        <Text style={styles.number}>{itemData.item.numComments}</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-        )
-    }, [allowed, profile, error])
 
 
     if (isLoading) {
@@ -557,42 +450,69 @@ export function ProfileScreen(props) {
     }
 
 
-
     return (
         <View style={styles.screen}>
 
             <FlatList
-                ListHeaderComponent={
+                ListHeaderComponent={profile ?
                     <View style={styles.profileContainer}>
-                        <View style={{ flexDirection: 'column', marginLeft: 40, alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'column', alignItems: 'center' }}>
                             <TouchableOpacity onPress={() => {
                                 myProfile ?
                                     props.navigation.navigate('DpUpload') : null
                             }}>
-                                <Image style={{ height: 100, width: 100 }} source={profile.profilePic} />
+                                <Image style={{ height: 100, width: 100 }} source={profile?.profilePic} />
                             </TouchableOpacity>
 
 
-                            <Text> {profile.firstName}    {profile.lastName}</Text>
-                            <Text> {profile.bio} </Text>
+                            <Text> {profile?.firstName}    {profile?.lastName}</Text>
+                            <Text> {profile?.bio} </Text>
 
                         </View>
 
-                        <View style={{ flexDirection: 'column', height: 80, marginRight: 40, justifyContent: 'center' }}>
+                        <View style={{ flexDirection: 'column', height: 80, justifyContent: 'center' }}>
                             <TouchableOpacity onPress={() => props.navigation.navigate('FollowersListTab', {
                                 myProfile: myProfile,
                                 profileId: profileId
                             })}>
-                                <Text>Followers: {numFollowers}</Text>
-                                <Text>Following: {numFollowing}</Text>
-                                <Text>Following Shops: {numFollowingShop}</Text>
+                                <Text>Followers: {followCounts?.numFollowers}</Text>
+                                <Text>Following: {followCounts?.numFollowing}</Text>
+                                <Text>Following Shops: {followCounts?.numFollowingShop}</Text>
 
                             </TouchableOpacity>
 
-                            {myProfile ? null : <Button title="Send Follow Req" onPress={() => {
-                                followUser(profileId)
-                            }} />}
+
                         </View>
+
+
+
+                        {myProfile ? null : profile.friendship === 'NOT_FOLLOWING' ? <TouchableOpacity onPress={() => {
+                            followUser(profileId)
+                        }}>
+                            <Text>Send Follow Request</Text>
+
+                        </TouchableOpacity> : profile.friendship === 'FOLLOW_REQUEST_SENT' ? <TouchableOpacity onPress={() => {
+                            unFollowUser(profileId)
+                        }}>
+                            <Text>Cancel follow request</Text>
+
+                        </TouchableOpacity> :
+                                <View>
+                                    <Text>Following</Text>
+
+                                    <TouchableOpacity onPress={() => {
+                                        unFollowUser(profileId)
+                                    }}>
+                                        <Text>Unfollow</Text>
+
+                                    </TouchableOpacity>
+
+
+
+                                </View>
+                        }
+
+
 
 
 
@@ -603,7 +523,7 @@ export function ProfileScreen(props) {
 
                             </TouchableOpacity> : null}
 
-                    </View>
+                    </View> : null
 
                 }
                 listKey="b"
@@ -653,7 +573,7 @@ export function ProfileTabsScreen(props) {
     //need to change this to more secure backend auth for production
 
 
-    const profileId = props.route.params?.profileId;
+    const profileId = props.route.params?.profileId ?? userId;
 
 
 
@@ -698,7 +618,9 @@ export function ProfileTabsScreen(props) {
 
 
 export default function ProfileStackScreen(props) {
-    const profileId = props.route.params?.profileId;
+    const userId = useSelector(state => state.auth.userId)
+
+    // const profileId = props.route.params?.profileId ?? userId
 
     const ProfileStack = createStackNavigator();
     return (
@@ -708,13 +630,20 @@ export default function ProfileStackScreen(props) {
             <ProfileStack.Screen name="ProfileScreen" component={ProfileTabsScreen} options={{
 
                 headerRight: () => (
-                    <GenericHeaderButton title="SettingButton" iconName="md-settings" onPress={() => props.navigation.navigate('ProfileSettings')} />
+                    <GenericHeaderButton title="SettingButton" iconName="md-settings" onPress={() => {
+
+                        props.navigation.navigate('ProfileSettings', {
+                            profileId: userId
+                        })
+                    }
+                    } />
                 )
             }}
-                initialParams={{ profileId: profileId }} />
+            />
 
 
             <ProfileStack.Screen name="ProfileSettings" component={ProfileSettingsScreen} />
+            <ProfileStack.Screen name="OthersProfile" component={ProfileTabsScreen} />
             <ProfileStack.Screen name="FollowersListTab" component={FollowersListTabScreen} />
             <ProfileStack.Screen name="CreateBlog1" component={CreateBlogScreen1}
             // options={{
@@ -751,7 +680,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         height: 150,
-        padding: 20,
+        paddingVertical: 20,
+        paddingHorizontal: 10
 
     },
     logoutButton: {
@@ -882,7 +812,7 @@ const styles = StyleSheet.create({
     },
     comment: {
         flexDirection: 'row',
-        height: 100,
+
         margin: 10
     },
     commentX: {

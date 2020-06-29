@@ -41,6 +41,7 @@ import SellerInfoScreen from './SellerInfoScreen';
 import TestScreen from './TestScreen'
 import { CategoriesSearchScreen } from './CategoriesSearchScreen';
 import PictureUploadScreen from '../SocialTab/PictureUploadScreen'
+import PostScreen from '../MagazineTab/PostScreen';
 
 export default function ShopStackScreen({ navigation }) {
     const ShopStack = createStackNavigator();
@@ -88,6 +89,7 @@ export default function ShopStackScreen({ navigation }) {
             {/* <ShopStack.Screen name="Product" component={ProductScreen}/> */}
             <ShopStack.Screen name="GroupShopping" component={GroupShoppingScreen} />
             <ShopStack.Screen name="Seller" component={SellerScreen} />
+            <ShopStack.Screen name="Post" component={PostScreen} />
 
             <ShopStack.Screen name="ProductList" component={ProductListScreen} />
             <ShopStack.Screen name="Order" component={OrderScreen} />

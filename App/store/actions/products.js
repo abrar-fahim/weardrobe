@@ -1,6 +1,6 @@
 export const SET_PRODUCTS_LIST = 'SET_PRODUCTS_LIST';
 export const GET_PRODUCT_DETAILS = 'GET_PRODUCT_DETAILS';
-export const ADD_TO_CART = 'ADD_TO_CART';
+// export const ADD_TO_CART = 'ADD_TO_CART';
 export const SET_ERROR = 'SET_ERROR';
 export const GET_PRODUCT_REVIEWS = 'GET_PRODUCT_REVIEWS'
 export const GET_CATEGORIES = 'GET_CATEGORIES'
@@ -14,6 +14,7 @@ export const fetchProducts = (iter = 0) => {
         try {
             const response = await fetch(`${HOST}/get/allproducts/${iter}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -62,6 +63,7 @@ export const fetchProductDetails = (productId) => {
         try {
             const response = await fetch(`${HOST}/get/product/${productId}/details`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -103,6 +105,7 @@ export const fetchProductDetailsDirect = async (productId) => {
     try {
         const response = await fetch(`${HOST}/get/product/${productId}/details`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -146,6 +149,7 @@ export const fetchProductReviews = (productId, iter = 0) => {
         try {
             const response = await fetch(`${HOST}/get/product/${productId}/reviews/${iter}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -193,7 +197,9 @@ export const addReview = (productId, rating, review) => {
         try {
             const response = await fetch(`${HOST}/review/product`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
+
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
@@ -251,6 +257,7 @@ export const fetchCategories = (iter = 0) => {
         try {
             const response = await fetch(`${HOST}/get/category/list/${iter}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -289,6 +296,7 @@ export const fetchProductsByCategory = (categoryId, iter = 0) => {
         try {
             const response = await fetch(`${HOST}/get/category/${categoryId}/products/${iter}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -343,6 +351,7 @@ export const fetchShopFeed = () => {
         try {
             const response = await fetch(`${HOST}/get/shopfeed`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"

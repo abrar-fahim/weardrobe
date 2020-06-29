@@ -83,7 +83,8 @@ export default function ShoppingSessionsListScreen(props) {
         return (
 
             <TouchableOpacity onPress={() => (props.navigation.navigate('ShoppingSession', {
-                sessionId: itemData.item.id
+                sessionId: itemData.item.id,
+                groupId: groupId
             }))}>
                 <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', padding: 10, height: 120, alignItems: 'center' }}>
 

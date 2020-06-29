@@ -13,6 +13,7 @@ export const searchAllUsernames = (username, iter = 0) => {
         const search = username === '' ? ' ' : username
         const response = await fetch(`${HOST}/search/name/all/${search}/${iter}`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -59,6 +60,7 @@ export const searchAllFriendUsernames = (username, iter = 0) => {
         const search = username === '' ? ' ' : username
         const response = await fetch(`${HOST}/search/username/friends/${search}/${iter}`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -106,7 +108,9 @@ export const searchAllNames = (name, iter = 0) => {
         const search = name === '' ? ' ' : name
         const response = await fetch(`${HOST}/search/name/all/${search}/${iter}`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
+
                 'Content-Type': 'application/json'
             },
 
@@ -150,6 +154,7 @@ export const searchAllShops = (name, iter = 0) => {
         const search = name === '' ? ' ' : name
         const response = await fetch(`${HOST}/search/shopname/${search}/${iter}`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -195,6 +200,7 @@ export const searchCategories = (name, iter = 0) => {
         const search = name === '' ? ' ' : name
         const response = await fetch(`${HOST}/search/category/${search}/${iter}`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -239,6 +245,7 @@ export const searchAllProducts = (name, iter = 0) => {
         const search = name === '' ? ' ' : name
         const response = await fetch(`${HOST}/search/productname/${search}/${iter}`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },

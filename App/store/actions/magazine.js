@@ -20,6 +20,7 @@ export const fetchShopPosts = () => {
         try {
             const response = await fetch(`${HOST}/get/newsfeed-stores/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -75,6 +76,9 @@ export const fetchShopPosts = () => {
 
         }
         catch (err) {
+
+
+
             dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
@@ -88,6 +92,7 @@ export const fetchFriendsPosts = () => {
         try {
             const response = await fetch(`${HOST}/get/newsfeed-friends/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -115,7 +120,8 @@ export const fetchFriendsPosts = () => {
                     friendPosts.push({
                         type: 'CUSTOMER',
                         id: resData[key].POST_ID,
-                        posterId: resData[key].CUSTOMER_UID,
+                        userId: resData[key].CUSTOMER_UID,
+                        name: resData[key].FIRST_NAME + " " + resData[key].LAST_NAME,
                         date: resData[key].POST_DATE,
                         text: resData[key].CAPTIONS,
                         productId: resData[key].PRODUCT_ID,
@@ -155,6 +161,7 @@ export const fetchShopPostComments = (postId, iter = 0) => {
         try {
             const response = await fetch(`${HOST}/get/shop-post/${postId}/comments/${iter}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -207,6 +214,7 @@ export const fetchShopPostReacts = (postId) => {
         try {
             const response = await fetch(`${HOST}/get/shop-post/${postId}/reacts/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -260,6 +268,7 @@ export const reactUserPost = (postId) => {
         try {
             const response = await fetch(`${HOST}/post/react`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -305,6 +314,7 @@ export const unReactUserPost = (postId) => {
         try {
             const response = await fetch(`${HOST}/delete/post/react`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -352,6 +362,7 @@ export const reactShopPost = (postId) => {
         try {
             const response = await fetch(`${HOST}/shop-post/react`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -397,6 +408,7 @@ export const unReactShopPost = (postId) => {
         try {
             const response = await fetch(`${HOST}/delete/shop-post/react`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -443,6 +455,7 @@ export const commentShopPost = (postId, comment) => {
         try {
             const response = await fetch(`${HOST}/shop-post/comment`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -490,6 +503,7 @@ export const deleteCommentShopPost = (commentId, postId) => {
         try {
             const response = await fetch(`${HOST}/delete/shop-post/comment`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -537,6 +551,7 @@ export const commentUserPost = (postId, comment) => {
         try {
             const response = await fetch(`${HOST}/post/comment`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -584,6 +599,7 @@ export const deleteCommentUserPost = (commentId, postId) => {
         try {
             const response = await fetch(`${HOST}/delete/post/comment`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -631,6 +647,7 @@ export const fetchUserPostComments = (postId) => {
         try {
             const response = await fetch(`${HOST}/get/post/${postId}/comments/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -685,6 +702,7 @@ export const fetchUserPostReacts = (postId) => {
         try {
             const response = await fetch(`${HOST}/get/post/${postId}/reacts/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -739,6 +757,7 @@ export const fetchUserBlogComments = (blogId, iter = 0) => {
         try {
             const response = await fetch(`${HOST}/get/blog/${blogId}/comments/${iter}`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -793,6 +812,7 @@ export const fetchUserBlogReacts = (blogId) => {
         try {
             const response = await fetch(`${HOST}/get/blog/${blogId}/reacts/0`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -846,6 +866,7 @@ export const reactUserBlog = (blogId) => {
         try {
             const response = await fetch(`${HOST}/blog/react`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -891,6 +912,7 @@ export const unReactUserBlog = (blogId) => {
         try {
             const response = await fetch(`${HOST}/delete/blog/react`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -937,6 +959,7 @@ export const commentUserBlog = (blogId, comment) => {
         try {
             const response = await fetch(`${HOST}/blog/comment`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -983,6 +1006,7 @@ export const deleteCommentUserBlog = (commentId) => {
         try {
             const response = await fetch(`${HOST}/delete/blog/comment`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': "application/json"
@@ -1034,6 +1058,7 @@ export const createUserPost = (formData) => {
 
             const response = await fetch(`${HOST}/upload/post`, {
                 method: 'POST',
+                credentials: 'include',
                 body: formData,
                 // headers: {
                 //     'Content-Type': 'multipart/form-data',
