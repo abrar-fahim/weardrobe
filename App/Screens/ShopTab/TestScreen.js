@@ -23,6 +23,7 @@ import * as productActions from '../../store/actions/products'
 import * as wishlistActions from '../../store/actions/wishlist'
 
 import * as cartActions from '../../store/actions/cart'
+import * as chatActions from '../../store/actions/chats'
 
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import SmallPopup from '../../components/SmallPopup';
@@ -37,6 +38,31 @@ import TouchableStars from '../../components/TouchableStars'
 
 export default function TestScreen(props) {
     const dispatch = useDispatch();
+
+    const productId = props.route.params?.productId;
+
+
+    const loadProductDetails = useCallback(async () => {
+
+        try {
+
+
+            await dispatch(chatActions.getGroups()); // await dispatch(productActions.fetchProductReviews(productId))
+            // await dispatch(productActions.fetchProductDetails(productId))
+
+
+
+        } catch (err) {
+            console.log(err)
+        }
+
+
+    }, [productId])
+
+    useEffect(() => {
+        loadProductDetails()
+
+    }, []);
 
 
 

@@ -65,9 +65,13 @@ export const fetchProductDetails = (productId) => {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
                 }
-            })
+            });
+            console.log('PRODUCT DETAILS')
+            console.log('----------------')
+            console.log(response.headers)
 
             if (!response.ok) {
                 throw new Error('Somehthings wrong');
@@ -151,10 +155,17 @@ export const fetchProductReviews = (productId, iter = 0) => {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
                 }
-            })
+            });
 
+
+            console.log('PRODUCT REVIEWS')
+            console.log('----------------')
+            console.log(response.headers)
+
+            
             if (!response.ok) {
                 throw new Error('Somehthings wrong');
             }

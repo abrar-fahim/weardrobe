@@ -8,8 +8,6 @@ import CachedImage from '../../components/CachedImage'
 
 
 import PRODUCTS from '../../dummy-data/Products'
-
-
 import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import ScreenStyle from '../../Styles/ScreenStyle';
 import UIButton from '../../components/UIButton'
@@ -34,7 +32,7 @@ import TouchableStars from '../../components/TouchableStars'
 
 import LoadingScreen from '../../components/LoadingScreen'
 
-import * as Sharing from 'expo-sharing';
+// import * as Sharing from 'expo-sharing';
 
 
 
@@ -45,7 +43,7 @@ import * as Sharing from 'expo-sharing';
 
 export default function ProductScreen(props) {
     const dispatch = useDispatch();
-    const productId = props.route.params?.productId ?? 'default'
+    const productId = props.route.params?.productId
 
 
 
@@ -58,8 +56,6 @@ export default function ProductScreen(props) {
 
     // const wishlistItems = useSelector(state => state.wishlist.items)
 
-
-    const [reviewModalVisible, setIsReviewModalVisible] = useState(false);
     const [reviewText, setReviewText] = useState(null)
     const [rating, setRating] = useState(null);
 
@@ -88,7 +84,6 @@ export default function ProductScreen(props) {
 
             setIsLoading(true)
             await dispatch(productActions.fetchProductReviews(productId))
-            // await dispatch(wishlistActions.fetchItems())
             await dispatch(productActions.fetchProductDetails(productId))
             setIsLoading(false)
 
@@ -98,7 +93,7 @@ export default function ProductScreen(props) {
         }
 
 
-    }, [productId, productActions.fetchProductReviews, productActions.fetchProductDetails])
+    }, [productId])
 
     const loadMoreReviews = useCallback(async () => {
 
@@ -217,47 +212,43 @@ export default function ProductScreen(props) {
 
 
     const addToCart = useCallback(async (color, size, quantity) => {
-        let mounted = true;
+
 
         if (!loggedIn) {
             props.navigation.navigate('Login');
         }
         else {
             try {
-                if (mounted) {
-                    console.log(colors.length)
-                    if (colors.length !== 0 && selectedColor === null) {
 
-                        // throw new Error('select color pless')
-                        dispatch(popupActions.setMessage('select color pless'))
+                console.log(colors.length)
+                if (colors.length !== 0 && selectedColor === null) {
 
-                    }
-                    else if (sizes.length !== 0 && selectedSize === null) {
-                        // throw new Error('select size pless')
-                        dispatch(popupActions.setMessage('select size pless'))
-
-                    }
-                    else {
-                        await dispatch(cartActions.addToCart(productId, color, size, quantity))
-                        // setPopupMessage("added to cart!")
-
-                        // setAddCartModalVisible(true)
-                        //setAddCartMessage(cartMessage);
-                        // window.setTimeout(() => (setAddCartModalVisible(false)), 2500)
-                    }
-
-
+                    // throw new Error('select color pless')
+                    dispatch(popupActions.setMessage('select color pless'))
 
                 }
+                else if (sizes.length !== 0 && selectedSize === null) {
+                    // throw new Error('select size pless')
+                    dispatch(popupActions.setMessage('select size pless'))
+
+                }
+                else {
+                    await dispatch(cartActions.addToCart(productId, color, size, quantity))
+                    // setPopupMessage("added to cart!")
+
+                    // setAddCartModalVisible(true)
+                    //setAddCartMessage(cartMessage);
+                    // window.setTimeout(() => (setAddCartModalVisible(false)), 2500)
+                }
+
+
+
+
 
             } catch (err) {
                 console.log(err.message)
 
                 //setAddCartMessage('Failed to add to cart')
-            }
-
-            finally {
-                return () => mounted = false;
             }
         }
 
@@ -614,7 +605,7 @@ export default function ProductScreen(props) {
                                     </TouchableOpacity>
 
                                     <TouchableOpacity style={styles.shareItem} onPress={() => {
-                                        Sharing.shareAsync('https://somerandomurl.com/productId')
+                                        // Sharing.shareAsync('https://somerandomurl.com/productId')
                                     }}>
                                         <Text style={styles.shareText}>With Other apps</Text>
                                     </TouchableOpacity>

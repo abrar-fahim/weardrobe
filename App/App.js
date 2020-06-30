@@ -39,6 +39,7 @@ import ShareGroupScreen from './Screens/ShopTab/ShareGroupScreen';
 
 import NewPostNextButton from './components/NewPostNextButton';
 import SmallPopup from './components/SmallPopup';
+import TestScreen from './Screens/ShopTab/TestScreen';
 
 
 const rootReducer = combineReducers({
@@ -83,7 +84,7 @@ export default function App({ navigation }) {
   //return <HomeNavigator />;
 
 
-  
+
 
 
 

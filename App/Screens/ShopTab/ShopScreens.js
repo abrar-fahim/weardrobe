@@ -164,8 +164,6 @@ function ShopScreen({ navigation }) {
 
 
                 setIsIterLoading(true);
-                console.log('size' + allProducts.length)
-                console.log('iter: ' + iter)
                 await dispatch(productsActions.fetchProducts(iter))
 
 
@@ -391,7 +389,10 @@ function ShopScreen({ navigation }) {
             <FlatList
                 data={feed} renderItem={renderShopFeedItems}
                 // onEndReached={loadAllProducts}
-                onRefresh={loadFeed}
+                onRefresh={() => {
+                    loadFeed();
+                    loadAllProducts();
+                }}
                 refreshing={isRefreshing}
                 ListFooterComponent={
                     <View style={styles.screen}>

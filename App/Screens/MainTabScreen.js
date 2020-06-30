@@ -57,7 +57,7 @@ export default function HomeScreen(props) {
         //setIsLoading(true);
         try {
             await dispatch(authActions.getUserId())
-            if (userId) chatActions.connectSocket();
+            // if (userId) chatActions.connectSocket();
         } catch (err) {
 
             console.log(err)

@@ -18,6 +18,7 @@ export const addToWishlist = productId => {
                 productId: productId
             })
         });
+        
 
         if (!response.ok) {
             throw new Error('somethings wrong');
@@ -128,6 +129,11 @@ export const fetchItems = () => {
             const response = await fetch(`${HOST}/get/wishlist`, {
                 method: 'GET',
                 credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+
+
+                },
             })
 
             const resData = await response.json();

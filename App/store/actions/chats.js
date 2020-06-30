@@ -624,19 +624,17 @@ export const deleteGroup = (groupId) => {
     }
 }
 
-export const connectSocket = () => {
-    socket = io(`${HOST}/group-chat`)
-}
 
 export const connectToGroup = (groupId, type = 'GROUP') => {
 
 
     return async (dispatch) => {
 
+        console.log('SOCKETTTT')
+
+        socket = io(`${HOST}/group-chat`)
+
         console.log('connecting')
-        console.log(socket.id)
-
-
         console.log('groupId: ' + groupId)
 
 
@@ -755,11 +753,11 @@ export const disconnectFromGroup = () => {
 
     return async (dispatch) => {
 
-        // socket?.close()
+        socket?.close()
         console.log('close')
-        await socket?.emit('disconnect');
-        socket.removeListener('sendMessageGroup')
-        socket.removeListener('sendMessageShop')
+        // await socket.emit('disconnect');
+        // socket.removeListener('sendMessageGroup')
+        // socket.removeListener('sendMessageShop')
 
 
     }
