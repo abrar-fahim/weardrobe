@@ -57,6 +57,10 @@ export const getGroups = (iter = 0) => {
                         score: resData[key].SCORE,
                         participantId: resData[key].PARTICIPANT_UID,
                         participants: resData[key].PARTICIPANTS,
+                        message: resData[key].MESSAGE,
+                        sentAt: resData[key].SENT_AT,
+                        senderName: resData[key].SENDER_NAME,
+                        messageType: resData[key].TYPE,
                         type: 'GROUP'
                     })
                     :

@@ -5,11 +5,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import ScreenStyle from '../../Styles/ScreenStyle';
-import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useDispatch, useSelector } from 'react-redux';
 import * as magazineActions from '../../store/actions/magazine'
+import Colors from '../../Styles/Colors';
 
 export default function NewPostScreen3(props) {
     const formData = props.route.params?.formData;
@@ -35,26 +36,26 @@ export default function NewPostScreen3(props) {
         <View style={styles.Main}>
 
             <View style={styles.Direction}>
-                <MaterialCommunityIcons name="circle-outline" size={30} color='black' />
-                <MaterialCommunityIcons name="arrow-right" size={30} color='black' />
-                <MaterialCommunityIcons name="circle-outline" size={30} color='black' />
-                <MaterialCommunityIcons name="arrow-right" size={30} color='black' />
-                <MaterialCommunityIcons name="circle" size={30} color='green' />
+                <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
+                <MaterialCommunityIcons name="arrow-right" size={20} color='black' />
+                <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
+                <MaterialCommunityIcons name="arrow-right" size={20} color='black' />
+                <MaterialCommunityIcons name="circle" size={20} color='lightblue' />
             </View>
 
             <View style={styles.Caption}>
                 <Text style={styles.Txt}>Caption</Text>
-                <TextInput placeholder="Write Caption" style={styles.CapBox} onChangeText={setCaption} />
+                <TextInput placeholder="Write Caption" style={styles.CapBox} multiline onChangeText={setCaption} />
             </View>
 
             <View style={styles.Caption}>
                 <Text style={styles.Txt}>Tag Someone</Text>
-                <Button title='Tag' color='black' onPress={() => { props.navigation.navigate('NewPostTag') }} ></Button>
+                <Button title='Tag' color={Colors.primaryColor} onPress={() => { props.navigation.navigate('NewPostTag') }} ></Button>
 
             </View>
 
             <View style={styles.PostButton}>
-                <Button title='POST' color='black' onPress={() => {
+                <Button title='POST' color={Colors.primaryColor} onPress={() => {
 
                     formData.append('caption', caption)
                     if (product) formData.append('productId', product.id)
@@ -79,8 +80,8 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         flexDirection: 'row',
-        paddingTop: 25,
-        paddingLeft: 100
+        paddingTop: 10,
+        justifyContent: 'center'
     },
     Caption:
     {
@@ -103,8 +104,12 @@ const styles = StyleSheet.create({
     },
     CapBox:
     {
-        backgroundColor: 'grey',
-        height: 40
+        backgroundColor: 'white',
+        height: 40,
+        padding: 10,
+        marginVertical: 10,
+        
+        
     }
 
 });

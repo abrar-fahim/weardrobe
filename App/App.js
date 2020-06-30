@@ -108,10 +108,7 @@ export default function App({ navigation }) {
           <Stack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options={{
 
           }} />
-          <Stack.Screen name="NewPost2" component={NewPostScreen2} options={{
-            headerRight: () => (<NewPostNextButton onPress={() => navigation.navigate('NewPost3')} />),
-
-          }} />
+          <Stack.Screen name="NewPost2" component={NewPostScreen2} />
           <Stack.Screen name="NewPost3" component={NewPostScreen3} />
           <Stack.Screen name="NewPostTag" component={NewPostTagScreen} />
           <Stack.Screen name="ShareGroup" component={ShareGroupScreen} options={{

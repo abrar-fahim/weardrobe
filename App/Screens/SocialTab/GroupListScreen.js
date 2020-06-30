@@ -113,12 +113,13 @@ export default function GroupListScreen(props) {
 
 
                         <View style={styles.timeContainer}>
-                            <Text style={styles.time}> 5:55 pm</Text>
+                            <Text style={styles.time}> {new Date(itemData.item.sentAt).toLocaleString()}</Text>
                         </View>
 
                     </View>
+                    <Text style={styles.lastText}>{itemData.item.senderName}</Text>
 
-                    <Text style={styles.lastText}> Hi, just wanted to say that im interested...</Text>
+                    <Text style={styles.lastText}>{itemData.item.messageType === 'PRODUCT' ? "shared a product" : itemData.item.messageType === 'PHOTO' ? "shared a photo" : itemData.item.message}</Text>
 
 
 

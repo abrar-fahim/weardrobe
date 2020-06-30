@@ -12,6 +12,7 @@ import GenericHeaderButton from '../../components/GenericHeaderButton'
 import * as ImagePicker from 'expo-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import * as magazineActions from '../../store/actions/magazine'
+import Colors from '../../Styles/Colors';
 
 export default function NewPostScreen2(props) {
     const product = props.route.params?.product;
@@ -51,7 +52,7 @@ export default function NewPostScreen2(props) {
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
-            headerRight: () => (<GenericHeaderButton title="newPost" iconName="md-create" onPress={() => {
+            headerRight: () => (<GenericHeaderButton title="newPost" iconName="md-arrow-forward" onPress={() => {
                 if (image !== null) {
                     formData.append("photos", {
                         name: '1.jpg',
@@ -78,11 +79,11 @@ export default function NewPostScreen2(props) {
         <View style={styles.Main}>
 
             <View style={styles.Direction}>
-                <MaterialCommunityIcons name="circle-outline" size={30} color='black' />
-                <MaterialCommunityIcons name="arrow-right" size={30} color='black' />
-                <MaterialCommunityIcons name="circle" size={30} color='green' />
-                <MaterialCommunityIcons name="arrow-right" size={30} color='black' />
-                <MaterialCommunityIcons name="circle-outline" size={30} color='black' />
+                <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
+                <MaterialCommunityIcons name="arrow-right" size={20} color='black' />
+                <MaterialCommunityIcons name="circle" size={20} color='lightblue' />
+                <MaterialCommunityIcons name="arrow-right" size={20} color='black' />
+                <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
             </View>
 
             <View style={styles.LayoutText}>
@@ -93,11 +94,13 @@ export default function NewPostScreen2(props) {
             </View>
 
             <View style={styles.Image}>
-                <Image source={image ? image : require('../../assets/Images/img.png')} style={styles.Pic} />
+
+                {image ? <Image source={image} style={styles.Pic} /> : <Ionicons name="ios-image" size={300} color="lightgrey" />}
+
             </View>
 
             <View style={styles.Buttons}>
-                <Button title='Upload Picture' color='black' onPress={() => {
+                <Button title='Upload Picture' color={Colors.primaryColor} onPress={() => {
                     pickImage()
                 }}></Button>
             </View>
@@ -119,12 +122,12 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         flexDirection: 'row',
-        paddingTop: 25,
-        paddingLeft: 100
+        paddingTop: 10,
+        justifyContent: 'center'
     },
     LayoutText:
     {
-        flex: 1
+        height: 200
 
     },
     ChooseLayout:
@@ -138,7 +141,9 @@ const styles = StyleSheet.create({
     {
         height: 100,
         maxHeight: 100,
-        width: Dimensions.get('window').width / 1.5
+
+        justifyContent: 'center',
+        alignItems: 'center'
 
     },
     Buttons:
