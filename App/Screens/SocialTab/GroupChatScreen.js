@@ -180,7 +180,7 @@ export function GroupChatScreen(props) {
     }, [sending, groupId, type])
 
     const sendProduct = useCallback(async (productId) => {
-        console.log('send product')
+        
         try {
             if (!sending) {
                 setSending(true)

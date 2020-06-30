@@ -69,9 +69,6 @@ export const fetchProductDetails = (productId) => {
                     'Accept': "application/json"
                 }
             });
-            console.log('PRODUCT DETAILS')
-            console.log('----------------')
-            console.log(response.headers)
 
             if (!response.ok) {
                 throw new Error('Somehthings wrong');
@@ -160,12 +157,6 @@ export const fetchProductReviews = (productId, iter = 0) => {
                 }
             });
 
-
-            console.log('PRODUCT REVIEWS')
-            console.log('----------------')
-            console.log(response.headers)
-
-            
             if (!response.ok) {
                 throw new Error('Somehthings wrong');
             }

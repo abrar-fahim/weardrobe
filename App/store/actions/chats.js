@@ -629,6 +629,7 @@ export const connectToGroup = (groupId, type = 'GROUP') => {
 
 
     return async (dispatch) => {
+        await socket?.close();
 
         console.log('SOCKETTTT')
 
@@ -722,6 +723,8 @@ export const connectToGroup = (groupId, type = 'GROUP') => {
 export const sendChat = (groupId, text, type = 'GROUP') => {
 
 
+
+
     return async (dispatch) => {
         console.log('type: ' + type)
 
@@ -734,9 +737,14 @@ export const sendChat = (groupId, text, type = 'GROUP') => {
 
 export const sendProduct = (groupId, productId) => {
 
-    console.log('sending product')
+
+
 
     return async (dispatch) => {
+        console.log('sending product')
+
+        console.log('groupID  ' + groupId);
+        console.log('produ  ' + productId);
 
         await socket?.emit('sendMessageGroup', `{"groupId": "${groupId}", "message":"${productId}", "type": "PRODUCT"}`);
 

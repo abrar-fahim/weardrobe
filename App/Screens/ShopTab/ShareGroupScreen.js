@@ -63,19 +63,27 @@ export default function ShareGroupScreen(props) {
 
     const sendProduct = useCallback(async (groupId) => {
         try {
+
+
             await dispatch(chatActions.connectToGroup(groupId));
-            await dispatch(chatActions.sendProduct(groupId, productId))
-            await dispatch(chatActions.disconnectFromGroup(groupId))
+
+            await dispatch(chatActions.sendProduct(groupId, productId));
+
+            // await dispatch(chatActions.disconnectFromGroup());
+
 
         }
         catch (err) {
             console.log(err)
         }
 
-    }, [])
+    }, [productId])
 
     useEffect(() => {
         LoadGroups()
+        return async () => {
+            await dispatch(chatActions.disconnectFromGroup())
+        }
     }, []);
 
     useLayoutEffect(() => {
@@ -83,8 +91,8 @@ export default function ShareGroupScreen(props) {
             headerRight: () => (
                 <TouchableOpacity style={styles.headerButton} onPress={async () => {
                     if (selected.length > 0 && productId) {
-                        selected.map(groupId => {
-                            sendProduct(groupId)
+                        selected.map(async groupId => {
+                            await sendProduct(groupId)
 
                         })
                         props.navigation.goBack()

@@ -196,10 +196,6 @@ export function ProfileScreen(props) {
 
     const myProfile = userId === profileId || profileId === undefined//secure this check using backend auth in production
 
-    console.log('user: ' + userId)
-    console.log('profile: ' + profileId)
-
-
 
     const posts = useSelector(state => state.profile.posts)
     const myPosts = useSelector(state => state.profile.myPosts)
@@ -629,7 +625,7 @@ export default function ProfileStackScreen(props) {
         >
             <ProfileStack.Screen name="ProfileScreen" component={ProfileTabsScreen} options={{
 
-                headerRight: () => (
+                headerRight: () => userId ? (
                     <GenericHeaderButton title="SettingButton" iconName="md-settings" onPress={() => {
 
                         props.navigation.navigate('ProfileSettings', {
@@ -637,7 +633,7 @@ export default function ProfileStackScreen(props) {
                         })
                     }
                     } />
-                )
+                ) : null
             }}
             />
 

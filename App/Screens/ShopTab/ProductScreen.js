@@ -329,7 +329,6 @@ export default function ProductScreen(props) {
 
 
     useLayoutEffect(() => {
-        console.log(product?.isFavorite)
         const inWishlist = product?.isFavorite === 1
 
         const heartIcon = inWishlist ? "md-heart" : "md-heart-empty";
