@@ -25,6 +25,7 @@ Add web and other folders to keep seperate components organized
 - [ ] everything with blogs
 - [ ] delete posts, delete comments
 - [ ] replace touchable opacities with native feedback if android
+- [ ] update comment count even in post list screen after commenting
 
 
 

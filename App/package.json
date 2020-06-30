@@ -53,7 +53,8 @@
     "socket.io-client": "^2.3.0",
     "three": "^0.118.1",
     "tough-cookie": "^4.0.0",
-    "expo-gl": "~8.1.0"
+    "expo-gl": "~8.1.0",
+    "expo-ads-admob": "~8.1.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^8.1.0",

@@ -22,32 +22,64 @@ const PostScreen = (props) => {
     // ))
 
     const dispatch = useDispatch();
-    const [error, setError] = useState('')
     const [change, setChange] = useState(0);    //this forces like icon to re render on each touch
     const [comment, setComment] = useState('');
 
     const reacts = useSelector(state => state.magazine.shopPostReacts)
     const comments = useSelector(state => state.magazine.shopPostComments)
 
+    const [iterLoading, setIterLoading] = useState(false);
+
+    const [iter, setIter] = useState(0);
+
     const textInputRef = useRef(null);
 
     const loadUserPostComments = useCallback(async () => {
         try {
-            await dispatch(magazineActions.fetchUserPostComments(post.id))
+            if (!iterLoading) {
+                setIterLoading(true)
+                await dispatch(magazineActions.fetchUserPostComments(post.id, iter))
+                // setIter(iter => iter + 1)
+                setIterLoading(true)
+            }
+
         }
         catch (err) {
             console.log(err)
         }
-    })
+    }, [iterLoading, iter])
 
     const loadShopPostComments = useCallback(async () => {
         try {
-            await dispatch(magazineActions.fetchShopPostComments(post.id))
+            if (!iterLoading) {
+                setIterLoading(true)
+                await dispatch(magazineActions.fetchShopPostComments(post.id, iter))
+                // setIter(iter => iter + 1)
+                setIterLoading(false)
+
+            }
         }
         catch (err) {
             console.log(err)
         }
-    })
+    }, [iterLoading, iter])
+
+    const loadMoreComments = useCallback(async () => {
+        try {
+            if (!iterLoading) {
+                setIterLoading(true)
+                post.type === 'SHOP' ? await dispatch(magazineActions.fetchShopPostComments(post.id, iter)) : await dispatch(magazineActions.fetchUserPostComments(post.id, iter));
+                setIter(iter => iter + 1)
+                setIterLoading(false)
+
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }, [iterLoading, iter])
+
+
 
 
 
@@ -55,10 +87,16 @@ const PostScreen = (props) => {
     const commentUserPost = useCallback(async (comment) => {
         try {
             await dispatch(magazineActions.commentUserPost(post.id, comment))
-            setError('')
+            await dispatch(magazineActions.fetchUserPostComments(post.id, 0));
+            setIter(0);
+            post.numComments++;
+            setChange(state => state + 1)
+
+
+
         }
         catch (err) {
-            setError(err.message)
+
             console.log(err);
         }
     })
@@ -66,10 +104,14 @@ const PostScreen = (props) => {
     const deleteCommentUserPost = useCallback(async (commentId) => {
         try {
             await dispatch(magazineActions.deleteCommentUserPost(commentId, post.id))
-            setError('')
+            await dispatch(magazineActions.fetchUserPostComments(post.id, 0))   //improve this later
+            setIter(0);
+            post.numComments--;
+
+
         }
         catch (err) {
-            setError(err.message)
+
             console.log(err);
         }
     })
@@ -77,22 +119,30 @@ const PostScreen = (props) => {
     const commentShopPost = useCallback(async (comment) => {
         try {
             await dispatch(magazineActions.commentShopPost(post.id, comment))
-            await dispatch(magazineActions.fetchShopPostComments())
+            await dispatch(magazineActions.fetchShopPostComments(post.id, 0))
+            setIter(0);
+            post.numComments++
+            setChange(state => state + 1)
 
-            setError('')
+
+
         }
         catch (err) {
-            setError(err.message)
+
             console.log(err);
         }
     })
     const deleteCommentShopPost = useCallback(async (commentId) => {
         try {
             await dispatch(magazineActions.deleteCommentShopPost(commentId, post.id))
-            setError('')
+            await dispatch(magazineActions.fetchShopPostComments(post.id, 0));
+            setIter(0);
+            post.numComments--;
+
+
         }
         catch (err) {
-            setError(err.message)
+
             console.log(err);
         }
     })
@@ -100,7 +150,7 @@ const PostScreen = (props) => {
     useEffect(() => {
         post.type === 'SHOP' ? loadShopPostComments() : loadUserPostComments();
 
-    }, [])
+    }, [post])
 
 
     const renderComment = (itemData) => {
@@ -136,6 +186,9 @@ const PostScreen = (props) => {
                 }
 
                 style={styles.listStyle}
+                onEndReached={() => {
+                    loadMoreComments();
+                }}
             />
 
             <View style={styles.commentInputContainer}>

@@ -11,10 +11,23 @@ const initialState = {
 const magazineReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_SHOP_POSTS:
+
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    shopPosts: action.shopPosts
+                }
+            }
+
+            if (action.shopPosts.length === 0) {
+                return state
+            }
+
             return {
                 ...state,
-                shopPosts: action.shopPosts
+                shopPosts: state.shopPosts.concat(action.shopPosts)
             }
+
 
         case GET_FRIENDS_POSTS:
             return {
@@ -23,26 +36,40 @@ const magazineReducer = (state = initialState, action) => {
             }
         case GET_SHOP_POST_COMMENTS:
 
-            //5 items per iter
 
 
-
-
-
-            //need to debug this logic later
-            if (action.iter * 5 >= state.shopPostComments.length) {
-                return {
-                    ...state,
-                    shopPostComments: state.shopPostComments.concat(action.shopPostComments)
-                }
-            }
-            else {
+            if (action.iter === 0) {
                 return {
                     ...state,
                     shopPostComments: action.shopPostComments
                 }
-
             }
+
+            if (action.shopPostComments.length === 0) {
+                return state
+            }
+
+            return {
+                ...state,
+                shopPostComments: state.shopPostComments.concat(action.shopPostComments)
+            }
+
+        //5 items per iter
+
+        //need to debug this logic later
+        // if (action.iter * 5 >= state.shopPostComments.length) {
+        //     return {
+        //         ...state,
+        //         shopPostComments: state.shopPostComments.concat(action.shopPostComments)
+        //     }
+        // }
+        // else {
+        //     return {
+        //         ...state,
+        //         shopPostComments: action.shopPostComments
+        //     }
+
+        // }
 
 
 

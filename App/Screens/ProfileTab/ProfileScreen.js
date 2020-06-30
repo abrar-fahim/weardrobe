@@ -553,6 +553,9 @@ export function ProfileScreen(props) {
                     </View>
                 }
 
+                refreshing={isLoading}
+                onRefresh={loadPosts}
+
 
             />
 

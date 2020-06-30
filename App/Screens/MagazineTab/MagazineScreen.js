@@ -29,9 +29,20 @@ import PeopleSearchScreen from './PeopleSearch';
 import FollowersListTabScreen from '../ProfileTab/FollowersListScreen';
 import Post from '../../components/Post';
 
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded,
+    setTestDeviceIDAsync,
+
+} from 'expo-ads-admob';
+
 
 
 export function MagazineScreen(props) {
+
+
 
     const flatListRef = useRef(null);
 
@@ -50,9 +61,9 @@ export function MagazineScreen(props) {
 
     const [change, setChange] = useState(0);    //this forces like icon to re render on each touch
 
-    const [iters, setIters] = useState({
-        shopPostComments: 1
-    })
+    const [iter, setIter] = useState(0)
+
+    const [iterLoading, setIterLoading] = useState(false)
 
     const loadPosts = useCallback(async () => {
         try {
@@ -67,6 +78,23 @@ export function MagazineScreen(props) {
             console.log(err)
         }
     }, [userId])
+
+    const loadMorePosts = useCallback(async () => {
+        try {
+            if (!iterLoading) {
+                setIterLoading(true)
+                await dispatch(magazineActions.fetchShopPosts(iter))
+                setIter(iter => iter + 1)
+                setIterLoading(false)
+            }
+
+
+        }
+        catch (err) {
+            setIsLoading(false)
+            console.log(err)
+        }
+    }, [iter, iterLoading])
 
 
 
@@ -118,11 +146,26 @@ export function MagazineScreen(props) {
 
     useEffect(() => {
         loadPosts();
+        setIter(0)
     }, [userId])
 
 
 
     const renderFeedItem = (itemData) => {
+
+        if (itemData.index === 3) {
+            return (
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <AdMobBanner
+                        bannerSize="mediumRectangle"
+                        adUnitID="ca-app-pub-3940256099942544/6300978111" // Test ID, Replace with your-admob-unit-id
+                        servePersonalizedAds // true or false
+                        onDidFailToReceiveAdWithError={(text) => console.log(text)} />
+
+                </View>
+
+            )
+        }
 
         return (
 
@@ -141,15 +184,24 @@ export function MagazineScreen(props) {
         )
     }
 
-    if (isLoading) {
-        return <LoadingScreen />
-    }
+    // if (isLoading) {
+    //     return <LoadingScreen />
+    // }
 
 
 
 
     return (
         <View style={ScreenStyle}>
+
+
+            {/* <PublisherBanner
+                bannerSize="fullBanner"
+                adUnitID="ca-app-pub-3940256099942544/6300978111" // Test ID, Replace with your-admob-unit-id
+                onDidFailToReceiveAdWithError={(text) => console.log(text)}
+            // onAdMobDispatchAppEvent={this.adMobEvent}
+            /> */}
+
 
 
 
@@ -168,6 +220,11 @@ export function MagazineScreen(props) {
                         <Text>no posts yet</Text>
                     </View>
                 }
+                onEndReached={() => {
+                    loadMorePosts()
+                }}
+                refreshing={isLoading}
+                onRefresh={loadPosts}
 
             />
 

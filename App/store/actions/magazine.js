@@ -15,10 +15,10 @@ export const GET_USER_BLOG_COMMENTS = 'GET_USER_BLOG_COMMENTS';
 import * as profileActions from './profile'
 import * as popupActions from './Popup'
 
-export const fetchShopPosts = () => {
+export const fetchShopPosts = (iter = 0) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${HOST}/get/newsfeed-stores/0`, {
+            const response = await fetch(`${HOST}/get/newsfeed-stores/${iter}`, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -64,7 +64,7 @@ export const fetchShopPosts = () => {
                     })
                 }
                 // console.log(loadedProducts);
-                dispatch({ type: GET_SHOP_POSTS, shopPosts: shopPosts })
+                dispatch({ type: GET_SHOP_POSTS, shopPosts: shopPosts, iter: iter })
             }
 
             else {
@@ -642,10 +642,10 @@ export const deleteCommentUserPost = (commentId, postId) => {
 }
 
 
-export const fetchUserPostComments = (postId) => {
+export const fetchUserPostComments = (postId, iter = 0) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${HOST}/get/post/${postId}/comments/0`, {
+            const response = await fetch(`${HOST}/get/post/${postId}/comments/${iter}`, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -677,7 +677,7 @@ export const fetchUserPostComments = (postId) => {
                     })
                 }
                 // console.log(loadedProducts);
-                dispatch({ type: GET_SHOP_POST_COMMENTS, shopPostComments: userPostComments })
+                dispatch({ type: GET_SHOP_POST_COMMENTS, shopPostComments: userPostComments, iter: iter })
             }
 
             else {
