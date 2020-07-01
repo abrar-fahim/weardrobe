@@ -644,12 +644,10 @@ export default function ProfileStackScreen(props) {
             <ProfileStack.Screen name="ProfileSettings" component={ProfileSettingsScreen} />
             <ProfileStack.Screen name="OthersProfile" component={ProfileTabsScreen} />
             <ProfileStack.Screen name="FollowersListTab" component={FollowersListTabScreen} />
-            <ProfileStack.Screen name="CreateBlog1" component={CreateBlogScreen1}
-            // options={{
-            //     headerRight: () => (
-            //         <GenericHeaderButton name="CreateBlogButton1" iconName="md-arrow-forward" onPress={() => props.navigation.navigate('CreateBlog2')} />
-            //     )
-            // }} 
+            <ProfileStack.Screen name="CreateBlog1" component={CreateBlogScreen1} options={{
+                title: 'Select Layout'
+            }}
+        
             />
             <ProfileStack.Screen name="CreateBlog2" component={CreateBlogScreen2} />
             <ProfileStack.Screen name="CreateBlog3" component={CreateBlogScreen3} options={{

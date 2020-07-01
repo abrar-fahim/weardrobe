@@ -1,16 +1,17 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, TouchableOpacity, FlatList, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
+
 import ScreenStyle from '../../Styles/ScreenStyle'
 
 import BLOGS from '../../dummy-data/Blogs'
 import { useDispatch, useSelector } from 'react-redux';
 import * as profileActions from '../../store/actions/profile'
+import Colors from '../../Styles/Colors';
 
 
 export default function BlogListScreen(props) {
@@ -22,6 +23,8 @@ export default function BlogListScreen(props) {
     const userId = useSelector(state => state.auth.userId)
 
     const myProfile = userId === profileId || profileId === undefined//secure this check using backend auth in production
+
+
 
 
 
@@ -47,23 +50,28 @@ export default function BlogListScreen(props) {
 
     function renderItems(itemData) {
         return (
-            <TouchableOpacity onPress={() => props.navigation.navigate('BlogScreen', {
-                blog: itemData.item
+            <TouchableOpacity
+                onPress={() => props.navigation.navigate('BlogScreen', {
+                    blog: itemData.item
 
-            })}>
-                <View style={{ height: 30, margin: 30 }}>
-                    <Text>{itemData.item.writing}</Text>
-                    <Text>{itemData.item.date}</Text>
-                </View>
+                })}
+                style={styles.blogItem}
+            >
+
+                <Image style={styles.image} source={itemData.item.images[0]?.image} />
+                <Text style={styles.title}>Blog Title</Text>
+                <Text>{itemData.item.date}</Text>
+
             </TouchableOpacity>
 
         )
     }
     return (
-        <View style={ScreenStyle}>
-            {myProfile ? <Button onPress={() => (props.navigation.navigate('CreateBlog1'))} title="Create New Blog Post" /> : null}
+        <View style={styles.screen}>
+
 
             <FlatList
+                ListHeaderComponent={myProfile ? <Button color={Colors.primaryColor} onPress={() => (props.navigation.navigate('CreateBlog1'))} title="Create New Blog Post" /> : null}
                 data={myProfile ? myBlogs : blogs}
                 renderItem={renderItems}
                 ListEmptyComponent={() => {
@@ -82,8 +90,37 @@ export default function BlogListScreen(props) {
                     )
 
                 }}
+
             />
         </View>
     );
 
 }
+
+const styles = StyleSheet.create({
+    screen: {
+        ...ScreenStyle,
+        alignItems: 'center',
+        flex: 1,
+        paddingVertical: 20,
+
+    },
+
+    blogItem: {
+        width: Dimensions.get('window').width,
+        paddingHorizontal: 20,
+        marginVertical: 30
+
+
+
+    },
+    image: {
+        alignSelf: 'center',
+        height: 90,
+        width: '90%'
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: '600'
+    }
+})

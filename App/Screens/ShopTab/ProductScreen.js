@@ -374,25 +374,6 @@ export default function ProductScreen(props) {
         )
 
     }
-    const PictureView = useCallback((props) => {
-        //console.log('pic')
-        return (
-            <ScrollView
-                horizontal={true}
-                pagingEnabled={true}
-                style={styles.imageContainer}
-            >
-                {colorImages.map((item, index) => (
-                    // <Image style={styles.image} {...item.image} transitionDuration={500} />
-
-                    <Image style={styles.image} source={item.image} />
-                    // <Image style={styles.image} source={require('../../assets/Images/groom.jpg')} />
-                ))}
-
-            </ScrollView>
-        )
-
-    }, [colorImages]) //, [colorImages]) a useCallback was here
 
     const productPage = //useCallback(() => ( 
         isLoading ? null : (
@@ -404,7 +385,6 @@ export default function ProductScreen(props) {
 
                 <View style={styles.imageContainer}>
 
-                    {/* <PictureView /> */}
                     <FlatList initialNumToRender={8} pagingEnabled={true} horizontal={true} data={colorImages} renderItem={renderPic} />
 
                 </View>

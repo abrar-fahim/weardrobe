@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions } from 'react-native';
+import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react';
+import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -8,12 +8,32 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import ScreenStyle from '../../Styles/ScreenStyle';
 import GenericHeaderButton from '../../components/GenericHeaderButton'
 import * as ImagePicker from 'expo-image-picker';
+import { useDispatch, useSelector } from 'react-redux';
+import * as profileActions from '../../store/actions/profile'
 
 export default function CreateBlogScreen2(props) {
-    const formData = props.route.params?.formData
-    const [image, setImage] = useState(null)
+    const formData = props.route.params?.formData;
+    const [image, setImage] = useState(null);
 
-    
+    const dispatch = useDispatch();
+
+    const [texts, setTexts] = useState({
+        text1: '',
+        text2: '',
+        text3: ''
+    })
+
+    const createUserBlog = useCallback(async (formData) => {
+        try {
+            console.log(formData)
+            await dispatch(profileActions.createUserBlog(formData))
+        }
+        catch (err) {
+            console.log(err)
+        }
+    })
+
+
 
     useEffect(() => {
         (async () => {
@@ -28,25 +48,43 @@ export default function CreateBlogScreen2(props) {
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
-            headerRight: () => (<GenericHeaderButton title="newPost" iconName="md-arrow-forward" onPress={() => {
-                if (image !== null) {
-                    formData.append("photos", {
-                        name: '1.jpg',
-                        type: 'image/jpeg',
-                        uri:
-                            Platform.OS === "android" ? image.uri : image.uri.replace("file://", "")
-                    });
-                }
-                console.log(formData)
+            headerRight: () => (
+                <TouchableOpacity 
+                style={styles.headerButton}
+                onPress={() => {
+                    if (image !== null) {
+                        formData.append("photos", {
+                            name: '1.jpg',
+                            type: 'image/jpeg',
+                            uri:
+                                Platform.OS === "android" ? image.uri : image.uri.replace("file://", "")
+                        });
+                    }
 
-                props.navigation.navigate('CreateBlog3', {
-                    formData: formData
-                })
-            }
-            } />)
+                    
+
+                    formData.append('text1', texts.text1)
+                    formData.append('text2', texts.text2)
+                    formData.append('text3', texts.text3)
+                    console.log(formData)
+
+                    createUserBlog(formData)
+
+                    props.navigation.popToTop();
+
+                    // props.navigation.navigate('CreateBlog3', {
+                    //     formData: formData
+                    // })
+                }
+                }>
+                    <Text>Publish</Text>
+                </TouchableOpacity>
+
+
+            )
 
         })
-    }, [formData, image])
+    }, [formData, image, texts])
 
 
 
@@ -65,74 +103,76 @@ export default function CreateBlogScreen2(props) {
     };
 
     return (
-        <View style={ScreenStyle}>
-            <Text> Create Blog 2</Text>
+        <ScrollView style={ScreenStyle}>
 
-            <View style={styles.LayoutText}>
 
-                <Text style={styles.ChooseLayout}>Select Picture</Text>
+
+            <View style={styles.blogBody}>
+                <Text style={styles.title}>Title here</Text>
+
+
+                <Image source={image ? image : require('../../assets/Images/img.png')} style={styles.image}
+                    resizeMode="contain" />
+                <View style={styles.button}>
+                    <Button title='Upload Picture' color='black' onPress={() => {
+                        pickImage()
+                    }}></Button>
+
+
+                    {/* <FlatList
+
+                        data={blog.texts}
+                        renderItem={renderText}
+                    /> */}
+
+                    <TextInput multiline style={styles.text} placeholder="text one here" onChangeText={(text) => {
+                        setTexts({
+                            ...texts,
+                            text1: text
+                        })
+                    }} />
+
+                    <TextInput multiline style={styles.text} placeholder="text two here" onChangeText={(text) => {
+                        setTexts({
+                            ...texts,
+                            text2: text
+                        })
+                    }} />
+                    <TextInput multiline style={styles.text} placeholder="text three here" onChangeText={(text) => {
+                        setTexts({
+                            ...texts,
+                            text3: text
+                        })
+                    }} />
+
+                </View>
+
 
 
             </View>
-
-            <View style={styles.Image}>
-                <Image source={image ? image : require('../../assets/Images/img.png')} style={styles.Pic} />
-            </View>
-
-            <View style={styles.Buttons}>
-                <Button title='Upload Picture' color='black' onPress={() => {
-                    pickImage()
-                }}></Button>
-            </View>
-        </View>
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
 
-    Main:
-    {
-        flexDirection: 'column',
-        flex: 1
+    image: {
+        height: Dimensions.get('window').width,
+        width: Dimensions.get('window').width,
     },
-    Direction:
-    {
-        flex: 1,
-        flexDirection: 'row',
-        paddingTop: 25,
-        paddingLeft: 100
+    text: {
+        fontSize: 18,
+        marginHorizontal: 10,
+        marginVertical: 20
     },
-    LayoutText:
-    {
-        flex: 1
+    headerButton: {
+        marginRight: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
 
-    },
-    ChooseLayout:
+    button:
     {
-        flex: 1,
-        paddingLeft: 10,
-        fontWeight: 'bold',
-        fontSize: 20
     },
-    Image:
-    {
-        height: 100,
-        maxHeight: 100,
-        width: Dimensions.get('window').width / 1.5
-
-    },
-    Buttons:
-    {
-        marginTop: 150,
-        flex: 3,
-        paddingLeft: 50,
-        paddingRight: 50
-    },
-    Pic:
-    {
-        width: '100%',
-        maxHeight: 300
-
-    }
 
 });

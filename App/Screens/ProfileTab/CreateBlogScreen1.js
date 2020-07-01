@@ -13,8 +13,8 @@ export default function CreateBlogScreen1({ navigation }) {
 
     const formData = new FormData()
     return (
-        <View style={ScreenStyle}>
-            <Text> Choose Structure</Text>
+        <View style={styles.screen}>
+
             <TouchableOpacity
                 onPress={() => {
                     formData.append('structure', '1')
@@ -22,8 +22,10 @@ export default function CreateBlogScreen1({ navigation }) {
                         formData: formData
                     })
 
-                }}>
-                <Text>1</Text>
+                }}
+                style={styles.layout}
+            >
+                <Text style={styles.num}>1</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -34,9 +36,10 @@ export default function CreateBlogScreen1({ navigation }) {
                     })
 
                 }}
+                style={styles.layout}
 
             >
-                <Text>2</Text>
+                <Text style={styles.num}>2</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -46,9 +49,25 @@ export default function CreateBlogScreen1({ navigation }) {
                         formData: formData
                     })
                 }}
+                style={styles.layout}
             >
-                <Text>3</Text>
+                <Text style={styles.num}>3</Text>
             </TouchableOpacity>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    screen: {
+        ...ScreenStyle,
+        alignItems: 'center'
+    },
+    layout: {
+        marginVertical: 20,
+        marginHorizontal: 10
+    },
+    num: {
+        fontSize: 30,
+        fontWeight: '700'
+    }
+})

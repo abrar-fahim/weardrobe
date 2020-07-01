@@ -99,51 +99,6 @@ export function MagazineScreen(props) {
 
 
 
-
-
-    const reactUserBlog = useCallback(async (blogId) => {
-        try {
-            await dispatch(magazineActions.reactUserBlog(blogId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-    const unReactUserBlog = useCallback(async (blogId) => {
-        try {
-            await dispatch(magazineActions.unReactUserBlog(blogId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-
-    const commentUserBlog = useCallback(async (blogId, comment) => {
-        try {
-            await dispatch(magazineActions.commentUserBlog(blogId, comment))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-    const deleteCommentUserBlog = useCallback(async (commentId, postId) => {
-        try {
-            await dispatch(magazineActions.deleteCommentUserBlog(commentId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-
-
     useEffect(() => {
         loadPosts();
         setIter(0)
