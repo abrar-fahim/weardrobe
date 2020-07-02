@@ -28,25 +28,43 @@ export default function BlogListScreen(props) {
 
 
 
-    const blogs = useSelector(state => state.profile.blogs)
+    // const blogs = useSelector(state => state.profile.blogs)
     const myBlogs = useSelector(state => state.profile.myBlogs)
 
     const [allowed, setAllowed] = useState(true)    //use later with get user blogs 
+    const [blogs, setBlogs] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
 
 
 
     const loadMyBlogs = useCallback(async () => {
         try {
+            setIsLoading(true)
             await dispatch(profileActions.fetchMyBlogs())
+            setIsLoading(false)
         }
         catch (err) {
+            setIsLoading(false)
             console.log(err)
         }
     })
 
+    const loadUserBlogs = useCallback(async () => {
+        try {
+            setIsLoading(true)
+            const gotBlogs = await profileActions.fetchUserBlogsDirect(profileId);
+            setBlogs(gotBlogs)
+            setIsLoading(false)
+        }
+        catch (err) {
+            setIsLoading(false)
+            console.log(err)
+        }
+    }, [profileId])
+
     useEffect(() => {
-        loadMyBlogs()
-    }, [])
+        profileId === userId ? loadMyBlogs() : loadUserBlogs()
+    }, [profileId, userId])
 
     function renderItems(itemData) {
         return (
@@ -74,6 +92,8 @@ export default function BlogListScreen(props) {
                 ListHeaderComponent={myProfile ? <Button color={Colors.primaryColor} onPress={() => (props.navigation.navigate('CreateBlog1'))} title="Create New Blog Post" /> : null}
                 data={myProfile ? myBlogs : blogs}
                 renderItem={renderItems}
+                refreshing={isLoading}
+                onRefresh={() => { profileId === userId ? loadMyBlogs() : loadUserBlogs() }}
                 ListEmptyComponent={() => {
                     if (!allowed) {
                         return (

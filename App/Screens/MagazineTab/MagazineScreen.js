@@ -37,6 +37,7 @@ import {
     setTestDeviceIDAsync,
 
 } from 'expo-ads-admob';
+import BlogScreen from '../ProfileTab/BlogScreen';
 
 
 
@@ -222,6 +223,7 @@ export default function MagazineStackScreen({ navigation }) {
             <MagazineStack.Screen name="OthersProfile" component={ProfileTabsScreen} options={{
                 headerShown: true
             }} />
+            <MagazineStack.Screen name="BlogScreen" component={BlogScreen} />
 
         </MagazineStack.Navigator>
 

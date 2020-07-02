@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions, TouchableOpacity, Alert } from 'react-native';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -30,6 +30,7 @@ const BlogScreen = (props) => {
 
     const [change, setChange] = useState(0);    //this forces comments to re render on each touch
     // console.log(comments)
+    const textInputRef = useRef(null);
 
     const loadUserBlogComments = useCallback(async () => {
         try {
@@ -77,6 +78,7 @@ const BlogScreen = (props) => {
     const commentUserBlog = useCallback(async (comment) => {
         try {
             await dispatch(magazineActions.commentUserBlog(blogId, comment))
+            await dispatch(magazineActions.fetchUserBlogComments(blogId))
 
         }
         catch (err) {
@@ -163,87 +165,109 @@ const BlogScreen = (props) => {
                         resizeMode="contain" />
 
 
-                    {/* <FlatList
-
-                        data={blog.texts}
-                        renderItem={renderText}
-                    /> */}
-
                     <Text style={styles.text}>{blog.texts[0].text}</Text>
 
                     <Text style={styles.text}>{blog.texts[1].text}</Text>
                     <Text style={styles.text}>{blog.texts[2].text}</Text>
 
-                </View>
-            )
-        }
-
-        if (itemData.index === comments.length + 1) {
-            return (
-                <View>
+                    <View>
 
 
-                    <View style={styles.reactsCommentsContainer}>
-                        <TouchableOpacity style={styles.Like} onPress={async () => {
+                        <View style={styles.reactsCommentsContainer}>
+                            <TouchableOpacity style={styles.Like} onPress={async () => {
 
 
-                            if (blog.hasReacted === 1) {
-                                //unlike
-                                await unReactUserBlog(blog.id)
+                                if (blog.hasReacted === 1) {
+                                    //unlike
+                                    await unReactUserBlog(blog.id)
+
+                                    // flatListRef.current.recordInteraction()
+                                    blog.hasReacted = 0;
+                                    blog.numReacts -= 1;
 
 
 
-                                // flatListRef.current.recordInteraction()
-                                blog.hasReacted = 0;
-                                blog.numReacts -= 1;
+                                }
+                                else {
+                                    reactUserBlog(blog.id)
 
-
-
-                            }
-                            else {
-                                reactUserBlog(blog.id)
-
-                                blog.hasReacted = 1;
-                                blog.numReacts += 1;
+                                    blog.hasReacted = 1;
+                                    blog.numReacts += 1;
 
 
 
 
-                            }
-                        }}>
+                                }
+                            }}>
 
 
-                            {blog.hasReacted === 1 ? <MaterialCommunityIcons name="heart-multiple" size={30} color='#E1306C' /> : <MaterialCommunityIcons name="heart-multiple-outline" size={30} color='black' />}
+                                {blog.hasReacted === 1 ? <MaterialCommunityIcons name="heart-multiple" size={30} color='#E1306C' /> : <MaterialCommunityIcons name="heart-multiple-outline" size={30} color='black' />}
 
-                            <Text style={styles.number}>{blog.numReacts}</Text>
-
-
-                        </TouchableOpacity>
+                                <Text style={styles.number}>{blog.numReacts}</Text>
 
 
+                            </TouchableOpacity>
 
 
-                        <View
-                            style={styles.commentIcon}
 
-                        >
-                            <MaterialCommunityIcons name="comment-multiple" color="black" size={30} />
-                            <Text style={styles.number}>{blog.numComments}</Text>
+
+                            <View
+                                style={styles.commentIcon}
+
+                            >
+                                <MaterialCommunityIcons name="comment-multiple" color="black" size={30} />
+                                <Text style={styles.number}>{blog.numComments}</Text>
+                            </View>
+
+
+
                         </View>
 
 
 
+                        {blog.userId === userId ? <Button title="delete blog" onPress={() => {
+                            console.log(blog.id)
+
+                            deleteBlog(blog.id)
+
+
+                        }} /> : null}
+
+                        <View style={styles.commentInputContainer}>
+                            <TextInput
+                                style={styles.commentInput}
+                                placeholder="Add a comment"
+                                multiline
+                                onChangeText={setComment}
+                                ref={textInputRef}
+                                onSubmitEditing={() => {
+                                    if (comment !== "") {
+                                        commentUserBlog(comment)
+
+                                        textInputRef.current.clear();
+                                        setComment('');
+                                        setChange(state => state - 1)
+
+                                    }
+                                }}
+
+                            />
+                            {comment !== '' ? <TouchableOpacity onPress={() => {
+                                if (comment !== "") {
+                                    commentUserBlog(comment)
+                                    textInputRef.current.clear();
+                                    setComment('');
+                                    setChange(state => state - 1)
+                                }
+
+                            }}>
+                                <Text>Send</Text>
+                            </TouchableOpacity> : null}
+
+
+                        </View>
                     </View>
 
-
-
-                    {blog.userId === userId ? <Button title="delete blog" onPress={() => {
-                        console.log(blog.id)
-
-                        deleteBlog(blog.id)
-
-
-                    }} /> : null}
                 </View>
             )
         }
@@ -268,10 +292,11 @@ const BlogScreen = (props) => {
             <FlatList
                 listKey={blogId + "2"}
                 data={
-                    [{ id: '1' }].concat(comments).concat([{ id: 'LAST' }])
+                    [{ id: '1' }].concat(comments)
                 }
                 renderItem={renderComment}
                 extraData={change}
+
             />
 
             <Text>{blog.text}</Text>
@@ -364,6 +389,21 @@ const styles = StyleSheet.create({
         width: 70,
         justifyContent: 'flex-end',
         alignItems: 'center',
+    },
+    commentInputContainer: {
+
+        flexDirection: 'row',
+        width: '100%',
+        backgroundColor: 'white',
+        paddingHorizontal: 10,
+        alignItems: 'center'
+    },
+    commentInput: {
+        flex: 1,
+        backgroundColor: 'white',
+        minHeight: 60,
+        paddingHorizontal: 10,
+        paddingVertical: 10
     },
     comment: {
         flexDirection: 'column',

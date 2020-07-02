@@ -469,7 +469,7 @@ export function ProfileScreen(props) {
                         </View>
 
                         <View style={{ flexDirection: 'column', height: 80, justifyContent: 'center' }}>
-                            <TouchableOpacity onPress={() => props.navigation.navigate('FollowersListTab', {
+                            <TouchableOpacity onPress={() => props.navigation.push('FollowersListTab', {
                                 myProfile: myProfile,
                                 profileId: profileId
                             })}>
@@ -634,13 +634,25 @@ export default function ProfileStackScreen(props) {
             <ProfileStack.Screen name="ProfileScreen" component={ProfileTabsScreen} options={{
 
                 headerRight: () => userId ? (
-                    <GenericHeaderButton title="SettingButton" iconName="md-settings" onPress={() => {
+                    <View style={styles.headerButtons}>
 
-                        props.navigation.navigate('ProfileSettings', {
-                            profileId: userId
-                        })
-                    }
-                    } />
+                        <GenericHeaderButton title="NewPost" iconName="md-add" onPress={() => {
+
+                            props.navigation.navigate('NewPostChooseLayout')
+                        }
+                        } />
+                        <GenericHeaderButton title="SettingButton" iconName="md-settings" onPress={() => {
+
+                            props.navigation.navigate('ProfileSettings', {
+                                profileId: userId
+                            })
+                        }
+                        } />
+
+
+
+                    </View>
+
                 ) : null
             }}
             />
@@ -674,10 +686,15 @@ const styles = StyleSheet.create({
     //     margin: 10,
     //     width: Dimensions.get('window').width / 3.5
     // },
+    headerButtons: {
+        flexDirection: 'row'
+
+    },
     screen: {
         backgroundColor: Colors.backgroundColor,
 
     },
+
     profileContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',

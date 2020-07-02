@@ -40,7 +40,7 @@ function FollowersListScreen(props) {
 
     const renderFollowers = (itemData) => {
         return (
-            <TouchableOpacity style={styles.user} onPress={() => props.navigation.navigate('OthersProfile', {
+            <TouchableOpacity style={styles.user} onPress={() => props.navigation.push('OthersProfile', {
                 profileId: itemData.item.id
             })}>
                 <Image source={itemData.item.profilePic} style={styles.dp} />
@@ -100,7 +100,7 @@ function FollowingListScreen(props) {
 
     const renderFollowers = (itemData) => {
         return (
-            <TouchableOpacity style={styles.user} onPress={() => props.navigation.navigate('OthersProfile', {
+            <TouchableOpacity style={styles.user} onPress={() => props.navigation.push('OthersProfile', {
                 profileId: itemData.item.id
             })}>
                 <Image source={itemData.item.profilePic} style={styles.dp} />
