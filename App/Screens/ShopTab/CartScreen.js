@@ -73,8 +73,22 @@ export default function CartScreen(props) {
 
 
 
+
     useEffect(() => {
-        loadCartItems();
+
+        const willFocusSub = props.navigation.addListener(
+            'focus', () => {
+
+                if (userId) {
+                    loadCartItems();
+                }
+            }
+
+        );
+
+
+        return willFocusSub;
+
     }, []);
 
 

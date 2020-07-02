@@ -8,6 +8,7 @@ import ScreenStyle from '../../Styles/ScreenStyle';
 import GROUPS from '../../dummy-data/Groups'
 
 import * as chatActions from '../../store/actions/chats'
+import * as profileActions from '../../store/actions/profile'
 import { useSelector, useDispatch } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -18,13 +19,31 @@ export default function GroupListScreen(props) {
 
 
     const [iter, setIter] = useState(0);
+    const userId = useSelector(state => state.auth.userId);
+
+    const myProfile = useSelector(state => state.profile.myProfile);
 
     const [iterLoading, setIterLoading] = useState(false)
 
     const [isLoading, setIsLoading] = useState(true)
 
 
+
+
     const dispatch = useDispatch()
+
+    const loadMyProfile = useCallback(async () => {
+        try {
+            setIsLoading(true)
+            await dispatch(profileActions.getMyProfile(userId));
+            setIsLoading(false)
+        }
+        catch (err) {
+            console.log(err)
+        }
+        setIsLoading(false)
+
+    }, [userId])
 
     const LoadGroups = useCallback(async () => {
         try {
@@ -61,7 +80,8 @@ export default function GroupListScreen(props) {
         const willFocusSub = props.navigation.addListener(
             'focus', () => {
 
-                LoadGroups()
+                LoadGroups();
+                loadMyProfile();
             }
 
         );
@@ -117,11 +137,11 @@ export default function GroupListScreen(props) {
                         </View>
 
                     </View>
-                    <Text style={styles.lastText}>{itemData.item.senderName}</Text>
+                    <Text style={styles.lastText}>{itemData.item.type === 'SHOP' ? itemData.item.senderId === userId ? myProfile.username : itemData.item.shopName : itemData.item.senderName}</Text>
 
                     <Text
                         style={styles.lastText}
-                        ellipsizeMode="tail"
+                        ellipsizeMode="clip"
                         numberOfLines={1}
                     >{itemData.item.messageType === 'PRODUCT' ? "shared a product" : itemData.item.messageType === 'PHOTO' ? "shared a photo" : itemData.item.message}
                     </Text>
@@ -146,7 +166,11 @@ export default function GroupListScreen(props) {
                 data={groups}
                 renderItem={renderItems}
                 refreshing={isLoading}
-                onRefresh={LoadGroups}
+                onRefresh={() => {
+                    LoadGroups();
+                    loadMyProfile();
+                }
+                }
                 ListEmptyComponent={
                     <View style={{ flex: 1 }}>
                         <Text>No chats yet!</Text>

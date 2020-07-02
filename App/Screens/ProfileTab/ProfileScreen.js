@@ -330,6 +330,7 @@ export function ProfileScreen(props) {
             setIsLoading(true);
             await dispatch(profileActions.fetchMyPosts())
             setIsLoading(false);
+            setAllowed(true)
         }
         catch (err) {
             setIsLoading(false);
@@ -343,6 +344,7 @@ export function ProfileScreen(props) {
             setIsLoading(true)
             await dispatch(profileActions.fetchUserPosts(userId))
             setIsLoading(false)
+            setAllowed(true)
 
         }
         catch (err) {
@@ -428,7 +430,7 @@ export function ProfileScreen(props) {
 
     useEffect(() => {
         myProfile ? loadMyPosts() : loadPosts(profileId);
-    }, [profileId])
+    }, [profileId, userId, myProfile])
 
 
     const renderPost = (itemData) => {
@@ -554,7 +556,10 @@ export function ProfileScreen(props) {
                 }
 
                 refreshing={isLoading}
-                onRefresh={loadPosts}
+                onRefresh={() => {
+                    myProfile ? loadMyPosts() : loadPosts(profileId);
+                    getProfile();
+                }}
 
 
             />
@@ -647,7 +652,7 @@ export default function ProfileStackScreen(props) {
             <ProfileStack.Screen name="CreateBlog1" component={CreateBlogScreen1} options={{
                 title: 'Select Layout'
             }}
-        
+
             />
             <ProfileStack.Screen name="CreateBlog2" component={CreateBlogScreen2} />
             <ProfileStack.Screen name="CreateBlog3" component={CreateBlogScreen3} options={{

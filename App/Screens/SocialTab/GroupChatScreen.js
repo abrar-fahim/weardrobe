@@ -264,13 +264,6 @@ export function GroupChatScreen(props) {
                         : <View style={styles.msgBubbleMe}>
 
                             <Text style={styles.msgTextMe}>{itemData.item.message}</Text>
-
-
-
-
-
-
-
                         </View>)
                     }
 

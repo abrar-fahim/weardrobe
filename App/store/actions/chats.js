@@ -70,6 +70,12 @@ export const getGroups = (iter = 0) => {
                         name: resData[key].SHOP_NAME,
                         startedAt: resData[key].CREATED_AT,
                         logo: { uri: `${IMG_URL}` + resData[key].LOGO_URL },
+                        message: resData[key].MESSAGE,
+                        sentAt: resData[key].SENT_AT,
+                        senderName: resData[key].SENDER_NAME,
+                        messageType: resData[key].TYPE,
+                        senderId: resData[key].SENDER_UID,
+                        shopName: resData[key].SHOP_NAME,
                         type: 'SHOP'
                     })
             }

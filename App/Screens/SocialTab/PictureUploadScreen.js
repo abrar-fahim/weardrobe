@@ -38,7 +38,7 @@ const PictureUploadScreen = (props) => {
         catch (err) {
             console.log(err)
         }
-    })
+    }, [type, groupId])
 
     useEffect(() => {
         (async () => {

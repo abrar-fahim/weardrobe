@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Ionicons, Entypo, AntDesign, FontAwesome } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as orderActions from '../../store/actions/order';
+import * as popupActions from '../../store/actions/Popup';
 
 export default function ConfirmOrderScreen(props) {
 
@@ -19,6 +20,8 @@ export default function ConfirmOrderScreen(props) {
     const purchase = useCallback(async () => {
         try {
             await dispatch(orderActions.purchase())
+            await dispatch(popupActions.setMessage("order placed!", false))
+
         }
         catch (err) {
             console.log(err)
@@ -56,8 +59,8 @@ export default function ConfirmOrderScreen(props) {
 
                 </View>
                 <View style={styles.body}>
-                    {cartItems.filter(item => item.inventoryQuantity > 0).map(item => (
-                        <View style={styles.cartItem}>
+                    {cartItems.filter(item => item.inventoryQuantity > 0).map((item, index) => (
+                        <View style={styles.cartItem} key={index.toString()}>
 
                             <View style={styles.seller}>
 
