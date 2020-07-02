@@ -516,16 +516,11 @@ export default function SellerScreen(props) {
 
     const startShopChat = useCallback(async () => {
         try {
-            setIsLoading(true)
-
             await dispatch(chatActions.createShopChat(shopId))
 
-
-
-            setIsLoading(false)
         }
         catch (err) {
-            setIsLoading(false)
+
             console.log(err)
         }
     }, [shopId])
@@ -555,9 +550,9 @@ export default function SellerScreen(props) {
                     <GenericHeaderButton
                         title="chat"
                         iconName="md-chatbubbles"
-                        onPress={async () => {
+                        onPress={() => {
                             if (loggedIn) {
-                                await startShopChat();
+                                startShopChat();
                                 setChatVisible(state => !state);
                             }
                             else {
@@ -623,8 +618,7 @@ export default function SellerScreen(props) {
             <Modal
                 animationIn="slideInUp"
                 animationOut="slideOutDown"
-                animationInTiming={300}
-                animationOutTiming={300}
+
                 isVisible={ChatVisible}
                 onBackButtonPress={() => setChatVisible(false)}
                 onBackdropPress={() => setChatVisible(false)}

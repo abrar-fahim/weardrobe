@@ -180,7 +180,7 @@ export function GroupChatScreen(props) {
     }, [sending, groupId, type])
 
     const sendProduct = useCallback(async (productId) => {
-        
+
         try {
             if (!sending) {
                 setSending(true)
@@ -264,12 +264,17 @@ export function GroupChatScreen(props) {
                             <Text style={styles.msgTextMe}>{itemData.item.message}</Text>
 
 
+
+
+
+
+
                         </View>)
                     }
 
 
 
-                </View>
+                </View >
             )
         }
 
@@ -483,28 +488,32 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginTop: 5,
         maxWidth: '98%',
-        minWidth: 50,
-        minHeight: 50,
+        // minWidth: 50,
+        // minHeight: 50,
         alignSelf: 'flex-start',
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        paddingVertical: 10
+
     },
     msgBubbleMe: {
         flexDirection: 'row',
-        flexGrow: 1,
+
         marginLeft: 10,
         borderRadius: 20,
         marginTop: 5,
         maxWidth: '98%',
-        minWidth: 50,
-        minHeight: 50,
+
+        // minWidth: 50,
+        // minHeight: 50,
         alignSelf: 'flex-end',
         backgroundColor: Colors.primaryColor,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        paddingVertical: 10
     },
     msgText: {
         // alignSelf: 'flex-start',
@@ -513,7 +522,8 @@ const styles = StyleSheet.create({
         fontWeight: '300',
         flexDirection: 'row',
         flexGrow: 0.1,
-        textAlign: 'center'
+        textAlign: 'center',
+
 
     },
     // msgTextContainer: {
@@ -531,7 +541,11 @@ const styles = StyleSheet.create({
         fontWeight: '300',
         color: 'white',
         flexGrow: 0.1,
-        textAlign: 'center'
+        textAlign: 'center',
+        alignSelf: 'center',
+        // flex: 1
+        // width: '100%'
+
     },
 
     photo: {

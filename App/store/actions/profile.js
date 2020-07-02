@@ -1159,7 +1159,7 @@ export const getMyProfile = (userId, params = [
                 firstName: resData.FIRST_NAME,
                 lastName: resData.LAST_NAME,
                 email: resData.EMAIL,
-                phoneNumber: resData.PHONE,
+                phoneNumber: resData.PHONE_NUM,
                 birthday: resData.BIRTHDAY,
                 profilePic: { uri: `${HOST}/img/temp/` + resData.PROFILE_PIC },
                 bio: resData.BIO,
@@ -1167,6 +1167,20 @@ export const getMyProfile = (userId, params = [
                 points: resData.POINTS,
                 username: resData.USERNAME,
                 type: resData.TYPE,
+                addresses: [
+                    {
+                        id: '1',
+                        city: 'dhaka',
+                        street: 'dhanmondi',
+                        house: '61/A'
+                    },
+                    {
+                        id: '2',
+                        city: 'dhaka',
+                        street: 'banani',
+                        house: '01'
+                    }
+                ]
 
             }
             dispatch({

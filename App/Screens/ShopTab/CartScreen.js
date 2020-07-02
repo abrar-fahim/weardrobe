@@ -261,6 +261,19 @@ export default function CartScreen(props) {
 
                         </View>
 
+                        <TouchableOpacity onPress={() => props.navigation.navigate('Shipping')}>
+                            <View style={styles.buttonContainer}>
+
+
+
+                                <Text style={UIButtonTextStyle}>CHECKOUT</Text>
+
+
+
+
+                            </View>
+                        </TouchableOpacity>
+
 
 
 
@@ -272,18 +285,7 @@ export default function CartScreen(props) {
             />
 
 
-            <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
-                <View style={styles.buttonContainer}>
 
-
-
-                    <Text style={UIButtonTextStyle}>CHECKOUT</Text>
-
-
-
-
-                </View>
-            </TouchableOpacity>
 
         </View>
     )
@@ -302,7 +304,7 @@ const styles = StyleSheet.create(
 
 
         list: {
-            marginBottom: 20
+            // marginBottom: 20
 
         },
         cartItem: {
@@ -434,6 +436,7 @@ const styles = StyleSheet.create(
             width: '100%',
             justifyContent: 'center',
             alignItems: 'center',
+            marginBottom: 20
 
         },
         summaryContainer: {

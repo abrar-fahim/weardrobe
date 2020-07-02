@@ -68,7 +68,7 @@ export const fetchShopPosts = (iter = 0) => {
             }
 
             else {
-                dispatch(popupActions.setMessage('Something Went Wrong', true))
+                // dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error(resData.ERROR)
             }
 
@@ -79,7 +79,7 @@ export const fetchShopPosts = (iter = 0) => {
 
 
 
-            dispatch(popupActions.setMessage('Something Went Wrong', true))
+            // dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
@@ -139,7 +139,7 @@ export const fetchFriendsPosts = () => {
             }
 
             else {
-                dispatch(popupActions.setMessage('Something Went Wrong', true))
+                // dispatch(popupActions.setMessage('Something Went Wrong', true))
                 throw new Error(resData.ERROR)
             }
 
@@ -147,7 +147,7 @@ export const fetchFriendsPosts = () => {
 
         }
         catch (err) {
-            dispatch(popupActions.setMessage('Something Went Wrong', true))
+            // dispatch(popupActions.setMessage('Something Went Wrong', true))
             //send to custom analytics server
             //console.log('error on action')
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })

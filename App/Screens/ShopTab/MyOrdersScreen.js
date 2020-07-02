@@ -1,5 +1,4 @@
-import 'react-native-gesture-handler';
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -29,6 +28,9 @@ import UIButton from '../../components/UIButton';
 import PRODUCTS from '../../dummy-data/Products'
 import AuthRequiredScreen from '../AuthRequiredScreen'
 import CheckLoggedIn from '../../components/CheckLoggedIn';
+
+import * as orderActions from '../../store/actions/order'
+import * as popupActions from '../../store/actions/Popup'
 
 const ORDERS = [
     {
@@ -80,25 +82,51 @@ function MyOrdersScreen(props) {
 
     const loggedIn = CheckLoggedIn();
 
+    const [isLoading, setIsLoading] = useState(true);
+
+    const orders = useSelector(state => state.order.orders);
+
+    const dispatch = useDispatch()
+
+    const getOrders = useCallback(async () => {
+        //setIsLoading(true);
+        try {
+            setIsLoading(true)
+            await dispatch(orderActions.getOrders())
+            setIsLoading(false)
+        } catch (err) {
+            console.log(err.message)
+            dispatch(popupActions.setMessage("Couldn't get orders", true))
+        }
+        //setIsLoading(false);
+    })
+
+    useEffect(() => {
+        getOrders()
+    }, [])
+
+
     const renderItems = (itemData) => {
         return (
-            <TouchableOpacity onPress={() => (props.navigation.navigate('Order'))}>
+            <TouchableOpacity onPress={() => (props.navigation.navigate('Order', {
+                order: itemData.item
+            }))}>
 
                 <View style={styles.orderContainer}>
 
                     <View style={styles.shopRef}>
-                        <Text style={styles.shop}> {itemData.item.shops} </Text>
 
-                        <Text style={styles.ref}> {"id: " + itemData.item.reference}</Text>
+
+                        <Text style={styles.ref}> {"id: " + itemData.item.id}</Text>
                     </View>
 
-                    <Text style={styles.status}> {"Status: " + itemData.item.status}</Text>
+                    <Text style={styles.status}> {"Status: " + itemData.item.paymentStatus}</Text>
 
                     <View style={styles.shopRef}>
 
 
-                        <Text style={styles.due}> {"BDT " + itemData.item.due}</Text>
-                        <Text style={styles.date}> {"Get By: " + itemData.item.deliveryDate}</Text>
+                        <Text style={styles.due}> {"BDT " + itemData.item.total}</Text>
+                        <Text style={styles.date}> {"Ordered: " + Date(itemData.item.date).toLocaleLowerCase()}</Text>
 
                     </View>
 
@@ -114,7 +142,7 @@ function MyOrdersScreen(props) {
     }
     return (
         <View style={{ ...ScreenStyle, ...styles.screen }}>
-            <FlatList data={ORDERS} renderItem={renderItems} />
+            <FlatList data={orders} renderItem={renderItems} />
 
 
         </View>
@@ -130,7 +158,7 @@ const styles = StyleSheet.create(
             alignItems: 'flex-start',
             backgroundColor: '#eae9e9',
             flex: 1,
-            height: 100,
+
             padding: 10,
             margin: 10
         },
@@ -139,12 +167,13 @@ const styles = StyleSheet.create(
         },
         shopRef: {
             flexDirection: 'row',
-            justifyContent: 'space-between',
+
             width: '100%'
         },
         ref: {
             fontWeight: '300',
-            color: 'grey'
+            color: 'grey',
+            flex: 1
         },
         shop: {
             fontWeight: '700',
@@ -153,11 +182,13 @@ const styles = StyleSheet.create(
         due: {
 
             fontWeight: '700',
-            fontSize: 18
+            fontSize: 18,
+            flex: 1
 
         },
         date: {
-            fontWeight: '300'
+            fontWeight: '300',
+            flex: 1
 
         },
         status: {

@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import ScreenStyle from '../../Styles/ScreenStyle'
 import CARTITEMS from '../../dummy-data/CartItems'
@@ -16,37 +16,45 @@ import Colors from '../../Styles/Colors';
 
 export default function OrderScreen(props) {
 
+    const order = props.route.params?.order;
+
+
     const renderItems = (itemData) => {
+
         return (
 
-            <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', padding: 10, height: 120, alignItems: 'center'}}>
-        
-                    
+            <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', padding: 10, alignItems: 'center' }}>
+
+
                 <View style={styles.cartItem}>
-                    
+
                     <TouchableOpacity>
-                        <Image source={itemData.item.picture} style={{height: 70, width: 70, borderRadius: 35}}/> 
+                        <Image source={itemData.item.thumbnail} style={{ height: 70, width: 70, borderRadius: 35 }} />
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        props.navigation.navigate('Product', {
+                            productId: itemData.item.id
+                        })
+                    }}>
                         <View>
-                            <Text style={{fontSize: 17, fontWeight: '400'}}> {itemData.item.name}</Text>
-                            <Text style={{fontWeight:'200'}} > {"Ref: " + itemData.item.id}</Text>
+                            <Text style={{ fontSize: 17, fontWeight: '400'}}> {itemData.item.name}</Text>
+                            {/* <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.id}</Text> */}
                         </View>
                     </TouchableOpacity>
-                  
-                    
-                    <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: 70, alignItems: 'center'}}>
-                        <Text> Qty 5000</Text>
-                        <View style={{ justifyContent: 'space-between', height: 50}}>
-                           
+
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                        <Text> Qty {itemData.item.quantity}</Text>
+                        <View style={{ justifyContent: 'space-between', height: 50 }}>
+
                         </View>
                     </View>
-                    
-                    
+
+
                     <Text > {"BDT " + itemData.item.price} </Text>
-                    
+
                 </View>
-                
+
 
             </View>
         )
@@ -58,7 +66,7 @@ export default function OrderScreen(props) {
                 <Text style={styles.heading}>Order Summary</Text>
                 <View style={styles.stepContainer}>
                     <View style={styles.iconText}>
-                        <Feather name="check-circle" size={20}/>
+                        <Feather name="check-circle" size={20} />
                         <Text style={styles.stepText}> Order Placed</Text>
 
                     </View>
@@ -72,7 +80,7 @@ export default function OrderScreen(props) {
                     </View>
 
                     <View style={styles.iconText}>
-                        <Feather name="check-circle"  size={20}/>
+                        <Feather name="check-circle" size={20} />
                         <Text style={styles.stepText}> Order Accepted</Text>
 
                     </View>
@@ -86,7 +94,7 @@ export default function OrderScreen(props) {
                     </View>
 
                     <View style={styles.iconText}>
-                        <Feather name="circle"  size={20}/>
+                        <Feather name="circle" size={20} />
                         <Text style={styles.stepText}> Processing Order and Assigning Rider</Text>
 
                     </View>
@@ -99,9 +107,9 @@ export default function OrderScreen(props) {
 
                     </View>
 
-                    
+
                     <View style={styles.iconText}>
-                        <Feather name="circle"  size={20}/>
+                        <Feather name="circle" size={20} />
                         <Text style={styles.stepText}> Delivered</Text>
 
                     </View>
@@ -110,14 +118,14 @@ export default function OrderScreen(props) {
             </View>
         )
     }
-        return (
-        <View style={{...ScreenStyle, ...styles.screen}}>
+    return (
+        <View style={{ ...ScreenStyle, ...styles.screen }}>
 
-            
-            <FlatList ListHeaderComponent={orderFlow} data={CARTITEMS} renderItem={renderItems}
+
+            <FlatList ListHeaderComponent={orderFlow} data={order.products} renderItem={renderItems}
                 ListFooterComponent={
                     <View style={styles.bottom}>
-                        
+
                         <View style={styles.bottomRow}>
                             <Text style={styles.price}> Subtotal: </Text>
                             <Text style={styles.price} > BDT 700</Text>
@@ -132,20 +140,20 @@ export default function OrderScreen(props) {
                             <Text style={styles.price}> Total Payable: </Text>
                             <Text style={styles.price} > BDT 720</Text>
                         </View>
-                       
+
                     </View>
 
                 }
             />
 
-            
+
         </View>
     )
 }
 
 const styles = StyleSheet.create(
     {
-        cartItem : {
+        cartItem: {
             marginRight: 10,
             justifyContent: 'space-between',
             flexDirection: 'row',

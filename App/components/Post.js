@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState, useRef } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -7,6 +7,10 @@ import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommun
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as magazineActions from '../store/actions/magazine'
+import * as profileActions from '../store/actions/profile'
+import * as popupActions from '../store/actions/Popup'
+import Modal from 'react-native-modal';
+
 
 
 
@@ -20,9 +24,14 @@ const Post = (props) => {
     // }, navigation, reactShopPost, reactUserPost, unReactShopPost, unReactUserPost, setChange
     const post = props.post;
     const logo = props.logo;
+    const setChange = props.setChange;
+    const userId = useSelector(state => state.auth.userId);
 
-    const [error, setError] = useState('')
-    const setChange = props.setChange
+    const [error, setError] = useState('');
+    const [optionsVisible, setOptionsVisible] = useState(false);
+
+
+
 
 
     const dispatch = useDispatch();
@@ -69,6 +78,32 @@ const Post = (props) => {
         }
     })
 
+    const deleteUserPost = useCallback(async () => {
+        try {
+            Alert.alert('Delete Post?', "Are you sure you want to delete this post?", [
+                {
+                    text: "Delete",
+                    onPress: async () => {
+                        await dispatch(profileActions.deleteUserPost(post.id))
+                        dispatch(popupActions.setMessage('post deleted!', false))
+                        setError('')
+
+                    }
+                },
+                {
+                    text: "Cancel",
+                    style: 'cancel'
+                }
+            ])
+
+
+        }
+        catch (err) {
+            setError(err.message)
+            console.log(err);
+        }
+    }, [post])
+
     const renderImage = (itemData) => {
 
 
@@ -84,20 +119,47 @@ const Post = (props) => {
     return (
         <View style={styles.gridItem} >
 
-            <TouchableOpacity onPress={() => {
-                post.type === 'SHOP' ?
-                    props.navigation.navigate('Seller', {
-                        shopId: post.shopId
-                    }) :
-                    props.navigation.navigate('OthersProfile', {
-                        profileId: post.userId
-                    })
-
-            }}
-
+            <Modal
+                isVisible={optionsVisible}
+                onBackButtonPress={() => setOptionsVisible(false)}
+                onBackdropPress={() => setOptionsVisible(false)}
+                style={styles.modal}
 
             >
-                <View style={styles.nameDP}>
+                <View style={styles.optionsModal}>
+                    <Text style={styles.modalTitle}> Post Options</Text>
+
+                    <TouchableOpacity style={styles.optionsButton} onPress={() => {
+                        deleteUserPost()
+                    }}>
+                        <Text style={styles.buttonText}>Delete Post</Text>
+
+                    </TouchableOpacity>
+
+
+
+                </View>
+
+            </Modal>
+
+
+
+
+            <View style={styles.postHeader} >
+                <TouchableOpacity
+                    style={styles.nameDP}
+                    onPress={() => {
+                        post.type === 'SHOP' ?
+                            props.navigation.navigate('Seller', {
+                                shopId: post.shopId
+                            }) :
+                            props.navigation.navigate('OthersProfile', {
+                                profileId: post.userId
+                            })
+
+                    }}
+                >
+
 
                     <Image style={styles.DPImage} source={post?.logo ?? logo} />
                     <View style={styles.nameContainer}>
@@ -106,8 +168,20 @@ const Post = (props) => {
                     </View>
 
 
-                </View>
-            </TouchableOpacity>
+
+
+
+                </TouchableOpacity>
+                {post.userId === userId ?
+                    <TouchableOpacity onPress={() => setOptionsVisible(true)}>
+                        <MaterialCommunityIcons name="dots-horizontal" size={24} color="black" />
+                    </TouchableOpacity>
+
+                    : null}
+
+            </View>
+
+
 
 
             <TouchableOpacity style={styles.Post} onPress={() => {
@@ -202,6 +276,41 @@ const Post = (props) => {
 export default Post;
 
 const styles = StyleSheet.create({
+    modal: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    optionsModal: {
+        height: 200,
+        width: 200,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 30,
+        backgroundColor: 'white'
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: '700',
+        width: '100%',
+        textAlign: 'center',
+        position: 'absolute',
+        top: 10
+
+    },
+    buttonText: {
+        fontSize: 15,
+        fontWeight: '600',
+        width: '100%',
+        textAlign: 'center'
+    },
+    optionsButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 40,
+        width: '100%',
+        borderWidth: 2,
+        borderColor: 'black'
+    },
     gridItem: {
         // flex: 1,
         padding: 10,
@@ -210,9 +319,15 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: 'white'
     },
+    postHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingRight: 10
+    },
     nameDP: {
         flexDirection: 'row',
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+
     },
 
     DPImage:

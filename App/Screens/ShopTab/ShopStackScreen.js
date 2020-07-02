@@ -42,6 +42,9 @@ import TestScreen from './TestScreen'
 import { CategoriesSearchScreen } from './CategoriesSearchScreen';
 import PictureUploadScreen from '../SocialTab/PictureUploadScreen'
 import PostScreen from '../MagazineTab/PostScreen';
+import PayScreen from './PayScreen';
+import ShippingScreen from './ShippingScreen';
+import ConfirmOrderScreen from './ConfirmOrderScreen';
 
 export default function ShopStackScreen({ navigation }) {
     const ShopStack = createStackNavigator();
@@ -85,17 +88,20 @@ export default function ShopStackScreen({ navigation }) {
 
                 }}
             />
-            <ShopStack.Screen name="Favorites" component={FavoritesScreen}  />
+            <ShopStack.Screen name="Favorites" component={FavoritesScreen} />
             {/* <ShopStack.Screen name="Product" component={ProductScreen}/> */}
             <ShopStack.Screen name="GroupShopping" component={GroupShoppingScreen} />
             <ShopStack.Screen name="Seller" component={SellerScreen} />
             <ShopStack.Screen name="Post" component={PostScreen} />
-            
+
 
             <ShopStack.Screen name="ProductList" component={ProductListScreen} />
             <ShopStack.Screen name="Order" component={OrderScreen} />
             <ShopStack.Screen name="SellerInfo" component={SellerInfoScreen} />
             <ShopStack.Screen name="Categories" component={CategoriesScreen} />
+            {/* <ShopStack.Screen name="Payment" component={PayScreen} />
+            <ShopStack.Screen name="Shipping" component={ShippingScreen} />
+            <ShopStack.Screen name="ConfirmOrder" component={ConfirmOrderScreen} /> */}
             <ShopStack.Screen name="PictureUpload" component={PictureUploadScreen} />
 
         </ShopStack.Navigator>

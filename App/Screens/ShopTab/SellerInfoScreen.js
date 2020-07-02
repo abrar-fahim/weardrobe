@@ -27,14 +27,11 @@ export default function SellerInfoScreen(props) {
 
     const loggedIn = useSelector(state => state.auth.userId, (left, right) => (left.auth.userId === right.auth.userId)) === null ? false : true
 
-    
+    //const shopDetails = props.route.params?.shopDetails
 
 
-    useLayoutEffect(() => {
-        props.navigation.setOptions({
-            headerTitle: shopDetails === null ? "" : shopDetails.name,
-        })
-    })
+
+
 
 
 
@@ -48,7 +45,7 @@ export default function SellerInfoScreen(props) {
     const userId = useSelector(state => state.auth.userId)
 
 
-    const shopDetails = useSelector(state => state.shops.shopDetails)
+    // const shopDetails = useSelector(state => state.shops.shopDetails)
     const shopId = shopDetails.id
 
     const shopReviews = useSelector(state => state.shops.shopReviews)
@@ -123,7 +120,14 @@ export default function SellerInfoScreen(props) {
         loadShopReviews()
     }, [dispatch])
 
-    //const shopDetails = props.route.params?.shopDetails
+
+    useLayoutEffect(() => {
+        props.navigation.setOptions({
+            headerTitle: shopDetails === null ? "" : shopDetails.name,
+        })
+    })
+
+
 
 
     const renderReviews = (itemData) => {
@@ -216,7 +220,7 @@ export default function SellerInfoScreen(props) {
 
 
 
-    if(isLoading) {
+    if (isLoading) {
         return <LoadingScreen />
     }
     return (

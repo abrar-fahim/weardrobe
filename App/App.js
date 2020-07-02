@@ -29,6 +29,7 @@ import magazineReducer from './store/reducers/magazine';
 import socialReducer from './store/reducers/chats';
 import searchReducer from './store/reducers/search';
 import popupReducer from './store/reducers/Popup';
+import orderReducer from './store/reducers/order';
 import ProductScreen from './Screens/ShopTab/ProductScreen';
 import NewPostChooseLayout from './Screens/MagazineTab/NewPostChooseLayoutScreen';
 import NewPostScreen2 from './Screens/MagazineTab/NewPostScreen2';
@@ -40,6 +41,9 @@ import ShareGroupScreen from './Screens/ShopTab/ShareGroupScreen';
 import NewPostNextButton from './components/NewPostNextButton';
 import SmallPopup from './components/SmallPopup';
 import TestScreen from './Screens/ShopTab/TestScreen';
+import PayScreen from './Screens/ShopTab/PayScreen';
+import ShippingScreen from './Screens/ShopTab/ShippingScreen';
+import ConfirmOrderScreen from './Screens/ShopTab/ConfirmOrderScreen';
 
 
 const rootReducer = combineReducers({
@@ -52,7 +56,8 @@ const rootReducer = combineReducers({
   magazine: magazineReducer,
   social: socialReducer,
   search: searchReducer,
-  popup: popupReducer
+  popup: popupReducer,
+  order: orderReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
@@ -114,7 +119,9 @@ export default function App({ navigation }) {
           <Stack.Screen name="ShareGroup" component={ShareGroupScreen} options={{
             title: "Select Groups"
           }} />
-
+          <Stack.Screen name="Payment" component={PayScreen} />
+          <Stack.Screen name="Shipping" component={ShippingScreen} />
+          <Stack.Screen name="ConfirmOrder" component={ConfirmOrderScreen} />
         </Stack.Navigator>
       </NavigationContainer>
 
