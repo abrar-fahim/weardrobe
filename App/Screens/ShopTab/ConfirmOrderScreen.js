@@ -56,8 +56,8 @@ export default function ConfirmOrderScreen(props) {
 
                 </View>
                 <View style={styles.body}>
-                    {cartItems.map(item => (
-                        <View style={{ ...styles.cartItem, opacity: item.inventoryQuantity > 0 ? 1 : 0.5 }}>
+                    {cartItems.filter(item => item.inventoryQuantity > 0).map(item => (
+                        <View style={styles.cartItem}>
 
                             <View style={styles.seller}>
 
@@ -115,7 +115,7 @@ export default function ConfirmOrderScreen(props) {
 
                                         <View style={styles.quantity}>
 
-                                            <Text>{item.quantity}</Text>
+                                            <Text>Quantity: {item.quantity}</Text>
 
                                         </View>
 

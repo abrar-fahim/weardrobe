@@ -119,7 +119,12 @@ export default function GroupListScreen(props) {
                     </View>
                     <Text style={styles.lastText}>{itemData.item.senderName}</Text>
 
-                    <Text style={styles.lastText}>{itemData.item.messageType === 'PRODUCT' ? "shared a product" : itemData.item.messageType === 'PHOTO' ? "shared a photo" : itemData.item.message}</Text>
+                    <Text
+                        style={styles.lastText}
+                        ellipsizeMode="tail"
+                        numberOfLines={1}
+                    >{itemData.item.messageType === 'PRODUCT' ? "shared a product" : itemData.item.messageType === 'PHOTO' ? "shared a photo" : itemData.item.message}
+                    </Text>
 
 
 
@@ -200,6 +205,7 @@ const styles = StyleSheet.create({
         fontWeight: '300',
         marginLeft: 41,
         marginTop: 5,
+
 
     }
 

@@ -165,7 +165,7 @@ export const getUserId = () => {
             }
         })
 
-        console.log(response.headers)
+
         const resData = await response.json();  //converts 
         console.log(resData)
 

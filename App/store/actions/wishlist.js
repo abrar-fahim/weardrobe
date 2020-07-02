@@ -1,7 +1,7 @@
 export const ADD_TO_WISHLIST = 'ADD_TO_WISHLIST';
 export const REMOVE_FROM_WISHLIST = 'REMOVE_FROM_WISHLIST';
 export const GET_WISHLIST_ITEMS = 'GET_WISHLIST_ITEMS';
-import HOST from "../../components/host";
+import HOST, { IMG_URL } from "../../components/host";
 import * as popupActions from './Popup'
 
 export const addToWishlist = productId => {
@@ -18,7 +18,7 @@ export const addToWishlist = productId => {
                 productId: productId
             })
         });
-        
+
 
         if (!response.ok) {
             throw new Error('somethings wrong');
@@ -145,8 +145,8 @@ export const fetchItems = () => {
                     {
                         id: resData[key].PRODUCT_ID,
                         name: resData[key].PRODUCT_NAME,
-                        shopname: 'YELLOW',
-                        picture: require('../../assets/Images/shirt2.jpg'),
+                        shopName: resData[key].SHOP_NAME,
+                        thumbnail: { uri: IMG_URL + resData[key].THUMBNAIL },
                         price: resData[key].PRICE,
                         rating: resData[key].PRODUCT_RATING,
                         description: resData[key].DESCRIPTION

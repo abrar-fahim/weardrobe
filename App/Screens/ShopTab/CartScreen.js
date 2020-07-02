@@ -198,7 +198,10 @@ export default function CartScreen(props) {
     let sum = 0;
 
     for (const key in cartItems) {
-        sum += cartItems[key].price * cartItems[key].quantity;
+        if (cartItems[key].inventoryQuantity > 0) {
+            sum += cartItems[key].price * cartItems[key].quantity;
+        }
+
     }
     const vat = sum * 0.05;
 
@@ -436,7 +439,8 @@ const styles = StyleSheet.create(
             width: '100%',
             justifyContent: 'center',
             alignItems: 'center',
-            marginBottom: 20
+            marginBottom: 20,
+            borderRadius: 40
 
         },
         summaryContainer: {
