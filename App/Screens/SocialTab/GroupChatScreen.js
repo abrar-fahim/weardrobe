@@ -141,6 +141,8 @@ export function GroupChatScreen(props) {
 
     }, [groupId, chats, type])
 
+
+
     const loadChats = useCallback(async () => {
         try {
             setIsLoading(true)
@@ -159,7 +161,7 @@ export function GroupChatScreen(props) {
         }
         setIsLoading(false)
 
-    }, [groupId, type])
+    }, [groupId, type, userId])
 
     const sendChat = useCallback(async (text) => {
         console.log('sendchat')
@@ -236,7 +238,7 @@ export function GroupChatScreen(props) {
 
         const dp = type === 'GROUP' ? (participants !== undefined ? participants?.find((person) => person.id === itemData.item.senderId)?.profilePic : null) : (itemData.item.senderId === userId ? myProfile.profilePic : logo);
 
-        const username = type === 'GROUP' ? (participants !== undefined ? participants?.filter((person) => person.id === itemData.item.senderId)[0]?.username : null) : name
+        const username = type === 'GROUP' ? (participants !== undefined ? participants?.filter((person) => person.id === itemData.item.senderId)[0]?.username : null) : (itemData.item.senderId === userId ? myProfile.username : name)
         if (itemData.item.senderId === userId) {
             return (
                 <View style={styles.chat}>
