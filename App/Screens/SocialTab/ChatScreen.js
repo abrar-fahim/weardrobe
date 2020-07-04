@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -94,41 +94,48 @@ export default function ChatStackScreen({ navigation }) {
     const ChatStack = createStackNavigator();
 
     const loggedIn = checkLoggedIn();
+    const CustomView = Platform.OS === "ios" ? KeyboardAvoidingView : View;
     return (
-        <ChatStack.Navigator
-            screenOptions={HeaderOptions}
+        <CustomView
+            style={{ flex: 1 }}
+            behavior="padding"
         >
+            <ChatStack.Navigator
+                screenOptions={HeaderOptions}
+            >
 
-            {loggedIn ?
-                <>
-                    <ChatStack.Screen name="Groups" component={GroupListScreen} options={{
-                        headerRight: () => (<NewPostButton onPress={() => navigation.navigate('NewChat')} />),
-                        title: "Chats"
+                {loggedIn ?
+                    <>
+                        <ChatStack.Screen name="Groups" component={GroupListScreen} options={{
+                            headerRight: () => (<NewPostButton onPress={() => navigation.navigate('NewChat')} />),
+                            title: "Chats"
 
-                    }} />
+                        }} />
 
-                    <ChatStack.Screen name="NewChat" component={NewChatScreen} options={{
+                        <ChatStack.Screen name="NewChat" component={NewChatScreen} options={{
 
-                    }} />
-                    {/* <ChatStack.Screen name="PeopleSearch" component={PeopleSearchScreen} /> */}
-                    <ChatStack.Screen name="GroupTab" component={GroupTabScreen} />
-                    <ChatStack.Screen name="Profile" component={ProfileTabsScreen} />
-                    <ChatStack.Screen name="GroupChat" component={GroupChatScreen} />
-                    <ChatStack.Screen name="ShoppingSession" component={ShoppingSessionScreen} />
-                    <ChatStack.Screen name="NewShoppingSession" component={NewShoppingSessionScreen} />
-                    <ChatStack.Screen name="GroupInfo" component={GroupInfoScreen} />
-                    <ChatStack.Screen name="PictureUpload" component={PictureUploadScreen} />
-                    {/* <ChatStack.Screen name="Product" component={ProductScreen}/> */}
-                </>
-                :
-                <ChatStack.Screen name="AuthReq" component={AuthRequiredScreen} />
-
-
-            }
+                        }} />
+                        {/* <ChatStack.Screen name="PeopleSearch" component={PeopleSearchScreen} /> */}
+                        <ChatStack.Screen name="GroupTab" component={GroupTabScreen} />
+                        <ChatStack.Screen name="Profile" component={ProfileTabsScreen} />
+                        <ChatStack.Screen name="GroupChat" component={GroupChatScreen} />
+                        <ChatStack.Screen name="ShoppingSession" component={ShoppingSessionScreen} />
+                        <ChatStack.Screen name="NewShoppingSession" component={NewShoppingSessionScreen} />
+                        <ChatStack.Screen name="GroupInfo" component={GroupInfoScreen} />
+                        <ChatStack.Screen name="PictureUpload" component={PictureUploadScreen} />
+                        {/* <ChatStack.Screen name="Product" component={ProductScreen}/> */}
+                    </>
+                    :
+                    <ChatStack.Screen name="AuthReq" component={AuthRequiredScreen} />
 
 
+                }
 
-        </ChatStack.Navigator>
+
+
+            </ChatStack.Navigator>
+        </CustomView>
+
 
     )
 }

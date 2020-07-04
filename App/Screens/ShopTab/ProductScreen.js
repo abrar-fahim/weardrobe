@@ -30,7 +30,10 @@ import HOST from "../../components/host";
 
 import TouchableStars from '../../components/TouchableStars'
 
-import LoadingScreen from '../../components/LoadingScreen'
+import LoadingScreen from '../../components/LoadingScreen';
+import ImageZoom from 'react-native-image-pan-zoom'
+import Time from '../../components/Time';
+
 
 // import * as Sharing from 'expo-sharing';
 
@@ -74,6 +77,7 @@ export default function ProductScreen(props) {
     const [iterLoading, setIterLoading] = useState(false)
 
     const [shareVisible, setShareVisible] = useState(false);
+    const [picturesModalVisible, setPicturesModalVisible] = useState(false);
 
 
 
@@ -300,8 +304,7 @@ export default function ProductScreen(props) {
         else {
             try {
                 await dispatch(productActions.addReview(productId, rating, review))
-
-                product.hasReviewed = 1
+                await dispatch(productActions.fetchProductDetails(productId))
                 // setAddReviewPopupVisible(true);
 
                 //setAddCartMessage(cartMessage);
@@ -309,6 +312,9 @@ export default function ProductScreen(props) {
 
             } catch (err) {
                 console.log(err.message)
+                if (err.message === "Column 'RATING' cannot be null") {
+                    dispatch(popupActions.setMessage('Give a rating', true))
+                }
                 //setAddCartMessage('Failed to add to cart')
             }
         }
@@ -367,8 +373,11 @@ export default function ProductScreen(props) {
     const renderPic = (itemData) => {
 
         return (
+            <TouchableOpacity onPress={() => setPicturesModalVisible(true)}>
+                <Image source={itemData.item.image} style={styles.image} resizeMode="cover" resizeMethod="scale" />
+            </TouchableOpacity>
 
-            <Image source={itemData.item.image} style={styles.image} resizeMode="cover" resizeMethod="scale" />
+
 
 
         )
@@ -376,7 +385,7 @@ export default function ProductScreen(props) {
     }
 
     const productPage = //useCallback(() => ( 
-        isLoading ? null : (
+        product ? (
             <View style={{ ...ScreenStyle, ...styles.screen }}>
 
                 <View style={{ padding: 10, justifyContent: 'center', }}>
@@ -495,17 +504,17 @@ export default function ProductScreen(props) {
 
 
 
-                        <KeyboardAvoidingView>
-                            <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
-                                onChangeText={(value) => (setReviewText(value))} />
-                        </KeyboardAvoidingView>
+
+                        <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
+                            onChangeText={(value) => (setReviewText(value))} />
+
                     </> : null
                 }
 
 
 
             </View>
-        )
+        ) : null
     // , [product, colors, selectedColor, selectedSize, loggedIn, reviews])
 
     const renderReview = (itemData) => {
@@ -523,7 +532,8 @@ export default function ProductScreen(props) {
 
                     <RatingStars rating={itemData.item.rating} size={20} />
                     <View style={styles.reviewerNameContainer}>
-                        <Text style={styles.reviewerName}>{itemData.item.reviewerName.toUpperCase()} - {itemData.item.date}</Text>
+                        <Text style={styles.reviewerName}>{itemData.item.reviewerName.toUpperCase()} - </Text>
+                        <Time value={itemData.item.date} />
                     </View>
 
 
@@ -536,6 +546,7 @@ export default function ProductScreen(props) {
         }
 
     }
+    const CustomView = Platform.OS === "ios" ? KeyboardAvoidingView : View;
 
 
     if (isLoading) {
@@ -545,9 +556,36 @@ export default function ProductScreen(props) {
     }
     else {
         return (
-            <View>
+            <CustomView
+                behavior="padding"
+                keyboardVerticalOffset={64}
+            // style={{ flex: 1 }}
+            >
                 <SmallPopup />
+                {/* <Modal
+                    isVisible={picturesModalVisible}
+                    onBackButtonPress={() => setPicturesModalVisible(false)}
+                    onBackdropPress={() => setPicturesModalVisible(false)}
+                    style={{
+                        height: Dimensions.get('window').height,
+                        width: Dimensions.get('window').width,
+                        margin: 0
+                    }}
+                >
+                    <ImageZoom
+                        cropWidth={Dimensions.get('window').width}
+                        cropHeight={Dimensions.get('window').height}
+                        imageWidth={Dimensions.get('window').width}
+                        imageHeight={Dimensions.get('window').width}
+                    >
+                        <Image source={colorImages[0].image} style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').width }} />
+                        <Image source={colorImages[1].image} style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').width }} />
+                    </ImageZoom>
+
+                </Modal> */}
+
                 {shareVisible ?
+
 
                     <TouchableWithoutFeedback onPress={() => { setShareVisible(false) }}>
                         <View style={styles.modalBackdrop}>
@@ -612,7 +650,7 @@ export default function ProductScreen(props) {
 
 
 
-            </View>
+            </CustomView>
         )
     }
 
@@ -783,7 +821,7 @@ const styles = StyleSheet.create({
     reviewerName: {
         fontWeight: '600',
         color: 'grey',
-        flex: 1
+        // flex: 1
     },
     reviewerNameContainer: {
         flexDirection: 'row',

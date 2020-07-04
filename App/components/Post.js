@@ -10,6 +10,7 @@ import * as magazineActions from '../store/actions/magazine'
 import * as profileActions from '../store/actions/profile'
 import * as popupActions from '../store/actions/Popup'
 import Modal from 'react-native-modal';
+import Time from './Time';
 
 
 
@@ -164,7 +165,11 @@ const Post = (props) => {
                     <Image style={styles.DPImage} source={post?.logo ?? logo} />
                     <View style={styles.nameContainer}>
                         <Text style={styles.Name}> {post.name} </Text>
-                        <Text style={styles.username}> {post.username} . {post.date} </Text>
+                        <View style={styles.usernameDate}>
+                            <Text style={styles.username}> {post.username} .  </Text>
+                            <Time value={post.date} />
+                        </View>
+
                     </View>
 
 
@@ -345,6 +350,9 @@ const styles = StyleSheet.create({
     {
         fontWeight: '700',
         fontSize: 18
+    },
+    usernameDate: {
+        flexDirection: 'row'
     },
     username: {
         fontSize: 15,

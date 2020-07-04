@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -143,8 +143,13 @@ export default function ShareGroupScreen(props) {
         return <LoadingScreen />
 
     }
+    const CustomView = Platform.OS === "ios" ? KeyboardAvoidingView : View;
     return (
-        <View style={ScreenStyle}>
+        <CustomView
+            behavior="padding"
+            keyboardVerticalOffset={64}
+            style={ScreenStyle}
+        >
             <FlatList
                 data={groups}
                 renderItem={renderItems}
@@ -158,7 +163,7 @@ export default function ShareGroupScreen(props) {
 
                 }
             />
-        </View>
+        </CustomView>
     )
 }
 

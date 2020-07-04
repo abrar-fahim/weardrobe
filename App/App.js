@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Platform } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Platform, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
@@ -97,6 +97,7 @@ export default function App({ navigation }) {
 
 
   return (
+
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator>
@@ -126,5 +127,7 @@ export default function App({ navigation }) {
       </NavigationContainer>
 
     </Provider>
+
+
   );
 }

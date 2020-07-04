@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions, FlatList, TouchableOpacity } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions, FlatList, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import ScreenStyle from '../../Styles/ScreenStyle'
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -57,8 +57,13 @@ export default function ShippingScreen(props) {
             </TouchableOpacity>
         )
     }
+    const CustomView = Platform.OS === "ios" ? KeyboardAvoidingView : View;
     return (
-        <View style={styles.screen}>
+        <CustomView
+            behavior="padding"
+            keyboardVerticalOffset={64}
+            style={styles.screen}
+        >
             <Text style={styles.title}>Select Delivery Address</Text>
 
             <View style={styles.addressContainer}>
@@ -101,7 +106,7 @@ export default function ShippingScreen(props) {
 
 
 
-        </View>
+        </CustomView>
     )
 }
 

@@ -1,11 +1,16 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import ScreenStyle from '../../Styles/ScreenStyle'
 import Colors from '../../Styles/Colors';
 
 export default function PayScreen(props) {
+    const CustomView = Platform.OS === "ios" ? KeyboardAvoidingView : View;
     return (
-        <View style={styles.screen}>
+        <CustomView
+            behavior="padding"
+            keyboardVerticalOffset={64}
+            style={styles.screen}
+        >
             <Text>Payment screen</Text>
 
             <TouchableOpacity
@@ -18,7 +23,7 @@ export default function PayScreen(props) {
 
             </TouchableOpacity>
 
-        </View>
+        </CustomView>
     )
 }
 

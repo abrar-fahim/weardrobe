@@ -23,6 +23,11 @@ export default function CreateBlogScreen2(props) {
         text3: ''
     })
 
+    const [titles, setTitles] = useState({
+        title: '',
+        subtitle: ''
+    })
+
     const createUserBlog = useCallback(async (formData) => {
         try {
             console.log(formData)
@@ -49,34 +54,36 @@ export default function CreateBlogScreen2(props) {
     useLayoutEffect(() => {
         props.navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity 
-                style={styles.headerButton}
-                onPress={() => {
-                    if (image !== null) {
-                        formData.append("photos", {
-                            name: '1.jpg',
-                            type: 'image/jpeg',
-                            uri:
-                                Platform.OS === "android" ? image.uri : image.uri.replace("file://", "")
-                        });
+                <TouchableOpacity
+                    style={styles.headerButton}
+                    onPress={() => {
+                        if (image !== null) {
+                            formData.append("photos", {
+                                name: '1.jpg',
+                                type: 'image/jpeg',
+                                uri:
+                                    Platform.OS === "android" ? image.uri : image.uri.replace("file://", "")
+                            });
+                        }
+
+
+
+                        formData.append('text1', texts.text1)
+                        formData.append('text2', texts.text2)
+                        formData.append('text3', texts.text3)
+                        formData.append('title', titles.title)
+                        formData.append('subtitle', titles.subtitle)
+                        console.log(formData)
+
+                        createUserBlog(formData)
+
+                        props.navigation.popToTop();
+
+                        // props.navigation.navigate('CreateBlog3', {
+                        //     formData: formData
+                        // })
                     }
-
-                    
-
-                    formData.append('text1', texts.text1)
-                    formData.append('text2', texts.text2)
-                    formData.append('text3', texts.text3)
-                    console.log(formData)
-
-                    createUserBlog(formData)
-
-                    props.navigation.popToTop();
-
-                    // props.navigation.navigate('CreateBlog3', {
-                    //     formData: formData
-                    // })
-                }
-                }>
+                    }>
                     <Text>Publish</Text>
                 </TouchableOpacity>
 
@@ -108,7 +115,29 @@ export default function CreateBlogScreen2(props) {
 
 
             <View style={styles.blogBody}>
-                <Text style={styles.title}>Title here</Text>
+                <TextInput
+                    style={styles.title}
+                    placeholder={"Enter title"}
+                    onChangeText={(text) => {
+                        setTitles((state) => ({
+                            ...state,
+                            title: text
+                        })
+                        )
+                    }}
+                />
+
+                <TextInput
+                    style={styles.subtitle}
+                    placeholder={"Enter subtitle"}
+                    onChangeText={(text) => {
+                        setTitles((state) => ({
+                            ...state,
+                            subtitle: text
+                        })
+                        )
+                    }}
+                />
 
 
                 <Image source={image ? image : require('../../assets/Images/img.png')} style={styles.image}
@@ -126,23 +155,23 @@ export default function CreateBlogScreen2(props) {
                     /> */}
 
                     <TextInput multiline style={styles.text} placeholder="text one here" onChangeText={(text) => {
-                        setTexts({
+                        setTexts((texts) => ({
                             ...texts,
                             text1: text
-                        })
+                        }))
                     }} />
 
                     <TextInput multiline style={styles.text} placeholder="text two here" onChangeText={(text) => {
-                        setTexts({
+                        setTexts((texts) => ({
                             ...texts,
                             text2: text
-                        })
+                        }))
                     }} />
                     <TextInput multiline style={styles.text} placeholder="text three here" onChangeText={(text) => {
-                        setTexts({
+                        setTexts((texts) => ({
                             ...texts,
                             text3: text
-                        })
+                        }))
                     }} />
 
                 </View>
@@ -155,6 +184,25 @@ export default function CreateBlogScreen2(props) {
 }
 
 const styles = StyleSheet.create({
+    blogBody: {
+        backgroundColor: 'white',
+        marginVertical: 20
+
+    },
+    title: {
+        fontSize: 30,
+        fontFamily: 'serif',
+        fontWeight: '600',
+        textAlign: 'center',
+        marginVertical: 20
+    },
+    subtitle: {
+        fontSize: 20,
+        color: 'grey',
+        fontWeight: '500',
+        textAlign: 'left',
+        marginHorizontal: 10
+    },
 
     image: {
         height: Dimensions.get('window').width,

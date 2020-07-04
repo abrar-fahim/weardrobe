@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState, useRef, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer, TabActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -220,10 +220,6 @@ export function ProfileScreen(props) {
 
     const [change, setChange] = useState(0);    //this forces like icon to re render on each touch
 
-    const [iters, setIters] = useState({
-        shopPostComments: 1
-    })
-
     const [allowed, setAllowed] = useState(true)
 
     const getProfile = useCallback(async () => {
@@ -280,39 +276,6 @@ export function ProfileScreen(props) {
         }
     })
 
-    // const getFollowCounts = useCallback(async () => {
-    //     // const id = myProfile? userId: profileId
-    //     try {
-    //         myProfile ? await dispatch(profileActions.getMyFollowCounts(userId)) : await dispatch(profileActions.getFollowCounts(profileId))
-    //         // setError('')
-    //     }
-    //     catch (err) {
-    //         // setError(err.message)
-    //         console.log(err);
-    //     }
-    // }, [profileId])
-
-
-
-
-    // const getProfile = useCallback(async () => {
-    //     console.log('myProfile: ' + myProfile)
-    //     try {
-    //         myProfile ? await dispatch(profileActions.getMyProfile(userId)) : await dispatch(profileActions.getProfile(profileId))
-
-
-    //         // setError('')
-    //     }
-    //     catch (err) {
-    //         // setError(err.message)
-    //         console.log(err);
-    //     }
-    // }, [myProfile, profileId, userId])
-
-
-
-
-
     const logoutHandler = async () => {
         try {
             await dispatch(authActions.logout())
@@ -356,58 +319,13 @@ export function ProfileScreen(props) {
         }
     }, [])
 
-    const reactUserBlog = useCallback(async (blogId) => {
-        try {
-            await dispatch(magazineActions.reactUserBlog(blogId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-    const unReactUserBlog = useCallback(async (blogId) => {
-        try {
-            await dispatch(magazineActions.unReactUserBlog(blogId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
 
-    const commentUserBlog = useCallback(async (blogId, comment) => {
-        try {
-            await dispatch(magazineActions.commentUserBlog(blogId, comment))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
-    const deleteCommentUserBlog = useCallback(async (commentId, postId) => {
-        try {
-            await dispatch(magazineActions.deleteCommentUserBlog(commentId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
 
-    const deleteBlog = useCallback(async (blogId) => {
-        try {
-            await dispatch(profileActions.deleteUserBlog(blogId))
-            setError('')
-        }
-        catch (err) {
-            setError(err.message)
-            console.log(err);
-        }
-    })
+
+
+
+
+
 
     const deletePost = useCallback(async (postId) => {
         try {
@@ -625,58 +543,64 @@ export default function ProfileStackScreen(props) {
     const userId = useSelector(state => state.auth.userId)
 
     // const profileId = props.route.params?.profileId ?? userId
+    const CustomView = Platform.OS === "ios" ? KeyboardAvoidingView : View;
 
     const ProfileStack = createStackNavigator();
     return (
-        <ProfileStack.Navigator
-            screenOptions={HeaderOptions}
+        <CustomView
+            style={{ flex: 1 }}
+            behavior="padding"
         >
-            <ProfileStack.Screen name="ProfileScreen" component={ProfileTabsScreen} options={{
+            <ProfileStack.Navigator
+                screenOptions={HeaderOptions}
+            >
+                <ProfileStack.Screen name="ProfileScreen" component={ProfileTabsScreen} options={{
 
-                headerRight: () => userId ? (
-                    <View style={styles.headerButtons}>
+                    headerRight: () => userId ? (
+                        <View style={styles.headerButtons}>
 
-                        <GenericHeaderButton title="NewPost" iconName="md-add" onPress={() => {
+                            <GenericHeaderButton title="NewPost" iconName="md-add" onPress={() => {
 
-                            props.navigation.navigate('NewPostChooseLayout')
-                        }
-                        } />
-                        <GenericHeaderButton title="SettingButton" iconName="md-settings" onPress={() => {
+                                props.navigation.navigate('NewPostChooseLayout')
+                            }
+                            } />
+                            <GenericHeaderButton title="SettingButton" iconName="md-settings" onPress={() => {
 
-                            props.navigation.navigate('ProfileSettings', {
-                                profileId: userId
-                            })
-                        }
-                        } />
-
-
-
-                    </View>
-
-                ) : null
-            }}
-            />
+                                props.navigation.navigate('ProfileSettings', {
+                                    profileId: userId
+                                })
+                            }
+                            } />
 
 
-            <ProfileStack.Screen name="ProfileSettings" component={ProfileSettingsScreen} />
-            <ProfileStack.Screen name="OthersProfile" component={ProfileTabsScreen} />
-            <ProfileStack.Screen name="FollowersListTab" component={FollowersListTabScreen} />
-            <ProfileStack.Screen name="CreateBlog1" component={CreateBlogScreen1} options={{
-                title: 'Select Layout'
-            }}
 
-            />
-            <ProfileStack.Screen name="CreateBlog2" component={CreateBlogScreen2} />
-            <ProfileStack.Screen name="CreateBlog3" component={CreateBlogScreen3} options={{
-                headerRight: () => (
-                    <GenericHeaderButton name="CreateBlogButton3" iconName="md-arrow-forward" onPress={() => props.navigation.popToTop()} />
-                )
-            }} />
-            <ProfileStack.Screen name="BlogScreen" component={BlogScreen} />
-            <ProfileStack.Screen name="Post" component={PostScreen} />
+                        </View>
 
-            <ProfileStack.Screen name="DpUpload" component={DpUploadScreen} />
-        </ProfileStack.Navigator>
+                    ) : null
+                }}
+                />
+
+
+                <ProfileStack.Screen name="ProfileSettings" component={ProfileSettingsScreen} />
+                <ProfileStack.Screen name="OthersProfile" component={ProfileTabsScreen} />
+                <ProfileStack.Screen name="FollowersListTab" component={FollowersListTabScreen} />
+                <ProfileStack.Screen name="CreateBlog1" component={CreateBlogScreen1} options={{
+                    title: 'Select Layout'
+                }}
+
+                />
+                <ProfileStack.Screen name="CreateBlog2" component={CreateBlogScreen2} />
+                <ProfileStack.Screen name="CreateBlog3" component={CreateBlogScreen3} options={{
+                    headerRight: () => (
+                        <GenericHeaderButton name="CreateBlogButton3" iconName="md-arrow-forward" onPress={() => props.navigation.popToTop()} />
+                    )
+                }} />
+                <ProfileStack.Screen name="BlogScreen" component={BlogScreen} />
+                <ProfileStack.Screen name="Post" component={PostScreen} />
+
+                <ProfileStack.Screen name="DpUpload" component={DpUploadScreen} />
+            </ProfileStack.Navigator>
+        </CustomView>
 
     )
 }

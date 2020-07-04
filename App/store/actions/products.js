@@ -231,6 +231,7 @@ export const addReview = (productId, rating, review) => {
 
             }
             else {
+                throw new Error(resData.ERROR)
                 dispatch(
                     {
                         type: SET_ERROR,

@@ -31,6 +31,7 @@ import CheckLoggedIn from '../../components/CheckLoggedIn';
 
 import * as orderActions from '../../store/actions/order'
 import * as popupActions from '../../store/actions/Popup'
+import Time from '../../components/Time';
 
 const ORDERS = [
     {
@@ -107,6 +108,7 @@ function MyOrdersScreen(props) {
 
 
     const renderItems = (itemData) => {
+        
         return (
             <TouchableOpacity onPress={() => (props.navigation.navigate('Order', {
                 order: itemData.item
@@ -126,7 +128,8 @@ function MyOrdersScreen(props) {
 
 
                         <Text style={styles.due}> {"BDT " + itemData.item.total}</Text>
-                        <Text style={styles.date}> {"Ordered: " + Date(itemData.item.date).toLocaleLowerCase()}</Text>
+                        <Text>Ordered: </Text>
+                        <Time style={styles.date} value={itemData.item.date} />
 
                     </View>
 
@@ -156,7 +159,7 @@ const styles = StyleSheet.create(
             justifyContent: 'space-between',
             flexDirection: 'column',
             alignItems: 'flex-start',
-            backgroundColor: '#eae9e9',
+            backgroundColor: 'white',
             flex: 1,
 
             padding: 10,

@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useCallback } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -31,9 +31,15 @@ export default function NewPostScreen3(props) {
         }
     })
 
+    const CustomView = Platform.OS === "ios" ? KeyboardAvoidingView : View;
 
     return (
-        <View style={styles.Main}>
+        <CustomView
+            behavior="padding"
+            keyboardVerticalOffset={64}
+            style={styles.Main}
+
+        >
 
             <View style={styles.Direction}>
                 <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
@@ -65,7 +71,7 @@ export default function NewPostScreen3(props) {
 
             </View>
 
-        </View>
+        </CustomView>
     )
 }
 
@@ -108,8 +114,8 @@ const styles = StyleSheet.create({
         height: 40,
         padding: 10,
         marginVertical: 10,
-        
-        
+
+
     }
 
 });

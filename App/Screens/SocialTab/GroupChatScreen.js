@@ -18,6 +18,7 @@ import GenericHeaderButton from '../../components/GenericHeaderButton'
 import LoadingScreen from '../../components/LoadingScreen';
 import ShoppingSessionTimer from '../../components/ShoppingSessionTimer';
 import { IMG_URL } from '../../components/host';
+import Time from '../../components/Time';
 
 export default function GroupTabScreen(props) {
 
@@ -245,26 +246,33 @@ export function GroupChatScreen(props) {
 
                     <TouchableOpacity onPress={() => props.navigation.navigate('Weardrobe')}>
                         <Image style={styles.pictureMe} source={dp} />
-                        <Text style={styles.usernameMe}>{username}</Text>
+                        <View style={styles.usernameDateMe}>
+
+                            <Text style={styles.username}>{username}</Text>
+                            <Time style={styles.time} value={itemData.item.time} />
+
+
+                        </View>
                     </TouchableOpacity>
 
 
-                    {itemData.item.type === 'PHOTO' ? <Image source={itemData.item.message} style={styles.photoMe} /> : (itemData.item.type === 'PRODUCT' ?
-                        <TouchableOpacity onPress={() => props.navigation.navigate('Product', {
-                            productId: itemData.item.message.id
-                        })}>
-                            <View style={styles.productBubbleMe}>
-                                <Image style={styles.productPhotoMe} source={itemData.item.message.photos[0].image} />
-                                <Text>{itemData.item.message.name}</Text>
-                                <Text>BDT {itemData.item.message.price}</Text>
+                    {
+                        itemData.item.type === 'PHOTO' ? <Image source={itemData.item.message} style={styles.photoMe} /> : (itemData.item.type === 'PRODUCT' ?
+                            <TouchableOpacity onPress={() => props.navigation.navigate('Product', {
+                                productId: itemData.item.message.id
+                            })}>
+                                <View style={styles.productBubbleMe}>
+                                    <Image style={styles.productPhotoMe} source={itemData.item.message.photos[0].image} />
+                                    <Text>{itemData.item.message.name}</Text>
+                                    <Text>BDT {itemData.item.message.price}</Text>
 
 
-                            </View>
-                        </TouchableOpacity>
-                        : <View style={styles.msgBubbleMe}>
+                                </View>
+                            </TouchableOpacity>
+                            : <View style={styles.msgBubbleMe}>
 
-                            <Text style={styles.msgTextMe}>{itemData.item.message}</Text>
-                        </View>)
+                                <Text style={styles.msgTextMe}>{itemData.item.message}</Text>
+                            </View>)
                     }
 
 
@@ -278,13 +286,19 @@ export function GroupChatScreen(props) {
 
         return (
             <View style={styles.chat}>
-                <TouchableOpacity onPress={() => type === 'GROUP' ? props.navigation.navigate('Profile', {
-                    profileId: itemData.item.senderId
-                }) : props.navigation.navigate('Seller', {
-                    shopId: itemData.item.senderId
-                })}>
+                <TouchableOpacity
+                    onPress={() => type === 'GROUP' ? props.navigation.navigate('Profile', {
+                        profileId: itemData.item.senderId
+                    }) : props.navigation.navigate('Seller', {
+                        shopId: itemData.item.senderId
+                    })}
+                >
                     <Image style={styles.picture} source={dp} />
-                    <Text style={styles.username}>{username}</Text>
+                    <View style={styles.usernameDate}>
+                        <Text style={styles.username}>{username}</Text>
+                        <Time style={styles.time} value={itemData.item.time} />
+                    </View>
+
                 </TouchableOpacity>
                 {itemData.item.type === 'PHOTO' ? <Image source={itemData.item.message} style={styles.photo} /> : (itemData.item.type === 'PRODUCT' ?
                     <View style={styles.productBubble}>
@@ -320,8 +334,10 @@ export function GroupChatScreen(props) {
 
     return (
         <View
-            // behavior={Platform.OS == "ios" ? "padding" : "height"}
+            // behavior={Platform.OS == "ios" ? "position" : "height"}
+            // keyboardVerticalOffset={64}
             // contentContainerStyle={styles.screen}
+
             style={styles.screen}
         >
             {groupId === sessionGroupId ? <ShoppingSessionTimer /> : null}
@@ -348,7 +364,7 @@ export function GroupChatScreen(props) {
 
 
             <View
-                // behavior='position'
+                // behavior='padding'
 
                 style={styles.sendMsgContainer}
             >
@@ -367,6 +383,8 @@ export function GroupChatScreen(props) {
                     placeholder="Type Something"
                     ref={textInputRef}
                     multiline
+                    textAlignVertical="center"
+                    align
                     onChangeText={setMessage}
                     onSubmitEditing={() => {
 
@@ -421,7 +439,7 @@ const styles = StyleSheet.create({
     screen: {
         backgroundColor: Colors.screenBackgroundColor,
         flex: 1,
-        justifyContent: 'flex-end'
+        // justifyContent: 'flex-end'
 
 
     },
@@ -437,13 +455,29 @@ const styles = StyleSheet.create({
         width: 30,
         borderRadius: 15
     },
+    usernameDate: {
+        flexDirection: 'row'
+    },
+    usernameDateMe: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        flex: 1,
+        alignItems: 'center'
+
+
+    },
     username: {
         alignSelf: 'flex-start'
 
     },
     usernameMe: {
-
         alignSelf: 'flex-end'
+    },
+    time: {
+        color: 'grey',
+        marginHorizontal: 10,
+        fontSize: 12
+
     },
 
     productBubbleMe: {
@@ -591,6 +625,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingLeft: 10,
         flex: 1,
+        // width: '100%',
         marginLeft: 5
     },
 

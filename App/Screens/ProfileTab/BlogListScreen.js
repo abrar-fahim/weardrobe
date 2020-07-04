@@ -12,6 +12,7 @@ import BLOGS from '../../dummy-data/Blogs'
 import { useDispatch, useSelector } from 'react-redux';
 import * as profileActions from '../../store/actions/profile'
 import Colors from '../../Styles/Colors';
+import Time from '../../components/Time';
 
 
 export default function BlogListScreen(props) {
@@ -77,8 +78,8 @@ export default function BlogListScreen(props) {
             >
 
                 <Image style={styles.image} source={itemData.item.images[0]?.image} />
-                <Text style={styles.title}>Blog Title</Text>
-                <Text>{itemData.item.date}</Text>
+                <Text style={styles.title}>{itemData.item.title}</Text>
+                <Time value={itemData.item.date} />
 
             </TouchableOpacity>
 

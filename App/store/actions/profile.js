@@ -195,13 +195,18 @@ export const fetchMyBlogs = (iter = 0) => {
                     ))
                     blogs.push({
                         id: resData[key].BLOG_ID,
+                        title: resData[key].TITLE,
+                        subtitle: resData[key].SUBTITLE,
+                        name: resData[key].FIRST_NAME + " " + resData[key].LAST_NAME,
+                        username: resData[key].USERNAME,
+                        profilePic: { uri: IMG_URL + resData[key].PROFILE_PIC },
                         userId: resData[key].CUSTOMER_UID,
                         date: resData[key].BLOG_DATE,
                         texts: processedTexts,
                         images: processedImages,
                         numComments: resData[key].COMMENT,
                         numReacts: resData[key].REACT,
-                        structure: resData[key].STRUCTURE
+                        structure: resData[key].STRUCTURE,
 
                     })
                 }
@@ -265,6 +270,11 @@ export const fetchUserBlogsDirect = async (userId, iter = 0) => {
                 ))
                 blogs.push({
                     id: resData[key].BLOG_ID,
+                    title: resData[key].TITLE,
+                    subtitle: resData[key].SUBTITLE,
+                    name: resData[key].FIRST_NAME + " " + resData[key].LAST_NAME,
+                    username: resData[key].USERNAME,
+                    profilePic: { uri: IMG_URL + resData[key].PROFILE_PIC },
                     userId: resData[key].CUSTOMER_UID,
                     date: resData[key].BLOG_DATE,
                     texts: processedTexts,

@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         margin: 20,
         height: 250,
         width: 150,
-        backgroundColor: '#eae9e9'
+        backgroundColor: 'white'
     },
     itemName: {
         fontSize: 15,

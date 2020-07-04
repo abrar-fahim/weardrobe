@@ -7,6 +7,7 @@ import * as magazineActions from '../../store/actions/magazine'
 import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { deleteUserBlog } from '../../store/actions/profile';
 import * as profileActions from '../../store/actions/profile'
+import Time from '../../components/Time';
 
 const BlogScreen = (props) => {
 
@@ -17,16 +18,16 @@ const BlogScreen = (props) => {
     const images = props.route.params?.blog.images;
     const blog = props.route.params?.blog
 
-    const [error, setError] = useState('')
-
-
-    const [showReacts, setShowReacts] = useState(false)
     const dispatch = useDispatch();
     const [comment, setComment] = useState('');
 
-    const reacts = useSelector(state => state.magazine.shopPostReacts)
     const comments = useSelector(state => state.magazine.shopPostComments)
     const userId = useSelector(state => state.auth.userId)
+
+    const [iterLoading, setIterLoading] = useState(false);
+    const [iter, setIter] = useState(0);
+
+
 
     const [change, setChange] = useState(0);    //this forces comments to re render on each touch
     // console.log(comments)
@@ -34,12 +35,42 @@ const BlogScreen = (props) => {
 
     const loadUserBlogComments = useCallback(async () => {
         try {
-            await dispatch(magazineActions.fetchUserBlogComments(blogId))
+            if (!iterLoading) {
+                setIterLoading(true)
+                await dispatch(magazineActions.fetchUserBlogComments(blogId, iter));
+                setIter(iter => iter + 1);
+
+                setIterLoading(false)
+            }
+
         }
         catch (err) {
+
+            setIterLoading(false)
+            setIter(0)
             console.log(err)
         }
-    }, [blogId])
+    }, [blogId, iterLoading, iter])
+
+    // const loadMoreUserBlogComments = useCallback(async () => {
+    //     try {
+    //         if (!iterLoading) {
+    //             setIterLoading(true)
+    //             await dispatch(magazineActions.fetchUserBlogComments(blogId, iter));
+    //             setIter(iter => iter + 1);
+    //             setIterLoading(false)
+    //         }
+
+    //     }
+    //     catch (err) {
+
+    //         setIterLoading(false)
+    //         setIter(0)
+    //         console.log(err)
+    //     }
+    // }, [blogId, iter, iterLoading])
+
+
 
     const loadUserBlogReacts = useCallback(async () => {
         try {
@@ -78,20 +109,39 @@ const BlogScreen = (props) => {
     const commentUserBlog = useCallback(async (comment) => {
         try {
             await dispatch(magazineActions.commentUserBlog(blogId, comment))
-            await dispatch(magazineActions.fetchUserBlogComments(blogId))
+            await dispatch(magazineActions.fetchUserBlogComments(blogId, 0))
+            setIter(0);
 
         }
         catch (err) {
+            setIter(0);
 
             console.log(err);
         }
     }, [blogId])
     const deleteCommentUserBlog = useCallback(async (commentId) => {
         try {
-            await dispatch(magazineActions.deleteCommentUserBlog(commentId))
+
+            Alert.alert('Delete Comment?', "Are you sure you want to delete this Comment?", [
+                {
+                    text: "Delete",
+                    onPress: async () => {
+                        await dispatch(magazineActions.deleteCommentUserBlog(commentId))
+                        await dispatch(magazineActions.fetchUserBlogComments(blog.id, 0));
+                        setIter(0);
+                    }
+                },
+                {
+                    text: 'Cancel',
+
+                    style: 'cancel'
+                }
+            ])
+
 
         }
         catch (err) {
+            setIter(0);
 
             console.log(err);
         }
@@ -126,6 +176,7 @@ const BlogScreen = (props) => {
     }, [blogId])
 
     useEffect(() => {
+        setIter(0);
 
         loadUserBlogComments(blogId);
 
@@ -138,15 +189,22 @@ const BlogScreen = (props) => {
         if (itemData.index === 0) {
             return (
                 <View style={styles.blogBody}>
-                    <Text style={styles.title}>Title here</Text>
+                    <Text style={styles.title}>{blog.title}</Text>
+                    <Text style={styles.subtitle}>{blog.subtitle}</Text>
 
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => props.navigation.push('OthersProfile', {
+                        profileId: blog.userId
+                    })}>
                         <View style={styles.nameDP}>
 
-                            {/* <Image style={styles.DPImage} source={post?.logo ?? logo} /> */}
+                            <Image style={styles.DPImage} source={blog.profilePic} />
                             <View style={styles.nameContainer}>
                                 <Text style={styles.Name}> {blog.name} </Text>
-                                <Text style={styles.username}> {blog.username} . {blog.date} </Text>
+                                <View style={styles.usernameDate}>
+                                    <Text style={styles.username}> {blog.username} . </Text>
+                                    <Time value={blog.date} />
+                                </View>
+
                             </View>
 
 
@@ -225,62 +283,74 @@ const BlogScreen = (props) => {
 
 
 
-                        {blog.userId === userId ? <Button title="delete blog" onPress={() => {
-                            console.log(blog.id)
-
-                            deleteBlog(blog.id)
-
-
-                        }} /> : null}
-
-                        <View style={styles.commentInputContainer}>
-                            <TextInput
-                                style={styles.commentInput}
-                                placeholder="Add a comment"
-                                multiline
-                                onChangeText={setComment}
-                                ref={textInputRef}
-                                onSubmitEditing={() => {
-                                    if (comment !== "") {
-                                        commentUserBlog(comment)
-
-                                        textInputRef.current.clear();
-                                        setComment('');
-                                        setChange(state => state - 1)
-
-                                    }
-                                }}
-
-                            />
-                            {comment !== '' ? <TouchableOpacity onPress={() => {
-                                if (comment !== "") {
-                                    commentUserBlog(comment)
-                                    textInputRef.current.clear();
-                                    setComment('');
-                                    setChange(state => state - 1)
-                                }
-
+                        {blog.userId === userId ?
+                            <TouchableOpacity onPress={() => {
+                                deleteBlog(blog.id)
                             }}>
-                                <Text>Send</Text>
+                                <Text style={styles.deleteText}>Delete Blog</Text>
+
                             </TouchableOpacity> : null}
 
 
-                        </View>
                     </View>
 
+                    <View style={styles.commentInputContainer}>
+                        <TextInput
+                            style={styles.commentInput}
+                            placeholder="Add a comment"
+                            multiline
+                            onChangeText={setComment}
+                            ref={textInputRef}
+                            onSubmitEditing={() => {
+                                if (comment !== "") {
+                                    commentUserBlog(comment)
+
+                                    textInputRef.current.clear();
+                                    setComment('');
+                                    setChange(state => state - 1)
+
+                                }
+                            }}
+
+                        />
+                        {comment !== '' ? <TouchableOpacity onPress={() => {
+                            if (comment !== "") {
+                                commentUserBlog(comment)
+                                textInputRef.current.clear();
+                                setComment('');
+                                setChange(state => state - 1)
+                            }
+
+                        }}>
+                            <Text>Send</Text>
+                        </TouchableOpacity> : null}
+
+
+                    </View>
                 </View>
             )
         }
 
         return (
             <View style={styles.comment}>
-                <View style={styles.commentUsernameContainer} >
-                    <Text style={styles.commentUsername}>{itemData.item.username} .  </Text>
-                    <Text style={styles.commentDate}>{itemData.item.date}</Text>
+                <View>
+                    <View style={styles.commentUsernameContainer} >
+                        <Text style={styles.commentUsername}>{itemData.item.username} .  </Text>
+                        <Text style={styles.commentDate}>{itemData.item.date}</Text>
 
+                    </View>
+
+                    <Text style={styles.commentText}>{itemData.item.comment}</Text>
                 </View>
 
-                <Text style={styles.commentText}>{itemData.item.comment}</Text>
+                {itemData.item.commenterId === userId ?
+                    <TouchableOpacity onPress={() => {
+                        deleteCommentUserBlog(itemData.item.id)
+                    }}>
+                        <Ionicons name="ios-trash" size={24} color="red" />
+
+                    </TouchableOpacity> : null}
+
             </View>
         )
 
@@ -296,6 +366,11 @@ const BlogScreen = (props) => {
                 }
                 renderItem={renderComment}
                 extraData={change}
+                onEndReached={() => {
+                    console.log(iter)
+                    loadUserBlogComments();
+                }
+                }
 
             />
 
@@ -321,9 +396,17 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginVertical: 20
     },
+    subtitle: {
+        fontSize: 20,
+        color: 'grey',
+        fontWeight: '500',
+        textAlign: 'left',
+        marginHorizontal: 10
+    },
     nameDP: {
         flexDirection: 'row',
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        marginVertical: 20
     },
 
     DPImage:
@@ -341,6 +424,9 @@ const styles = StyleSheet.create({
     {
         fontWeight: '700',
         fontSize: 18
+    },
+    usernameDate: {
+        flexDirection: 'row'
     },
     username: {
         fontSize: 15,
@@ -390,8 +476,19 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
     },
-    commentInputContainer: {
+    deleteText: {
+        color: 'red',
+        flex: 1,
+        textAlign: 'center',
+        marginVertical: 20,
+        fontSize: 15,
 
+
+
+    },
+    commentInputContainer: {
+        borderTopWidth: 0.5,
+        borderTopColor: 'grey',
         flexDirection: 'row',
         width: '100%',
         backgroundColor: 'white',
@@ -406,11 +503,13 @@ const styles = StyleSheet.create({
         paddingVertical: 10
     },
     comment: {
-        flexDirection: 'column',
+        flexDirection: 'row',
         backgroundColor: 'white',
         paddingHorizontal: 10,
         marginVertical: 10,
-        paddingVertical: 5
+        paddingVertical: 5,
+        alignItems: 'center',
+        justifyContent: 'space-between'
 
     },
     commentUsernameContainer: {

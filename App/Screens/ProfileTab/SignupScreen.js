@@ -97,11 +97,16 @@ export default function SignupScreen({ navigation }) {
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [error, setError] = useState('');
   //  console.log(inputs)
+  const CustomView = Platform.OS === "ios" ? KeyboardAvoidingView : View;
   return (
-    <View style={{
-      ...styles.container,
-      ...ScreenStyle
-    }}>
+    <CustomView
+      behavior="padding"
+      keyboardVerticalOffset={64}
+      style={{
+        ...styles.container,
+        ...ScreenStyle
+      }}
+    >
 
       <Text style={styles.title}> Sign up</Text>
 
@@ -333,7 +338,7 @@ export default function SignupScreen({ navigation }) {
 
 
 
-    </View >
+    </CustomView >
   );
 }
 

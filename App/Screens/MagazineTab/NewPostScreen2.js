@@ -61,6 +61,8 @@ export default function NewPostScreen2(props) {
                             Platform.OS === "android" ? image.uri : image.uri.replace("file://", "")
                     });
                 }
+               
+
 
                 props.navigation.navigate('NewPost3', {
                     formData: formData,

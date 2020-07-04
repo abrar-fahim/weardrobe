@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState, useRef } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, KeyboardAvoidingView, Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -191,23 +191,32 @@ export function MagazineScreen(props) {
 
 export default function MagazineStackScreen({ navigation }) {
     const MagazineStack = createStackNavigator();
+
+    const CustomView = Platform.OS === "ios" ? KeyboardAvoidingView : View;
     return (
-        <MagazineStack.Navigator
-            screenOptions={{
-                ...HeaderOptions
-            }}
+
+
+        <CustomView
+            style={{ flex: 1 }}
+            behavior="padding"
         >
-            <MagazineStack.Screen name="Magazine" component={MagazineScreen} options={{
 
-                headerRight: () => (
-                    <View style={{ flexDirection: 'row' }}>
-                        <GenericHeaderButton title="search" iconName="ios-search" onPress={() => navigation.navigate('PeopleSearch')} />
-                        < NewPostButton onPress={() => navigation.navigate('NewPostChooseLayout')} />
-                    </View>
+            <MagazineStack.Navigator
+                screenOptions={{
+                    ...HeaderOptions
+                }}
+            >
+                <MagazineStack.Screen name="Magazine" component={MagazineScreen} options={{
 
-                )
-            }} />
-            {/* <MagazineStack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options={{
+                    headerRight: () => (
+                        <View style={{ flexDirection: 'row' }}>
+                            <GenericHeaderButton title="search" iconName="ios-search" onPress={() => navigation.navigate('PeopleSearch')} />
+                            < NewPostButton onPress={() => navigation.navigate('NewPostChooseLayout')} />
+                        </View>
+
+                    )
+                }} />
+                {/* <MagazineStack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options={{
 
             }} />
             <MagazineStack.Screen name="NewPost2" component={NewPostScreen2} options={{
@@ -216,16 +225,18 @@ export default function MagazineStackScreen({ navigation }) {
             }} />
             <MagazineStack.Screen name="NewPost3" component={NewPostScreen3} />
             <MagazineStack.Screen name="NewPostTag" component={NewPostTagScreen} /> */}
-            <MagazineStack.Screen name="Seller" component={SellerScreen} />
-            <MagazineStack.Screen name="Post" component={PostScreen} />
-            <MagazineStack.Screen name="PeopleSearch" component={PeopleSearchScreen} />
-            <MagazineStack.Screen name="FollowersListTab" component={FollowersListTabScreen} />
-            <MagazineStack.Screen name="OthersProfile" component={ProfileTabsScreen} options={{
-                headerShown: true
-            }} />
-            <MagazineStack.Screen name="BlogScreen" component={BlogScreen} />
+                <MagazineStack.Screen name="Seller" component={SellerScreen} />
+                <MagazineStack.Screen name="Post" component={PostScreen} />
+                <MagazineStack.Screen name="PeopleSearch" component={PeopleSearchScreen} />
+                <MagazineStack.Screen name="FollowersListTab" component={FollowersListTabScreen} />
+                <MagazineStack.Screen name="OthersProfile" component={ProfileTabsScreen} options={{
+                    headerShown: true
+                }} />
+                <MagazineStack.Screen name="BlogScreen" component={BlogScreen} />
 
-        </MagazineStack.Navigator>
+            </MagazineStack.Navigator>
+        </CustomView>
+
 
     )
 }

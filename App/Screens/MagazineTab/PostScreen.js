@@ -1,13 +1,14 @@
 import React, { useEffect, useCallback, useState, useRef } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions, TouchableOpacity } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions, TouchableOpacity, Alert } from 'react-native';
 
 import { useSelector, useDispatch } from 'react-redux';
 
 import * as magazineActions from '../../store/actions/magazine'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import Colors from '../../Styles/Colors';
 import { set } from 'react-native-reanimated';
 import Post from '../../components/Post';
+import Time from '../../components/Time';
 
 const PostScreen = (props) => {
 
@@ -25,8 +26,9 @@ const PostScreen = (props) => {
     const [change, setChange] = useState(0);    //this forces like icon to re render on each touch
     const [comment, setComment] = useState('');
 
-    const reacts = useSelector(state => state.magazine.shopPostReacts)
-    const comments = useSelector(state => state.magazine.shopPostComments)
+    const reacts = useSelector(state => state.magazine.shopPostReacts);
+    const comments = useSelector(state => state.magazine.shopPostComments);
+    const userId = useSelector(state => state.auth.userId);
 
     const [iterLoading, setIterLoading] = useState(false);
 
@@ -103,10 +105,28 @@ const PostScreen = (props) => {
 
     const deleteCommentUserPost = useCallback(async (commentId) => {
         try {
-            await dispatch(magazineActions.deleteCommentUserPost(commentId, post.id))
-            await dispatch(magazineActions.fetchUserPostComments(post.id, 0))   //improve this later
-            setIter(0);
-            post.numComments--;
+
+            Alert.alert('Delete Comment?', "Are you sure you want to delete this comment?", [
+                {
+                    text: "Delete",
+                    onPress: async () => {
+                        await dispatch(magazineActions.deleteCommentUserPost(commentId))
+                        await dispatch(magazineActions.fetchUserPostComments(post.id, 0))   //improve this later
+                        setIter(0);
+                        post.numComments--;
+
+                    }
+                },
+                {
+                    text: 'Cancel',
+
+                    style: 'cancel'
+                }
+            ])
+
+
+
+
 
 
         }
@@ -134,10 +154,26 @@ const PostScreen = (props) => {
     })
     const deleteCommentShopPost = useCallback(async (commentId) => {
         try {
-            await dispatch(magazineActions.deleteCommentShopPost(commentId, post.id))
-            await dispatch(magazineActions.fetchShopPostComments(post.id, 0));
-            setIter(0);
-            post.numComments--;
+
+            Alert.alert('Delete Comment?', "Are you sure you want to delete this comment?", [
+                {
+                    text: "Delete",
+                    onPress: async () => {
+                        await dispatch(magazineActions.deleteCommentShopPost(commentId));
+                        await dispatch(magazineActions.fetchShopPostComments(post.id, 0));
+                        setIter(0);
+                        post.numComments--;
+
+
+                    }
+                },
+                {
+                    text: 'Cancel',
+
+                    style: 'cancel'
+                }
+            ])
+
 
 
         }
@@ -156,14 +192,27 @@ const PostScreen = (props) => {
     const renderComment = (itemData) => {
 
         return (
-            <View style={styles.comment}>
-                <View style={styles.commentUsernameContainer} >
-                    <Text style={styles.commentUsername}>{itemData.item.username} .  </Text>
-                    <Text style={styles.commentDate}>{itemData.item.date}</Text>
 
+            <View style={styles.comment}>
+                <View>
+                    <View style={styles.commentUsernameContainer} >
+                        <Text style={styles.commentUsername}>{itemData.item.username} .  </Text>
+                        <Time value={itemData.item.date} />
+
+                    </View>
+
+                    <Text style={styles.commentText}>{itemData.item.comment}</Text>
                 </View>
 
-                <Text style={styles.commentText}>{itemData.item.comment}</Text>
+                {itemData.item.commenterId === userId ?
+                    <TouchableOpacity onPress={() => {
+                        post.type === 'SHOP' ? deleteCommentShopPost(itemData.item.id) : deleteCommentUserPost(itemData.item.id)
+                    }}>
+                        <Ionicons name="ios-trash" size={24} color="red" />
+
+                    </TouchableOpacity> : null}
+
+
             </View>
         )
     }
@@ -331,11 +380,14 @@ const styles = StyleSheet.create({
 
     },
     comment: {
-        flexDirection: 'column',
+        flexDirection: 'row',
         backgroundColor: 'white',
         paddingHorizontal: 10,
         marginVertical: 10,
-        paddingVertical: 5
+        paddingVertical: 5,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+
 
     },
     commentUsernameContainer: {

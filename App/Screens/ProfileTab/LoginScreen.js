@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useReducer, useCallback } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView, Dimensions } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView, Dimensions, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -194,13 +194,19 @@ export default function LoginScreen({ navigation }) {
 
 
 
+  const CustomView = Platform.OS === "ios" ? KeyboardAvoidingView : View;
 
 
   return (
-    <View style={{
-      ...styles.container,
-      ...ScreenStyle
-    }}>
+    <CustomView
+      behavior="padding"
+      keyboardVerticalOffset={64}
+      style={{
+        ...styles.container,
+        ...ScreenStyle
+      }}
+     
+    >
 
 
 
@@ -269,7 +275,7 @@ export default function LoginScreen({ navigation }) {
 
       </View>
 
-    </View>
+    </CustomView>
   );
 }
 

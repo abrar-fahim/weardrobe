@@ -12,6 +12,7 @@ import * as profileActions from '../../store/actions/profile'
 import { useSelector, useDispatch } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import LoadingScreen from '../../components/LoadingScreen';
+import Time from '../../components/Time';
 
 export default function GroupListScreen(props) {
 
@@ -47,7 +48,7 @@ export default function GroupListScreen(props) {
 
     const LoadGroups = useCallback(async () => {
         try {
-            console.log(iter)
+           
             setIsLoading(true)
             await dispatch(chatActions.getGroups(0))
             setIsLoading(false)
@@ -57,7 +58,7 @@ export default function GroupListScreen(props) {
             console.log(err)
         }
 
-    }, [iter])
+    }, [])
 
     const LoadMoreGroups = useCallback(async () => {
         try {
@@ -77,21 +78,21 @@ export default function GroupListScreen(props) {
     }, [iter, iterLoading])
 
     useEffect(() => {
-        const willFocusSub = props.navigation.addListener(
-            'focus', () => {
+        // const willFocusSub = props.navigation.addListener(
+        //     'focus', () => {
 
-                LoadGroups();
-                loadMyProfile();
-            }
+        LoadGroups();
+        loadMyProfile();
+        //     }
 
-        );
+        // );
 
-        return () => {
-            willFocusSub();
-            setIter(0)
-        }
+        // return () => {
+        //     willFocusSub();
+        //     setIter(0)
+        // }
 
-    }, [LoadGroups]);
+    }, []);
 
 
 
@@ -133,7 +134,7 @@ export default function GroupListScreen(props) {
 
 
                         <View style={styles.timeContainer}>
-                            <Text style={styles.time}> {new Date(itemData.item.sentAt).toLocaleString()}</Text>
+                            <Time style={styles.time} value={itemData.item.sentAt} />
                         </View>
 
                     </View>
@@ -150,7 +151,7 @@ export default function GroupListScreen(props) {
 
 
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity >
 
 
         )
@@ -221,6 +222,8 @@ const styles = StyleSheet.create({
     time: {
         color: 'grey',
         fontWeight: '500',
+        textAlign: 'right',
+
 
 
     },

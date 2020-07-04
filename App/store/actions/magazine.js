@@ -497,7 +497,7 @@ export const commentShopPost = (postId, comment) => {
         // dispatch(fetchShopPostComments(postId, 0))
     }
 }
-export const deleteCommentShopPost = (commentId, postId) => {
+export const deleteCommentShopPost = (commentId) => {
     //here, iter is the current iter where the comment was found, needed to refetch comments in current iter
     return async (dispatch) => {
         try {
@@ -593,7 +593,7 @@ export const commentUserPost = (postId, comment) => {
         // dispatch(fetchShopPostComments(postId, 0))
     }
 }
-export const deleteCommentUserPost = (commentId, postId) => {
+export const deleteCommentUserPost = (commentId) => {
     //here, iter is the current iter where the comment was found, needed to refetch comments in current iter
     return async (dispatch) => {
         try {
@@ -636,8 +636,6 @@ export const deleteCommentUserPost = (commentId, postId) => {
             //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
             throw new Error(err)
         }
-
-        // dispatch(fetchShopPostComments(postId, 0))
     }
 }
 

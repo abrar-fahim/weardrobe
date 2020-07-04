@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -48,63 +48,69 @@ import ConfirmOrderScreen from './ConfirmOrderScreen';
 
 export default function ShopStackScreen({ navigation }) {
     const ShopStack = createStackNavigator();
+    const CustomView = Platform.OS === "ios" ? KeyboardAvoidingView : View;
 
 
     return (
-        <ShopStack.Navigator
-
-            screenOptions={HeaderOptions}
-
+        <CustomView
+            style={{ flex: 1 }}
+            behavior="padding"
         >
-            <ShopStack.Screen name="ShopDrawer" component={ShopDrawer}
-                options={{
-                    headerShown: false
-                }}
-            />
-            <ShopStack.Screen name="Checkout" component={CheckoutScreen} />
-            <ShopStack.Screen name="Cart" component={CartScreen} />
-            <ShopStack.Screen name="Search" component={SearchScreen}
-                options={{
-                    headerShown: false,
-                    headerTitle: 'asdasd',
-                    animationEnabled: false
+            <ShopStack.Navigator
 
-                }}
-            />
-            <ShopStack.Screen name="ShopSearch" component={ShopSearchScreen}
-                options={{
-                    headerShown: false,
-                    headerTitle: 'asdasd',
-                    animationEnabled: false
+                screenOptions={HeaderOptions}
 
-                }}
-            />
+            >
+                <ShopStack.Screen name="ShopDrawer" component={ShopDrawer}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+                <ShopStack.Screen name="Checkout" component={CheckoutScreen} />
+                <ShopStack.Screen name="Cart" component={CartScreen} />
+                <ShopStack.Screen name="Search" component={SearchScreen}
+                    options={{
+                        headerShown: false,
+                        headerTitle: 'asdasd',
+                        animationEnabled: false
 
-            <ShopStack.Screen name="CategorySearch" component={CategoriesSearchScreen}
-                options={{
-                    headerShown: false,
-                    headerTitle: 'asdasd',
-                    animationEnabled: false
+                    }}
+                />
+                <ShopStack.Screen name="ShopSearch" component={ShopSearchScreen}
+                    options={{
+                        headerShown: false,
+                        headerTitle: 'asdasd',
+                        animationEnabled: false
 
-                }}
-            />
-            <ShopStack.Screen name="Favorites" component={FavoritesScreen} />
-            {/* <ShopStack.Screen name="Product" component={ProductScreen}/> */}
-            <ShopStack.Screen name="GroupShopping" component={GroupShoppingScreen} />
-            <ShopStack.Screen name="Seller" component={SellerScreen} />
-            <ShopStack.Screen name="Post" component={PostScreen} />
+                    }}
+                />
+
+                <ShopStack.Screen name="CategorySearch" component={CategoriesSearchScreen}
+                    options={{
+                        headerShown: false,
+                        headerTitle: 'asdasd',
+                        animationEnabled: false
+
+                    }}
+                />
+                <ShopStack.Screen name="Favorites" component={FavoritesScreen} />
+                {/* <ShopStack.Screen name="Product" component={ProductScreen}/> */}
+                <ShopStack.Screen name="GroupShopping" component={GroupShoppingScreen} />
+                <ShopStack.Screen name="Seller" component={SellerScreen} />
+                <ShopStack.Screen name="Post" component={PostScreen} />
 
 
-            <ShopStack.Screen name="ProductList" component={ProductListScreen} />
-            <ShopStack.Screen name="Order" component={OrderScreen} />
-            <ShopStack.Screen name="SellerInfo" component={SellerInfoScreen} />
-            <ShopStack.Screen name="Categories" component={CategoriesScreen} />
-            {/* <ShopStack.Screen name="Payment" component={PayScreen} />
+                <ShopStack.Screen name="ProductList" component={ProductListScreen} />
+                <ShopStack.Screen name="Order" component={OrderScreen} />
+                <ShopStack.Screen name="SellerInfo" component={SellerInfoScreen} />
+                <ShopStack.Screen name="Categories" component={CategoriesScreen} />
+                {/* <ShopStack.Screen name="Payment" component={PayScreen} />
             <ShopStack.Screen name="Shipping" component={ShippingScreen} />
             <ShopStack.Screen name="ConfirmOrder" component={ConfirmOrderScreen} /> */}
-            <ShopStack.Screen name="PictureUpload" component={PictureUploadScreen} />
+                <ShopStack.Screen name="PictureUpload" component={PictureUploadScreen} />
 
-        </ShopStack.Navigator>
+            </ShopStack.Navigator>
+        </CustomView>
     )
 }
 
