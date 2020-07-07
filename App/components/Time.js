@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS } from 'react-native';
+import moment from 'moment';
 
 
 export default function Time(props) {
-    
-    const date = new Date(props.value);
+
+    const date = new Date(moment(props.value));
     // date.setTime(Date.parse(props.value));
+
+
 
 
 

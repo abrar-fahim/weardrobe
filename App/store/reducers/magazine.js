@@ -1,15 +1,33 @@
-import { GET_SHOP_POSTS, GET_FRIENDS_POSTS, GET_SHOP_POST_REACTS, GET_SHOP_POST_COMMENTS } from "../actions/magazine"
+import { GET_SHOP_POSTS, GET_FRIENDS_POSTS, GET_SHOP_POST_REACTS, GET_SHOP_POST_COMMENTS, GET_FEED } from "../actions/magazine"
 
 const initialState = {
     shopPosts: [],
     friendPosts: [],
     shopPostComments: [],
-    shopPostReacts: []
+    shopPostReacts: [],
+    feed: []
 }
 
 
 const magazineReducer = (state = initialState, action) => {
     switch (action.type) {
+        case GET_FEED:
+            if (action.iter === 0) {
+                return {
+                    ...state,
+                    feed: action.feed
+                }
+            }
+
+            if (action.feed.length === 0) {
+                return state
+            }
+
+            return {
+                ...state,
+                feed: state.feed.concat(action.feed)
+            }
+
         case GET_SHOP_POSTS:
 
             if (action.iter === 0) {

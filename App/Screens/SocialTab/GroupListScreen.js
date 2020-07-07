@@ -48,7 +48,7 @@ export default function GroupListScreen(props) {
 
     const LoadGroups = useCallback(async () => {
         try {
-           
+
             setIsLoading(true)
             await dispatch(chatActions.getGroups(0))
             setIsLoading(false)
@@ -206,7 +206,8 @@ const styles = StyleSheet.create({
     groupName: {
         fontSize: 16,
         fontWeight: '500',
-        marginLeft: 10
+        marginLeft: 10,
+        flex: 1
     },
     picName: {
         flexDirection: 'row',

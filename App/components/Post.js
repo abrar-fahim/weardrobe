@@ -18,6 +18,8 @@ import Time from './Time';
 
 const Post = (props) => {
 
+    //post can be USER_POST, USER_BLOG or SHOP_POST
+
     //props =  navigation,
 
     // props = post = {
@@ -78,6 +80,30 @@ const Post = (props) => {
             console.log(err);
         }
     })
+
+    const reactUserBlog = useCallback(async (blogId) => {
+        try {
+            await dispatch(magazineActions.reactUserBlog(blogId))
+
+            setChange(state => state + 1)
+        }
+        catch (err) {
+
+            console.log(err);
+        }
+    }, [])
+    const unReactUserBlog = useCallback(async (blogId) => {
+        try {
+            await dispatch(magazineActions.unReactUserBlog(blogId))
+
+            setChange(state => state - 1)
+
+        }
+        catch (err) {
+
+            console.log(err);
+        }
+    }, [])
 
     const deleteUserPost = useCallback(async () => {
         try {
@@ -150,19 +176,19 @@ const Post = (props) => {
                 <TouchableOpacity
                     style={styles.nameDP}
                     onPress={() => {
-                        post.type === 'SHOP' ?
+                        post.type === magazineActions.SHOP_POST ?
                             props.navigation.navigate('Seller', {
-                                shopId: post.shopId
+                                shopId: post.posterId
                             }) :
                             props.navigation.navigate('OthersProfile', {
-                                profileId: post.userId
+                                profileId: post.posterId
                             })
 
                     }}
                 >
 
 
-                    <Image style={styles.DPImage} source={post?.logo ?? logo} />
+                    <Image style={styles.DPImage} source={post?.profilePic ?? logo} />
                     <View style={styles.nameContainer}>
                         <Text style={styles.Name}> {post.name} </Text>
                         <View style={styles.usernameDate}>
@@ -190,27 +216,46 @@ const Post = (props) => {
 
 
             <TouchableOpacity style={styles.Post} onPress={() => {
-                post.productId ? props.navigation.navigate('Product', {
-                    productId: post.productId
-                }) :
-
+                if (post.productId) {
+                    props.navigation.navigate('Product', {
+                        productId: post.productId
+                    })
+                }
+                else if (post.type === magazineActions.USER_POST) {
                     props.navigation.navigate('Post', {
                         post: {
                             ...post,
-                            logo: post.logo ?? logo
+                            logo: post.profilePic ?? logo
                         }
 
                     })
+                }
+                else if (post.type === magazineActions.USER_BLOG) {
+                    props.navigation.navigate('Blog', {
+                        blog: {
+                            ...post,
+                            logo: post.profilePic ?? logo
+                        }
+
+                    })
+                }
+
+
 
 
 
                 return null;
 
             }}>
+                {post.type === magazineActions.USER_BLOG ?
+                    <View>
+                        <Text style={styles.title}>{post.title}</Text>
+                        <Text style={styles.subtitle}>{post.subtitle}</Text>
+                    </View> : null}
 
                 <FlatList horizontal={true} pagingEnabled={true} data={post.images} renderItem={renderImage} />
                 {/* <Image  source={require('../../assets/Images/suit.png')} style={styles.PostImage}/>  */}
-                <Text style={styles.caption}>   {post.text}</Text>
+                <Text style={styles.caption}>{post.text}</Text>
 
             </TouchableOpacity>
 
@@ -220,7 +265,19 @@ const Post = (props) => {
 
                     if (post.hasReacted === 1) {
                         //unlike
-                        post.type === 'SHOP' ? await unReactShopPost(post.id) : await unReactUserPost(post.id)
+
+                        if (post.type === magazineActions.SHOP_POST) {
+                            await unReactShopPost(post.id);
+
+                        }
+                        else if (post.type === magazineActions.USER_POST) {
+                            unReactUserPost(post.id)
+                        }
+                        else if (post.type === magazineActions.USER_BLOG) {
+                            unReactUserBlog(post.id)
+
+                        }
+
 
                         if (error === '') {
 
@@ -232,7 +289,18 @@ const Post = (props) => {
 
                     }
                     else {
-                        post.type === 'SHOP' ? await reactShopPost(post.id) : reactUserPost(post.id)
+                        if (post.type === magazineActions.SHOP_POST) {
+                            await reactShopPost(post.id);
+
+                        }
+                        else if (post.type === magazineActions.USER_POST) {
+                            reactUserPost(post.id)
+                        }
+                        else if (post.type === magazineActions.USER_BLOG) {
+                            reactUserBlog(post.id)
+
+                        }
+
                         if (error === '') {
                             post.hasReacted = 1;
                             post.numReacts += 1;
@@ -260,7 +328,7 @@ const Post = (props) => {
                         props.navigation.navigate('Post', {
                             post: {
                                 ...post,
-                                logo: post?.logo ?? logo
+                                logo: post?.profilePic ?? logo
                             }
                         })
 
@@ -378,9 +446,25 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         // flex: 7,
     },
+    title: {
+        fontSize: 20,
+        fontFamily: 'serif',
+        fontWeight: '600',
+        textAlign: 'center',
+        marginVertical: 5
+    },
+    subtitle: {
+        fontSize: 15,
+        color: 'grey',
+        fontWeight: '500',
+        textAlign: 'left',
+        marginHorizontal: 10
+    },
     caption:
     {
+        fontSize: 17,
         paddingVertical: 20,
+        paddingHorizontal: 10,
         fontWeight: '600',
         width: '100%'
     },

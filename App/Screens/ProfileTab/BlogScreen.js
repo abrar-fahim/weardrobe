@@ -336,7 +336,7 @@ const BlogScreen = (props) => {
                 <View>
                     <View style={styles.commentUsernameContainer} >
                         <Text style={styles.commentUsername}>{itemData.item.username} .  </Text>
-                        <Text style={styles.commentDate}>{itemData.item.date}</Text>
+                        <Time style={styles.commentDate} value={itemData.item.date} />
 
                     </View>
 

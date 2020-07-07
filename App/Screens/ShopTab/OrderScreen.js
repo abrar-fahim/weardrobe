@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, TouchableOpacity, FlatList } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -7,10 +7,13 @@ import ScreenStyle from '../../Styles/ScreenStyle'
 import CARTITEMS from '../../dummy-data/CartItems'
 
 import { Ionicons, Entypo, AntDesign, Feather } from '@expo/vector-icons';
+import * as orderActions from '../../store/actions/order';
+import * as popupActions from '../../store/actions/Popup';
 
-import UIButton from '../../components/UIButton'
+import UIButton from '../../components/UIButton';
 import Colors from '../../Styles/Colors';
 import UICircle from '../../components/UICircle';
+import { useDispatch } from 'react-redux';
 
 
 
@@ -19,35 +22,65 @@ export default function OrderScreen(props) {
     const order = props.route.params?.order;
 
 
+
+    const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const dispatch = useDispatch();
+
+
+    const getProducts = useCallback(async () => {
+        //setIsLoading(true);
+        try {
+            setIsLoading(true)
+            const gotProducts = await orderActions.getOrderDetailsDirect(order.id);
+            // gotProducts.sort((a, b) => (
+            //     a.deliveryStatus === b.deliveryStatus ? -1 : 0
+            // ));
+
+            setProducts(gotProducts);
+
+            setIsLoading(false)
+        } catch (err) {
+            console.log(err.message)
+            dispatch(popupActions.setMessage("Couldn't get order", true))
+        }
+        //setIsLoading(false);
+    }, [order])
+
+    useEffect(() => {
+        getProducts();
+
+    }, [order])
+
+
+
+
     const renderItems = (itemData) => {
 
         return (
-
-
-
-
             <TouchableOpacity style={styles.cartItem} onPress={() => {
                 props.navigation.navigate('Product', {
-                    productId: itemData.item.id
+                    productId: itemData.item.productId
                 })
             }}>
-
-
                 <Image source={itemData.item.thumbnail} style={styles.thumbnail} />
 
+                <View style={styles.nameColorSize}>
+                    <Text style={styles.name}> {itemData.item.name}</Text>
+                    <View style={styles.colorSize}>
+                        <Text style={{ ...styles.color, backgroundColor: itemData.item.color.toLowerCase() }} />
+                        <Text style={styles.size} > {itemData.item.size.toUpperCase()}</Text>
+
+                    </View>
 
 
-                <Text style={styles.name}> {itemData.item.name}</Text>
-                {/* <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.id}</Text> */}
 
 
+                </View>
 
 
 
                 <Text style={styles.quantity}>{itemData.item.quantity}</Text>
-
-
-
 
                 <Text style={styles.cartPrice}> {"BDT " + itemData.item.price} </Text>
 
@@ -71,7 +104,12 @@ export default function OrderScreen(props) {
                         <Text style={styles.stepText}> Order Placed</Text>
 
                     </View>
-                    <View style={styles.flowLine} />
+                    <View style={styles.lineProducts}>
+                        <View style={styles.flowLine} />
+                        <FlatList data={products.filter(item => item.deliveryStatus === "NOT_DELIVERED")} renderItem={renderItems} style={{ flex: 1 }} />
+
+                    </View>
+
 
 
 
@@ -109,23 +147,32 @@ export default function OrderScreen(props) {
         <View style={{ ...ScreenStyle, ...styles.screen }}>
 
 
-            <FlatList ListHeaderComponent={orderFlow} data={order.products} renderItem={renderItems}
+            <FlatList ListHeaderComponent={orderFlow} data={[]}
                 ListFooterComponent={
                     <View style={styles.bottom}>
 
                         <View style={styles.bottomRow}>
                             <Text style={styles.price}> Subtotal </Text>
-                            <Text style={styles.price} > BDT 700</Text>
+                            <Text style={styles.price} > BDT {order.subTotal}</Text>
                         </View>
 
                         <View style={styles.bottomRow}>
                             <Text style={styles.price}> VAT </Text>
-                            <Text style={styles.price} > BDT 20</Text>
+                            <Text style={styles.price} > BDT {order.vat}</Text>
                         </View>
+                        <View style={styles.bottomRow}>
+                            <Text style={styles.price}> Delivery </Text>
+                            <Text style={styles.price} > BDT {order.deliveryCharge}</Text>
+                        </View>
+                        <View style={styles.bottomRow}>
+                            <Text style={styles.price}> Discount </Text>
+                            <Text style={styles.price} > BDT {order.discount}</Text>
+                        </View>
+
 
                         <View style={styles.totalBottomRow}>
                             <Text style={styles.totalPriceLabel}> Total Payable </Text>
-                            <Text style={styles.totalPrice} > BDT 720</Text>
+                            <Text style={styles.totalPrice} > BDT {order.total}</Text>
                         </View>
 
                     </View>
@@ -145,15 +192,14 @@ const styles = StyleSheet.create(
             paddingBottom: 10
         },
         cartItem: {
-            marginVertical: 20,
+            marginVertical: 10,
             marginHorizontal: 10,
             justifyContent: 'space-between',
             flexDirection: 'row',
             alignItems: 'center',
             backgroundColor: 'white',
-            flex: 1,
 
-
+            // flex: 1,
             padding: 10
         },
         thumbnail: {
@@ -161,10 +207,30 @@ const styles = StyleSheet.create(
             width: 50,
             borderRadius: 25
         },
+        nameColorSize: {
+            marginLeft: 5,
+            flex: 4
+
+        },
         name: {
             fontSize: 17,
             fontWeight: '400',
-            flex: 4
+            flex: 1,
+            marginVertical: 5
+
+        },
+        colorSize: {
+            flexDirection: 'row'
+        },
+        color: {
+            height: 20,
+            width: 20,
+            borderRadius: 10,
+            marginRight: 10
+        },
+        size: {
+            fontWeight: '700',
+            color: 'grey'
         },
         quantity: {
             flex: 1,
@@ -197,15 +263,12 @@ const styles = StyleSheet.create(
             flexDirection: 'row',
             width: '80%',
             alignItems: 'center'
-
-
-
         },
 
         flowLine: {
             alignItems: 'flex-start',
             backgroundColor: 'grey',
-            height: 80,
+            minHeight: 40,
             width: 3,
             opacity: 0.3,
             marginLeft: 4.5
@@ -217,6 +280,10 @@ const styles = StyleSheet.create(
             marginLeft: 20,
             fontSize: 16,
             width: '100%'
+        },
+        lineProducts: {
+            flexDirection: 'row',
+
         },
         bottom: {
             backgroundColor: 'white',

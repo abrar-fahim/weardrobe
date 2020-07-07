@@ -6,9 +6,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as magazineActions from '../../store/actions/magazine'
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import Colors from '../../Styles/Colors';
-import { set } from 'react-native-reanimated';
+
 import Post from '../../components/Post';
 import Time from '../../components/Time';
+// import { Loader } from 'three';
 
 const PostScreen = (props) => {
 
@@ -40,6 +41,7 @@ const PostScreen = (props) => {
         try {
             if (!iterLoading) {
                 setIterLoading(true)
+                setIter(0);
                 await dispatch(magazineActions.fetchUserPostComments(post.id, iter))
                 // setIter(iter => iter + 1)
                 setIterLoading(true)
@@ -47,14 +49,36 @@ const PostScreen = (props) => {
 
         }
         catch (err) {
+            setIter(0);
             console.log(err)
         }
-    }, [iterLoading, iter])
+    }, [post, iterLoading, iter])
+
+    const loadUserBlogComments = useCallback(async () => {
+        try {
+            if (!iterLoading) {
+                setIterLoading(true)
+                setIter(0);
+                await dispatch(magazineActions.fetchUserBlogComments(post.id, iter));
+                // setIter(iter => iter + 1);
+
+                setIterLoading(false)
+            }
+
+        }
+        catch (err) {
+
+            setIterLoading(false)
+            setIter(0)
+            console.log(err)
+        }
+    }, [post, iterLoading])
 
     const loadShopPostComments = useCallback(async () => {
         try {
             if (!iterLoading) {
                 setIterLoading(true)
+                setIter(0);
                 await dispatch(magazineActions.fetchShopPostComments(post.id, iter))
                 // setIter(iter => iter + 1)
                 setIterLoading(false)
@@ -62,15 +86,24 @@ const PostScreen = (props) => {
             }
         }
         catch (err) {
+            setIter(0);
             console.log(err)
         }
-    }, [iterLoading, iter])
+    }, [post, iterLoading, iter])
 
     const loadMoreComments = useCallback(async () => {
         try {
             if (!iterLoading) {
                 setIterLoading(true)
-                post.type === 'SHOP' ? await dispatch(magazineActions.fetchShopPostComments(post.id, iter)) : await dispatch(magazineActions.fetchUserPostComments(post.id, iter));
+                if (post.type === magazineActions.SHOP_POST) {
+                    await dispatch(magazineActions.fetchShopPostComments(post.id, iter))
+                }
+                else if (post.type === magazineActions.USER_POST) {
+                    await dispatch(magazineActions.fetchUserPostComments(post.id, iter));
+                }
+                else if (post.type === magazineActions.USER_BLOG) {
+                    await dispatch(magazineActions.fetchUserBlogComments(post.id, iter));
+                }
                 setIter(iter => iter + 1)
                 setIterLoading(false)
 
@@ -79,7 +112,7 @@ const PostScreen = (props) => {
         catch (err) {
             console.log(err)
         }
-    }, [iterLoading, iter])
+    }, [post, iterLoading, iter])
 
 
 
@@ -93,15 +126,12 @@ const PostScreen = (props) => {
             setIter(0);
             post.numComments++;
             setChange(state => state + 1)
-
-
-
         }
         catch (err) {
 
             console.log(err);
         }
-    })
+    }, [post])
 
     const deleteCommentUserPost = useCallback(async (commentId) => {
         try {
@@ -124,17 +154,53 @@ const PostScreen = (props) => {
                 }
             ])
 
-
-
-
-
-
         }
         catch (err) {
 
             console.log(err);
         }
-    })
+    }, [post])
+
+    const commentUserBlog = useCallback(async (comment) => {
+        try {
+            await dispatch(magazineActions.commentUserBlog(post.id, comment))
+            await dispatch(magazineActions.fetchUserBlogComments(post.id, 0))
+            setIter(0);
+
+        }
+        catch (err) {
+            setIter(0);
+
+            console.log(err);
+        }
+    }, [post])
+    const deleteCommentUserBlog = useCallback(async (commentId) => {
+        try {
+
+            Alert.alert('Delete Comment?', "Are you sure you want to delete this Comment?", [
+                {
+                    text: "Delete",
+                    onPress: async () => {
+                        await dispatch(magazineActions.deleteCommentUserBlog(commentId))
+                        await dispatch(magazineActions.fetchUserBlogComments(post.id, 0));
+                        setIter(0);
+                    }
+                },
+                {
+                    text: 'Cancel',
+
+                    style: 'cancel'
+                }
+            ])
+
+
+        }
+        catch (err) {
+            setIter(0);
+
+            console.log(err);
+        }
+    }, [post])
 
     const commentShopPost = useCallback(async (comment) => {
         try {
@@ -151,7 +217,7 @@ const PostScreen = (props) => {
 
             console.log(err);
         }
-    })
+    }, [post])
     const deleteCommentShopPost = useCallback(async (commentId) => {
         try {
 
@@ -181,15 +247,27 @@ const PostScreen = (props) => {
 
             console.log(err);
         }
-    })
+    }, [post])
 
     useEffect(() => {
-        post.type === 'SHOP' ? loadShopPostComments() : loadUserPostComments();
+        console.log(post.type)
+        if (post.type === magazineActions.SHOP_POST) {
+            loadShopPostComments()
+        }
+        else if (post.type === magazineActions.USER_POST) {
+            loadUserPostComments()
+        }
+        else if (post.type === magazineActions.USER_BLOG) {
+            loadUserBlogComments();
+        }
 
     }, [post])
 
 
     const renderComment = (itemData) => {
+        console.log(itemData.item.commenterId === userId)
+
+
 
         return (
 
@@ -197,7 +275,7 @@ const PostScreen = (props) => {
                 <View>
                     <View style={styles.commentUsernameContainer} >
                         <Text style={styles.commentUsername}>{itemData.item.username} .  </Text>
-                        <Time value={itemData.item.date} />
+                        <Time value={itemData.item.date} style={styles.commentDate} />
 
                     </View>
 
@@ -205,12 +283,24 @@ const PostScreen = (props) => {
                 </View>
 
                 {itemData.item.commenterId === userId ?
-                    <TouchableOpacity onPress={() => {
-                        post.type === 'SHOP' ? deleteCommentShopPost(itemData.item.id) : deleteCommentUserPost(itemData.item.id)
-                    }}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            if (post.type === magazineActions.SHOP_POST) {
+                                deleteCommentShopPost(itemData.item.id)
+                            }
+                            else if (post.type === magazineActions.USER_POST) {
+                                deleteCommentUserPost(itemData.item.id)
+                            }
+                            else if (post.type === magazineActions.USER_BLOG) {
+                                deleteCommentUserBlog(itemData.item.id)
+                            }
+                        }}
+                    >
                         <Ionicons name="ios-trash" size={24} color="red" />
 
-                    </TouchableOpacity> : null}
+
+                    </TouchableOpacity>
+                    : null}
 
 
             </View>
@@ -249,7 +339,16 @@ const PostScreen = (props) => {
                     ref={textInputRef}
                     onSubmitEditing={() => {
                         if (comment !== "") {
-                            post.type === 'SHOP' ? commentShopPost(comment) : commentUserPost(comment)
+                            if (post.type === magazineActions.SHOP_POST) {
+                                commentShopPost(comment)
+                            }
+                            else if (post.type === magazineActions.USER_POST) {
+                                commentUserPost(comment)
+                            }
+                            else if (post.type === magazineActions.USER_BLOG) {
+                                commentUserBlog(comment)
+                            }
+
 
                             textInputRef.current.clear();
                             setComment('');
@@ -262,7 +361,16 @@ const PostScreen = (props) => {
 
                 {comment !== '' ? <TouchableOpacity onPress={() => {
                     if (comment !== "") {
-                        post.type === 'SHOP' ? commentShopPost(comment) : commentUserPost(comment)
+
+                        if (post.type === magazineActions.SHOP_POST) {
+                            commentShopPost(comment)
+                        }
+                        else if (post.type === magazineActions.USER_POST) {
+                            commentUserPost(comment)
+                        }
+                        else if (post.type === magazineActions.USER_BLOG) {
+                            commentUserBlog(comment)
+                        }
                         textInputRef.current.clear();
                         setComment('');
                         setChange(state => state - 1)

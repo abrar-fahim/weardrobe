@@ -2,7 +2,7 @@ import HOST, { IMG_URL } from "../../components/host";
 export const GET_ORDERS = 'GET_ORDERS'
 
 
-export const purchase = () => {
+export const purchase = (address) => {
 
     return async (dispatch) => {
         const response = await fetch(`${HOST}/pseudo-purchase/`, {
@@ -13,6 +13,9 @@ export const purchase = () => {
                 'Content-Type': 'application/json',
                 'Accept': "application/json"
             },
+            body: JSON.stringify({
+                address: address
+            })
 
         });
 
@@ -74,13 +77,19 @@ export const getOrders = () => {
                         thumbnail: { uri: `${IMG_URL}${product.THUMBNAIL}` },
                         name: product.PRODUCT_NAME,
                         deliveryStatus: product.DELIVERY_STATUS,
+
                     }))
                     orders.push(
                         {
                             id: resData[key].RECEIPT_ID,
                             date: resData[key].DATE,
                             paymentStatus: resData[key].PAYMENT_STATUS,
-                            products: products
+                            products: products,
+                            total: resData[key].TOTAL,
+                            subTotal: resData[key].SUB_TOTAL,
+                            vat: resData[key].VAT,
+                            discount: resData[key].DISCOUNT,
+                            deliveryCharge: resData[key].DELIVERY_CHARGE,
                         }
                     )
                 }
@@ -107,8 +116,57 @@ export const getOrders = () => {
         }
     }
 
+}
+
+export const getOrderDetailsDirect = async (receiptId) => {
+
+    try {
+        const response = await fetch(`${HOST}/get/order-details/${receiptId}`, {
+            method: 'GET',
+            credentials: 'include',
+        })
+
+        const resData = await response.json();
+
+        if (Object.keys(resData)[0] !== 'ERROR') {
+            const products = [];
 
 
+            for (const key in resData) {
+                const product = resData[key];
+
+                products.push({
+                    id: product.INVENTORY_ID,
+                    productId: product.PRODUCT_ID,
+                    size: product.SIZE,
+                    color: product.COLOR,
+                    price: product.PRICE,
+                    discount: product.DISCOUNT,
+                    quantity: product.QUANTITY,
+                    thumbnail: { uri: IMG_URL + product.THUMBNAIL },
+                    name: product.PRODUCT_NAME,
+                    deliveryStatus: product.DELIVERY_STATUS,
+                    eta: product.DELIVERY_ETA,
+
+                })
+            }
+
+            return products;
+
+        }
+
+
+        else {
+            console.log(resData)
+            throw new Error()
+        }
+
+
+
+    } catch (err) {
+        throw new Error()
+
+    }
 
 
 }

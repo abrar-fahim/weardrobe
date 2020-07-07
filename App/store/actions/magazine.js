@@ -2,6 +2,7 @@ import HOST from '../../components/host'
 
 export const GET_SHOP_POSTS = 'GET_SHOP_POSTS';
 export const GET_FRIENDS_POSTS = 'GET_FRIENDS_POSTS';
+export const GET_FEED = 'GET_FEED';
 
 export const GET_SHOP_POST_COMMENTS = 'GET_SHOP_POST_COMMENTS';
 export const GET_SHOP_POST_REACTS = 'GET_SHOP_POST_REACTS';
@@ -12,8 +13,104 @@ export const GET_USER_POST_COMMENTS = 'GET_USER_POST_COMMENTS';
 export const GET_USER_BLOG_REACTS = 'GET_USER_BLOG_REACTS';
 export const GET_USER_BLOG_COMMENTS = 'GET_USER_BLOG_COMMENTS';
 
+
+export const SHOP_POST = 'SHOP_POST';
+export const USER_POST = 'USER_POST';
+export const USER_BLOG = 'USER_BLOG';
+
+
+
+
 import * as profileActions from './profile'
 import * as popupActions from './Popup'
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
+
+
+export const fetchFeed = (iter = 0) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${HOST}/get/newsfeed-all/${iter}`, {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                dispatch(popupActions.setMessage("Couldn't get feed", true))
+            }
+
+            const resData = await response.json();
+            const feed = [];
+
+            if (Object.keys(resData)[0] !== 'ERROR') {
+
+                for (const key in resData) {
+                    const processedImages = resData[key].PHOTO.map((item, index) => (
+                        {
+                            id: index.toString(),
+                            image: { uri: `${HOST}/img/temp/` + item.IMAGE_URL }
+                        }
+                    ))
+
+
+                    const processedTexts = resData[key].TYPE === USER_BLOG ? resData[key].WRITING.map((item, index) => (
+                        {
+                            id: index.toString(),
+                            text: item.TEXT
+
+
+                        }
+                    )) : null;
+
+
+
+                    feed.push({
+                        type: resData[key].TYPE,
+                        id: resData[key].POST_ID,
+                        posterId: resData[key].ID,
+                        title: resData[key].TITLE,
+                        subtitle: resData[key].SUBTITLE,
+                        date: resData[key].POST_DATE,
+                        text: resData[key].CAPTIONS,
+                        texts: processedTexts,
+                        // structure: resData[key].STRUCTURE,
+                        productId: resData[key].PRODUCT_ID,
+                        images: processedImages,
+                        numComments: resData[key].COMMENT,
+                        numReacts: resData[key].REACT,
+                        hasReacted: resData[key].HAS_REACTED,
+                        name: resData[key].NAME + " " + resData[key].LAST_NAME,
+                        username: resData[key].USERNAME,
+                        profilePic: { uri: `${HOST}/img/temp/` + resData[key].PROFILE_PIC },
+                    })
+                }
+                // console.log(loadedProducts);
+                dispatch({ type: GET_FEED, feed: feed, iter: iter })
+            }
+
+            else {
+                // dispatch(popupActions.setMessage('Something Went Wrong', true))
+                throw new Error(resData.ERROR)
+            }
+
+
+
+        }
+        catch (err) {
+
+
+
+            // dispatch(popupActions.setMessage('Something Went Wrong', true))
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+    }
+}
 
 export const fetchShopPosts = (iter = 0) => {
     return async (dispatch) => {

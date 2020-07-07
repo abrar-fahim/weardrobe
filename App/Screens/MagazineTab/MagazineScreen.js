@@ -49,32 +49,32 @@ export function MagazineScreen(props) {
 
     const dispatch = useDispatch();
 
-    const userId = useSelector(state => state.auth.userId)
+    const userId = useSelector(state => state.auth.userId);
 
-    const shopPosts = useSelector(state => state.magazine.shopPosts)
-    const friendPosts = useSelector(state => state.magazine.friendPosts)
-
-    const myShops = useSelector(state => state.shops.myShops)
+    const shopPosts = useSelector(state => state.magazine.shopPosts);
+    const friendPosts = useSelector(state => state.magazine.friendPosts);
+    const feed = useSelector(state => state.magazine.feed);
 
     const [isLoading, setIsLoading] = useState(true);
 
-    const [error, setError] = useState('')
-
     const [change, setChange] = useState(0);    //this forces like icon to re render on each touch
 
-    const [iter, setIter] = useState(0)
+    const [iter, setIter] = useState(0);
 
-    const [iterLoading, setIterLoading] = useState(false)
+    const [iterLoading, setIterLoading] = useState(false);
 
     const loadPosts = useCallback(async () => {
         try {
             setIsLoading(true)
-            await dispatch(magazineActions.fetchShopPosts())
-            if (userId) await dispatch(magazineActions.fetchFriendsPosts())
+            await dispatch(magazineActions.fetchFeed(0));
+            // await dispatch(magazineActions.fetchShopPosts());
+            // if (userId) await dispatch(magazineActions.fetchFriendsPosts())
+            setIter(0);
             setIsLoading(false)
 
         }
         catch (err) {
+            setIter(0);
             setIsLoading(false)
             console.log(err)
         }
@@ -84,7 +84,8 @@ export function MagazineScreen(props) {
         try {
             if (!iterLoading) {
                 setIterLoading(true)
-                await dispatch(magazineActions.fetchShopPosts(iter))
+                // await dispatch(magazineActions.fetchShopPosts(iter))
+                await dispatch(magazineActions.fetchFeed(iter));
                 setIter(iter => iter + 1)
                 setIterLoading(false)
             }
@@ -169,7 +170,8 @@ export function MagazineScreen(props) {
                     waitForInteraction: false,
                     viewAreaCoveragePercentThreshold: 95
                 }}
-                data={friendPosts.concat(shopPosts)}
+                // data={friendPosts.concat(shopPosts)}
+                data={feed}
                 renderItem={renderFeedItem}
                 ListEmptyComponent={
                     <View>
@@ -232,7 +234,7 @@ export default function MagazineStackScreen({ navigation }) {
                 <MagazineStack.Screen name="OthersProfile" component={ProfileTabsScreen} options={{
                     headerShown: true
                 }} />
-                <MagazineStack.Screen name="BlogScreen" component={BlogScreen} />
+                <MagazineStack.Screen name="Blog" component={BlogScreen} />
 
             </MagazineStack.Navigator>
         </CustomView>
