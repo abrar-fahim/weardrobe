@@ -46,6 +46,8 @@ export default function SellerInfoScreen(props) {
 
 
     // const shopDetails = useSelector(state => state.shops.shopDetails)
+
+    const shopDetails = props.route.params?.shopDetails;
     const shopId = shopDetails.id
 
     const shopReviews = useSelector(state => state.shops.shopReviews)

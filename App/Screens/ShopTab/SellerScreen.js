@@ -121,7 +121,7 @@ const SellerShopScreen = (props) => {
                         horizontal={true}
                         data={itemData.item.inventory}
                         renderItem={renderProduct}
-                        onEndReached={loadMoreShopProducts}
+                    // onEndReached={loadMoreShopProducts}
 
                     />
                 </View>
@@ -140,38 +140,45 @@ const SellerShopScreen = (props) => {
             const oldPrice = itemData.item.PRICE;
             const newPrice = oldPrice * (100 - itemData.item.DISCOUNT) / 100;
             price = (
-                <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end', padding: 5 }}>
-                    <Text style={styles.oldPrice}> {"BDT " + oldPrice}</Text>
-                    <Text style={styles.price}> {"BDT " + newPrice}</Text>
+                <View style={styles.priceContainer}>
+                    <Text style={styles.oldPrice}>{"৳ " + oldPrice}</Text>
+                    <Text style={styles.price}>{"৳ " + newPrice}</Text>
                 </View>
             )
         }
 
         else {
             price = (
-                <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end', padding: 5 }}>
-                    <Text style={styles.price}> {"BDT " + itemData.item.PRICE}</Text>
+                <View style={styles.priceContainer}>
+                    <Text style={styles.price}>{"৳ " + itemData.item.PRICE}</Text>
                 </View>
             )
         }
         return (
-            <View style={styles.gridItem}>
-                <TouchableOpacity onPress={() => (
+
+            <TouchableOpacity
+                onPress={() => (
                     props.navigation.navigate("Product", {
                         productId: itemData.item.PRODUCT_ID
                     })
-                )}>
+                )}
+                style={styles.gridItem}
+            >
 
-                    <Image source={{ uri: `${HOST}/img/temp/` + itemData.item.THUMBNAIL }} style={{ height: 150, width: 150, justifyContent: 'center', alignItems: 'center' }} />
-                    <Text style={styles.itemName}> {itemData.item.PRODUCT_NAME}</Text>
+                <Image
+                    source={{ uri: `${HOST}/img/temp/` + itemData.item.THUMBNAIL }}
+                    style={styles.thumbnail}
+
+                />
+                <Text style={styles.itemName}>{itemData.item.PRODUCT_NAME}</Text>
 
 
 
-                    <RatingStars rating={itemData.item.PRODUCT_RATING} />
-                    {price}
+                <RatingStars rating={itemData.item.PRODUCT_RATING} />
+                {price}
 
-                </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
+
         )
     }
 
@@ -276,7 +283,7 @@ const SellerShopScreen = (props) => {
                             ListFooterComponent={(
                                 <View>
                                     <View style={styles.categoryNameContainer}>
-                                        <Text>Browse All Categories</Text>
+                                        <Text style={styles.title}>Browse All Categories</Text>
                                         <TouchableOpacity onPress={() => {
                                             props.navigation.navigate('Categories', {
                                                 shopId: shopDetails.id
@@ -300,7 +307,7 @@ const SellerShopScreen = (props) => {
                             }
                         />
 
-                        < Text style={styles.categoryName}>All Products</Text>
+                        < Text style={styles.title}>All Products</Text>
                     </View>
 
 
@@ -333,14 +340,7 @@ const SellerPostsScreen = (props) => {
     const shopDetails = useSelector(state => state.shops.shopDetails);
 
 
-
-    const [showComments, setShowComments] = useState(false)
-
-    const [showReacts, setShowReacts] = useState(false)
-
     const [isLoading, setIsLoading] = useState(true);
-
-    const [comment, setComment] = useState('');
 
     const [change, setChange] = useState(0);    //this forces like icon to re render on each touch
 
@@ -764,8 +764,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     title: {
-        fontSize: 20,
-        fontWeight: '600',
+        fontFamily: 'PlayfairDisplay_600SemiBold',
+        fontSize: 30,
+        marginVertical: 20
 
     },
     categoryName: {
@@ -778,19 +779,23 @@ const styles = StyleSheet.create({
         margin: 20
     },
     gridItem: {
-        margin: 20,
-        height: 250,
         width: 150,
-        backgroundColor: '#eae9e9'
+        margin: 20,
+    },
+    thumbnail: {
+        width: '100%',
+        height: 250,
+        resizeMode: 'cover',
     },
     itemName: {
-        fontSize: 15,
-        fontWeight: 'bold'
+        fontFamily: 'PlayfairDisplay_400Regular',
+        fontSize: 25,
+    },
+    priceContainer: {
     },
     price: {
+        fontFamily: 'WorkSans_500Medium',
         fontSize: 18,
-        color: 'black',
-        fontWeight: '600'
 
     },
     oldPrice: {
@@ -802,7 +807,8 @@ const styles = StyleSheet.create({
     },
     categoryNameContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     smallCategory: {
         height: 50,
@@ -820,13 +826,6 @@ const styles = StyleSheet.create({
         width: '100%',
         textAlign: 'center'
 
-    },
-    gridItem: {
-        flex: 1,
-        padding: 10,
-        margin: 0,
-        width: '100%',
-        flexDirection: 'column'
     },
     nameDP: {
         paddingLeft: 5

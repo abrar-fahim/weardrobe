@@ -2,7 +2,6 @@ import 'react-native-gesture-handler';
 import React, { useEffect, useState, useLayoutEffect, useCallback, useDebugValue } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS, ScrollView, Dimensions, ActivityIndicator, TouchableOpacity } from 'react-native';
 
-import PRODUCTS from '../../dummy-data/Products'
 
 
 import DrawerStack from './DrawerStack';
@@ -10,93 +9,93 @@ import ProductList from '../../components/ProductList';
 import ScreenStyle from '../../Styles/ScreenStyle'
 import Colors from '../../Styles/Colors';
 import { useDispatch, useSelector } from 'react-redux';
-import * as productsActions from '../../store/actions/products'
+import * as productsActions from '../../store/actions/products';
 import ShoppingSessionTimer from '../../components/ShoppingSessionTimer';
-import { set } from 'react-native-reanimated';
 import LoadingScreen from '../../components/LoadingScreen';
+import { WorkSans_400Regular } from '@expo-google-fonts/work-sans';
 
 
 
-const SHOP = [
-    {
-        id: '1',
-        type: 'grid',
-        data: PRODUCTS
-    },
-    {
-        id: '2',
-        type: 'banner',
-        data: {
-            id: '1',
-            picture: require('../../assets/Images/featured1.jpg')
-        }
-    },
-    {
+// const SHOP = [
+//     {
+//         id: '1',
+//         type: 'grid',
+//         data: PRODUCTS
+//     },
+//     {
+//         id: '2',
+//         type: 'banner',
+//         data: {
+//             id: '1',
+//             picture: require('../../assets/Images/featured1.jpg')
+//         }
+//     },
+//     {
 
-        id: '3',
-        type: 'banner',
-        data: {
-            id: '2',
-            picture: require('../../assets/Images/featured2.jpg')
-        }
-    },
-    {
+//         id: '3',
+//         type: 'banner',
+//         data: {
+//             id: '2',
+//             picture: require('../../assets/Images/featured2.jpg')
+//         }
+//     },
+//     {
 
-        id: '4',
-        type: 'tile',
-        data: {
-            id: '2',
-            picture: require('../../assets/Images/groom.jpg'),
-            title: 'Grooming Essentials'
-        }
-    },
-    {
-        id: '5',
-        type: '3x3',
-        title: 'Featured Categories',
-        data: [
-            {
-                id: '1',
-                picture: require('../../assets/Images/shirt2.jpeg'),
-                name: 'Shirts'
-            },
-            {
-                id: '1',
-                picture: require('../../assets/Images/shirt2.jpeg'),
-                name: 'Shirts'
-            },
-            {
-                id: '1',
-                picture: require('../../assets/Images/shirt2.jpeg'),
-                name: 'Shirts'
-            },
-            {
-                id: '1',
-                picture: require('../../assets/Images/shirt2.jpeg'),
-                name: 'Shirts'
-            },
-            {
-                id: '1',
-                picture: require('../../assets/Images/shirt2.jpeg'),
-                name: 'Shirts'
-            }
-        ]
-    }
-
-
-]
+//         id: '4',
+//         type: 'tile',
+//         data: {
+//             id: '2',
+//             picture: require('../../assets/Images/groom.jpg'),
+//             title: 'Grooming Essentials'
+//         }
+//     },
+//     {
+//         id: '5',
+//         type: '3x3',
+//         title: 'Featured Categories',
+//         data: [
+//             {
+//                 id: '1',
+//                 picture: require('../../assets/Images/shirt2.jpeg'),
+//                 name: 'Shirts'
+//             },
+//             {
+//                 id: '1',
+//                 picture: require('../../assets/Images/shirt2.jpeg'),
+//                 name: 'Shirts'
+//             },
+//             {
+//                 id: '1',
+//                 picture: require('../../assets/Images/shirt2.jpeg'),
+//                 name: 'Shirts'
+//             },
+//             {
+//                 id: '1',
+//                 picture: require('../../assets/Images/shirt2.jpeg'),
+//                 name: 'Shirts'
+//             },
+//             {
+//                 id: '1',
+//                 picture: require('../../assets/Images/shirt2.jpeg'),
+//                 name: 'Shirts'
+//             }
+//         ]
+//     }
 
 
-const TOPSCROLLER = [
-    {
-        id: '1',
-        picture: require('../../assets/Images/eidSale.jpg')
-    },
-    {
-        id: '2',
-        picture: require('../../assets/Images/eidSale.jpg')
-    }
-]
+// ]
+
+
+// const TOPSCROLLER = [
+//     {
+//         id: '1',
+//         picture: require('../../assets/Images/eidSale.jpg')
+//     },
+//     {
+//         id: '2',
+//         picture: require('../../assets/Images/eidSale.jpg')
+//     }
+// ]
 
 
 
@@ -213,7 +212,7 @@ function ShopScreen({ navigation }) {
         )
     }
 
-    const render4by4GridItem = (itemData) => {
+    const render4ItemGrid = (itemData) => {
         return (
             <View style={styles.smallGridItem}>
                 <TouchableOpacity onPress={() => (navigation.navigate("Product", {
@@ -227,19 +226,21 @@ function ShopScreen({ navigation }) {
 
     const render3by3GridItem = (itemData) => {
         return (
-            <View style={styles.bigGridItem}>
-                <TouchableOpacity
-                    style={styles.bigGridTouch}
-                    onPress={() => {
-                        navigation.navigate('Product', {
-                            productId: itemData.item.id
-                        })
-                    }}>
+            // <View >
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.navigate('Product', {
+                        productId: itemData.item.id
+                    })
+                }}
+                style={styles.bigGridItem}
+            >
 
-                    <Image source={itemData.item.image} style={styles.bigGridImage} resizeMode="cover" />
-                    <Text style={styles.bigGridLabel}>{itemData.item.name}</Text>
-                </TouchableOpacity>
-            </View>
+                <Image source={itemData.item.image} style={styles.bigGridImage} resizeMode="cover" />
+                <Text style={styles.bigGridLabel}>{itemData.item.name}</Text>
+                <Text style={styles.bigGridPrice}>৳ {itemData.item.price}</Text>
+            </TouchableOpacity>
+            // </View>
         )
     }
 
@@ -249,7 +250,42 @@ function ShopScreen({ navigation }) {
             //scrollable horizontal banners
             return (
                 <View style={styles.scrollerImageContainer}>
-                    <FlatList style={styles.scoller} data={itemData.item.banners} horizontal={true} pagingEnabled={true} renderItem={renderTopScroller} />
+
+                    <TouchableOpacity onPress={() => {
+                        setProductFn(productsActions.fetchProducts)
+                        navigation.navigate('ProductList', {
+                            showShopName: true
+                        })
+
+
+                    }}
+                        style={styles.topBanner}
+                    >
+
+                        <View style={styles.topBannerTitleContainer}>
+                            <Text style={styles.topBannerTitle}>{itemData.item.title}</Text>
+                            <Text style={styles.topBannerSubTitle}>{itemData.item.description.toUpperCase()}</Text>
+
+                        </View>
+
+
+
+                        <Image
+
+                            style={styles.scrollerImage}
+                            source={itemData.item.banners[2].image}
+                            resizeMode="cover"
+                        />
+
+                        <Image
+                            style={styles.scrollerImage}
+                            source={itemData.item.banners[3].image}
+                            resizeMode="cover"
+                        />
+
+                    </TouchableOpacity>
+
+                    {/* <FlatList style={styles.scoller} data={itemData.item.banners} horizontal={true} pagingEnabled={true} renderItem={renderTopScroller} /> */}
                 </View>
 
             )
@@ -259,23 +295,81 @@ function ShopScreen({ navigation }) {
         if (itemData.item.type === 2) {
             //horizontal banner
 
-            return (
-                <View style={styles.banner}>
-                    <TouchableOpacity onPress={() => (navigation.navigate('ProductList'))}>
+            if (itemData.index % 2 === 0) {
 
-                        <Image source={itemData.item.banners[0].image} style={styles.featuredImage} />
+                return (
+                    <View style={styles.banner}>
 
-                    </TouchableOpacity>
-                </View>
+                        <View style={styles.bannerTitleContainer}>
+                            <Text style={styles.bannerTitle}>{itemData.item.title}</Text>
+                            <Text style={styles.bannerSubTitle}>{itemData.item.description}</Text>
 
-            )
+                        </View>
+
+
+                        <TouchableOpacity
+                            onPress={() => (navigation.navigate('ProductList'))}
+                            style={styles.bannerImageContainer}
+
+                        >
+
+                            <Image
+                                style={styles.bannerImage}
+                                key="abc"
+                                source={itemData.item.banners[0].image}
+                                resizeMode="cover"
+                            />
+
+                        </TouchableOpacity>
+                    </View >
+
+                )
+
+            }
+
+            else {
+                return (
+                    <View style={styles.banner}>
+                        <TouchableOpacity
+                            onPress={() => (navigation.navigate('ProductList'))}
+                            style={styles.bannerImageContainer}
+                        >
+
+                            <Image
+                                style={styles.bannerImage}
+                                key="abc"
+                                source={itemData.item.banners[0].image}
+                                resizeMode="cover"
+                            />
+                        </TouchableOpacity>
+
+                        <View style={styles.bannerTitleContainerAlternate}>
+                            <Text style={styles.bannerTitle}>{itemData.item.title}</Text>
+                            <Text style={styles.bannerSubTitle}>{itemData.item.description}</Text>
+
+                        </View>
+
+
+
+                    </View >
+
+                )
+
+            }
+
+
 
         }
 
         if (itemData.item.type === 3) {
             return (
                 <TouchableOpacity>
-                    <Text style={styles.title}>{itemData.item.title}</Text>
+                    <View style={styles.tileTitleContainer}>
+                        <Text style={styles.tileTitle}>{itemData.item.title}</Text>
+
+                    </View>
+
+
                     <View style={styles.tile}>
                         <Image source={itemData.item.banners[0].image} style={styles.tileImage} resizeMode="cover" />
 
@@ -289,9 +383,10 @@ function ShopScreen({ navigation }) {
 
             return (
                 <>
-                    <Text style={styles.title}>{itemData.item.title}</Text>
+                    <Text style={styles.grid4ItemTitle}>{itemData.item.title}</Text>
                     <View style={styles.productGridContainer}>
-                        <FlatList data={itemData.item.lists} renderItem={render4by4GridItem} numColumns={2} />
+                        <FlatList data={itemData.item.lists} renderItem={render4ItemGrid
+                        } numColumns={2} />
                     </View>
                 </>
             )
@@ -306,10 +401,26 @@ function ShopScreen({ navigation }) {
 
             return (
                 <>
-                    <Text style={styles.title}>{itemData.item.title}</Text>
-                    <View style={styles.bigGrid}>
 
-                        <FlatList data={itemData.item.lists} renderItem={render3by3GridItem} numColumns={3} />
+                    <View style={styles.bigGrid}>
+                        <Text style={styles.bigGridTitle}>
+                            {itemData.item.title}
+                        </Text>
+                        <Text style={styles.bigGridDescription}>{itemData.item.description}</Text>
+
+                        <FlatList data={itemData.item.lists} renderItem={render3by3GridItem} horizontal={true} />
+
+                        <TouchableOpacity style={styles.bigGridButton}>
+                            <Text style={styles.bigGridButtonText}>Browse all latest products</Text>
+
+                        </TouchableOpacity>
+
+
+
+
+
+
+
                         {/* <View style={styles.bigGridRow}>
                             <TouchableOpacity>
 
@@ -424,9 +535,8 @@ export default function ShopStack(props) {
 const styles = StyleSheet.create({
     screen: {
         flex: 1, //ensures that this view takes all space it can get,
-        backgroundColor: Colors.screenBackgroundColor,
-        alignItems: 'center',
-        maxWidth: Dimensions.get('window').width
+        backgroundColor: 'white',
+        alignItems: 'center'
     },
     list: {
         maxWidth: Dimensions.get('window').width
@@ -447,21 +557,49 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.screenBackgroundColor
     },
     scrollerImageContainer: {
-
         width: Dimensions.get('window').width,
-        maxWidth: 600,
+        // maxWidth: 600,
         justifyContent: 'center',
         alignItems: 'center',
-        height: 300
+        height: 500
+
+    },
+    topBanner: {
+        flexDirection: 'row',
+        width: '100%',
+        flex: 1,
+    },
+    topBannerTitleContainer: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+
+    },
+    topBannerTitle: {
+        fontFamily: 'PlayfairDisplay_600SemiBold',
+        fontSize: 70,
+        color: 'white',
+        zIndex: 2
+
+    },
+    topBannerSubTitle: {
+        fontFamily: 'WorkSans_400Regular',
+        fontSize: 18,
+        color: 'white',
+        zIndex: 2,
+        letterSpacing: 1
 
     },
     scrollerImage: {
 
-        width: Dimensions.get('window').width,
-        maxWidth: 600,
+
+        width: Dimensions.get('window').width / 2,
+        // maxWidth: 600,
         justifyContent: 'center',
         alignItems: 'center',
-        height: 300
+        height: '100%'
 
     },
     productGridContainer: {
@@ -487,22 +625,82 @@ const styles = StyleSheet.create({
         fontWeight: '500'
     },
     banner: {
-        height: 200,
+
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: 300,
         width: Dimensions.get('window').width,
 
     },
-    featuredImage: {
+    bannerImageContainer: {
+        height: '100%',
+        width: '50%',
+
+
+    },
+    bannerImage: {
         height: '100%',
         width: '100%',
-        resizeMode: 'contain'
+        resizeMode: 'cover'
     },
-    title: {
+    bannerTitleContainer: {
+        flexDirection: 'column',
+        width: '50%',
+        height: '100%',
+        justifyContent: 'center',
+        padding: 20
+
+    },
+    bannerTitleContainerAlternate: {
+        flexDirection: 'column',
+        width: '50%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: "flex-end",
+        padding: 20
+
+    },
+
+    bannerTitle: {
+        fontFamily: 'WorkSans_500Medium',
+        fontSize: 20,
+        letterSpacing: -0.1
+
+    },
+
+    bannerSubTitle: {
+        fontFamily: 'WorkSans_400Regular',
+        fontSize: 16,
+        letterSpacing: -0.5
+
+    },
+    grid4ItemTitle: {
+        fontFamily: 'PlayfairDisplay_400Regular',
         fontSize: 25,
-        color: Colors.primaryColor,
-        fontWeight: '700',
         margin: 10,
-        alignSelf: 'flex-start',
         width: '100%'
+
+
+    },
+    tileTitleContainer: {
+        position: 'absolute',
+        flexDirection: 'column',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+
+    },
+    tileTitle: {
+        fontFamily: 'PlayfairDisplay_600SemiBold',
+        fontSize: 35,
+        margin: 10,
+        color: 'white',
+        backgroundColor: 'rgba(212,212,212,0.7)',
+        width: '100%',
+        textAlign: 'center',
+        zIndex: 2
+
     },
     tile: {
         width: '100%',
@@ -515,55 +713,74 @@ const styles = StyleSheet.create({
         width: '100%'
 
     },
+    bigGridTitle: {
+        fontFamily: 'PlayfairDisplay_600SemiBold',
+        fontSize: 35,
+        width: '100%',
+        marginVertical: 20
+
+    },
     bigGrid: {
+        flexDirection: 'column',
         width: '100%',
-        maxWidth: 600,
-        // height: 500,
-        
         padding: 5,
+        marginVertical: 40,
+        backgroundColor: 'white'
+
+    },
+    bigGridDescription: {
+
+        fontFamily: 'WorkSans_400Regular',
+        margin: 10,
+        fontSize: 18,
+        letterSpacing: -0.8
+    },
+
+    bigGridItem: {
         alignItems: 'center',
-        justifyContent: 'space-between'
+        backgroundColor: 'white',
+        width: 200,
+        marginHorizontal: 40,
 
-    },
-    bigGridRow: {
-        flexDirection: 'row',
-        width: '100%',
-        height: '33%',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-
-    },
-    bigGridTouch: {
-        margin: 0,
-        padding: 0
     },
     bigGridImage: {
-        height: Dimensions.get('window').width / 4,
-        width: Dimensions.get('window').width / 4,
-        borderRadius: Dimensions.get('window').width / 8,
-        maxHeight: 150,
-        maxWidth: 150,
-
+        width: '100%',
+        height: 300,
+        resizeMode: "cover"
     },
     bigGridLabel: {
-        alignSelf: 'center',
-        fontWeight: '500',
-        marginTop: 10,
-        flex: 1,
-        maxHeight: 50
+        fontFamily: 'PlayfairDisplay_400Regular',
+        fontSize: 26,
+        width: '100%',
+        textAlign: 'left',
     },
-    bigGridItem: {
-
-        
-        width: Dimensions.get('window').width / 4,
-        margin: 10,
-        alignItems: 'center',
+    bigGridPrice: {
+        fontFamily: 'WorkSans_500Medium',
+        fontSize: 16,
+        letterSpacing: -0.1,
+        width: '100%',
+        textAlign: 'left',
 
     },
-    centered: {
-        flex: 1,
+    bigGridButton: {
+        borderWidth: 1,
+        borderColor: Colors.accentColor,
+        height: 40,
+        width: 300,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginVertical: 30
+    },
+
+    bigGridButtonText: {
+        fontFamily: 'WorkSans_500Medium',
+        fontSize: 18,
+        width: '100%',
+        textAlign: 'center',
+        letterSpacing: -0.5,
+
+
     },
     groupShopBanner: {
         height: 50,

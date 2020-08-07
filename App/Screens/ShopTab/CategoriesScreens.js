@@ -43,13 +43,15 @@ export function CategoriesScreen(props) {
 
     const dispatch = useDispatch();
 
-    const categories = props.route.params?.shopId ? useSelector(state => state.shops.categories) : useSelector(state => state.products.categories)
+    const categories = props.route.params?.shopId ? useSelector(state => state.shops.categories) : props.route.params?.parentCategoryId ? null : useSelector(state => state.products.categories)
 
     const [iter, setIter] = useState(0);
 
     const [iterLoading, setIterLoading] = useState(false)
 
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [childCategories, setChildCategories] = useState([]);
 
 
     const laodCategories = useCallback(async () => {
@@ -63,7 +65,7 @@ export function CategoriesScreen(props) {
                 setIsLoading(false)
             }
             else {
-                await dispatch(productsActions.fetchCategories())
+                setChildCategories(await productsActions.fetchChildrenCategoriesDirect(props.route.params.parentCategoryId));
             }
             setIter(0)
 
@@ -74,7 +76,7 @@ export function CategoriesScreen(props) {
         }
 
         setIsLoading(false)
-    }, [])
+    }, [props.route.params])
 
     const laodMoreCategories = useCallback(async () => {
 
@@ -125,28 +127,36 @@ export function CategoriesScreen(props) {
     function renderItems(itemData) {
         return (
 
-            <View style={styles.gridItem}>
-                <TouchableOpacity onPress={() => {
+
+            <TouchableOpacity
+                onPress={() => {
                     setProductsFn(itemData.item.id)
                     props.navigation.navigate('ProductList')
-                }}>
-                    <Image style={styles.imageStyle} source={itemData.item.thumbnail} />
-                    <Text style={styles.textStyle}>{itemData.item.name}</Text>
+                }}
+                style={styles.gridItem}
+            >
+                <Image style={styles.image} source={itemData.item.thumbnail} />
 
-                </TouchableOpacity>
-            </View>
+                <View style={itemData.index % 4 === 0 ? styles.textContainer : itemData.index % 4 === 1 ? styles.textContainer1 : itemData.index % 4 === 2 ? styles.textContainer2 : styles.textContainer3}>
+                    <Text style={styles.text}>{itemData.item.name.toUpperCase()}</Text>
+                </View>
+
+
+
+            </TouchableOpacity>
+
 
 
         )
 
     }
     return (
-        <View style={ScreenStyle}>
+        <View style={styles.screen}>
 
             <FlatList
-                data={categories}
+                data={props.route.params?.parentCategoryId ? childCategories : categories}
                 renderItem={renderItems}
-                numColumns={2}
+
                 onEndReached={laodMoreCategories}
             />
 
@@ -157,24 +167,64 @@ export function CategoriesScreen(props) {
 
 const styles = StyleSheet.create({
     screen: {
+        ...ScreenStyle,
         flex: 1  //ensures that this view takes all space it can get
     },
 
     gridItem: {
-        width: '40%',
-        margin: 10,
-        height: 150,
+        width: '100%',
+        height: 300,
 
     },
-    imageStyle: {
-        height: '80%',
-        width: '80%',
+    image: {
+        height: '100%',
+        width: '100%',
         alignSelf: 'center'
     },
-    textStyle: {
-        fontSize: 20,
-        fontWeight: '500',
-        alignSelf: 'center',
-        marginTop: 5
+    textContainer: {
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(119,66,168,0.4)',
+
+    },
+    textContainer1: {
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(178,24,0,0.4)',
+
+    },
+
+    textContainer2: {
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0,164,172,0.4)',
+
+    },
+
+    textContainer3: {
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(227,158,61,0.4)',
+
+    },
+
+    text: {
+        fontFamily: 'WorkSans_500Medium',
+        fontSize: 30,
+        color: 'white'
+
+
     }
 })

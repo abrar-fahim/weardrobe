@@ -1,13 +1,12 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Dimensions, FlatList, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import ScreenStyle from '../../Styles/ScreenStyle'
 import CARTITEMS from '../../dummy-data/CartItems'
 import { useSelector, useDispatch } from 'react-redux'
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { Ionicons, Entypo, AntDesign, FontAwesome } from '@expo/vector-icons';
 import Colors from '../../Styles/Colors';
 import UIButtonTextStyle from '../../Styles/UIButtonTextStyle';
@@ -120,8 +119,7 @@ export default function CartScreen(props) {
                             {itemData.item.color === "" ? null : <FontAwesome name="circle" color={itemData.item.color} size={25} />}
 
                             {itemData.item.size === "" ? null : <View style={styles.sizeContainer}>
-                                {/* <FontAwesome name="circle" color="grey" size={25} /> */}
-                                {/* <View style={styles.sizeTextContainer}> */}
+
                                 <Text style={styles.sizeText}>{itemData.item.size?.toUpperCase()}</Text>
                                 {/* </View> */}
 
@@ -136,15 +134,15 @@ export default function CartScreen(props) {
                             productId: itemData.item.productId
                         }))}>
                             <View>
-                                <Text style={styles.itemName}> {itemData.item.name}</Text>
-                                {/* <Text style={{ fontWeight: '200' }} > {"Ref: " + itemData.item.name}</Text> */}
+                                <Text style={styles.itemName}>{itemData.item.name}</Text>
+
 
 
                             </View>
                         </TouchableOpacity>
 
                         <View style={styles.priceContainer}>
-                            <Text> {itemData.item.price}x{itemData.item.quantity} </Text>
+                            <Text>{itemData.item.price} x {itemData.item.quantity} </Text>
 
                             <Text style={styles.priceText}>BDT {itemData.item.quantity * itemData.item.price}</Text>
                         </View>
@@ -187,10 +185,11 @@ export default function CartScreen(props) {
 
                         <TouchableOpacity onPress={() => {
                             removeFromCart(itemData.item.productId, itemData.item.color, itemData.item.size)
-                        }}>
-                            <View style={styles.cartX}>
-                                <Text style={styles.x}>REMOVE</Text>
-                            </View>
+                        }}
+                            style={styles.cartX}>
+
+                            <Text style={styles.x}>REMOVE</Text>
+
                         </TouchableOpacity>
 
 
@@ -318,8 +317,6 @@ export default function CartScreen(props) {
 const styles = StyleSheet.create(
     {
 
-
-
         list: {
             // marginBottom: 20
 
@@ -330,7 +327,7 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             backgroundColor: 'white',
             flex: 1,
-            height: 200,
+
             padding: 8,
 
         },
@@ -374,14 +371,11 @@ const styles = StyleSheet.create(
             paddingHorizontal: 10
         },
 
-
-
-
         itemName: {
-            fontSize: 17,
-            fontWeight: '700',
+            fontFamily: 'PlayfairDisplay_600SemiBold',
+            fontSize: 25,
+            marginVertical: 10
 
-            height: 40
         },
         sizeColorContainer: {
             flexDirection: 'row',
@@ -398,15 +392,7 @@ const styles = StyleSheet.create(
 
             fontWeight: '700'
         },
-        // sizeTextContainer: {
-        //     position: 'absolute',
-        //     top: 0,
-        //     left: 0,
-        //     right: 0,
-        //     bottom: 0,
-        //     justifyContent: 'center',
-        //     alignItems: 'center',
-        // },
+
         priceContainer: {
             alignItems: 'flex-start',
             alignSelf: 'flex-start',
@@ -438,7 +424,8 @@ const styles = StyleSheet.create(
             alignSelf: 'flex-end',
             width: 100,
             borderWidth: 1.5,
-            height: 30
+            height: 30,
+            marginVertical: 10
         },
         x: {
             fontSize: 13,

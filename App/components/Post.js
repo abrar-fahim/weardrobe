@@ -18,7 +18,7 @@ import Time from './Time';
 
 const Post = (props) => {
 
-    //post can be USER_POST, USER_BLOG or SHOP_POST
+    //post can be USER_POST, USER_BLOG or SHOP_POST,set this in post.type
 
     //props =  navigation,
 
@@ -143,6 +143,8 @@ const Post = (props) => {
     }
 
 
+
+
     return (
         <View style={styles.gridItem} >
 
@@ -173,6 +175,7 @@ const Post = (props) => {
 
 
             <View style={styles.postHeader} >
+
                 <TouchableOpacity
                     style={styles.nameDP}
                     onPress={() => {
@@ -192,7 +195,7 @@ const Post = (props) => {
                     <View style={styles.nameContainer}>
                         <Text style={styles.Name}> {post.name} </Text>
                         <View style={styles.usernameDate}>
-                            <Text style={styles.username}> {post.username} .  </Text>
+                            <Text style={styles.username}> {post.username} .   </Text>
                             <Time value={post.date} />
                         </View>
 
@@ -203,12 +206,15 @@ const Post = (props) => {
 
 
                 </TouchableOpacity>
+
                 {post.userId === userId ?
+
                     <TouchableOpacity onPress={() => setOptionsVisible(true)}>
                         <MaterialCommunityIcons name="dots-horizontal" size={24} color="black" />
                     </TouchableOpacity>
 
                     : null}
+
 
             </View>
 
@@ -395,11 +401,15 @@ const styles = StyleSheet.create({
     postHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingRight: 10
+        paddingRight: 10,
+
+
+
     },
     nameDP: {
         flexDirection: 'row',
         paddingHorizontal: 10,
+        flex: 1
 
     },
 

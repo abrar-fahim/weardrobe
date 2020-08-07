@@ -6,7 +6,8 @@ import {
     GET_PRODUCT_REVIEWS,
     GET_CATEGORIES,
     GET_PRODUCTS_FN,
-    GET_SHOP_FEED
+    GET_SHOP_FEED,
+    GET_PARENT_CATEGORIES
 } from '../actions/products'
 import PRODUCTS from '../../dummy-data/Products'
 
@@ -17,7 +18,8 @@ const initialState = {
     productReviews: null,
     categories: [],
     getProductsFn: null,
-    feed: []
+    feed: [],
+    parentCategories: []
 }
 
 export default function productsReducer(state = initialState, action) {
@@ -108,6 +110,12 @@ export default function productsReducer(state = initialState, action) {
             return {
                 ...state,
                 feed: action.feed
+            }
+
+        case GET_PARENT_CATEGORIES:
+            return {
+                ...state,
+                parentCategories: action.categories
             }
 
     }

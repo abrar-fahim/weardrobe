@@ -9,12 +9,11 @@ import ReduxThunk from 'redux-thunk'
 
 
 import HomeScreen from './Screens/MainTabScreen';
-import CartScreen from './Screens/ShopTab/CartScreen'
-import CheckoutScreen from './Screens/ShopTab/CheckoutScreen'
+
 import LoginScreen from './Screens/ProfileTab/LoginScreen'
 import SignupScreen from './Screens/ProfileTab/SignupScreen'
 
-import * as Font from 'expo-font';
+
 import { AppLoading, Notifications } from 'expo'
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
@@ -38,12 +37,24 @@ import NewPostTagScreen from './Screens/MagazineTab/NewPostTagScreen';
 import ShareGroupScreen from './Screens/ShopTab/ShareGroupScreen';
 
 
-import NewPostNextButton from './components/NewPostNextButton';
-import SmallPopup from './components/SmallPopup';
-import TestScreen from './Screens/ShopTab/TestScreen';
 import PayScreen from './Screens/ShopTab/PayScreen';
 import ShippingScreen from './Screens/ShopTab/ShippingScreen';
 import ConfirmOrderScreen from './Screens/ShopTab/ConfirmOrderScreen';
+
+import {
+  useFonts,
+  PlayfairDisplay_400Regular,
+  PlayfairDisplay_600SemiBold,
+  PlayfairDisplay_700Bold
+
+} from '@expo-google-fonts/playfair-display';
+
+import {
+  WorkSans_400Regular,
+  WorkSans_500Medium
+} from '@expo-google-fonts/work-sans';
+
+
 
 
 const rootReducer = combineReducers({
@@ -76,6 +87,14 @@ const Stack = createStackNavigator();
 
 export default function App({ navigation }) {
 
+  let [fontsLoaded] = useFonts({
+    PlayfairDisplay_400Regular,
+    PlayfairDisplay_600SemiBold,
+    PlayfairDisplay_700Bold,
+    WorkSans_400Regular,
+    WorkSans_500Medium
+  });
+
   // const [fontLoaded, setFontLoaded] = useState(false);
 
   // if(!fontLoaded) {
@@ -92,6 +111,12 @@ export default function App({ navigation }) {
 
 
 
+
+
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
 
 

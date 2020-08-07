@@ -1,22 +1,13 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState, useLayoutEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Dimensions, Image, Alert, ActivityIndicator, FlatList, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import Modal from 'react-native-modal';
+import { TextInput, StyleSheet, Text, View, Dimensions, Image, FlatList, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
-// import {Image} from "react-native-expo-image-cache";
-import CachedImage from '../../components/CachedImage'
-
-
-import PRODUCTS from '../../dummy-data/Products'
-import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import ScreenStyle from '../../Styles/ScreenStyle';
-import UIButton from '../../components/UIButton'
 import Colors from '../../Styles/Colors';
-import UIButtonTextStyle from '../../Styles/UIButtonTextStyle';
 import RatingStars from '../../components/RatingStars'
 import ColorCircles from '../../components/ColorCircles'
 
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import * as productActions from '../../store/actions/products'
 import * as wishlistActions from '../../store/actions/wishlist'
 
@@ -31,18 +22,8 @@ import HOST from "../../components/host";
 import TouchableStars from '../../components/TouchableStars'
 
 import LoadingScreen from '../../components/LoadingScreen';
-import ImageZoom from 'react-native-image-pan-zoom'
 import Time from '../../components/Time';
 
-
-// import * as Sharing from 'expo-sharing';
-
-
-
-
-// const selectProduct = createSelector(
-//     state => state.products.productDetails
-// )
 
 export default function ProductScreen(props) {
     const dispatch = useDispatch();
@@ -57,7 +38,6 @@ export default function ProductScreen(props) {
 
     const reviews = useSelector(state => state.products.productReviews)
 
-    // const wishlistItems = useSelector(state => state.wishlist.items)
 
     const [reviewText, setReviewText] = useState(null)
     const [rating, setRating] = useState(null);
@@ -374,7 +354,7 @@ export default function ProductScreen(props) {
 
         return (
             <TouchableOpacity onPress={() => setPicturesModalVisible(true)}>
-                <Image source={itemData.item.image} style={styles.image} resizeMode="cover" resizeMethod="scale" />
+                <Image source={itemData.item.image} style={styles.image} resizeMethod="resize" />
             </TouchableOpacity>
 
 
@@ -388,9 +368,8 @@ export default function ProductScreen(props) {
         product ? (
             <View style={{ ...ScreenStyle, ...styles.screen }}>
 
-                <View style={{ padding: 10, justifyContent: 'center', }}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 35 }} >{product.name}</Text>
-                </View>
+                <Text style={styles.name} >{product.name}</Text>
+
 
                 <View style={styles.imageContainer}>
 
@@ -423,7 +402,7 @@ export default function ProductScreen(props) {
                     <View style={{ ...styles.cartButtonContainer }}>
 
                         <Text style={styles.cartText}>+ ADD TO CART</Text>
-                        <Text style={styles.priceText}>{"BDT " + product.price}</Text>
+                        <Text style={styles.priceText}>{"৳ " + product.price}</Text>
 
                     </View>
 
@@ -434,11 +413,7 @@ export default function ProductScreen(props) {
                     <Text style={styles.heading}>Description</Text>
 
 
-                    <Text style={{
-                        fontSize: 18,
-                        fontWeight: '400',
-                        color: 'grey'
-                    }}> {product.description} </Text>
+                    <Text style={styles.description}>{product.description} </Text>
                 </View>
 
                 <View style={styles.ratingShare}>
@@ -720,6 +695,7 @@ const styles = StyleSheet.create({
     screen: {
         marginBottom: 10
     },
+
     colorContainer: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
@@ -760,6 +736,14 @@ const styles = StyleSheet.create({
         flex: 1,
         width: 200,
     },
+    description: {
+        fontFamily: 'WorkSans_400Regular',
+        color: 'grey',
+        fontSize: 18,
+        letterSpacing: -1,
+        marginVertical: 20
+
+    },
     share: {
         borderWidth: 2,
         borderColor: 'black',
@@ -783,8 +767,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    name: {
+        fontFamily: 'PlayfairDisplay_600SemiBold',
+        fontSize: 40,
+        marginVertical: 30,
+        marginHorizontal: 20
+
+    },
     image: {
-        height: 350,
+        height: 500,
         width: Dimensions.get('window').width,
         resizeMode: "contain"
     },
@@ -800,7 +791,9 @@ const styles = StyleSheet.create({
     addReviewHeading: {
         flexDirection: 'row',
         padding: 10,
-        alignItems: 'center'
+        alignItems: 'center',
+
+
     },
     addReview: {
         color: 'grey',
@@ -833,31 +826,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         flex: 1
     },
-    addReviewContainer: {
-        height: Dimensions.get('window').height * 0.8,
-        maxHeight: 500,
-        width: Dimensions.get('window').width,
-        alignSelf: 'center',
-        backgroundColor: 'white',
-        marginTop: Dimensions.get('window').height,
-        borderRadius: 10,
-        padding: 10
 
-    },
     addReviewButtonContainer: {
-        // backgroundColor: Colors.primaryColor,
-        // width: '100%',
-        // height: 40,
-        // alignItems: 'center',
-        // justifyContent: 'center',
-        // borderRadius: 30
         flex: 1,
-
-
-
     },
     addReviewInput: {
-        // backgroundColor: 'lightgrey',
+
         height: 100,
         borderWidth: 0.5,
         borderRadius: 2,
@@ -865,22 +839,7 @@ const styles = StyleSheet.create({
         padding: 10,
 
     },
-    cartText: {
-        color: 'white',
-        fontWeight: '700',
-        fontSize: 15,
-        flex: 1,
-        textAlignVertical: 'center'
 
-    },
-    priceText: {
-        color: 'white',
-        fontWeight: '700',
-        fontSize: 15,
-        flex: 1,
-        textAlign: 'right'
-
-    },
     cartButtonContainer: {
         marginVertical: 20,
         flexDirection: 'row',
@@ -890,12 +849,28 @@ const styles = StyleSheet.create({
         height: 60,
         alignItems: 'center',
         padding: 20,
-        borderRadius: 40,
+        // borderRadius: 40,
         shadowOffset: {
             height: 3,
         },
         shadowOpacity: 0.5,
         elevation: 20
+    },
+    cartText: {
+        color: 'white',
+        fontFamily: 'WorkSans_400Regular',
+        fontSize: 20,
+        letterSpacing: -0.5,
+        flex: 1
+
+    },
+    priceText: {
+        fontFamily: 'WorkSans_500Medium',
+        color: 'white',
+        fontSize: 18,
+        flex: 1,
+        textAlign: 'right'
+
     },
     descriptionContainer: {
         marginTop: 40,

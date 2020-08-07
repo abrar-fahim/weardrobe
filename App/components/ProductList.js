@@ -29,8 +29,8 @@ export default function ProductList(props) {
             const newPrice = oldPrice * (100 - itemData.item.discount) / 100;
             price = (
                 <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end', padding: 5 }}>
-                    <Text style={styles.oldPrice}> {"BDT " + oldPrice}</Text>
-                    <Text style={styles.price}> {"BDT " + newPrice}</Text>
+                    <Text style={styles.oldPrice}> {"৳ " + oldPrice}</Text>
+                    <Text style={styles.price}> {"৳ " + newPrice}</Text>
                 </View>
             )
         }
@@ -38,7 +38,7 @@ export default function ProductList(props) {
         else {
             price = (
                 <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end', padding: 5 }}>
-                    <Text style={styles.price}> {"BDT " + itemData.item.price}</Text>
+                    <Text style={styles.price}> {"৳ " + itemData.item.price}</Text>
                 </View>
             )
         }
@@ -53,15 +53,15 @@ export default function ProductList(props) {
                 )}>
                     {/* <Text>{itemData.item.inventoryQuantity}</Text> */}
 
-                    <Image source={itemData.item.thumbnail} style={styles.image} resizeMethod="resize" />
-                    <Text style={styles.itemName}> {itemData.item.name}</Text>
+                    <Image source={itemData.item.thumbnail} style={styles.image} resizeMode="cover" resizeMethod="resize" />
+                    <Text style={styles.itemName}>{itemData.item.name}</Text>
                     {props.showShopName ? <Text style={styles.sellerName}> {"From " + itemData.item.shopName} </Text> : null}
 
 
                     {itemData.item.rating !== null ?
                         <View style={styles.ratingContainer}>
                             <RatingStars rating={itemData.item.rating} />
-                            <Text style={styles.ratingCount}> ({itemData.item.ratingCount} )</Text>
+                            <Text style={styles.ratingCount}>({itemData.item.ratingCount})</Text>
                         </View> : null
                     }
 
@@ -117,13 +117,11 @@ const styles = StyleSheet.create({
 
     gridItem: {
         margin: 20,
-        height: 250,
         width: 150,
-        backgroundColor: 'white'
     },
     itemName: {
-        fontSize: 15,
-        fontWeight: 'bold'
+        fontFamily: 'PlayfairDisplay_600SemiBold',
+        fontSize: 20,
     },
     sellerName: {
         fontSize: 12,
@@ -131,8 +129,8 @@ const styles = StyleSheet.create({
         color: 'grey'
     },
     image: {
-        height: 150,
-        width: 150,
+        height: 200,
+        width: '100%',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -146,6 +144,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'black',
         fontWeight: '600',
+        width: '100%',
+        textAlign: 'right'
 
 
     },

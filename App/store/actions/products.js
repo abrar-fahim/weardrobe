@@ -2,10 +2,11 @@ export const SET_PRODUCTS_LIST = 'SET_PRODUCTS_LIST';
 export const GET_PRODUCT_DETAILS = 'GET_PRODUCT_DETAILS';
 // export const ADD_TO_CART = 'ADD_TO_CART';
 export const SET_ERROR = 'SET_ERROR';
-export const GET_PRODUCT_REVIEWS = 'GET_PRODUCT_REVIEWS'
-export const GET_CATEGORIES = 'GET_CATEGORIES'
-export const GET_PRODUCTS_FN = 'GET_PRODUCTS_FN'
+export const GET_PRODUCT_REVIEWS = 'GET_PRODUCT_REVIEWS';
+export const GET_CATEGORIES = 'GET_CATEGORIES';
+export const GET_PRODUCTS_FN = 'GET_PRODUCTS_FN';
 export const GET_SHOP_FEED = 'GET_SHOP_FEED';
+export const GET_PARENT_CATEGORIES = 'GET_PARENT_CATEGORIES';
 import HOST from "../../components/host";
 import * as popupActions from './Popup'
 
@@ -36,6 +37,7 @@ export const fetchProducts = (iter = 0) => {
                     shopName: resData[key].SHOP_NAME,
                     price: resData[key].PRICE,
                     rating: resData[key].PRODUCT_RATING,
+                    ratingCount: resData[key].RATING_COUNT,
                     discount: resData[key].DISCOUNT,
                     thumbnail: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL },
                     inventoryQuantity: resData[key].INVENTORY_QUANTITY
@@ -376,7 +378,7 @@ export const fetchShopFeed = () => {
                     const processedBanners = banners.map((item, index) => (
                         {
                             id: index.toString(),
-                            image: { uri: `${HOST}/img/temp/` + item.BANNER_URL },
+                            image: { uri: `${HOST}/img/temp/` + item.BANNER_URL + "?time=abc" },
                             searchTerm: item.SEARCH_TERM,
                         }
                     ))
@@ -441,5 +443,87 @@ export const fetchShopFeed = () => {
         }
     }
 }
+
+export const fetchParentCategories = () => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${HOST}/get/parent-category/`, {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('wrong!!');
+            }
+
+            const resData = await response.json();
+            const categories = [];
+
+            for (const key in resData) {
+                categories.push({
+                    id: resData[key].CATEGORY_ID,
+                    name: resData[key].P_CATEGORY_NAME,
+                    thumbnail: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL + "?" }
+                })
+            }
+            // console.log(loadedProducts);
+            dispatch({ type: GET_PARENT_CATEGORIES, categories: categories })
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+    }
+}
+
+export const fetchChildrenCategoriesDirect = async (parentCategoryId) => {
+
+    try {
+        const response = await fetch(`${HOST}/get/child-category/${parentCategoryId}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('wrong!!');
+        }
+
+        const resData = await response.json();
+        const categories = [];
+
+        for (const key in resData) {
+            categories.push({
+                id: resData[key].CATEGORY_ID,
+                name: resData[key].CATEGORY_NAME,
+                thumbnail: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL + "?" }
+            })
+        }
+
+        return categories;
+        // console.log(loadedProducts);
+
+
+    }
+    catch (err) {
+        //send to custom analytics server
+        //console.log('error on action')
+        //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+        throw new Error(err)
+    }
+
+}
+
+
 
 

@@ -13,6 +13,7 @@ export const GET_SELLER_POSTS = 'GET_SELLER_POSTS';
 
 import HOST from "../../components/host";
 import * as popupActions from './Popup'
+import { SHOP_POST } from "./magazine";
 
 
 
@@ -82,7 +83,8 @@ export const fetchShopProducts = (shopId, iter = 0) => {
                     price: resData[key].PRICE,
                     rating: resData[key].PRODUCT_RATING,
                     discount: resData[key].DISCOUNT,
-                    thumbnail: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL }
+                    thumbnail: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL },
+                    ratingCount: resData[key].RATING_COUNT,
 
                 })
             }
@@ -488,7 +490,7 @@ export const getSellerPosts = (shopId, iter = 0) => {
                 image: { uri: `${HOST}/img/temp/` + photo.IMAGE_URL }
             }))
             posts.push({
-                type: 'SHOP',
+                type: SHOP_POST,
                 id: resData[key].POST_ID,
                 shopId: resData[key].SHOP_ID,
                 text: resData[key].TEXT,

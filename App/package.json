@@ -8,6 +8,8 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo-google-fonts/playfair-display": "^0.1.0",
+    "@expo-google-fonts/work-sans": "^0.1.0",
     "@expo/vector-icons": "^10.0.0",
     "@react-native-community/cookies": "^2.0.9",
     "@react-native-community/datetimepicker": "2.2.2",
@@ -26,6 +28,7 @@
     "expo-file-system": "~8.1.0",
     "expo-font": "~8.1.0",
     "expo-gl": "~8.1.0",
+    "expo-google-fonts": "0.0.0",
     "expo-image-picker": "~8.1.0",
     "expo-sharing": "~8.1.0",
     "expo-three": "^5.5.1",
