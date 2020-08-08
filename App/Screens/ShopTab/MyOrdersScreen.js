@@ -68,13 +68,17 @@ function MyOrdersScreen(props) {
     const orders = useSelector(state => state.order.orders);
     const userId = useSelector(state => state.auth.userId);
 
-    const dispatch = useDispatch()
+
+    const dispatch = useDispatch();
 
     const getOrders = useCallback(async () => {
         //setIsLoading(true);
         try {
             setIsLoading(true)
-            await dispatch(orderActions.getOrders())
+            await dispatch(orderActions.getOrders());
+
+
+
             setIsLoading(false)
         } catch (err) {
             console.log(err.message)
@@ -84,16 +88,21 @@ function MyOrdersScreen(props) {
     })
 
     useEffect(() => {
-        getOrders()
+        getOrders();
+
     }, [userId])
 
 
     const renderItems = (itemData) => {
 
-        return (
-            <TouchableOpacity onPress={() => (props.navigation.navigate('Order', {
-                order: itemData.item
-            }))}>
+        let view = [
+            <TouchableOpacity
+                key="order"
+                onPress={() => (props.navigation.navigate('Order', {
+                    order: itemData.item
+                }))}
+
+            >
 
                 <View style={styles.orderContainer}>
 
@@ -108,15 +117,39 @@ function MyOrdersScreen(props) {
                     <View style={styles.shopRef}>
 
 
-                        <Text style={styles.due}> {"BDT " + itemData.item.total}</Text>
+                        <Text style={styles.due}> {"BDT " + itemData.item.subTotal}</Text>
                         {/* <Text>Ordered: </Text>
-                        <Time style={styles.date} value={itemData.item.date} /> */}
+                    <Time style={styles.date} value={itemData.item.date} /> */}
 
                     </View>
 
                 </View>
             </TouchableOpacity>
-        )
+
+        ]
+
+
+
+        if (itemData.index === 0) {
+
+            view = [(<View key="current">
+                <Text style={styles.title}>CURRENT ORDERS</Text>
+
+            </View>), ...view]
+
+        }
+
+        else if (itemData.index === pastOrders.length - 1) {
+            view = [(<View key="past">
+                <Text style={styles.title}>PAST ORDERS</Text>
+
+            </View>), ...view]
+
+        }
+
+        return view
+
+
     }
 
     if (!loggedIn) {
@@ -124,61 +157,109 @@ function MyOrdersScreen(props) {
             <AuthRequiredScreen navigation={props.navigation} />
         )
     }
+
+
+
+    let activeOrders = [];
+    let pastOrders = [];
+    let counts = [];
+    orders.map(order => {
+        if (order.products.some(product => product.deliveryStatus === 'NOT_DELIVERED')) {
+
+            activeOrders = activeOrders.concat(order);
+
+
+        }
+        else {
+
+            pastOrders = pastOrders.concat(order);
+
+        }
+
+        let total = 0
+
+        order.products.map(product => {
+            total += product.quantity;
+        })
+        counts.push(total);
+    })
+
+
+
+
+
     return (
         <View style={{ ...ScreenStyle, ...styles.screen }}>
-            <FlatList data={orders} renderItem={renderItems} />
+            <FlatList
+                data={activeOrders}
+                renderItem={renderItems}
+                ListEmptyComponent={
+                    <View>
+                        <Text>no orders yet</Text>
+
+                    </View>
+
+
+                }
+
+            />
 
 
         </View>
     )
 }
 
-const styles = StyleSheet.create(
-    {
-        orderContainer: {
-            marginRight: 10,
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            backgroundColor: 'white',
-            flex: 1,
+const styles = StyleSheet.create({
+    title: {
+        fontFamily: 'WorkSans_400Regular',
+        fontSize: 20,
+        color: 'grey',
+        margin: 20
 
-            padding: 10,
-            margin: 10
-        },
-        screen: {
-            paddingBottom: 10
-        },
-        shopRef: {
-            flexDirection: 'row',
+    },
+    orderContainer: {
+        marginRight: 10,
+        justifyContent: 'space-between',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        backgroundColor: 'white',
+        flex: 1,
 
-            width: '100%'
-        },
-        ref: {
-            fontWeight: '300',
-            color: 'grey',
-            flex: 1
-        },
-        shop: {
-            fontWeight: '700',
-            fontSize: 17
-        },
-        due: {
+        padding: 10,
+        margin: 10
+    },
+    screen: {
+        paddingBottom: 10
+    },
+    shopRef: {
+        flexDirection: 'row',
 
-            fontWeight: '700',
-            fontSize: 18,
-            flex: 1
+        width: '100%'
+    },
+    ref: {
+        fontWeight: '300',
+        color: 'grey',
+        flex: 1
+    },
+    shop: {
+        fontWeight: '700',
+        fontSize: 17
+    },
+    due: {
 
-        },
-        date: {
-            fontWeight: '300',
-            flex: 1
+        fontWeight: '700',
+        fontSize: 18,
+        flex: 1
 
-        },
-        status: {
-            fontWeight: '300',
+    },
+    date: {
+        fontWeight: '300',
+        flex: 1
+
+    },
+    status: {
+        fontWeight: '300',
 
 
-        }
     }
-)
+})

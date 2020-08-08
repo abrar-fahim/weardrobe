@@ -63,10 +63,11 @@ export default function OrderScreen(props) {
                     productId: itemData.item.productId
                 })
             }}>
-                <Image source={itemData.item.thumbnail} style={styles.thumbnail} />
+                <Image source={itemData.item.thumbnail} style={styles.thumbnail}
+                />
 
                 <View style={styles.nameColorSize}>
-                    <Text style={styles.name}> {itemData.item.name}</Text>
+                    <Text style={styles.name}>{itemData.item.name}</Text>
                     <View style={styles.colorSize}>
                         <Text style={{ ...styles.color, backgroundColor: itemData.item.color.toLowerCase() }} />
                         <Text style={styles.size} > {itemData.item.size.toUpperCase()}</Text>
@@ -80,9 +81,16 @@ export default function OrderScreen(props) {
 
 
 
-                <Text style={styles.quantity}>{itemData.item.quantity}</Text>
 
-                <Text style={styles.cartPrice}> {"BDT " + itemData.item.price} </Text>
+
+                <View style={styles.cartPriceContainer}>
+                    <Text style={styles.cartPrice}> {"৳ " + itemData.item.price + " x " + itemData.item.quantity} </Text>
+                    <Text style={styles.itemTotalPrice}> {"৳ " + itemData.item.price * itemData.item.quantity}</Text>
+
+
+                </View>
+
+
 
             </TouchableOpacity>
 
@@ -101,7 +109,7 @@ export default function OrderScreen(props) {
                         <UICircle active={true} />
 
 
-                        <Text style={styles.stepText}> Order Placed</Text>
+                        <Text style={styles.stepText}>ORDER PLACED</Text>
 
                     </View>
                     <View style={styles.lineProducts}>
@@ -116,7 +124,7 @@ export default function OrderScreen(props) {
 
                     <View style={styles.iconText}>
                         <UICircle active={false} />
-                        <Text style={styles.stepText}> Order Accepted</Text>
+                        <Text style={styles.stepText}>ORDER ACCEPTED</Text>
 
                     </View>
                     <View style={styles.flowLine} />
@@ -125,7 +133,7 @@ export default function OrderScreen(props) {
 
                     <View style={styles.iconText}>
                         <UICircle active={false} />
-                        <Text style={styles.stepText}> Processing Order and Assigning Rider</Text>
+                        <Text style={styles.stepText}>PROCESSING ORDER AND ASSIGNING RIDER</Text>
 
                     </View>
                     <View style={styles.flowLine} />
@@ -135,7 +143,7 @@ export default function OrderScreen(props) {
 
                     <View style={styles.iconText}>
                         <UICircle active={false} />
-                        <Text style={styles.stepText}> Delivered</Text>
+                        <Text style={styles.stepText}>DELIVERED</Text>
 
                     </View>
 
@@ -172,7 +180,7 @@ export default function OrderScreen(props) {
 
                         <View style={styles.totalBottomRow}>
                             <Text style={styles.totalPriceLabel}> Total Payable </Text>
-                            <Text style={styles.totalPrice} > BDT {order.total}</Text>
+                            <Text style={styles.totalPrice} > BDT {order.subTotal}</Text>
                         </View>
 
                     </View>
@@ -185,153 +193,160 @@ export default function OrderScreen(props) {
     )
 }
 
-const styles = StyleSheet.create(
-    {
+const styles = StyleSheet.create({
 
-        screen: {
-            paddingBottom: 10
-        },
-        cartItem: {
-            marginVertical: 10,
-            marginHorizontal: 10,
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: 'white',
+    screen: {
+        paddingBottom: 10
+    },
+    cartItem: {
+        marginVertical: 10,
+        marginHorizontal: 10,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        padding: 10
+    },
+    thumbnail: {
+        height: 50,
+        width: 50,
+        resizeMode: "contain",
+        flex: 1
 
-            // flex: 1,
-            padding: 10
-        },
-        thumbnail: {
-            height: 50,
-            width: 50,
-            borderRadius: 25
-        },
-        nameColorSize: {
-            marginLeft: 5,
-            flex: 4
+    },
+    nameColorSize: {
+        marginLeft: 5,
+        flex: 5
 
-        },
-        name: {
-            fontSize: 17,
-            fontWeight: '400',
-            flex: 1,
-            marginVertical: 5
+    },
+    name: {
+        fontFamily: 'PlayfairDisplay_600SemiBold',
+        fontSize: 20,
+        flex: 1,
+        marginVertical: 5
 
-        },
-        colorSize: {
-            flexDirection: 'row'
-        },
-        color: {
-            height: 20,
-            width: 20,
-            borderRadius: 10,
-            marginRight: 10
-        },
-        size: {
-            fontWeight: '700',
-            color: 'grey'
-        },
-        quantity: {
-            flex: 1,
-            fontWeight: '700'
-
-        },
-        cartPrice: {
-            fontSize: 15,
-            fontWeight: '700'
-
-        },
-
-        heading: {
-            fontSize: 30,
-            fontWeight: '700'
-
-        },
-        flowContainer: {
-            marginLeft: 20,
-            marginTop: 40,
-            marginBottom: 30
-
-        },
-        stepContainer: {
-            marginTop: 20,
-            marginLeft: 10,
-
-        },
-        iconText: {
-            flexDirection: 'row',
-            width: '80%',
-            alignItems: 'center'
-        },
-
-        flowLine: {
-            alignItems: 'flex-start',
-            backgroundColor: 'grey',
-            minHeight: 40,
-            width: 3,
-            opacity: 0.3,
-            marginLeft: 4.5
+    },
+    colorSize: {
+        flexDirection: 'row',
+    },
+    color: {
+        height: 20,
+        width: 20,
+        borderRadius: 10,
+        marginRight: 10
+    },
+    size: {
+        fontWeight: '700',
+        color: 'grey'
+    },
+    cartPriceContainer: {
+        flexDirection: 'column',
+        flex: 3,
 
 
-        },
-        stepText: {
-            fontWeight: '500',
-            marginLeft: 20,
-            fontSize: 16,
-            width: '100%'
-        },
-        lineProducts: {
-            flexDirection: 'row',
+    },
+    cartPrice: {
+        fontSize: 16,
+        fontWeight: '600',
+        textAlign: 'right'
 
-        },
-        bottom: {
-            backgroundColor: 'white',
-            width: '90%',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignSelf: 'center',
-            borderColor: Colors.primaryColor,
-            borderWidth: 0.5,
-            padding: 10
+    },
+    itemTotalPrice: {
+        fontSize: 18,
+        fontWeight: '700',
+        textAlign: 'right',
 
-        },
-        price: {
-            color: 'black',
-            fontWeight: '600',
-            fontSize: 16,
-            alignSelf: 'flex-end'
-        },
-        totalPriceLabel: {
-            color: 'black',
-            fontWeight: '700',
-            fontSize: 18,
-            flex: 1,
-            textAlign: 'left'
 
-        },
-        totalPrice: {
-            color: 'black',
-            fontWeight: '700',
-            fontSize: 18,
+    },
 
-            flex: 1,
-            textAlign: 'right'
+    heading: {
+        fontSize: 30,
+        fontWeight: '700'
 
-        },
-        bottomRow: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginVertical: 2,
-            marginHorizontal: 5,
-            alignItems: 'center',
-        },
-        totalBottomRow: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: 50,
-            marginHorizontal: 5,
-            alignItems: 'center',
-        }
+    },
+    flowContainer: {
+        marginLeft: 20,
+        marginTop: 40,
+        marginBottom: 30
+
+    },
+    stepContainer: {
+        marginTop: 20,
+        marginLeft: 10,
+
+    },
+    iconText: {
+        flexDirection: 'row',
+        width: '80%',
+        alignItems: 'center'
+    },
+
+    flowLine: {
+        alignItems: 'flex-start',
+        backgroundColor: 'grey',
+        minHeight: 40,
+        width: 3,
+        opacity: 0.3,
+        marginLeft: 4.5
+
+
+    },
+    stepText: {
+        fontFamily: 'WorkSans_400Regular',
+        color: 'grey',
+        marginLeft: 20,
+        fontSize: 17,
+        width: '100%'
+    },
+    lineProducts: {
+        flexDirection: 'row',
+
+    },
+    bottom: {
+        backgroundColor: 'white',
+        width: '90%',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        borderColor: Colors.primaryColor,
+        borderWidth: 0.5,
+        padding: 10
+
+    },
+    price: {
+        color: 'black',
+        fontWeight: '600',
+        fontSize: 16,
+        alignSelf: 'flex-end'
+    },
+    totalPriceLabel: {
+        color: 'black',
+        fontWeight: '700',
+        fontSize: 18,
+        flex: 1,
+        textAlign: 'left'
+
+    },
+    totalPrice: {
+        color: 'black',
+        fontWeight: '700',
+        fontSize: 18,
+        flex: 1,
+        textAlign: 'right'
+
+    },
+    bottomRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: 2,
+        marginHorizontal: 5,
+        alignItems: 'center',
+    },
+    totalBottomRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 50,
+        marginHorizontal: 5,
+        alignItems: 'center',
     }
-)
+})

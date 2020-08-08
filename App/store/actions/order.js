@@ -94,9 +94,6 @@ export const getOrders = () => {
                     )
                 }
 
-                // console.log('in action');
-                // console.log(cartItems)
-
                 dispatch({
                     type: GET_ORDERS,
                     orders: orders

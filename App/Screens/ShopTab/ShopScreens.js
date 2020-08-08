@@ -129,8 +129,9 @@ function ShopScreen({ navigation }) {
         }
         catch (err) {
             console.log(err);
+            setIsLoading(false)
         }
-        setIsLoading(false)
+
     })
 
 
@@ -152,8 +153,9 @@ function ShopScreen({ navigation }) {
         }
         catch (err) {
             console.log(err)
+            setIsLoading(false)
         }
-        setIsLoading(false)
+
     })
 
     const loadMoreProducts = useCallback(async () => {
@@ -298,30 +300,46 @@ function ShopScreen({ navigation }) {
             if (itemData.index % 2 === 0) {
 
                 return (
-                    <View style={styles.banner}>
 
-                        <View style={styles.bannerTitleContainer}>
-                            <Text style={styles.bannerTitle}>{itemData.item.title}</Text>
-                            <Text style={styles.bannerSubTitle}>{itemData.item.description}</Text>
-
-                        </View>
-
-
-                        <TouchableOpacity
-                            onPress={() => (navigation.navigate('ProductList'))}
-                            style={styles.bannerImageContainer}
-
-                        >
-
+                    <View style={styles.item2Container}>
+                        <TouchableOpacity onPress={() => navigation.navigate('ParentCategories')}>
                             <Image
-                                style={styles.bannerImage}
-                                key="abc"
-                                source={itemData.item.banners[0].image}
-                                resizeMode="cover"
+                                source={require('../../assets/Images/categories.jpg')}
+                                style={styles.categoryImage}
+
                             />
+                            <Text style={styles.categoryText}>BROWSE CATEGORIES</Text>
 
                         </TouchableOpacity>
-                    </View >
+
+
+                        <View style={styles.banner}>
+
+                            <View style={styles.bannerTitleContainer}>
+                                <Text style={styles.bannerTitle}>{itemData.item.title}</Text>
+                                <Text style={styles.bannerSubTitle}>{itemData.item.description}</Text>
+
+                            </View>
+
+
+                            <TouchableOpacity
+                                onPress={() => (navigation.navigate('ProductList'))}
+                                style={styles.bannerImageContainer}
+
+                            >
+
+                                <Image
+                                    style={styles.bannerImage}
+                                    key="abc"
+                                    source={itemData.item.banners[0].image}
+                                    resizeMode="cover"
+                                />
+
+                            </TouchableOpacity>
+                        </View >
+
+                    </View>
+
 
                 )
 
@@ -623,6 +641,25 @@ const styles = StyleSheet.create({
         fontSize: 22,
         marginBottom: 5,
         fontWeight: '500'
+    },
+    item2Container: {
+        flexDirection: 'column',
+    },
+    categoryImage: {
+        height: 300,
+        width: '100%',
+        resizeMode: "cover",
+        justifyContent: 'flex-end'
+    },
+    categoryText: {
+        fontFamily: 'WorkSans_400Regular',
+        fontSize: 22,
+        position: 'absolute',
+        top: 5,
+        width: '100%',
+        textAlign: 'center',
+
+
     },
     banner: {
 
