@@ -302,7 +302,7 @@ function ShopScreen({ navigation }) {
                 return (
 
                     <View style={styles.item2Container}>
-                        <TouchableOpacity onPress={() => navigation.navigate('ParentCategories')}>
+                        <TouchableOpacity onPress={() => navigation.push('ParentCategories')}>
                             <Image
                                 source={require('../../assets/Images/categories.jpg')}
                                 style={styles.categoryImage}

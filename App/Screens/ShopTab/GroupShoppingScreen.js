@@ -35,7 +35,8 @@ export default function GroupShoppingScreen(props) {
 
             }} />
             <TopTab.Screen name="GroupCart" component={ShoppingSessionScreen} initialParams={{
-                sessionId: activeSessionId
+                sessionId: activeSessionId,
+                groupId: groupId
 
             }} />
         </TopTab.Navigator>

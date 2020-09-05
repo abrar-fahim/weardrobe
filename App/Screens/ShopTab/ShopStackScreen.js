@@ -45,6 +45,7 @@ import PostScreen from '../MagazineTab/PostScreen';
 import PayScreen from './PayScreen';
 import ShippingScreen from './ShippingScreen';
 import ConfirmOrderScreen from './ConfirmOrderScreen';
+import { ParentCategoriesScreen } from './ParentCategoryListScreen';
 
 export default function ShopStackScreen({ navigation }) {
     const ShopStack = createStackNavigator();
@@ -108,6 +109,12 @@ export default function ShopStackScreen({ navigation }) {
             <ShopStack.Screen name="Shipping" component={ShippingScreen} />
             <ShopStack.Screen name="ConfirmOrder" component={ConfirmOrderScreen} /> */}
                 <ShopStack.Screen name="PictureUpload" component={PictureUploadScreen} />
+
+                <ShopStack.Screen name="ParentCategories" component={ParentCategoriesScreen}
+                    options={{
+                        title: 'Categories'
+                    }}
+                />
 
             </ShopStack.Navigator>
         </CustomView>

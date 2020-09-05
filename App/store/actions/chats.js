@@ -341,7 +341,7 @@ export const getSessionCart = (sessionId) => {
     }
 }
 
-export const setSessionActive = (groupId, sessionId, timeRemaining = 30, expiresIn) => {
+export const setSessionActive = (groupId, sessionId, timeRemaining = 1800000, expiresIn) => {
     return async (dispatch) => {
 
 

@@ -44,6 +44,7 @@ import ConfirmOrderScreen from './Screens/ShopTab/ConfirmOrderScreen';
 import {
   useFonts,
   PlayfairDisplay_400Regular,
+  PlayfairDisplay_500Medium,
   PlayfairDisplay_600SemiBold,
   PlayfairDisplay_700Bold
 
@@ -89,6 +90,7 @@ export default function App({ navigation }) {
 
   let [fontsLoaded] = useFonts({
     PlayfairDisplay_400Regular,
+    PlayfairDisplay_500Medium,
     PlayfairDisplay_600SemiBold,
     PlayfairDisplay_700Bold,
     WorkSans_400Regular,

@@ -38,6 +38,7 @@ export default function NewShoppingSessionScreen(props) {
 
             <UIButton text="Start Shopping!" height={60} width={200} onPress={() => {
                 newShoppingSession(name)
+                props.navigation.popToTop();
                 props.navigation.navigate("Shop")
             }
             }

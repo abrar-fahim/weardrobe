@@ -12,14 +12,14 @@ export default function ParentCategoriesStack({ navigation }) {
         <DrawerStack
             name="ParentCategories"
             navigation={navigation}
-            component={CategoriesScreen}
+            component={ParentCategoriesScreen}
             search="CATEGORY"
         />
     )
 
 }
 
-export function CategoriesScreen(props) {
+export function ParentCategoriesScreen(props) {
 
     const dispatch = useDispatch();
 

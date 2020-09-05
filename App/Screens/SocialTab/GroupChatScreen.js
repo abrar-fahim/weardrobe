@@ -262,9 +262,10 @@ export function GroupChatScreen(props) {
                                 productId: itemData.item.message.id
                             })}>
                                 <View style={styles.productBubbleMe}>
-                                    <Image style={styles.productPhotoMe} source={itemData.item.message.photos[0].image} />
-                                    <Text>{itemData.item.message.name}</Text>
-                                    <Text>BDT {itemData.item.message.price}</Text>
+                                    <Image style={styles.productPhoto} source={itemData.item.message.photos[0].image}
+                                    />
+                                    <Text style={styles.productName}>{itemData.item.message.name}</Text>
+                                    <Text style={styles.productPrice}>৳ {itemData.item.message.price}</Text>
 
 
                                 </View>
@@ -484,30 +485,37 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: Colors.accentColor,
         alignSelf: 'flex-end',
-
-
-
+        margin: 10,
+        padding: 10
     },
+
+
 
     productBubble: {
         flexDirection: 'column',
         backgroundColor: Colors.accentColor,
         alignSelf: 'flex-start',
-        height: 100,
-    },
-    productPhotoMe: {
-
-        height: 200,
-        width: 200,
-        alignSelf: 'flex-end',
         margin: 10,
+        padding: 10
+
+
     },
+
     productPhoto: {
-
         height: 200,
         width: 200,
-        alignSelf: 'flex-start',
-        margin: 10,
+        resizeMode: "contain",
+    },
+
+    productName: {
+        fontFamily: 'PlayfairDisplay_500Medium',
+        fontSize: 22,
+        marginVertical: 5
+    },
+    productPrice: {
+        fontSize: 18,
+        fontWeight: '400'
+
     },
 
     msgBubble: {

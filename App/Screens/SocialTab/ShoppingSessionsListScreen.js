@@ -19,13 +19,20 @@ import LoadingScreen from '../../components/LoadingScreen';
 
 export default function ShoppingSessionsListScreen(props) {
 
-    const groupId = props.route.params?.groupId
+    const groupId = props.route.params?.groupId;
 
-    const sessions = useSelector(state => state.social.sessions)
+    const sessions = useSelector(state => state.social.sessions);
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [activeSessionId, setActiveSessionId] = useState(null);
+
+    const [activeSessionDetails, setActiveSessionDetails] = useState({
+        date: null,
+        duration: null
+    }); //there will only be at most one active session in this list by design
 
 
     const loadSessions = useCallback(async () => {
@@ -46,6 +53,28 @@ export default function ShoppingSessionsListScreen(props) {
         loadSessions()
     }, [])
 
+    useEffect(() => {
+        console.log('SETTING ACTIVE');
+        const date = Date.parse(activeSessionDetails.date);
+
+        const expiresIn = date + activeSessionDetails.duration * 1000;
+
+        const now = Date.now()
+
+        const isActive = now < expiresIn;
+
+        const sec = Math.floor(timeLeft / 1000);
+        const displaySec = sec % 60;
+        const min = sec / 60;
+        const displayMin = Math.floor(min % 60);
+        const hours = Math.floor(min / 60);
+
+
+
+        dispatch(chatActions.setSessionActive(groupId, activeSessionId, expiresIn - now, expiresIn))
+
+    }, [activeSessionId, groupId])
+
 
     const timeLeft = useSelector(state => state.social.timeLeft);
 
@@ -63,23 +92,38 @@ export default function ShoppingSessionsListScreen(props) {
         const now = Date.now()
 
         const isActive = now < expiresIn;
-
-
-
-
         const sec = Math.floor(timeLeft / 1000);
         const displaySec = sec % 60;
         const min = sec / 60;
         const displayMin = Math.floor(min % 60);
         const hours = Math.floor(min / 60);
 
+        if (isActive) {
+            if (activeSessionId !== itemData.item.id) {
+                setActiveSessionId(itemData.item.id);
+                setActiveSessionDetails({
+                    date: itemData.item.date,
+                    duration: itemData.item.duration
+                })
+
+            }
+
+
+        }
+
+
+
+
+
+
 
 
         //this is just temporary, this dispatch action lets app state know that a session is ongoing,
         //thisll be usually dispatched via clicking on notification
-        // if (isActive) {
-        //     dispatch(chatActions.setSessionActive(groupId, itemData.item.id, expiresIn - now, expiresIn))
-        // }
+        if (isActive) {
+
+
+        }
         return (
 
             <TouchableOpacity onPress={() => (props.navigation.navigate('ShoppingSession', {
