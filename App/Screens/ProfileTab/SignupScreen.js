@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useDebugValue, useCallback } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView, KeyboardAvoidingView, Dimensions, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -11,7 +11,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import ScreenStyle from '../../Styles/ScreenStyle'
 import UIButton from '../../components/UIButton';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import * as authActions from '../../store/actions/auth'
 import Colors from '../../Styles/Colors';
 
@@ -320,15 +320,20 @@ export default function SignupScreen({ navigation }) {
 
 
 
-      <View style={styles.button}>
-        <TouchableOpacity onPress={signUp} style={styles.buttonTouch}>
-          <Text style={styles.buttonText}>
-            Create Account
+
+      <TouchableOpacity onPress={signUp} style={styles.button}>
+        <Text style={styles.buttonText}>
+          Create Account
           </Text>
 
-        </TouchableOpacity>
+      </TouchableOpacity>
 
-      </View>
+      <TouchableOpacity style={styles.textButton} onPress={() => navigation.popToTop()}>
+        <Text style={styles.secondaryButtonText}>Cancel</Text>
+
+      </TouchableOpacity>
+
+
 
 
 
@@ -353,15 +358,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: '700',
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
     marginBottom: 25,
-    width: '100%'
+    width: Dimensions.get('window').width * 0.8,
+    maxWidth: 400,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomColor: 'grey',
     borderBottomWidth: 0.5,
+    width: Dimensions.get('window').width * 0.8,
+    maxWidth: 400,
   },
 
   inputStyle: {
@@ -405,20 +413,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 50,
     width: "100%",
-    height: 50,
+    height: 40,
+    width: 300
 
   },
-  buttonTouch: {
 
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center'
-  },
   buttonText: {
     color: 'white',
     fontSize: 15,
     fontWeight: '600',
     width: '100%',
     textAlign: 'center',
+  },
+  textButton: {
+    marginTop: 20
+
+  },
+  secondaryButtonText: {
+    color: 'red',
+    fontWeight: '400',
+    fontSize: 16,
   }
 });

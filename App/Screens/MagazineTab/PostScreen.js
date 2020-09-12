@@ -524,12 +524,13 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: 'white',
         paddingHorizontal: 10,
-        alignItems: 'center'
+        alignItems: 'center',
+        minHeight: 60
     },
     commentInput: {
         flex: 1,
         backgroundColor: 'white',
-        minHeight: 60,
+        // minHeight: 60,
         paddingHorizontal: 10,
         paddingVertical: 10
     }

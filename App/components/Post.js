@@ -136,7 +136,7 @@ const Post = (props) => {
 
         return (
 
-            <Image source={itemData.item.image} style={styles.postImage} resizeMode="contain" />
+            <Image source={itemData.item.image} style={styles.postImage} resizeMethod="scale" resizeMode="contain" />
 
         )
 
@@ -355,6 +355,16 @@ const Post = (props) => {
 export default Post;
 
 const styles = StyleSheet.create({
+    gridItem: {
+        // flex: 1,
+        padding: 10,
+        marginVertical: 10,
+        width: '100%',
+        maxWidth: 700,
+        flexDirection: 'column',
+        backgroundColor: 'white',
+        alignSelf: 'center'
+    },
     modal: {
         justifyContent: 'center',
         alignItems: 'center'
@@ -390,14 +400,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'black'
     },
-    gridItem: {
-        // flex: 1,
-        padding: 10,
-        marginVertical: 10,
-        width: '100%',
-        flexDirection: 'column',
-        backgroundColor: 'white'
-    },
+
     postHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -444,6 +447,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         width: '100%',
         // height: 400,
+
         borderRadius: 30,
     },
 
@@ -452,13 +456,13 @@ const styles = StyleSheet.create({
         // maxHeight: '100%',
         // maxWidth: Dimensions.get('window').width,
         // alignSelf: 'center'
-        height: Dimensions.get('window').width,
-        width: Dimensions.get('window').width,
+        width: 700,
+        height: 400
         // flex: 7,
     },
     title: {
         fontSize: 20,
-        fontFamily: 'serif',
+        fontFamily: 'PlayfairDisplay_400Regular',
         fontWeight: '600',
         textAlign: 'center',
         marginVertical: 5

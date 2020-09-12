@@ -208,8 +208,6 @@ export default function LoginScreen({ navigation }) {
      
     >
 
-
-
       <View style={styles.inputContainer}>
         <View style={styles.iconContainer}>
           <Ionicons name="md-mail" size={20} color="grey" />
@@ -284,14 +282,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 200
+    paddingTop: 200,
+    backgroundColor: 'purple'
+
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomColor: 'grey',
     borderBottomWidth: 0.5,
-    maxWidth: Dimensions.get('window').width * 0.8
+    maxWidth: 400,
+    width: Dimensions.get('window').width * 0.8
+    
   },
 
   inputStyle: {

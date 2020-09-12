@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 30,
-        fontFamily: 'serif',
+        fontFamily: 'PlayfairDisplay_400Regular',
         fontWeight: '600',
         textAlign: 'center',
         marginVertical: 20
