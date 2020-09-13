@@ -15,6 +15,18 @@ export default function ShippingScreen(props) {
     const userId = useSelector(state => state.auth.userId);
 
     const profile = useSelector(state => state.profile.myProfile);
+    const addresses = useSelector(state => state.profile.addresses);
+
+    const [selectedAddress, setSelectedAddress] = useState(0);
+
+    const [newAddress, setNewAddress] = useState({
+        addingAddress: false,
+        line1: null,
+        line2: null,
+        city: null,
+        postalCode: null
+
+    })
 
 
     const dispatch = useDispatch();
@@ -29,26 +41,152 @@ export default function ShippingScreen(props) {
         }
     }, [userId])
 
+    const getAddresses = useCallback(async () => {
+
+        try {
+            await dispatch(profileActions.getMyAddresses());
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }, [])
+
     useEffect(() => {
-        getProfile()
+        getProfile();
+        getAddresses();
     }, [userId])
 
     const renderAddress = (itemData) => {
+
+        if (itemData.item.id === "addAddress") {
+            if (newAddress.addingAddress) {
+                return (
+                    <View style={styles.addAddress}>
+                        <Text>Add New Address</Text>
+
+
+                        <View style={styles.infoContainer}>
+                            <Text style={styles.label}>LINE 1</Text>
+
+                            <TextInput onChangeText={(text) => setNewAddress(state => ({
+                                ...state,
+                                line1: text
+                            }))}
+                                style={styles.addAddressInput}
+                                multiline
+                            />
+
+
+                        </View>
+
+                        <View style={styles.infoContainer}>
+                            <Text style={styles.label}>LINE 2</Text>
+
+                            <TextInput onChangeText={(text) => setNewAddress(state => ({
+                                ...state,
+                                line2: text
+                            }))}
+                                style={styles.addAddressInput}
+                                multiline
+                            />
+
+
+                        </View>
+
+                        <View style={styles.infoContainer}>
+                            <Text style={styles.label}>CITY</Text>
+
+                            <TextInput onChangeText={(text) => setNewAddress(state => ({
+                                ...state,
+                                city: text
+                            }))}
+                                style={styles.addAddressInput}
+                                multiline
+                            />
+
+
+                        </View>
+
+                        <View style={styles.infoContainer}>
+                            <Text style={styles.label}>POSTAL CODE</Text>
+
+                            <TextInput onChangeText={(text) => setNewAddress(state => ({
+                                ...state,
+                                postalCode: text
+                            }))}
+                                style={styles.addAddressInput}
+                                multiline
+                            />
+
+
+                        </View>
+
+
+
+
+
+
+
+                        <TouchableOpacity onPress={() => {
+                            setNewAddress({
+                                addingAddress: false,
+                                line1: null,
+                                line2: null,
+                                city: null,
+                                postalCode: null
+
+                            })
+                        }}>
+                            <Text>Cancel</Text>
+
+                        </TouchableOpacity>
+                    </View>
+                )
+
+            }
+
+            else {
+                return (
+                    <TouchableOpacity style={itemData.index === selectedAddress ? styles.selectedAddress : styles.address} onPress={() => setNewAddress(state => ({
+                        ...state,
+                        addingAddress: true
+                    }))}>
+
+                        <Text>+ ADD ADDRESS</Text>
+
+
+
+
+
+                    </TouchableOpacity>
+
+                )
+
+            }
+
+
+
+
+        }
         return (
-            <TouchableOpacity style={styles.address}>
+            <TouchableOpacity style={itemData.index === selectedAddress ? styles.selectedAddress : styles.address} onPress={() => setSelectedAddress(itemData.index)}>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.label}>LINE 1</Text>
+                    <Text style={styles.text}>{itemData.item.line1}</Text>
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.label}>LINE 2</Text>
+                    <Text style={styles.text}>{itemData.item.line2}</Text>
+                </View>
+
                 <View style={styles.infoContainer}>
                     <Text style={styles.label}>CITY</Text>
                     <Text style={styles.text}>{itemData.item.city}</Text>
                 </View>
 
                 <View style={styles.infoContainer}>
-                    <Text style={styles.label}>STREET</Text>
-                    <Text style={styles.text}>{itemData.item.street}</Text>
-                </View>
-
-                <View style={styles.infoContainer}>
-                    <Text style={styles.label}>HOUSE</Text>
-                    <Text style={styles.text}>{itemData.item.house}</Text>
+                    <Text style={styles.label}>POSTAL CODE</Text>
+                    <Text style={styles.text}>{itemData.item.postalCode}</Text>
                 </View>
 
 
@@ -69,7 +207,7 @@ export default function ShippingScreen(props) {
             <View style={styles.addressContainer}>
 
                 <FlatList
-                    data={profile.addresses}
+                    data={addresses.concat({ id: 'addAddress' })}
                     renderItem={renderAddress}
                     horizontal={true}
                     contentContainerStyle={styles.listContainerStyle}
@@ -97,7 +235,9 @@ export default function ShippingScreen(props) {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                    props.navigation.navigate('Payment')
+                    props.navigation.navigate('Payment', {
+                        address: addresses[selectedAddress]
+                    })
                 }}
             >
                 <Text style={styles.buttonText}>Payment Details</Text>
@@ -132,14 +272,36 @@ const styles = StyleSheet.create({
 
     },
     listContainerStyle: {
-        justifyContent: 'center',
-        alignItems: 'center'
+        // justifyContent: 'center',
+        // alignItems: 'center'
     },
     address: {
         backgroundColor: 'white',
         borderRadius: 20,
-        height: 200,
+
         width: 200,
+        elevation: 2,
+        marginHorizontal: 20,
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    selectedAddress: {
+        backgroundColor: 'white',
+        borderRadius: 20,
+        borderColor: '#0779e4',
+        borderWidth: 2,
+        width: 200,
+        elevation: 2,
+        marginHorizontal: 20,
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    addAddress: {
+        backgroundColor: 'white',
+        borderRadius: 20,
+        maxWidth: 300,
         elevation: 2,
         marginHorizontal: 20,
         padding: 20,
@@ -164,6 +326,15 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 15,
         width: '50%'
+    },
+
+    addAddressInput: {
+        backgroundColor: 'white',
+        borderBottomWidth: 1,
+        flex: 3,
+        width: '50%',
+
+
     },
     button: {
         position: 'absolute',

@@ -122,14 +122,19 @@ export default function LoginScreen({ navigation }) {
     password: ""
   })
 
+  const [loggingIn, setLoggingIn] = useState(false);
+
   const loginHandler = async () => {
     try {
 
 
-      if (formState.inputValues.email !== '' && formState.inputValues.password !== '') {
+      if (formState.inputValues.email !== '' && formState.inputValues.password !== '' && !loggingIn) {
+
+        setLoggingIn(true);
         await registerForPushNotificationsAsync()
 
         await dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password, token))
+        setLoggingIn(false);
         // navigation.setParams( {
         //   prevScreen: 'login'
         // })
@@ -156,6 +161,7 @@ export default function LoginScreen({ navigation }) {
     } catch (err) {
       //navigation.popToTop();
       // throw new Error(err.message);
+      setLoggingIn(false)
 
       if (err.message === "EMAIL_NOT_FOUND") {
         setErrors(state => ({
@@ -205,7 +211,7 @@ export default function LoginScreen({ navigation }) {
         ...styles.container,
         ...ScreenStyle
       }}
-     
+
     >
 
       <View style={styles.inputContainer}>
@@ -257,7 +263,9 @@ export default function LoginScreen({ navigation }) {
 
       <View style={styles.buttons}>
 
-        <UIButton text="Login" height={40} width={300} onPress={loginHandler} />
+        {loggingIn ? <UIButton text="Logging In" height={40} width={300} /> : <UIButton text="Login" height={40} width={300} onPress={loginHandler} />}
+
+
         <TouchableOpacity>
 
           <Text style={styles.forgotPassword}>Forgot your password?</Text>
@@ -293,7 +301,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     maxWidth: 400,
     width: Dimensions.get('window').width * 0.8
-    
+
   },
 
   inputStyle: {

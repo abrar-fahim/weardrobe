@@ -14,7 +14,10 @@ export const purchase = (address) => {
                 'Accept': "application/json"
             },
             body: JSON.stringify({
-                address: address
+                line1: address.line1,
+                line2: address.line2,
+                city: address.city,
+                postalCode: address.postalCode
             })
 
         });

@@ -10,6 +10,9 @@ import * as popupActions from '../../store/actions/Popup';
 
 export default function ConfirmOrderScreen(props) {
 
+    const address = props.route.params?.address;
+    
+
     const userId = useSelector(state => state.auth.userId);
 
     const profile = useSelector(state => state.profile.myProfile);
@@ -19,7 +22,7 @@ export default function ConfirmOrderScreen(props) {
 
     const purchase = useCallback(async () => {
         try {
-            await dispatch(orderActions.purchase())
+            await dispatch(orderActions.purchase(address))
             await dispatch(popupActions.setMessage("order placed!", false))
 
         }
@@ -27,7 +30,7 @@ export default function ConfirmOrderScreen(props) {
             console.log(err)
         }
 
-    }, [])
+    }, [address])
 
     // const renderItem = (itemData) => {
     //     return (
@@ -43,9 +46,10 @@ export default function ConfirmOrderScreen(props) {
 
                 </View>
                 <View style={styles.body}>
-                    <Text>{profile.addresses[0].house}</Text>
-                    <Text>{profile.addresses[0].street}</Text>
-                    <Text>{profile.addresses[0].city}</Text>
+                    <Text>{address?.line1}</Text>
+                    <Text>{address?.line2}</Text>
+                    <Text>{address?.city}</Text>
+                    <Text>{address?.postalCode}</Text>
 
                 </View>
 

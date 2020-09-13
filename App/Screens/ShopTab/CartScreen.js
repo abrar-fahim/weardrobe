@@ -230,8 +230,13 @@ export default function CartScreen(props) {
 
     if (cartItems.length === 0) {
         return (
-            <View>
-                <Text>no cart items yet!!</Text>
+            <View style={styles.centered}>
+                <Text style={styles.title}>No Items yet</Text>
+                <TouchableOpacity onPress={() => props.navigation.goBack()}>
+                    <Text style={styles.subtitle}>SHOP NOW</Text>
+
+                </TouchableOpacity>
+
             </View>
         )
     }
@@ -314,182 +319,198 @@ export default function CartScreen(props) {
 
 }
 
-const styles = StyleSheet.create(
-    {
+const styles = StyleSheet.create({
+    centered: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
 
-        list: {
-            // marginBottom: 20
+    },
 
-        },
-        cartItem: {
-            margin: 10,
-            flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: 'white',
-            flex: 1,
+    title: {
+        fontFamily: 'PlayfairDisplay_600SemiBold',
+        fontSize: 40,
+    },
+    subtitle: {
+        fontFamily: 'WorkSans_400Regular',
+        fontSize: 20,
+        marginTop: 20,
+        letterSpacing: 1,
+        color: '#0779e4'
+    },
 
-            padding: 8,
+    list: {
+        // marginBottom: 20
 
-        },
+    },
+    cartItem: {
+        margin: 10,
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        flex: 1,
 
-        seller: {
-            flex: 1,
-            width: '100%',
-            alignItems: 'flex-start',
-            paddingHorizontal: 5,
-            borderBottomWidth: 0.5,
-            marginBottom: 5
+        padding: 8,
 
-        },
-        sellerName: {
-            width: 100,
-            textAlign: 'left',
-            fontSize: 14,
-            fontWeight: '600'
-        },
-        product: {
-            flexDirection: 'row',
-            flex: 4
+    },
 
-        },
+    seller: {
+        flex: 1,
+        width: '100%',
+        alignItems: 'flex-start',
+        paddingHorizontal: 5,
+        borderBottomWidth: 0.5,
+        marginBottom: 5
 
-        picSizeColor: {
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center'
-        },
-        picture: {
-            height: 90,
-            width: 90,
-            alignSelf: 'center'
+    },
+    sellerName: {
+        width: 100,
+        textAlign: 'left',
+        fontSize: 14,
+        fontWeight: '600'
+    },
+    product: {
+        flexDirection: 'row',
+        flex: 4
 
+    },
 
-        },
-
-        namePriceQuantity: {
-            flex: 3,
-            paddingHorizontal: 10
-        },
-
-        itemName: {
-            fontFamily: 'PlayfairDisplay_600SemiBold',
-            fontSize: 25,
-            marginVertical: 10
-
-        },
-        sizeColorContainer: {
-            flexDirection: 'row',
-            marginTop: 5,
-            width: 100,
-            justifyContent: 'space-evenly',
-            marginLeft: 5
-        },
-        sizeContainer: {
-            alignItems: 'center',
-            justifyContent: 'center'
-        },
-        sizeText: {
-
-            fontWeight: '700'
-        },
-
-        priceContainer: {
-            alignItems: 'flex-start',
-            alignSelf: 'flex-start',
-
-        },
-        priceText: {
-            fontSize: 18,
-            fontWeight: '700',
-            minWidth: 100,
-            width: '100%',
-        },
-        descriptionQuantity: {
-            flexDirection: 'row',
-            flex: 1,
-        },
-        description: {
-            flex: 2,
-        },
-        quantity: {
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-between'
-
-        },
-        cartX: {
-            justifyContent: 'center',
-            marginRight: 10,
-            alignItems: 'center',
-            alignSelf: 'flex-end',
-            width: 100,
-            borderWidth: 1.5,
-            height: 30,
-            marginVertical: 10
-        },
-        x: {
-            fontSize: 13,
-            fontWeight: '700',
-            width: 100,
-            textAlign: 'center'
-        },
-
-        buttonContainer: {
-            backgroundColor: Colors.buttonColor,
-            height: 50,
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: 20,
-            borderRadius: 40
-
-        },
-        summaryContainer: {
-            padding: 5,
-            borderWidth: 0.5,
-            borderColor: 'grey',
-            marginHorizontal: 10
-
-        },
-        summaryRow: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginVertical: 10,
+    picSizeColor: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    picture: {
+        height: 90,
+        width: 90,
+        alignSelf: 'center'
 
 
+    },
 
-        },
+    namePriceQuantity: {
+        flex: 3,
+        paddingHorizontal: 10
+    },
 
-        summaryTotalRow: {
-            borderTopColor: 'grey',
-            borderTopWidth: 0.5,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginVertical: 10
+    itemName: {
+        fontFamily: 'PlayfairDisplay_600SemiBold',
+        fontSize: 25,
+        marginVertical: 10
+
+    },
+    sizeColorContainer: {
+        flexDirection: 'row',
+        marginTop: 5,
+        width: 100,
+        justifyContent: 'space-evenly',
+        marginLeft: 5
+    },
+    sizeContainer: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    sizeText: {
+
+        fontWeight: '700'
+    },
+
+    priceContainer: {
+        alignItems: 'flex-start',
+        alignSelf: 'flex-start',
+
+    },
+    priceText: {
+        fontSize: 18,
+        fontWeight: '700',
+        minWidth: 100,
+        width: '100%',
+    },
+    descriptionQuantity: {
+        flexDirection: 'row',
+        flex: 1,
+    },
+    description: {
+        flex: 2,
+    },
+    quantity: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+
+    },
+    cartX: {
+        justifyContent: 'center',
+        marginRight: 10,
+        alignItems: 'center',
+        alignSelf: 'flex-end',
+        width: 100,
+        borderWidth: 1.5,
+        height: 30,
+        marginVertical: 10
+    },
+    x: {
+        fontSize: 13,
+        fontWeight: '700',
+        width: 100,
+        textAlign: 'center'
+    },
+
+    buttonContainer: {
+        backgroundColor: Colors.buttonColor,
+        height: 50,
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+        borderRadius: 40
+
+    },
+    summaryContainer: {
+        padding: 5,
+        borderWidth: 0.5,
+        borderColor: 'grey',
+        marginHorizontal: 10
+
+    },
+    summaryRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: 10,
 
 
-        },
-        lightText: {
-            fontWeight: '600',
-            color: 'grey'
-        },
-        totalText: {
-            fontWeight: '700',
-            color: 'black',
-            fontSize: 20,
-            marginTop: 10,
-            flex: 1,
-            textAlign: 'right'
-        },
-        totalTextTitle: {
-            fontWeight: '700',
-            color: 'black',
-            fontSize: 20,
-            marginTop: 10,
-            flex: 1,
-            textAlign: 'left'
-        }
+
+    },
+
+    summaryTotalRow: {
+        borderTopColor: 'grey',
+        borderTopWidth: 0.5,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: 10
 
 
+    },
+    lightText: {
+        fontWeight: '600',
+        color: 'grey'
+    },
+    totalText: {
+        fontWeight: '700',
+        color: 'black',
+        fontSize: 20,
+        marginTop: 10,
+        flex: 1,
+        textAlign: 'right'
+    },
+    totalTextTitle: {
+        fontWeight: '700',
+        color: 'black',
+        fontSize: 20,
+        marginTop: 10,
+        flex: 1,
+        textAlign: 'left'
     }
-)
+
+
+})

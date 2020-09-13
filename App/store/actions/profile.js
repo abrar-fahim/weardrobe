@@ -16,6 +16,9 @@ export const GET_BLOGS = 'GET_BLOGS';
 
 export const GET_PROFILE = 'GET_PROFILE';
 export const GET_MY_PROFILE = 'GET_MY_PROFILE';
+export const GET_MY_ADDRESSES = 'GET_MY_ADDRESSES';
+
+
 import * as popupActions from './Popup'
 
 
@@ -1440,5 +1443,67 @@ export const updateProfile = (params) => {
     }
 }
 
+
+export const getMyAddresses = () => {
+
+    //implement this later
+    return async (dispatch) => {
+        try {
+
+
+
+            const response = await fetch(`${HOST}/get/customer-addresses`, {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                }
+
+
+            });
+
+
+
+            if (!response.ok) {
+                throw new Error('response not ok');
+            }
+
+            const addresses = [];
+
+
+
+            const resData = await response.json();
+
+            for (const key in resData) {
+                addresses.push({
+                    id: key.toString(),
+                    uid: resData[key].UID,
+                    line1: resData[key].LINE1,
+                    line2: resData[key].LINE2,
+                    city: resData[key].CITY,
+                    postalCode: resData[key].POSTAL_CODE
+
+                })
+
+            }
+
+
+
+            dispatch({
+                type: GET_MY_ADDRESSES,
+                addresses: addresses
+            })
+
+
+        }
+        catch (err) {
+
+            throw new Error(err)
+        }
+
+        //dispatch(fetchMyBlogs())
+    }
+}
 
 

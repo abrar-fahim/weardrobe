@@ -16,7 +16,9 @@ export default function PayScreen(props) {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                    props.navigation.navigate('ConfirmOrder')
+                    props.navigation.navigate('ConfirmOrder', {
+                        address: props.route.params?.address
+                    })
                 }}
             >
                 <Text style={styles.buttonText}>Continue to Confirmation</Text>
