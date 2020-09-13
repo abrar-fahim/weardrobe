@@ -70,7 +70,7 @@ export default function BlogListScreen(props) {
     function renderItems(itemData) {
         return (
             <TouchableOpacity
-                onPress={() => props.navigation.navigate('BlogScreen', {
+                onPress={() => props.navigation.navigate('Blog', {
                     blog: itemData.item
 
                 })}

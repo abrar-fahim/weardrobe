@@ -456,8 +456,10 @@ const styles = StyleSheet.create({
         // maxHeight: '100%',
         // maxWidth: Dimensions.get('window').width,
         // alignSelf: 'center'
-        width: 700,
-        height: 400
+        width: Dimensions.get('window').width,
+        maxWidth: 700,
+        height: Dimensions.get('window').width,
+        maxHeight: 700
         // flex: 7,
     },
     title: {

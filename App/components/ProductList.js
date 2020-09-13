@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS, TouchableOpacity } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS, TouchableOpacity, Dimensions } from 'react-native';
 
 
 
@@ -84,6 +84,7 @@ export default function ProductList(props) {
 
     // }
 
+    console.log(Dimensions.get('window').width)
     return (
         <View style={styles.screen}>
 
@@ -95,7 +96,7 @@ export default function ProductList(props) {
                 ListHeaderComponent={props.ListHeaderComponent}
                 data={props.data}
                 renderItem={renderGridItem}
-                numColumns={2}
+                numColumns={Dimensions.get('window').width < 768 ? 2 : 4}
                 onRefresh={props.onRefresh}
                 refreshing={props.refreshing}
                 ListEmptyComponent={(

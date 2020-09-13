@@ -16,7 +16,9 @@ import Time from '../../components/Time';
 
 export default function GroupListScreen(props) {
 
-    const groups = useSelector(state => state.social.groups)
+    const groups = useSelector(state => state.social.groups);
+
+    const updateGroupList = useSelector(state => state.social.updateGroupList);
 
 
     const [iter, setIter] = useState(0);
@@ -81,8 +83,17 @@ export default function GroupListScreen(props) {
         // const willFocusSub = props.navigation.addListener(
         //     'focus', () => {
 
-        LoadGroups();
-        loadMyProfile();
+
+        // if (updateGroupList) {
+
+        console.log(updateGroupList);
+
+            LoadGroups();
+            loadMyProfile();
+
+        // }
+
+
         //     }
 
         // );
@@ -92,7 +103,7 @@ export default function GroupListScreen(props) {
         //     setIter(0)
         // }
 
-    }, []);
+    }, [updateGroupList]);
 
 
 

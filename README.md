@@ -39,6 +39,7 @@ Known Bugs
 - [ ] fix send photos to shop chat while chatting via modal from seller screen
 - [ ] clicking on talk about in shopping session screen pushes a new chat screen to stack, it should go back to existing stack screen
 - [ ] on ios, clicking on review box to type input doesnt automatically push screen upwards to avoid keyboard, even though the keyboard is avoided when swiping up
+- [ ] group shopping icon remains in top right of shop tab even after session is finished
 
 Testing
 - [ ] need to check iters working properly for product/shop reviews

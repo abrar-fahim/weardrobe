@@ -20,7 +20,8 @@ const initialState = {
     activeSessionId: null,
     timeLeft: 0,
     expiresIn: 0,
-    groupId: null  //this keeps track of the groupId returned from create new shop chat or create new group chat
+    groupId: null,  //this keeps track of the groupId returned from create new shop chat or create new group chat
+    updateGroupList: false //this keeps track of if the list of groups is changed (for ex when someone sends a chat, if this is true, fetch groups on GroupListScreen focus)
 }
 
 
@@ -32,16 +33,21 @@ export default function socialReducer(state = initialState, action) {
             if (action.iter === 0) {
                 return {
                     ...state,
-                    groups: action.groups
+                    groups: action.groups,
+                    updateGroupList: false
                 }
             }
             if (action.groups.length === 0) {
-                return state;
+                return {
+                    ...state,
+                    updateGroupList: false
+                }
             }
 
             return {
                 ...state,
-                groups: state.groups.concat(action.groups)
+                groups: state.groups.concat(action.groups),
+                updateGroupList: false
             }
 
         case GET_CHATS:
@@ -105,7 +111,8 @@ export default function socialReducer(state = initialState, action) {
         case ADD_CHAT:
             return {
                 ...state,
-                chats: [action.chat, ...state.chats]
+                chats: [action.chat, ...state.chats],
+                updateGroupList: true
             }
 
         case SET_GROUP_ID:

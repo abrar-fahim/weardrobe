@@ -381,17 +381,17 @@ function ShopScreen({ navigation }) {
 
         if (itemData.item.type === 3) {
             return (
-                <TouchableOpacity>
+                <TouchableOpacity style={styles.tile}>
                     <View style={styles.tileTitleContainer}>
                         <Text style={styles.tileTitle}>{itemData.item.title}</Text>
 
                     </View>
 
 
-                    <View style={styles.tile}>
-                        <Image source={itemData.item.banners[0].image} style={styles.tileImage} resizeMode="cover" />
 
-                    </View>
+                    <Image source={itemData.item.banners[0].image} style={styles.tileImage} resizeMode="cover" />
+
+
 
 
                 </TouchableOpacity>
@@ -592,7 +592,8 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        zIndex: 2
 
     },
     topBannerTitle: {
@@ -694,7 +695,8 @@ const styles = StyleSheet.create({
         height: '100%',
         justifyContent: 'center',
         alignItems: "flex-end",
-        padding: 20
+        padding: 20,
+        zIndex: 2
 
     },
 
@@ -726,6 +728,7 @@ const styles = StyleSheet.create({
         height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
+        zIndex: 2
 
     },
     tileTitle: {
@@ -740,14 +743,14 @@ const styles = StyleSheet.create({
 
     },
     tile: {
-        width: '100%',
+        width: Dimensions.get('window').width,
         height: Dimensions.get('window').width,
-        maxWidth: 600,
-        maxHeight: 600
+       
     },
     tileImage: {
         height: '100%',
-        width: '100%'
+        width: '100%',
+
 
     },
     bigGridTitle: {

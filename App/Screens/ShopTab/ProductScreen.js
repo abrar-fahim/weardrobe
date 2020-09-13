@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useCallback, useState, useLayoutEffect } from 'react';
-import { TextInput, StyleSheet, Text, View, Dimensions, Image, FlatList, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { TextInput, StyleSheet, Text, View, Dimensions, Image, FlatList, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 
 import ScreenStyle from '../../Styles/ScreenStyle';
 import Colors from '../../Styles/Colors';
@@ -58,6 +58,9 @@ export default function ProductScreen(props) {
 
     const [shareVisible, setShareVisible] = useState(false);
     const [picturesModalVisible, setPicturesModalVisible] = useState(false);
+
+
+    const [addingToCart, setAddingToCart] = useState(false);
 
 
 
@@ -217,7 +220,13 @@ export default function ProductScreen(props) {
 
                 }
                 else {
-                    await dispatch(cartActions.addToCart(productId, color, size, quantity))
+                    if (!addingToCart) {
+                        setAddingToCart(true);
+                        await dispatch(cartActions.addToCart(productId, color, size, quantity))
+                        setAddingToCart(false);
+
+                    }
+
                     // setPopupMessage("added to cart!")
 
                     // setAddCartModalVisible(true)
@@ -237,7 +246,7 @@ export default function ProductScreen(props) {
         }
 
 
-    }, [loggedIn, selectedColor, selectedSize, colors, sizes])
+    }, [loggedIn, selectedColor, selectedSize, colors, sizes, addingToCart])
 
 
 
@@ -393,18 +402,26 @@ export default function ProductScreen(props) {
                         <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes.map(size => size.size)} size={45} />
                     </View>
                 }
-                <TouchableOpacity onPress={() => {
-                    addToCart(selectedColor, selectedSize, 1);
-                    //props.navigation.goBack();
+                <TouchableOpacity
+                    style={{ ...styles.cartButtonContainer }}
+                    onPress={() => {
+                        addToCart(selectedColor, selectedSize, 1);
+                        //props.navigation.goBack();
 
-                }} >
 
-                    <View style={{ ...styles.cartButtonContainer }}>
+                    }} >
 
+                    {addingToCart ? <ActivityIndicator size="small" /> : <>
                         <Text style={styles.cartText}>+ ADD TO CART</Text>
                         <Text style={styles.priceText}>{"৳ " + product.price}</Text>
+                    </>}
 
-                    </View>
+
+
+
+
+
+
 
                 </TouchableOpacity>
 

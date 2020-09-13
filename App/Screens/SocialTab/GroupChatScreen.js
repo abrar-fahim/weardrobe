@@ -20,6 +20,8 @@ import ShoppingSessionTimer from '../../components/ShoppingSessionTimer';
 import { IMG_URL } from '../../components/host';
 import Time from '../../components/Time';
 
+import moment from 'moment';
+
 export default function GroupTabScreen(props) {
 
 
@@ -239,12 +241,29 @@ export function GroupChatScreen(props) {
 
         const dp = type === 'GROUP' ? (participants !== undefined ? participants?.find((person) => person.id === itemData.item.senderId)?.profilePic : null) : (itemData.item.senderId === userId ? myProfile.profilePic : logo);
 
-        const username = type === 'GROUP' ? (participants !== undefined ? participants?.filter((person) => person.id === itemData.item.senderId)[0]?.username : null) : (itemData.item.senderId === userId ? myProfile.username : name)
+        const username = type === 'GROUP' ? (participants !== undefined ? participants?.filter((person) => person.id === itemData.item.senderId)[0]?.username : null) : (itemData.item.senderId === userId ? myProfile.username : name);
+
+
+        const prevTime = new Date(moment(chats[itemData.index + 1]?.time));
+
+        const time = new Date(moment(itemData.item.time));
+
+
+        const spam =
+            chats[itemData.index + 1]?.senderId === itemData.item.senderId
+            &&
+            time - prevTime < 2 * 60 * 1000;
+        //if consecutive chats are sent by same person and are spaced less than 2 min apart, group them together by setting spam = true
+
+
+
+
+
         if (itemData.item.senderId === userId) {
             return (
-                <View style={styles.chat}>
+                <View style={spam ? styles.chatSameUser : styles.chat}>
 
-                    <TouchableOpacity onPress={() => props.navigation.navigate('Weardrobe')}>
+                    {spam ? null : <TouchableOpacity onPress={() => props.navigation.navigate('Weardrobe')}>
                         <Image style={styles.pictureMe} source={dp} />
                         <View style={styles.usernameDateMe}>
 
@@ -253,7 +272,7 @@ export function GroupChatScreen(props) {
 
 
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
 
 
                     {
@@ -286,8 +305,9 @@ export function GroupChatScreen(props) {
 
 
         return (
-            <View style={styles.chat}>
-                <TouchableOpacity
+            <View style={spam ? styles.chatSameUser : styles.chat}>
+
+                {spam ? null : <TouchableOpacity
                     onPress={() => type === 'GROUP' ? props.navigation.navigate('Profile', {
                         profileId: itemData.item.senderId
                     }) : props.navigation.navigate('Seller', {
@@ -300,7 +320,8 @@ export function GroupChatScreen(props) {
                         <Time style={styles.time} value={itemData.item.time} />
                     </View>
 
-                </TouchableOpacity>
+                </TouchableOpacity>}
+
                 {itemData.item.type === 'PHOTO' ? <Image source={itemData.item.message} style={styles.photo} /> : (itemData.item.type === 'PRODUCT' ?
                     <View style={styles.productBubble}>
                         <Image style={styles.productPhoto} source={itemData.item.message.photos[0].image} />
@@ -450,6 +471,10 @@ const styles = StyleSheet.create({
     chat: {
         marginVertical: 20,
         marginHorizontal: 10,
+    },
+    chatSameUser: {
+        marginHorizontal: 10,
+        marginVertical: 0
     },
     picture: {
         height: 30,
@@ -628,7 +653,7 @@ const styles = StyleSheet.create({
         height: 70,
     },
     sendMsg: {
-        minHeight: 50,
+        paddingVertical: 10,
         borderColor: 'black',
         backgroundColor: 'white',
         paddingLeft: 10,

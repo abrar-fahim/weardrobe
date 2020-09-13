@@ -20,7 +20,7 @@ export default function ShopRightButtons(props) {
 
     return (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            {activeSession !== null ? <Item
+            {activeSession ? <Item
                 title='groupButton'
                 iconName='md-people'
                 //onPress={() => navigation.navigate('Shop',{screen:'SearchScreen'})}
