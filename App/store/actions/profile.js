@@ -19,6 +19,8 @@ export const GET_MY_PROFILE = 'GET_MY_PROFILE';
 export const GET_MY_ADDRESSES = 'GET_MY_ADDRESSES';
 
 
+
+
 import * as popupActions from './Popup'
 
 
@@ -1503,6 +1505,59 @@ export const getMyAddresses = () => {
         }
 
         //dispatch(fetchMyBlogs())
+    }
+
+}
+
+export const addAddressToProfile = (address) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${HOST}/add/address`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                },
+                body: JSON.stringify({
+                    line1: address.line1,
+                    line2: address.line2,
+                    city: address.city,
+                    postalCode: address.postalCode,
+                }),
+
+            });
+
+            if (!response.ok) {
+                throw new Error('wrong!!');
+            }
+
+            const resData = await response.json();
+            const posts = [];
+
+            if (Object.keys(resData)[0] !== 'ERROR') {
+
+                popupActions.setMessage("address added to profile!");
+
+                // console.log(loadedProducts);
+            }
+
+
+
+            else {
+
+                throw new Error(resData.ERROR)
+            }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
     }
 }
 

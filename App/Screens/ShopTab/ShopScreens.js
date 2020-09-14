@@ -275,13 +275,13 @@ function ShopScreen({ navigation }) {
                         <Image
 
                             style={styles.scrollerImage}
-                            source={itemData.item.banners[2].image}
+                            source={itemData.item.banners[2]?.image}
                             resizeMode="cover"
                         />
 
                         <Image
                             style={styles.scrollerImage}
-                            source={itemData.item.banners[3].image}
+                            source={itemData.item.banners[3]?.image}
                             resizeMode="cover"
                         />
 

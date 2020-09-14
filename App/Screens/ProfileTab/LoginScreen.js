@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useReducer, useCallback } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView, Dimensions, KeyboardAvoidingView } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View, Image, ScrollView, Dimensions, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -263,7 +263,10 @@ export default function LoginScreen({ navigation }) {
 
       <View style={styles.buttons}>
 
-        {loggingIn ? <UIButton text="Logging In" height={40} width={300} /> : <UIButton text="Login" height={40} width={300} onPress={loginHandler} />}
+        {loggingIn ? <View style={styles.button}>
+          <ActivityIndicator size="small" color="white"/>
+
+        </View> : <UIButton text="Login" height={40} width={300} onPress={loginHandler} />}
 
 
         <TouchableOpacity>
@@ -317,6 +320,15 @@ const styles = StyleSheet.create({
     marginTop: 50,
     width: "100%",
     height: 65,
+  },
+  button: {
+    backgroundColor: '#420000',
+    color: 'white',
+    height: 40,
+    width: 300,
+    justifyContent: 'center',
+    alignItems: 'center'
+
   },
   iconContainer: {
     width: 25,

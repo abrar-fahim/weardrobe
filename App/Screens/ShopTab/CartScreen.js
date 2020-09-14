@@ -253,6 +253,8 @@ export default function CartScreen(props) {
     return (
         <View style={{ ...ScreenStyle, ...styles.screen }}>
             <FlatList
+                onRefresh={loadCartItems}
+                refreshing={isLoading}
                 data={cartItems}
                 renderItem={renderItems}
                 ListFooterComponent={

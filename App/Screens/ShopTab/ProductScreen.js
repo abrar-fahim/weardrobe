@@ -239,6 +239,7 @@ export default function ProductScreen(props) {
 
 
             } catch (err) {
+                setAddingToCart(false);
                 console.log(err.message)
 
                 //setAddCartMessage('Failed to add to cart')
@@ -403,7 +404,7 @@ export default function ProductScreen(props) {
                     </View>
                 }
                 <TouchableOpacity
-                    style={{ ...styles.cartButtonContainer }}
+                    style={addingToCart ? styles.loadingButtonContainer : styles.cartButtonContainer}
                     onPress={() => {
                         addToCart(selectedColor, selectedSize, 1);
                         //props.navigation.goBack();
@@ -411,7 +412,7 @@ export default function ProductScreen(props) {
 
                     }} >
 
-                    {addingToCart ? <ActivityIndicator size="small" /> : <>
+                    {addingToCart ? <ActivityIndicator size="small" color="white" /> : <>
                         <Text style={styles.cartText}>+ ADD TO CART</Text>
                         <Text style={styles.priceText}>{"৳ " + product.price}</Text>
                     </>}
@@ -872,6 +873,24 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         elevation: 20
+    },
+
+    loadingButtonContainer: {
+        marginVertical: 20,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginHorizontal: 10,
+        backgroundColor: Colors.primaryColor,
+        height: 60,
+        alignItems: 'center',
+        padding: 20,
+        // borderRadius: 40,
+        shadowOffset: {
+            height: 3,
+        },
+        shadowOpacity: 0.5,
+        elevation: 20
+
     },
     cartText: {
         color: 'white',

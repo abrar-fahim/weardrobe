@@ -11,6 +11,7 @@ import * as profileActions from '../store/actions/profile'
 import * as popupActions from '../store/actions/Popup'
 import Modal from 'react-native-modal';
 import Time from './Time';
+import { Video } from 'expo-av';
 
 
 
@@ -133,8 +134,22 @@ const Post = (props) => {
 
     const renderImage = (itemData) => {
 
+        // console.log(itemData.item.image)
+
+
+
 
         return (
+            // <Video
+            //     source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
+            //     rate={1.0}
+            //     volume={1.0}
+            //     isMuted={false}
+            //     resizeMode="cover"
+            //     shouldPlay
+            //     isLooping
+            //     style={{ width: 300, height: 300 }}
+            // />
 
             <Image source={itemData.item.image} style={styles.postImage} resizeMethod="scale" resizeMode="contain" />
 
