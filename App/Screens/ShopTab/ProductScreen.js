@@ -23,6 +23,7 @@ import TouchableStars from '../../components/TouchableStars'
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Time from '../../components/Time';
+import ProductList from '../../components/ProductList';
 
 
 export default function ProductScreen(props) {
@@ -36,7 +37,10 @@ export default function ProductScreen(props) {
 
     const product = useSelector(state => state.products.productDetails);
 
-    const reviews = useSelector(state => state.products.productReviews)
+    const reviews = useSelector(state => state.products.productReviews);
+
+
+    const location = useSelector(state => state.profile.location);
 
 
     const [reviewText, setReviewText] = useState(null)
@@ -59,8 +63,17 @@ export default function ProductScreen(props) {
     const [shareVisible, setShareVisible] = useState(false);
     const [picturesModalVisible, setPicturesModalVisible] = useState(false);
 
+    const [similarProducts, setSimilarProducts] = useState([]);
+
 
     const [addingToCart, setAddingToCart] = useState(false);
+
+
+    // if (location) {
+    //     const text = JSON.stringify(location);
+    //     console.log(text)
+    // }
+
 
 
 
@@ -69,18 +82,27 @@ export default function ProductScreen(props) {
 
         try {
 
-            setIsLoading(true)
-            await dispatch(productActions.fetchProductReviews(productId))
-            await dispatch(productActions.fetchProductDetails(productId))
-            setIsLoading(false)
+            setIsLoading(true);
+
+            await dispatch(productActions.fetchProductReviews(productId));
+
+            await dispatch(productActions.fetchProductDetails(productId));
+
+            const products = await productActions.fetchSimilarProductsDirect(productId);
+            setSimilarProducts(products);
+
+            setIsLoading(false);
 
 
         } catch (err) {
+            setIsLoading(false)
             console.log(err)
         }
 
 
     }, [productId])
+
+
 
     const loadMoreReviews = useCallback(async () => {
 
@@ -314,7 +336,8 @@ export default function ProductScreen(props) {
 
 
     useEffect(() => {
-        loadProductDetails()
+        loadProductDetails();
+
 
     }, []);
 
@@ -374,6 +397,10 @@ export default function ProductScreen(props) {
 
     }
 
+
+
+
+
     const productPage = //useCallback(() => ( 
         product ? (
             <View style={{ ...ScreenStyle, ...styles.screen }}>
@@ -398,10 +425,23 @@ export default function ProductScreen(props) {
                     </View>
                 }
                 {sizes[0]?.size === null || sizes[0]?.size === undefined || sizes[0]?.size === "" ? null :
-                    <View style={styles.sizeContainer}>
-                        <Text style={styles.text}> SIZE </Text>
-                        <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes.map(size => size.size)} size={45} />
-                    </View>
+                    <>
+                        <View style={styles.sizeContainer}>
+                            <Text style={styles.text}> SIZE </Text>
+                            <SizeCircles setSelectedSize={setSelectedSize} selectedSize={selectedSize} sizes={sizes.map(size => size.size)} size={45} />
+                        </View>
+
+                        <TouchableOpacity
+                            onPress={() => props.navigation.push('SizeChart', {product: product })}
+
+                            style={styles.sizeChartButton}
+                        >
+
+                            <Text style={styles.buttonText}>VIEW SIZE GUIDE</Text>
+
+                        </TouchableOpacity>
+
+                    </>
                 }
                 <TouchableOpacity
                     style={addingToCart ? styles.loadingButtonContainer : styles.cartButtonContainer}
@@ -424,15 +464,9 @@ export default function ProductScreen(props) {
 
 
 
+
+
                 </TouchableOpacity>
-
-                <View style={styles.descriptionContainer}>
-
-                    <Text style={styles.heading}>Description</Text>
-
-
-                    <Text style={styles.description}>{product.description} </Text>
-                </View>
 
                 <View style={styles.ratingShare}>
                     {product.rating ? <RatingStars rating={product.rating} size={30} /> : <Text style={styles.heading}>No Ratings yet</Text>}
@@ -455,6 +489,33 @@ export default function ProductScreen(props) {
 
                 </View>
 
+                <View style={styles.descriptionContainer}>
+
+                    <Text style={styles.heading}>Description</Text>
+
+
+                    <Text style={styles.description}>{product.description} </Text>
+                </View>
+
+
+                <View style={styles.similarProductsContainer}>
+                    <Text style={styles.heading}>Users who viewed this also viewed</Text>
+                    <ProductList
+                        horizontal={true}
+                        data={similarProducts}
+                        // style={styles.similarProductsContainer}
+                        navigation={props.navigation}
+
+                    />
+
+                </View>
+
+
+
+
+
+
+
                 {/* <View style={styles.qa}>
 
             <Text style={styles.heading}>Customer Questions</Text>
@@ -470,43 +531,44 @@ export default function ProductScreen(props) {
 
                 </View>
 
-                {product.hasReviewed === 0 ?
-                    <>
-                        <View style={styles.addReviewHeading}>
+                {
+                    product.hasReviewed === 0 ?
+                        <>
+                            <View style={styles.addReviewHeading}>
 
-                            <TouchableStars rating={rating} setRating={setRating} size={40} />
-
-
-                            <TouchableOpacity
-                                style={styles.addReviewButtonContainer}
-                                onPress={() => {
-                                    if (!loggedIn) {
-                                        props.navigation.navigate('Login')
-                                    }
-                                    else {
-                                        addReview(rating, reviewText)
-                                    }
-
-                                }}
-                            >
-                                <Text style={styles.addReview}>+ ADD REVIEW</Text>
+                                <TouchableStars rating={rating} setRating={setRating} size={40} />
 
 
-                            </TouchableOpacity>
-                        </View>
+                                <TouchableOpacity
+                                    style={styles.addReviewButtonContainer}
+                                    onPress={() => {
+                                        if (!loggedIn) {
+                                            props.navigation.navigate('Login')
+                                        }
+                                        else {
+                                            addReview(rating, reviewText)
+                                        }
+
+                                    }}
+                                >
+                                    <Text style={styles.addReview}>+ ADD REVIEW</Text>
+
+
+                                </TouchableOpacity>
+                            </View>
 
 
 
 
-                        <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
-                            onChangeText={(value) => (setReviewText(value))} />
+                            <TextInput multiline={true} placeholder="Add Review Text" style={styles.addReviewInput}
+                                onChangeText={(value) => (setReviewText(value))} />
 
-                    </> : null
+                        </> : null
                 }
 
 
 
-            </View>
+            </View >
         ) : null
     // , [product, colors, selectedColor, selectedSize, loggedIn, reviews])
 
@@ -703,13 +765,7 @@ const styles = StyleSheet.create({
         marginTop: 30
 
     },
-    text: {
-        fontWeight: '700',
-        marginBottom: 10,
-        marginRight: 30,
-        width: 70,
-        color: 'grey'
-    },
+
     screen: {
         marginBottom: 10
     },
@@ -732,6 +788,27 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         marginBottom: 20
     },
+    text: {
+        fontWeight: '700',
+        marginBottom: 10,
+        marginRight: 30,
+        width: 70,
+        color: 'grey'
+    },
+
+    sizeChartButton: {
+        width: '100%',
+        marginVertical: 10
+
+
+    },
+    buttonText: {
+        fontFamily: 'WorkSans_500Medium',
+        fontSize: 16,
+        width: '100%',
+        textAlign: 'center'
+    },
+
 
     qa: {
         width: '100%',
@@ -748,20 +825,7 @@ const styles = StyleSheet.create({
         margin: 10
 
     },
-    heading: {
-        fontSize: 22,
-        fontWeight: '700',
-        flex: 1,
-        width: 200,
-    },
-    description: {
-        fontFamily: 'WorkSans_400Regular',
-        color: 'grey',
-        fontSize: 18,
-        letterSpacing: -1,
-        marginVertical: 20
 
-    },
     share: {
         borderWidth: 2,
         borderColor: 'black',
@@ -915,6 +979,34 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'flex-start',
         justifyContent: 'center'
+    },
+    heading: {
+        fontSize: 22,
+        fontWeight: '700',
+        flex: 1,
+        width: '100%'
+        // width: 200,
+    },
+    description: {
+        fontFamily: 'WorkSans_400Regular',
+        color: 'grey',
+        fontSize: 18,
+        letterSpacing: -1,
+        marginVertical: 20
+
+    },
+
+    similarProductsContainer: {
+        marginTop: 40,
+        padding: 10,
+
+        width: '100%',
+        alignItems: 'flex-start',
+        justifyContent: 'center'
+    },
+    similarProduct: {
+        backgroundColor: 'white'
+
     },
     textContainer: {
         width: 'auto',

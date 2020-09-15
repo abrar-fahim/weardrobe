@@ -29,9 +29,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import * as authActions from '../store/actions/auth'
 import * as chatActions from '../store/actions/chats'
+import * as profileActions from '../store/actions/profile'
 
 import SmallPopup from '../components/SmallPopup'
 import ProductScreen from './ShopTab/ProductScreen';
+import * as Location from 'expo-location';
 
 
 export default function HomeScreen(props) {
@@ -49,6 +51,9 @@ export default function HomeScreen(props) {
 
 
 
+    // const [location, setLocation] = useState(null);
+
+
 
 
 
@@ -57,6 +62,27 @@ export default function HomeScreen(props) {
         //setIsLoading(true);
         try {
             await dispatch(authActions.getUserId())
+            // if (userId) chatActions.connectSocket();
+        } catch (err) {
+
+            console.log(err)
+        }
+        //setIsLoading(false);
+    }, [userId])
+
+    const setLocation = useCallback(async () => {
+        //setIsLoading(true);
+        try {
+
+            let { status } = await Location.requestPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+
+
+            await dispatch(profileActions.setLocation(location));
             // if (userId) chatActions.connectSocket();
         } catch (err) {
 
@@ -79,6 +105,7 @@ export default function HomeScreen(props) {
         // );
 
         // return willFocusSub;
+        setLocation();
         loadUserId();
 
         //diconnect socket here later

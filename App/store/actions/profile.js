@@ -18,6 +18,8 @@ export const GET_PROFILE = 'GET_PROFILE';
 export const GET_MY_PROFILE = 'GET_MY_PROFILE';
 export const GET_MY_ADDRESSES = 'GET_MY_ADDRESSES';
 
+export const GET_LOCATION = 'GET_LOCATION';
+
 
 
 
@@ -1548,6 +1550,31 @@ export const addAddressToProfile = (address) => {
 
                 throw new Error(resData.ERROR)
             }
+
+
+
+        }
+        catch (err) {
+            //send to custom analytics server
+            //console.log('error on action')
+            //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+            throw new Error(err)
+        }
+    }
+}
+
+export const setLocation = (location) => {
+    return async (dispatch) => {
+        try {
+
+
+
+            dispatch({
+                type: GET_LOCATION,
+                location: location
+            })
+
+
 
 
 

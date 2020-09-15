@@ -61,7 +61,8 @@
     "socket.io-client": "^2.3.0",
     "three": "^0.118.1",
     "tough-cookie": "^4.0.0",
-    "expo-av": "~8.1.0"
+    "expo-av": "~8.1.0",
+    "expo-location": "~8.1.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^8.1.0",

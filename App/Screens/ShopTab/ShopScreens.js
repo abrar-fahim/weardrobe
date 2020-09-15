@@ -527,6 +527,7 @@ function ShopScreen({ navigation }) {
                     <View style={styles.screen}>
                         <Text style={styles.title}>All Products</Text>
                         <ProductList
+
                             onEndReached={loadMoreProducts}
                             navigation={navigation}
                             data={allProducts}
@@ -745,7 +746,7 @@ const styles = StyleSheet.create({
     tile: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').width,
-       
+
     },
     tileImage: {
         height: '100%',

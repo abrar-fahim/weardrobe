@@ -46,7 +46,7 @@ export default function ProductList(props) {
         return (
             <View style={{ ...styles.gridItem, opacity: itemData.item.inventoryQuantity > 0 ? 1 : 0.5 }}>
                 <TouchableOpacity onPress={() => (
-                    props.navigation.navigate("Product", {
+                    props.navigation.push("Product", {
                         productId: itemData.item.id,
                         inventoryQuantity: itemData.item.inventoryQuantity
                     })
@@ -84,29 +84,36 @@ export default function ProductList(props) {
 
     // }
 
-    console.log(Dimensions.get('window').width)
+        
+
     return (
-        <View style={styles.screen}>
+        // <View style={styles.screen}>
 
-            <FlatList
-                // listKey={props.listKey}
-                {...props}
-                bounces={props.bounces}
 
-                ListHeaderComponent={props.ListHeaderComponent}
-                data={props.data}
-                renderItem={renderGridItem}
-                numColumns={Dimensions.get('window').width < 768 ? 2 : 4}
-                onRefresh={props.onRefresh}
-                refreshing={props.refreshing}
-                ListEmptyComponent={(
-                    <View>
-                        <Text> no products yet!</Text>
-                    </View>
-                )}
-            />
 
-        </View>
+
+        <FlatList
+            // listKey={props.listKey}
+            {...props}
+            bounces={props?.bounces}
+            numColumns={
+                props?.horizontal ?? false ?
+                    undefined : (Dimensions.get('window').width < 768 ? 2 : 4)
+            }
+            ListHeaderComponent={props?.ListHeaderComponent}
+            data={props.data}
+            renderItem={renderGridItem}
+
+            onRefresh={props?.onRefresh}
+            refreshing={props?.refreshing}
+            ListEmptyComponent={(
+                <View>
+                    <Text> no products yet!</Text>
+                </View>
+            )}
+        />
+
+        // </View>
     );
 
 }

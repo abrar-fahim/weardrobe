@@ -54,6 +54,7 @@ import {
   WorkSans_400Regular,
   WorkSans_500Medium
 } from '@expo-google-fonts/work-sans';
+import SizeChartScreen from './Screens/ShopTab/SizeChartScreen';
 
 
 
@@ -123,6 +124,7 @@ export default function App({ navigation }) {
 
 
 
+
   return (
 
     <Provider store={store}>
@@ -138,6 +140,11 @@ export default function App({ navigation }) {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Signup" component={SignupScreen} />
           <Stack.Screen name="Product" component={ProductScreen} />
+          <Stack.Screen name="SizeChart" component={SizeChartScreen}
+            options={{
+              title: 'Size Guide'
+            }}
+          />
           <Stack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options={{
 
           }} />

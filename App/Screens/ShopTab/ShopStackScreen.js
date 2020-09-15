@@ -46,6 +46,7 @@ import PayScreen from './PayScreen';
 import ShippingScreen from './ShippingScreen';
 import ConfirmOrderScreen from './ConfirmOrderScreen';
 import { ParentCategoriesScreen } from './ParentCategoryListScreen';
+import SizeChartScreen from './SizeChartScreen';
 
 export default function ShopStackScreen({ navigation }) {
     const ShopStack = createStackNavigator();
@@ -115,6 +116,8 @@ export default function ShopStackScreen({ navigation }) {
                         title: 'Categories'
                     }}
                 />
+
+                
 
             </ShopStack.Navigator>
         </CustomView>

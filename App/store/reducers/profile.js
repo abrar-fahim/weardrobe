@@ -1,4 +1,7 @@
-import { GET_SELF_POSTS, GET_SELF_BLOGS, GET_BLOGS, GET_POSTS, GET_FOLLOW_REQUESTS, GET_FOLLOW_COUNTS, GET_MY_FOLLOWERS, GET_MY_FOLLOWING, GET_PROFILE, GET_MY_PROFILE, GET_FOLLOWERS, GET_FOLLOWING, GET_MY_FOLLOW_COUNTS, GET_MY_ADDRESSES } from "../actions/profile";
+import { GET_SELF_POSTS, GET_SELF_BLOGS, GET_BLOGS, GET_POSTS, GET_FOLLOW_REQUESTS, GET_FOLLOW_COUNTS, GET_MY_FOLLOWERS, GET_MY_FOLLOWING, GET_PROFILE, GET_MY_PROFILE, GET_FOLLOWERS, GET_FOLLOWING, GET_MY_FOLLOW_COUNTS, GET_MY_ADDRESSES, GET_LOCATION } from "../actions/profile";
+
+
+
 
 const initialState = {
     posts: [],
@@ -18,7 +21,8 @@ const initialState = {
     otherProfile: [],
     followers: [],
     following: [],
-    addresses: []
+    addresses: [],
+    location: null
 
 
 }
@@ -112,6 +116,12 @@ export default function profileReducer(state = initialState, action) {
             return {
                 ...state,
                 addresses: action.addresses
+            }
+
+        case GET_LOCATION:
+            return {
+                ...state,
+                location: action.location
             }
 
     }

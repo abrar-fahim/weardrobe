@@ -524,6 +524,50 @@ export const fetchChildrenCategoriesDirect = async (parentCategoryId) => {
 
 }
 
+export const fetchSimilarProductsDirect = async (productId, iter = 0) => {
+
+    try {
+        const response = await fetch(`${HOST}/get/products/${productId}/similar-viewed/${iter}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('wrong!!');
+        }
+
+        const resData = await response.json();
+        const products = [];
+
+        for (const key in resData) {
+            products.push({
+                name: resData[key].PRODUCT_NAME,
+                price: resData[key].PRICE,
+                id: resData[key].PRODUCT_ID,
+                rating: resData[key].PRODUCT_RATING,
+                discount: resData[key].DISCOUNT,
+                thumbnail: { uri: `${HOST}/img/temp/` + resData[key].THUMBNAIL + "?" }
+            })
+        }
+
+        return products;
+        // console.log(loadedProducts);
+
+
+    }
+    catch (err) {
+        //send to custom analytics server
+        //console.log('error on action')
+        //dispatch({ type: SET_ERROR, message: 'error while retrieving products' })
+        throw new Error(err)
+    }
+
+}
+
 
 
 
