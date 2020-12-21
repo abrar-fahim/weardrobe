@@ -1,33 +1,35 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import HeaderOptions from '../../Styles/HeaderOptions';
-import ScreenStyle from '../../Styles/ScreenStyle';
-
+import { TextInput, Button, StyleSheet, Text, View, Image, Animated, PanResponder, KeyboardAvoidingView } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 function StudioScreen() {
+
     return (
-        <View style={ScreenStyle}>
-            <Text> Studio Screen</Text>
+        <View>
+            <Text>studio screen</Text>
         </View>
-    );
+    )
 
 }
 
 export default function StudioStackScreen() {
     const StudioStack = createStackNavigator();
+    const CustomView = Platform.OS === "ios" ? KeyboardAvoidingView : View;
     return (
-        <StudioStack.Navigator
-            screenOptions={HeaderOptions}
+        <CustomView
+            style={{ flex: 1 }}
+            behavior="padding"
         >
-            <StudioStack.Screen name="StudioScreen" component={StudioScreen} options = {{
-                
-            }}/>
-        </StudioStack.Navigator>
-        
+            <StudioStack.Navigator
+                screenOptions={HeaderOptions}
+            >
+                <StudioStack.Screen name="StudioScreen" component={StudioScreen} options={{
+
+                }} />
+            </StudioStack.Navigator>
+        </CustomView>
+
     )
 }
+

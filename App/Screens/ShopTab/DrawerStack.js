@@ -1,13 +1,13 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image, Platform, FlatList, SectionList, Picker, PickerIOS } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
-import {HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/HeaderButton';
 
 import { SearchBar, Overlay } from 'react-native-elements';
@@ -30,20 +30,25 @@ export default function DrawerStack(props) {
                 headerShown: true,
                 ...HeaderOptions
             }}
-            
+
 
         >
-            <DrawerStack.Screen name={props.name} component = {props.component} 
+            <DrawerStack.Screen
+                name={props.name}
+                component={props.component}
                 options={{
                     headerRight: () => (
-                        <ShopRightButtons navigation={props.navigation}/>
-                        ),
-                     headerLeft: () => (
-                         <DrawerButton navigation={props.navigation} />
+                        <ShopRightButtons
+                            navigation={props.navigation}
+                            search={props.search}
+                        />
                     ),
-                    title: props.title??props.name
-                    
-            }}
+                    headerLeft: () => (
+                        <DrawerButton navigation={props.navigation} />
+                    ),
+                    title: props.title ?? props.name
+
+                }}
             />
         </DrawerStack.Navigator>
     )

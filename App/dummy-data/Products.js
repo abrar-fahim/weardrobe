@@ -44,7 +44,26 @@ const PRODUCTS = [
         rating: 5,
         description: "This is a nice shirt, ples buy",
         sizes: ['S, M, L, XL, XXL'],
-        colors: ['black', 'blue', 'yellow', 'purple', 'orange']
+        colors: ['black', 'blue', 'yellow', 'purple', 'orange'],
+        reviews: [
+            {
+                id: '1',
+                reviewer: 'best reviewer evaaa',
+                review: 'This is the best piece of cloth I have ever chanced upon in the entire universe',
+                stars: 5
+            }
+        ],
+        qa: [
+            {
+                id: '1',
+                question: {
+                    asker: 'best asker',
+                    question: 'whats the price of this?'
+                },
+                ans: 'its given already you fool'
+                
+            }
+        ]
 
     },
     {
@@ -53,6 +72,7 @@ const PRODUCTS = [
         shopname: 'YELLOW',
         picture: require('../assets/Images/shirt2.jpg'),
         price: 500,
+        oldPrice: 1000,
         rating: 4,
         description: "This is a nice shirt, ples buy",
         colors: ['black', 'blue', 'yellow'],

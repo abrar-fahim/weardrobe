@@ -21,6 +21,9 @@ import ShopRightButtons from '../../components/ShopRightButtons';
 import DrawerStack from './DrawerStack';
 import ScreenStyle from '../../Styles/ScreenStyle'
 
+import ProductList from '../../components/ProductList'
+import PRODUCTS from '../../dummy-data/Products'
+
 
 export default function DealsStack( {navigation} ) {
     return (
@@ -28,30 +31,11 @@ export default function DealsStack( {navigation} ) {
     )
 }
 
-function DealsScreen() {
+function DealsScreen({navigation}) {
     return (
         <View style={ScreenStyle}>
-            <Text> Deals!!</Text>
+            <ProductList navigation={navigation} data={PRODUCTS}/>
         </View>
     )
 }
-
-
-
-const styles = StyleSheet.create({
-    screen: {
-        flex: 1  //ensures that this view takes all space it can get
-    },
-
-    gridItem: {
-        flex: 1,
-        margin: 15,
-        height: 150
-    },
-    bottom: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        marginBottom: 36
-    }
-})
 

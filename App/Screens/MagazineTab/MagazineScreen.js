@@ -1,188 +1,354 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Image, FlatList } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
+import { TextInput, Button, StyleSheet, Text, View, Image, FlatList, Dimensions, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, KeyboardAvoidingView, Platform } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
-import {FEEDITEMS} from '../../dummy-data/Feed'
-import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import { FEEDITEMS } from '../../dummy-data/Feed'
 import NewPostChooseLayout from './NewPostChooseLayoutScreen';
 import NewPostButton from '../../components/NewPostButton';
 import NewPostScreen2 from './NewPostScreen2';
 import NewPostScreen3 from './NewPostScreen3';
 import NewPostTagScreen from './NewPostTagScreen';
 import NewPostNextButton from '../../components/NewPostNextButton';
-import { ProfileTabsScreen } from '../ProfileTab/ProfileScreen';
+import ProfileStackScreen, { ProfileTabsScreen } from '../ProfileTab/ProfileScreen';
 import GenericHeaderButton from '../../components/GenericHeaderButton';
 import Colors from '../../Styles/Colors'
 import HeaderOptions from '../../Styles/HeaderOptions'
 import ScreenStyle from '../../Styles/ScreenStyle';
+import { useDispatch, useSelector } from 'react-redux';
 
+import * as magazineActions from '../../store/actions/magazine'
+import LoadingScreen from '../../components/LoadingScreen'
+import SellerScreen from '../ShopTab/SellerScreen';
+import CheckLoggedIn from '../../components/CheckLoggedIn';
+import AuthRequiredScreen from '../AuthRequiredScreen';
+import PostScreen from './PostScreen';
+import PeopleSearchScreen from './PeopleSearch';
+import FollowersListTabScreen from '../ProfileTab/FollowersListScreen';
+import Post from '../../components/Post';
+
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded,
+    setTestDeviceIDAsync,
+
+} from 'expo-ads-admob';
+import BlogScreen from '../ProfileTab/BlogScreen';
 
 
 
 export function MagazineScreen(props) {
 
+
+
+    const flatListRef = useRef(null);
+
+    const dispatch = useDispatch();
+
+    const userId = useSelector(state => state.auth.userId);
+
+    const shopPosts = useSelector(state => state.magazine.shopPosts);
+    const friendPosts = useSelector(state => state.magazine.friendPosts);
+    const feed = useSelector(state => state.magazine.feed);
+
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [change, setChange] = useState(0);    //this forces like icon to re render on each touch
+
+    const [iter, setIter] = useState(0);
+
+    const [iterLoading, setIterLoading] = useState(false);
+
+    const loadPosts = useCallback(async () => {
+        try {
+            setIsLoading(true)
+            await dispatch(magazineActions.fetchFeed(0));
+            // await dispatch(magazineActions.fetchShopPosts());
+            // if (userId) await dispatch(magazineActions.fetchFriendsPosts())
+            setIter(0);
+            setIsLoading(false)
+
+        }
+        catch (err) {
+            setIter(0);
+            setIsLoading(false)
+            console.log(err)
+        }
+    }, [userId])
+
+    const loadMorePosts = useCallback(async () => {
+        try {
+            if (!iterLoading) {
+                setIterLoading(true)
+                // await dispatch(magazineActions.fetchShopPosts(iter))
+                await dispatch(magazineActions.fetchFeed(iter));
+                setIter(iter => iter + 1)
+                setIterLoading(false)
+            }
+
+
+        }
+        catch (err) {
+            setIsLoading(false)
+            console.log(err)
+        }
+    }, [iter, iterLoading])
+
+
+
+
+    useEffect(() => {
+        loadPosts();
+        setIter(0)
+    }, [userId])
+
+
+
     const renderFeedItem = (itemData) => {
-        return (
-            <View style={styles.gridItem} >
-                <View style={styles.nameDP}>
-                    <TouchableOpacity onPress={() => props.navigation.navigate('OthersProfile')}>
-                        <View style={styles.nameDP2}>
-                            <View style={styles.DP}>
-                              <Image style={styles.DPImage} source={require('../../assets/Images/tahsan.png')}/>
-                            </View>
-                            <Text style={styles.Name}> Tahsan </Text>
-                        </View>
-                    </TouchableOpacity>     
+
+        if (itemData.index === 3) {
+            return (
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <AdMobBanner
+                        bannerSize="mediumRectangle"
+                        adUnitID="ca-app-pub-3940256099942544/6300978111" // Test ID, Replace with your-admob-unit-id
+                        servePersonalizedAds // true or false
+                        onDidFailToReceiveAdWithError={(text) => console.log(text)} />
+
                 </View>
 
-                <TouchableOpacity style={styles.Post}>
-                    <View style={styles.Post2}>
-                        <Image  source={require('../../assets/Images/suit.png')} style={styles.PostImage}/> 
-                        <Text  style={styles.Caption} >   {itemData.item.caption}</Text>    
-                    </View>    
-                </TouchableOpacity>
-   
-                
-               
-                <View style={styles.LikeComment}>
-                    <TouchableOpacity style={styles.Like} onPress={ () => {}}>
-                    <MaterialCommunityIcons name="thumb-up" size={40} color='black'/>
-                    </TouchableOpacity>
-    
-                    <TextInput placeholder="Comment" style={styles.Comment}/>
-                </View>
-                
-               
-            </View>
-    
+            )
+        }
+
+        return (
+
+
+
+            <Post post={itemData.item} navigation={props.navigation} setChange={setChange} />
+
+
         )
     }
+
+
+    if (!userId) {
+        return (
+            <AuthRequiredScreen navigation={props.navigation} />
+        )
+    }
+
+    // if (isLoading) {
+    //     return <LoadingScreen />
+    // }
+
+
+
+
     return (
         <View style={ScreenStyle}>
-            
-            <FlatList 
-                data={FEEDITEMS}
+
+
+            {/* <PublisherBanner
+                bannerSize="fullBanner"
+                adUnitID="ca-app-pub-3940256099942544/6300978111" // Test ID, Replace with your-admob-unit-id
+                onDidFailToReceiveAdWithError={(text) => console.log(text)}
+            // onAdMobDispatchAppEvent={this.adMobEvent}
+            /> */}
+
+
+
+
+            <FlatList
+
+                extraData={change}
+                ref={flatListRef}
+                viewabilityConfig={{
+                    waitForInteraction: false,
+                    viewAreaCoveragePercentThreshold: 95
+                }}
+                // data={friendPosts.concat(shopPosts)}
+                data={feed}
                 renderItem={renderFeedItem}
+                ListEmptyComponent={
+                    <View>
+                        <Text>no posts yet</Text>
+                    </View>
+                }
+                onEndReached={() => {
+                    loadMorePosts()
+                }}
+                refreshing={isLoading}
+                onRefresh={loadPosts}
+
             />
-            
+
         </View>
     );
 
 }
 
-export default function MagazineStackScreen({navigation}) {
+export default function MagazineStackScreen({ navigation }) {
     const MagazineStack = createStackNavigator();
-    return (
-        <MagazineStack.Navigator
-            screenOptions={{
-                ...HeaderOptions
-            }}
-        >
-            <MagazineStack.Screen name="Magazine" component={MagazineScreen} options = {{
-                
-                headerRight: () => (< NewPostButton onPress={() => navigation.navigate('NewPostChooseLayout')} />)
-            }}/>
-            <MagazineStack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options = {{
-                headerRight: () => (<GenericHeaderButton title="newPost" iconName="md-create" onPress={() => navigation.navigate('NewPost2')} />),    
-            }}/>
-            <MagazineStack.Screen name="NewPost2" component={NewPostScreen2} options = {{
-                 headerRight: () => (<NewPostNextButton onPress={() => navigation.navigate('NewPost3')} />),
-                 
-            }}/>
-            <MagazineStack.Screen name="NewPost3" component={NewPostScreen3} options = {{
-                 headerRight: () => (<NewPostNextButton navigation={navigation} onPress={() => navigation.popToTop()} />)
-            }}/>
-            <MagazineStack.Screen name="NewPostTag" component={NewPostTagScreen}/>
-            <MagazineStack.Screen name="OthersProfile" component={ProfileTabsScreen}/>
 
-        </MagazineStack.Navigator>
-        
+    const CustomView = Platform.OS === "ios" ? KeyboardAvoidingView : View;
+    return (
+
+
+        <CustomView
+            style={{ flex: 1 }}
+            behavior="padding"
+        >
+
+            <MagazineStack.Navigator
+                screenOptions={{
+                    ...HeaderOptions
+                }}
+            >
+                <MagazineStack.Screen name="Magazine" component={MagazineScreen} options={{
+
+                    headerRight: () => (
+                        <View style={{ flexDirection: 'row' }}>
+                            <GenericHeaderButton title="search" iconName="ios-search" onPress={() => navigation.navigate('PeopleSearch')} />
+                            < NewPostButton onPress={() => navigation.navigate('NewPostChooseLayout')} />
+                        </View>
+
+                    )
+                }} />
+                {/* <MagazineStack.Screen name="NewPostChooseLayout" component={NewPostChooseLayout} options={{
+
+            }} />
+            <MagazineStack.Screen name="NewPost2" component={NewPostScreen2} options={{
+                headerRight: () => (<NewPostNextButton onPress={() => navigation.navigate('NewPost3')} />),
+
+            }} />
+            <MagazineStack.Screen name="NewPost3" component={NewPostScreen3} />
+            <MagazineStack.Screen name="NewPostTag" component={NewPostTagScreen} /> */}
+                <MagazineStack.Screen name="Seller" component={SellerScreen} />
+                <MagazineStack.Screen name="Post" component={PostScreen} />
+                <MagazineStack.Screen name="PeopleSearch" component={PeopleSearchScreen} />
+                <MagazineStack.Screen name="FollowersListTab" component={FollowersListTabScreen} />
+                <MagazineStack.Screen name="OthersProfile" component={ProfileTabsScreen} options={{
+                    headerShown: true
+                }} />
+                <MagazineStack.Screen name="Blog" component={BlogScreen} />
+
+            </MagazineStack.Navigator>
+        </CustomView>
+
+
     )
 }
 
 
 const styles = StyleSheet.create({
     gridItem: {
-        flex: 1,
-        padding : 10,
-        margin: 0,
-        height: 700,
+        // flex: 1,
+        padding: 10,
+        marginVertical: 10,
         width: '100%',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        backgroundColor: 'white'
     },
-    nameDP : {
-        paddingLeft: 5
+    nameDP: {
+        flexDirection: 'row',
+        paddingHorizontal: 10
     },
-    nameDP2 : 
+
+    DPImage:
     {
-        flexDirection: 'row', 
-        alignItems : 'center'
+        width: 40,
+        height: 40,
+        borderRadius: 20
     },
-    DP :
-    {
-        borderRadius: 25, 
-        overflow: 'hidden'
+    nameContainer: {
+        marginLeft: 10,
+        flexDirection: "column"
+
     },
-    DPImage :
+    Name:
     {
-        width: 40, 
-        height: 40
+        fontWeight: '700',
+        fontSize: 18
     },
-    Name: 
-    {
-        fontWeight: 'bold', 
-        fontSize: 20
+    username: {
+        fontSize: 15,
+        color: 'grey'
+
     },
     Post:
     {
-        paddingTop: 10
+        paddingTop: 10,
+        alignItems: 'center',
+        flexDirection: 'column',
+        width: '100%',
+        // height: 400,
+        borderRadius: 30,
     },
-    Post2:
+
+    postImage:
     {
-        flexDirection: 'column', 
-        width: '100%', 
-        height: 500, 
-        borderRadius: 30, 
-        overflow:'hidden'
+        // maxHeight: '100%',
+        // maxWidth: Dimensions.get('window').width,
+        // alignSelf: 'center'
+        height: Dimensions.get('window').width,
+        width: Dimensions.get('window').width,
+        // flex: 7,
     },
-    PostImage:
+    caption:
     {
-        height: '80%', 
-        width: '100%', 
-        flex:7
+        paddingVertical: 20,
+        fontWeight: '600',
+        width: '100%'
     },
-    Caption:
-    {
-        paddingTop: 10, 
-        flex:1, 
-        borderLeftColor: 'black',  
-        fontWeight: 'bold', 
-        backgroundColor: 'grey'
-    },
-    LikeComment:
-    {
-        paddingTop:15,
-        flexDirection: 'row'
+    reactsCommentsContainer: {
+        flexDirection: 'row',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+
+
     },
     Like:
     {
-        paddingRight: 15, 
-        paddingLeft: 10, 
-        flex:1
+        paddingRight: 15,
+        paddingLeft: 10,
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    number: {
+        fontSize: 15,
+        fontWeight: '700',
+        color: 'grey',
+        marginLeft: 2
+
     },
     Comment:
     {
-        flex: 3 ,
+        flex: 3,
         paddingLeft: 5,
-        height: 40, 
-        borderColor: 'black', 
+        height: 40,
+        borderColor: 'black',
         backgroundColor: 'grey'
+    },
+    comment: {
+        flexDirection: 'row',
+    },
+    commentX: {
+        marginLeft: 30
+    },
+
+    commentContainer: {
+        flexDirection: 'row',
+        flex: 1
+    },
+    sendComment: {
+        marginLeft: 3
     }
-    
+
 });

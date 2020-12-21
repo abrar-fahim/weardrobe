@@ -21,7 +21,7 @@ export default function NewPostButton(props) {
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item 
             title='NewPostButton'
-            iconName='md-create'
+            iconName='md-add'
             onPress={props.onPress} 
         />
          </HeaderButtons>

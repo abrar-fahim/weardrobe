@@ -1,9 +1,14 @@
 const Colors = {
-  primaryColor: '#4a148c',
-  accentColor: '#ffaaa5',
-  textColor: 'black',
+  primaryColor: '#420000',
+  accentColor: '#d4d7dd',
+  foregroundColor: '#eae9e9',
+  backgroundColor: '#f6f6f6',
 
+  
+  textColor: 'black',
+  anotherColor: '#d4d7dd',
   screenBackgroundColor: '#f6f6f6',
+  // tabBarActiveTintColor: '#420000',
   tabBarActiveTintColor: '#420000',
   tabBarColor: '#420000',
   headerColor: 'white',

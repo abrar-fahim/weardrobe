@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { TextInput, Button, StyleSheet, Text, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -7,17 +7,31 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import ScreenStyle from '../../Styles/ScreenStyle';
 import { Ionicons, Entypo, FontAwesome, MaterialIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import GenericHeaderButton from '../../components/GenericHeaderButton'
+
 
 export default function NewPostChooseLayout(props) {
+    const product = props.route.params?.product;
+
+    useLayoutEffect(() => {
+        props.navigation.setOptions({
+            headerRight: () => (<GenericHeaderButton title="newPost" iconName="md-arrow-forward" onPress={() => props.navigation.navigate('NewPost2', {
+                product: product
+            })} />)
+
+        })
+    })
+
+
     return (
         <View style={styles.Main}>
 
             <View style={styles.Direction}>
-                <MaterialCommunityIcons name="circle" size={30} color='green' />
-                <MaterialCommunityIcons name="arrow-right" size={30} color='black' />
-                <MaterialCommunityIcons name="circle-outline" size={30} color='black' />
-                <MaterialCommunityIcons name="arrow-right" size={30} color='black' />
-                <MaterialCommunityIcons name="circle-outline" size={30} color='black' />
+                <MaterialCommunityIcons name="circle" size={20} color='lightblue' />
+                <MaterialCommunityIcons name="arrow-right" size={20} color='black' />
+                <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
+                <MaterialCommunityIcons name="arrow-right" size={20} color='black' />
+                <MaterialCommunityIcons name="circle-outline" size={20} color='black' />
             </View>
 
             <View style={styles.LayoutText}>
@@ -26,19 +40,23 @@ export default function NewPostChooseLayout(props) {
 
             <View style={styles.Layouts}>
 
-                
-                <View style={styles.LayoutDesign}>
-                    <Image source={require('../../assets/Images/img.png')} style={styles.Pic} />
-                    <Image source={require('../../assets/Images/caption.png')} style={styles.Caption} />
-                    </View>
-                
 
-                
                 <View style={styles.LayoutDesign}>
+                    {/* <Image source={require('../../assets/Images/img.png')} style={styles.Pic} />
+                    <Image source={require('../../assets/Images/caption.png')} style={styles.Caption} /> 
+                    
+                    */}
+
+                    <Ionicons name="md-help-circle-outline" size={400} color="lightgrey" />
+                </View>
+
+
+
+                {/* <View style={styles.LayoutDesign}>
                     <Image source={require('../../assets/Images/caption.png')} style={styles.Caption} />
                     <Image source={require('../../assets/Images/img.png')} style={styles.Pic} />
-                 </View>
-                
+                </View> */}
+
 
 
             </View>
@@ -58,8 +76,9 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         flexDirection: 'row',
-        paddingTop: 25,
-        paddingLeft: 100
+        paddingTop: 10,
+        justifyContent: 'center'
+
     },
     LayoutText:
     {
@@ -79,18 +98,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         paddingBottom: 100,
-    
+
     },
     Touch:
     {
         flex: 1,
-        
+
     },
     LayoutDesign:
     {
-        flex : 1,
+        flex: 1,
         flexDirection: 'column',
-        paddingLeft : 15
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     Pic:
     {
